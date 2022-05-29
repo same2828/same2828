@@ -485,7 +485,7 @@
   "javascript.preferences.quoteStyle": "single",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "liveServer.settings.donotShowInfoMsg": true,
-  "markdown-preview-enhanced.previewTheme": "github-light.css",
+  "markdown-preview-enhanced.previewTheme": "atom-dark.css",
   "material-icon-theme.folders.theme": "classic",
   "material-icon-theme.hidesExplorerArrows": true,
   "prettier.jsxSingleQuote": true,
@@ -518,7 +518,11 @@
   "python.testing.pytestEnabled": true,
   "search.exclude": {
     "**/.cache": true,
-    "**/github2": true
+    "**/.npm": true,
+    "**/.nvm": true,
+    "**/.vscode-server": true,
+    "**/github2": true,
+    "**/landscape": true
   },
   "security.workspace.trust.untrustedFiles": "open",
   "sshfs.configs": [
