@@ -87,6 +87,7 @@
     - [Constructor](#constructor-14)
     - [Methods](#methods-21)
   - [Sorting Using Lambda Expression](#sorting-using-lambda-expression)
+  - [Tuple/Pair Custom Implementation](#tuplepair-custom-implementation)
 
 # Java Frameworks
 
@@ -201,7 +202,7 @@ class Solution {
 | `StringBuilder()`                 | Constructs a string builder with no characters in it and an initial capacity of 16 characters                   |
 | `StringBuilder(int capacity)`     | Constructs a string builder with no characters in it and an initial capacity specified by the capacity argument |
 | `StringBuilder(CharSequence seq)` | Constructs a string builder that contains the same characters as the specified CharSequence                     |
-| `StringBuilder(String str)`       | Constructs a string builder initialized to the contents of the specified string                                 |
+| `StringBuilder(String str)`       | Constructs a string builder initialised to the contents of the specified string                                 |
 
 ## Methods
 
@@ -255,28 +256,29 @@ class Solution {
 - `import java.util.Arrays;`
 - [Read more](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Arrays.html)
 
-| Return         | Method                                                                                          | Description                                                                                                                                              |
-| -------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| static int     | `Arrays.binarySearch(int[] a, int key)`                                                         | Searches the specified array of ints for the specified value using the binary search algorithm                                                           |
-| static int     | `Arrays.binarySearch(int[] a, int fromIndex, int toIndex, int key)`                             | Searches a range of the specified array of ints for the specified value using the binary search algorithm                                                |
-| static int     | `Arrays.compare(int[] a, int[] b)`                                                              | Compares two int arrays lexicographically                                                                                                                |
-| static int     | `Arrays.compare(int[] a, int aFromIndex, int aToIndex, int[] b, int bFromIndex, int bToIndex)`  | Compares two int arrays lexicographically over the specified ranges                                                                                      |
-| static char[]  | `Arrays.copyOf(char[] original, int newLength)`                                                 | Copies the specified array, truncating or padding with null characters (if necessary) so the copy has the specified length                               |
-| static int[]   | `Arrays.copyOf(int[] original, int newLength)`                                                  | Copies the specified array, truncating or padding with zeros (if necessary) so the copy has the specified length                                         |
-| static char[]  | `copyOfRange(char[] original, int from, int to)`                                                | Copies the specified range of the specified array into a new array                                                                                       |
-| static int[]   | `copyOfRange(int[] original, int from, int to)`                                                 | Copies the specified range of the specified array into a new array                                                                                       |
-| static boolean | `Arrays.deepEquals(Object[] a1, Object[] a2)`                                                   | Returns true if the two specified arrays are deeply equal to one another                                                                                 |
-| static String  | `Arrays.deepToString(Object[] a)`                                                               | Returns a string representation of the "deep contents" of the specified array                                                                            |
-| static boolean | `Arrays.equals(int[] a, int[] a2)`                                                              | Returns true if the two specified arrays of ints are equal to one another                                                                                |
-| static boolean | `Arrays.equals(int[] a, int aFromIndex, int aToIndex, int[] b, int bFromIndex, int bToIndex)`   | Returns true if the two specified arrays of ints, over the specified ranges, are equal to one another                                                    |
-| static void    | `Arrays.fill(int[] a, int val)`                                                                 | Assigns the specified int value to each element of the specified array of ints                                                                           |
-| static void    | `Arrays.fill(int[] a, int fromIndex, int toIndex, int val)`                                     | Assigns the specified int value to each element of the specified range of the specified array of ints                                                    |
-| static int     | `Arrays.mismatch(int[] a, int[] b)`                                                             | Finds and returns the index of the first mismatch between two int arrays, otherwise return -1 if no mismatch is found                                    |
-| static int     | `Arrays.mismatch(int[] a, int aFromIndex, int aToIndex, int[] b, int bFromIndex, int bToIndex)` | Finds and returns the relative index of the first mismatch between two int arrays over the specified ranges, otherwise return -1 if no mismatch is found |
-| static void    | `Arrays.sort(int[] a)`                                                                          | Sorts the specified array into ascending numerical order                                                                                                 |
-| static void    | `Arrays.sort(int[] a, int fromIndex, int toIndex)`                                              | Sorts the specified range of the array into ascending order                                                                                              |
-| static String  | `Arrays.toString(char[] a)`                                                                     | Returns a string representation of the contents of the specified array                                                                                   |
-| static String  | `Arrays.toString(int[] a)`                                                                      | Returns a string representation of the contents of the specified array                                                                                   |
+| Return             | Method                                                                                          | Description                                                                                                                                              |
+| ------------------ | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| static <T> List<T> | `asList(T... a)`                                                                                | Returns a fixed-size list backed by the specified array                                                                                                  |
+| static int         | `Arrays.binarySearch(int[] a, int key)`                                                         | Searches the specified array of ints for the specified value using the binary search algorithm                                                           |
+| static int         | `Arrays.binarySearch(int[] a, int fromIndex, int toIndex, int key)`                             | Searches a range of the specified array of ints for the specified value using the binary search algorithm                                                |
+| static int         | `Arrays.compare(int[] a, int[] b)`                                                              | Compares two int arrays lexicographically                                                                                                                |
+| static int         | `Arrays.compare(int[] a, int aFromIndex, int aToIndex, int[] b, int bFromIndex, int bToIndex)`  | Compares two int arrays lexicographically over the specified ranges                                                                                      |
+| static char[]      | `Arrays.copyOf(char[] original, int newLength)`                                                 | Copies the specified array, truncating or padding with null characters (if necessary) so the copy has the specified length                               |
+| static int[]       | `Arrays.copyOf(int[] original, int newLength)`                                                  | Copies the specified array, truncating or padding with zeros (if necessary) so the copy has the specified length                                         |
+| static char[]      | `copyOfRange(char[] original, int from, int to)`                                                | Copies the specified range of the specified array into a new array                                                                                       |
+| static int[]       | `copyOfRange(int[] original, int from, int to)`                                                 | Copies the specified range of the specified array into a new array                                                                                       |
+| static boolean     | `Arrays.deepEquals(Object[] a1, Object[] a2)`                                                   | Returns true if the two specified arrays are deeply equal to one another                                                                                 |
+| static String      | `Arrays.deepToString(Object[] a)`                                                               | Returns a string representation of the "deep contents" of the specified array                                                                            |
+| static boolean     | `Arrays.equals(int[] a, int[] a2)`                                                              | Returns true if the two specified arrays of ints are equal to one another                                                                                |
+| static boolean     | `Arrays.equals(int[] a, int aFromIndex, int aToIndex, int[] b, int bFromIndex, int bToIndex)`   | Returns true if the two specified arrays of ints, over the specified ranges, are equal to one another                                                    |
+| static void        | `Arrays.fill(int[] a, int val)`                                                                 | Assigns the specified int value to each element of the specified array of ints                                                                           |
+| static void        | `Arrays.fill(int[] a, int fromIndex, int toIndex, int val)`                                     | Assigns the specified int value to each element of the specified range of the specified array of ints                                                    |
+| static int         | `Arrays.mismatch(int[] a, int[] b)`                                                             | Finds and returns the index of the first mismatch between two int arrays, otherwise return -1 if no mismatch is found                                    |
+| static int         | `Arrays.mismatch(int[] a, int aFromIndex, int aToIndex, int[] b, int bFromIndex, int bToIndex)` | Finds and returns the relative index of the first mismatch between two int arrays over the specified ranges, otherwise return -1 if no mismatch is found |
+| static void        | `Arrays.sort(int[] a)`                                                                          | Sorts the specified array into ascending numerical order                                                                                                 |
+| static void        | `Arrays.sort(int[] a, int fromIndex, int toIndex)`                                              | Sorts the specified range of the array into ascending order                                                                                              |
+| static String      | `Arrays.toString(char[] a)`                                                                     | Returns a string representation of the contents of the specified array                                                                                   |
+| static String      | `Arrays.toString(int[] a)`                                                                      | Returns a string representation of the contents of the specified array                                                                                   |
 
 ## Array Size and Default Values
 
@@ -393,6 +395,20 @@ int[] targetArray = sourceArray.clone();
 ## List (Interface)
 
 - `import java.util.List;`
+- Initialise `List` and `ArrayList` with:
+  ```java
+  // Method 1 - using .add()
+  List<String> list1 = new ArrayList<>();
+  list1.add("LeetCode");
+  list1.add("HackerRank");
+  list1.add("Codeforces");
+  // Method 2 - using Arrays.asList()
+  List<String> list2 = new ArrayList<>(Arrays.asList("LeetCode","HackerRank", "Codeforces"));
+  // Method 3 - using List.of()
+  List<String> list3 = new ArrayList<>(List.of("LeetCode","HackerRank", "Codeforces"));
+  // Method 4 - using another collection
+  List<String> list4 = newArrayList<list1>
+  ```
 - [Read more](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/List.html)
 
 | Return             | Method                                         | Description                                                                                                                                                                         |
@@ -618,6 +634,11 @@ int[] targetArray = sourceArray.clone();
 ## Queue (Interface)
 
 - `import java.util.Queue;`
+- Initialise `Queue` with:
+  ```java
+  Queue<List<String>> queue = new LinkedList<>();
+  queue.offer(Arrays.asList("LeetCode", "HackerRank", "Codeforces"));
+  ```
 - [Read more](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Queue.html)
 
 |         | Throws Exception | Returns Special Value |
@@ -1452,5 +1473,64 @@ void reverse(int[] a) {
     a[i] = a[j];
     a[j] = temp;
   }
+}
+```
+
+## Tuple/Pair Custom Implementation
+
+- **Note for use with HashMap, the `equals()` and `hashCode` methods MUST be overridden**
+
+  - You can also implement a pair by converting the numbers to a `String` separated by a comma `,` (to use as a key to the hashmap)
+
+    ```java
+    HashMap<String, Integer> map = new HashMap<>();
+
+    private int recurse(int i, int j) {
+      String key = i + "," + j;
+      if (map.containsKey(key)) {
+        return map.get(key);
+      }
+
+      int result = i + j;
+      map.put(key, result);
+      return result;
+    }
+    ```
+
+```java
+public class Tuple<X, Y> {
+  public final X x;
+  public final Y y;
+
+  public Tuple(X x, Y y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (!(o instanceof Tuple)) {
+      return false;
+    }
+    Tuple<?, ?> p = (Tuple<?, ?>) o;
+    return Objects.equals(p.x, x) && Objects.equals(p.y, y);
+  }
+
+  @Override
+  public int hashCode() {
+    return (x == null ? 0 : x.hashCode()) ^ (y == null ? 0 : y.hashCode()); // Bitwise XOR
+    // return (x == null ? 0 : x.hashCode()) & (y == null ? 0 : y.hashCode()); // Bitwise AND
+    // return (x == null ? 0 : x.hashCode()) | (y == null ? 0 : y.hashCode()); // Bitwise OR
+    // return (x == null ? 0 : x.hashCode()) + (y == null ? 0 : y.hashCode()); // Addition
+  }
+
+  public static <A, B> Tuple<A, B> create(A a, B b) {
+    return new Tuple<A, B>(a, b);
+  }
+
+  // If errors occur with above (uncomment below)
+  // public <A, B> Pair<A, B> create(A a, B b) {
+  //   return new Pair<A, B>(a, b);
+  // }
 }
 ```
