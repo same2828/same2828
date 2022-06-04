@@ -2,6 +2,9 @@
   "[c]": {
     "editor.defaultFormatter": "ms-vscode.cpptools"
   },
+  "[cpp]": {
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+  },
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
   },
@@ -109,6 +112,14 @@
     "readability-braces-around-statements"
   ],
   "C_Cpp.dimInactiveRegions": false,
+  "C_Cpp.intelliSenseEngine": "Disabled",
+  "clangd.arguments": [
+    "ColumnLimit: 120"
+  ],
+  "clangd.checkUpdates": true,
+  "cmake.buildBeforeRun": true,
+  "cmake.configureOnOpen": true,
+  "cmake.saveBeforeBuild": true,
   "cSpell.userWords": [
     "adoptium",
     "ageing",
