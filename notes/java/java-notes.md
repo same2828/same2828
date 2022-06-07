@@ -256,29 +256,33 @@ class Solution {
 - `import java.util.Arrays;`
 - [Read more](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Arrays.html)
 
-| Return             | Method                                                                                          | Description                                                                                                                                              |
-| ------------------ | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| static <T> List<T> | `asList(T... a)`                                                                                | Returns a fixed-size list backed by the specified array                                                                                                  |
-| static int         | `Arrays.binarySearch(int[] a, int key)`                                                         | Searches the specified array of ints for the specified value using the binary search algorithm                                                           |
-| static int         | `Arrays.binarySearch(int[] a, int fromIndex, int toIndex, int key)`                             | Searches a range of the specified array of ints for the specified value using the binary search algorithm                                                |
-| static int         | `Arrays.compare(int[] a, int[] b)`                                                              | Compares two int arrays lexicographically                                                                                                                |
-| static int         | `Arrays.compare(int[] a, int aFromIndex, int aToIndex, int[] b, int bFromIndex, int bToIndex)`  | Compares two int arrays lexicographically over the specified ranges                                                                                      |
-| static char[]      | `Arrays.copyOf(char[] original, int newLength)`                                                 | Copies the specified array, truncating or padding with null characters (if necessary) so the copy has the specified length                               |
-| static int[]       | `Arrays.copyOf(int[] original, int newLength)`                                                  | Copies the specified array, truncating or padding with zeros (if necessary) so the copy has the specified length                                         |
-| static char[]      | `copyOfRange(char[] original, int from, int to)`                                                | Copies the specified range of the specified array into a new array                                                                                       |
-| static int[]       | `copyOfRange(int[] original, int from, int to)`                                                 | Copies the specified range of the specified array into a new array                                                                                       |
-| static boolean     | `Arrays.deepEquals(Object[] a1, Object[] a2)`                                                   | Returns true if the two specified arrays are deeply equal to one another                                                                                 |
-| static String      | `Arrays.deepToString(Object[] a)`                                                               | Returns a string representation of the "deep contents" of the specified array                                                                            |
-| static boolean     | `Arrays.equals(int[] a, int[] a2)`                                                              | Returns true if the two specified arrays of ints are equal to one another                                                                                |
-| static boolean     | `Arrays.equals(int[] a, int aFromIndex, int aToIndex, int[] b, int bFromIndex, int bToIndex)`   | Returns true if the two specified arrays of ints, over the specified ranges, are equal to one another                                                    |
-| static void        | `Arrays.fill(int[] a, int val)`                                                                 | Assigns the specified int value to each element of the specified array of ints                                                                           |
-| static void        | `Arrays.fill(int[] a, int fromIndex, int toIndex, int val)`                                     | Assigns the specified int value to each element of the specified range of the specified array of ints                                                    |
-| static int         | `Arrays.mismatch(int[] a, int[] b)`                                                             | Finds and returns the index of the first mismatch between two int arrays, otherwise return -1 if no mismatch is found                                    |
-| static int         | `Arrays.mismatch(int[] a, int aFromIndex, int aToIndex, int[] b, int bFromIndex, int bToIndex)` | Finds and returns the relative index of the first mismatch between two int arrays over the specified ranges, otherwise return -1 if no mismatch is found |
-| static void        | `Arrays.sort(int[] a)`                                                                          | Sorts the specified array into ascending numerical order                                                                                                 |
-| static void        | `Arrays.sort(int[] a, int fromIndex, int toIndex)`                                              | Sorts the specified range of the array into ascending order                                                                                              |
-| static String      | `Arrays.toString(char[] a)`                                                                     | Returns a string representation of the contents of the specified array                                                                                   |
-| static String      | `Arrays.toString(int[] a)`                                                                      | Returns a string representation of the contents of the specified array                                                                                   |
+| Return               | Method                                                                                          | Description                                                                                                                                              |
+| -------------------- | ----------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| static <T> List<T>   | `asList(T... a)`                                                                                | Returns a fixed-size list backed by the specified array                                                                                                  |
+| static int           | `Arrays.binarySearch(int[] a, int key)`                                                         | Searches the specified array of ints for the specified value using the binary search algorithm                                                           |
+| static int           | `Arrays.binarySearch(int[] a, int fromIndex, int toIndex, int key)`                             | Searches a range of the specified array of ints for the specified value using the binary search algorithm                                                |
+| static int           | `Arrays.compare(int[] a, int[] b)`                                                              | Compares two int arrays lexicographically                                                                                                                |
+| static int           | `Arrays.compare(int[] a, int aFromIndex, int aToIndex, int[] b, int bFromIndex, int bToIndex)`  | Compares two int arrays lexicographically over the specified ranges                                                                                      |
+| static char[]        | `Arrays.copyOf(char[] original, int newLength)`                                                 | Copies the specified array, truncating or padding with null characters (if necessary) so the copy has the specified length                               |
+| static int[]         | `Arrays.copyOf(int[] original, int newLength)`                                                  | Copies the specified array, truncating or padding with zeros (if necessary) so the copy has the specified length                                         |
+| static char[]        | `copyOfRange(char[] original, int from, int to)`                                                | Copies the specified range of the specified array into a new array                                                                                       |
+| static int[]         | `copyOfRange(int[] original, int from, int to)`                                                 | Copies the specified range of the specified array into a new array                                                                                       |
+| static boolean       | `Arrays.deepEquals(Object[] a1, Object[] a2)`                                                   | Returns true if the two specified arrays are deeply equal to one another                                                                                 |
+| static String        | `Arrays.deepToString(Object[] a)`                                                               | Returns a string representation of the "deep contents" of the specified array                                                                            |
+| static boolean       | `Arrays.equals(int[] a, int[] a2)`                                                              | Returns true if the two specified arrays of ints are equal to one another                                                                                |
+| static boolean       | `Arrays.equals(int[] a, int aFromIndex, int aToIndex, int[] b, int bFromIndex, int bToIndex)`   | Returns true if the two specified arrays of ints, over the specified ranges, are equal to one another                                                    |
+| static void          | `Arrays.fill(int[] a, int val)`                                                                 | Assigns the specified int value to each element of the specified array of ints                                                                           |
+| static void          | `Arrays.fill(int[] a, int fromIndex, int toIndex, int val)`                                     | Assigns the specified int value to each element of the specified range of the specified array of ints                                                    |
+| static int           | `Arrays.mismatch(int[] a, int[] b)`                                                             | Finds and returns the index of the first mismatch between two int arrays, otherwise return -1 if no mismatch is found                                    |
+| static int           | `Arrays.mismatch(int[] a, int aFromIndex, int aToIndex, int[] b, int bFromIndex, int bToIndex)` | Finds and returns the relative index of the first mismatch between two int arrays over the specified ranges, otherwise return -1 if no mismatch is found |
+| static void          | `Arrays.sort(int[] a)`                                                                          | Sorts the specified array into ascending numerical order                                                                                                 |
+| static void          | `Arrays.sort(int[] a, int fromIndex, int toIndex)`                                              | Sorts the specified range of the array into ascending order                                                                                              |
+| static IntStream     | `stream(int[] array)`                                                                           | Returns a sequential IntStream with the specified array as its source                                                                                    |
+| static IntStream     | `stream(int[] array, int startInclusive, int endExclusive)`                                     | Returns a sequential IntStream with the specified range of the specified array as its source                                                             |
+| static <T> Stream<T> | `stream(T[] array)`                                                                             | Returns a sequential Stream with the specified array as its source                                                                                       |
+| static <T> Stream<T> | `stream(T[] array, int startInclusive, int endExclusive)`                                       | Returns a sequential Stream with the specified range of the specified array as its source                                                                |
+| static String        | `Arrays.toString(char[] a)`                                                                     | Returns a string representation of the contents of the specified array                                                                                   |
+| static String        | `Arrays.toString(int[] a)`                                                                      | Returns a string representation of the contents of the specified array                                                                                   |
 
 ## Array Size and Default Values
 
@@ -1465,15 +1469,33 @@ Arrays.sort(cities,(s1, s2) -> s1.length() - s2.length());
   - Arrays.sort() cannot be used directly to sort primitive arrays (i.e. `int`) in descending order.
     - If you try to call the Arrays.sort() method by passing reverse Comparator (`Arrays.sort(myArray, Collections.reverseOrder());`) it will throw the error
 - Need to do it manually
+- Read More
+  - https://stackoverflow.com/questions/54126952/how-to-sort-integer-array-in-ascending-and-descending-order-using-lambda-only-in
+  - https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/IntStream.html#boxed()
+  - https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Stream.html#mapToInt(java.util.function.ToIntFunction)
+  - https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/Collectors.html
 
 ```java
-void reverse(int[] a) {
+void reverseArrayInPlace(int[] a) {
   for (int i = 0, j = a.length - 1; i < j; i++, j--) {
     int temp = a[i];
     a[i] = a[j];
     a[j] = temp;
   }
 }
+```
+
+```java
+int[] array = new int[]{1, 10, 5, 2, 4, 8, 6, 7, 3, 9};
+int[] descendingArray = Arrays.stream(array).boxed().sorted(Comparator.reverseOrder()).mapToInt(Integer::intValue).toArray();
+int[] ascendingArray = Arrays.stream(array).sorted().toArray();
+```
+
+```java
+// Convert the array of primitive int into List of Integers
+int[] array = new int[]{1, 10, 5, 2, 4, 8, 6, 7, 3, 9};
+List<Integer> descendingList = Arrays.stream(array).boxed().collect(Collectors.toList());
+Collections.sort(descendingList, Collections.reverseOrder());
 ```
 
 ## Tuple/Pair Custom Implementation
