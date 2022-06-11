@@ -3,7 +3,7 @@
     "editor.defaultFormatter": "ms-vscode.cpptools"
   },
   "[cpp]": {
-    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+    "editor.defaultFormatter": "ms-vscode.cpptools"
   },
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
@@ -112,7 +112,7 @@
     "readability-braces-around-statements"
   ],
   "C_Cpp.dimInactiveRegions": false,
-  "C_Cpp.intelliSenseEngine": "Disabled",
+  "C_Cpp.intelliSenseEngine": "Enabled",
   "clangd.arguments": [
     "ColumnLimit: 120"
   ],
@@ -497,7 +497,6 @@
   "javascript.updateImportsOnFileMove.enabled": "always",
   "liveServer.settings.donotShowInfoMsg": true,
   "markdown-preview-enhanced.previewTheme": "atom-dark.css",
-  "material-icon-theme.folders.theme": "classic",
   "material-icon-theme.hidesExplorerArrows": true,
   "prettier.jsxSingleQuote": true,
   "prettier.printWidth": 120,
@@ -655,4 +654,5 @@
   "workbench.editor.untitled.hint": "hidden",
   "workbench.iconTheme": "material-icon-theme",
   "workbench.startupEditor": "none"
+  // "editor.inlayHints.enabled": false,
 }
