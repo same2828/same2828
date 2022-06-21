@@ -24,7 +24,7 @@
     "editor.defaultFormatter": "vscode.json-language-features"
   },
   "[markdown]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.defaultFormatter": "yzhang.markdown-all-in-one",
     "editor.formatOnPaste": false,
     "editor.formatOnType": false,
     "editor.wordWrap": "off"
@@ -107,8 +107,8 @@
     }
   ],
   "bracket-pair-colorizer-2.depreciation-notice": false,
-  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, AllowShortBlocksOnASingleLine: Empty, AllowShortCaseLabelsOnASingleLine: false, AllowShortEnumsOnASingleLine: false, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLambdasOnASingleLine: Empty, AllowShortLoopsOnASingleLine: false, BreakBeforeBraces: Attach, ColumnLimit: 120, IndentWidth: 2, NamespaceIndentation: All , TabWidth: 2, IndentAccessModifiers: true }",
-  "C_Cpp.clang_format_style": "{ BasedOnStyle: LLVM, AllowShortBlocksOnASingleLine: Empty, AllowShortCaseLabelsOnASingleLine: false, AllowShortEnumsOnASingleLine: false, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLambdasOnASingleLine: Empty, AllowShortLoopsOnASingleLine: false, BreakBeforeBraces: Attach, ColumnLimit: 120, IndentWidth: 2, NamespaceIndentation: All , TabWidth: 2, IndentAccessModifiers: true }",
+  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, AllowShortBlocksOnASingleLine: Empty, AllowShortCaseLabelsOnASingleLine: false, AllowShortEnumsOnASingleLine: false, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLambdasOnASingleLine: Empty, AllowShortLoopsOnASingleLine: false, BreakBeforeBraces: Attach, ColumnLimit: 120, IndentWidth: 2, NamespaceIndentation: All , TabWidth: 2, IndentAccessModifiers: true, ReferenceAlignment: Left }",
+  "C_Cpp.clang_format_style": "{ BasedOnStyle: LLVM, AllowShortBlocksOnASingleLine: Empty, AllowShortCaseLabelsOnASingleLine: false, AllowShortEnumsOnASingleLine: false, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLambdasOnASingleLine: Empty, AllowShortLoopsOnASingleLine: false, BreakBeforeBraces: Attach, ColumnLimit: 120, IndentWidth: 2, NamespaceIndentation: All , TabWidth: 2, IndentAccessModifiers: true, ReferenceAlignment: Left }",
   "C_Cpp.codeAnalysis.clangTidy.checks.enabled": [
     "readability-braces-around-statements"
   ],
@@ -656,4 +656,3 @@
   "workbench.iconTheme": "material-icon-theme",
   "workbench.startupEditor": "none"
 }
-// "editor.inlayHints.enabled": false,
