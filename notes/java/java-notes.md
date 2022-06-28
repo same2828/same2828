@@ -1296,26 +1296,26 @@ class mapEntryExample{
   ```
 
   ```java
-    // Full code at "314.binary-tree-vertical-order-traversal"
-    Map<Integer, ArrayList> columnMap = new HashMap<>();
-    Queue<Map.Entry<TreeNode, Integer>> q = new ArrayDeque<>();
-    // Queue of tuples/pairs
-    q.offer(new AbstractMap.SimpleEntry<TreeNode, Integer>(rootNode, 0));
-    while (!q.isEmpty()) {
-      Map.Entry<TreeNode, Integer> tuple = q.poll();
-      TreeNode currNode = tuple.getKey();
-      int currCol = tuple.getValue();
+  // Full code at "314.binary-tree-vertical-order-traversal"
+  Map<Integer, ArrayList> columnMap = new HashMap<>();
+  Queue<Map.Entry<TreeNode, Integer>> q = new ArrayDeque<>();
+  // Queue of tuples/pairs
+  q.offer(new AbstractMap.SimpleEntry<TreeNode, Integer>(rootNode, 0));
+  while (!q.isEmpty()) {
+    Map.Entry<TreeNode, Integer> tuple = q.poll();
+    TreeNode currNode = tuple.getKey();
+    int currCol = tuple.getValue();
 
-      if (currNode != null) {
-        if (!columnMap.containsKey(currCol)) {
-          columnMap.put(currCol, new ArrayList<Integer>());
-        }
-        columnMap.get(currCol).add(currNode.val);
-
-        q.offer(new AbstractMap.SimpleEntry<TreeNode, Integer>(currNode.left, currCol - 1));
-        q.offer(new AbstractMap.SimpleEntry<TreeNode, Integer>(currNode.right, currCol + 1));
+    if (currNode != null) {
+      if (!columnMap.containsKey(currCol)) {
+        columnMap.put(currCol, new ArrayList<Integer>());
       }
+      columnMap.get(currCol).add(currNode.val);
+
+      q.offer(new AbstractMap.SimpleEntry<TreeNode, Integer>(currNode.left, currCol - 1));
+      q.offer(new AbstractMap.SimpleEntry<TreeNode, Integer>(currNode.right, currCol + 1));
     }
+  }
   ```
 
 # Miscellaneous
