@@ -4,6 +4,7 @@
   },
   "[cpp]": {
     "editor.defaultFormatter": "ms-vscode.cpptools"
+    // "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd",
   },
   "[css]": {
     "editor.defaultFormatter": "vscode.css-language-features"
@@ -106,14 +107,13 @@
       "underline": false
     }
   ],
-  "bracket-pair-colorizer-2.depreciation-notice": false,
+  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, AllowShortBlocksOnASingleLine: Empty, AllowShortCaseLabelsOnASingleLine: false, AllowShortEnumsOnASingleLine: false, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLambdasOnASingleLine: Empty, AllowShortLoopsOnASingleLine: false, BreakBeforeBraces: Attach, ColumnLimit: 120, IndentWidth: 2, NamespaceIndentation: All , TabWidth: 2, IndentAccessModifiers: true, ReferenceAlignment: Right }",
+  "C_Cpp.clang_format_style": "{ BasedOnStyle: LLVM, AllowShortBlocksOnASingleLine: Empty, AllowShortCaseLabelsOnASingleLine: false, AllowShortEnumsOnASingleLine: false, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLambdasOnASingleLine: Empty, AllowShortLoopsOnASingleLine: false, BreakBeforeBraces: Attach, ColumnLimit: 120, IndentWidth: 2, NamespaceIndentation: All , TabWidth: 2, IndentAccessModifiers: true, ReferenceAlignment: Right }",
   "C_Cpp.codeAnalysis.clangTidy.checks.enabled": [
     "readability-braces-around-statements"
   ],
-  // "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, AllowShortBlocksOnASingleLine: Empty, AllowShortCaseLabelsOnASingleLine: false, AllowShortEnumsOnASingleLine: false, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLambdasOnASingleLine: Empty, AllowShortLoopsOnASingleLine: false, BreakBeforeBraces: Attach, ColumnLimit: 120, IndentWidth: 2, NamespaceIndentation: All , TabWidth: 2, IndentAccessModifiers: true, ReferenceAlignment: Left }",
-  // "C_Cpp.clang_format_style": "{ BasedOnStyle: LLVM, AllowShortBlocksOnASingleLine: Empty, AllowShortCaseLabelsOnASingleLine: false, AllowShortEnumsOnASingleLine: false, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLambdasOnASingleLine: Empty, AllowShortLoopsOnASingleLine: false, BreakBeforeBraces: Attach, ColumnLimit: 120, IndentWidth: 2, NamespaceIndentation: All , TabWidth: 2, IndentAccessModifiers: true, ReferenceAlignment: Left }",
   "C_Cpp.dimInactiveRegions": false,
-  "C_Cpp.intelliSenseEngine": "Enabled",
+  "C_Cpp.intelliSenseEngine": "Default",
   "clangd.arguments": [
     "ColumnLimit: 120"
   ],
@@ -273,7 +273,7 @@
   "editor.formatOnPaste": false,
   "editor.formatOnSave": true,
   "editor.guides.bracketPairs": "active",
-  "editor.inlayHints.enabled": false,
+  "editor.inlayHints.enabled": "off",
   "editor.rulers": [
     80,
     120
@@ -497,8 +497,10 @@
   "javascript.preferences.quoteStyle": "single",
   "javascript.updateImportsOnFileMove.enabled": "always",
   "liveServer.settings.donotShowInfoMsg": true,
-  "markdown-preview-enhanced.previewTheme": "atom-dark.css",
   "material-icon-theme.hidesExplorerArrows": true,
+  "postcssSorting.config": {
+    "properties-order": "alphabetical"
+  },
   "prettier.jsxSingleQuote": true,
   "prettier.printWidth": 120,
   "prettier.singleQuote": true,
