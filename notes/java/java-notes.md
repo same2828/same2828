@@ -1,6 +1,12 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Sorting Algorithm Complexities](#sorting-algorithm-complexities)
+- [Collections Complexities](#collections-complexities)
+  - [List](#list)
+  - [Map](#map)
+  - [Queue](#queue)
+  - [Set](#set)
 - [Java Frameworks](#java-frameworks)
 - [Character Class Methods](#character-class-methods)
 - [String Type Methods](#string-type-methods)
@@ -89,6 +95,72 @@
   - [Sorting Using Lambda Expression](#sorting-using-lambda-expression)
   - [Tuple/Pair Custom Implementation](#tuplepair-custom-implementation)
   - [Function Return Values](#function-return-values)
+
+# Sorting Algorithm Complexities
+
+| Algorithm      | Best       | Average      | Worst        | Space Complexity |
+| -------------- | ---------- | ------------ | ------------ | ---------------- |
+| Bubble Sort    | O(n)       | O(n^2)       | O(n^2)       | O(1)             |
+| Bucket Sort    | O(n+k)     | O(n+k)       | O(n^2)       | O(n)             |
+| Counting Sort  | O(n+k)     | O(n+k)       | O(n+k)       | O(k)             |
+| Cubesort       | O(n)       | O(n log n)   | O(n log n)   | O(n)             |
+| Heapsort       | O(n log n) | O(n log n)   | O(n log n)   | O(1)             |
+| Insertion Sort | O(n)       | O(n^2)       | O(n^2)       | O(1)             |
+| Mergesort      | O(n log n) | O(n log n)   | O(n log n)   | O(n)             |
+| Quicksort      | O(n log n) | O(n log n)   | O(n^2)       | O(log n)         |
+| Radix Sort     | O(nk)      | O(nk)        | O(nk)        | O(n+k)           |
+| Selection Sort | O(n^2)     | O(n^2)       | O(n^2)       | O(1)             |
+| Shell Sort     | O(n log n) | O(n log^2 n) | O(n log^2 n) | O(1)             |
+| Timsort        | O(n)       | O(n log n)   | O(n log n)   | O(n)             |
+| Tree Sort      | O(n log n) | O(n log n)   | O(n^2)       | O(n)             |
+
+# Collections Complexities
+
+## List
+
+| List                 | Add  | Remove | Get  | Contains | Next | Data Structure |
+| -------------------- | ---- | ------ | ---- | -------- | ---- | -------------- |
+| ArrayList            | O(1) | O(n)   | O(1) | O(n)     | O(1) | Array          |
+| LinkedList           | O(1) | O(1)   | O(n) | O(n)     | O(1) | Linked List    |
+| CopyOnWriteArrayList | O(n) | O(n)   | O(1) | O(n)     | O(1) | Array          |
+
+## Map
+
+| Map                   | Get      | ContainsKey | Next     | Data Structure           |
+| --------------------- | -------- | ----------- | -------- | ------------------------ |
+| HashMap               | O(1)     | O(1)        | O(h/n)   | Hash Table               |
+| TreeMap               | O(log n) | O(log n)    | O(log n) | Red-black tree           |
+| ConcurrentHashMap     | O(1)     | O(1)        | O(h/n)   | Hash Tables              |
+| ConcurrentSkipListMap | O(log n) | O(log n)    | O(1)     | Skip List                |
+| EnumMap               | O(1)     | O(1)        | O(1)     | Array                    |
+| IdentityHashMap       | O(1)     | O(1)        | O(h/n)   | Array                    |
+| LinkedHashMap         | O(1)     | O(1)        | O(1)     | Hash Table + Linked List |
+| WeakHashMap           | O(1)     | O(1)        | O(h/n)   | Hash Table               |
+
+## Queue
+
+| Queue                   | Offer    | Peek | Poll     | Remove | Size | Data Structure |
+| ----------------------- | -------- | ---- | -------- | ------ | ---- | -------------- |
+| ArrayDequeue            | O(1)     | O(1) | O(1)     | O(n)   | O(1) | Linked List    |
+| LinkedList              | O(1)     | O(1) | O(1)     | O(1)   | O(1) | Array          |
+| PriorityQueue           | O(log n) | O(1) | O(log n) | O(n)   | O(1) | Priority Heap  |
+| ArrayBlockingQueue      | O(1)     | O(1) | O(1)     | O(n)   | O(1) | Array          |
+| ConcurrentLinkedQueue   | O(1)     | O(1) | O(1)     | O(n)   | O(n) | Linked List    |
+| DelayQueue              | O(log n) | O(1) | O(log n) | O(n)   | O(1) | Priority Heap  |
+| LinkedBlockingQueue     | O(1)     | O(1) | O(1)     | O(n)   | O(1) | Linked List    |
+| PriorirityBlockingQueue | O(log n) | O(1) | O(log n) | O(n)   | O(1) | Priority Heap  |
+| SynchronousQueue        | O(1)     | O(1) | O(1)     | O(n)   | O(1) | None!          |
+
+## Set
+
+| Set                   | Add      | Remove   | Contains | Next     | Size | Data Structure           |
+| --------------------- | -------- | -------- | -------- | -------- | ---- | ------------------------ |
+| EnumSet               | O(1)     | O(1)     | O(1)     | O(1)     | O(1) | Bit Vector               |
+| HashSet               | O(1)     | O(1)     | O(1)     | O(h/n)   | O(1) | Hash Table               |
+| LinkedHashSet         | O(1)     | O(1)     | O(1)     | O(1)     | O(1) | Hash Table + Linked List |
+| TreeSet               | O(log n) | O(log n) | O(log n) | O(log n) | O(1) | Red-black tree           |
+| ConcurrentSkipListSet | O(log n) | O(log n) | O(log n) | O(1)     | O(n) | Skip List                |
+| CopyOnWriteArraySet   | O(n)     | O(n)     | O(n)     | O(1)     | O(1) | Array                    |
 
 # Java Frameworks
 
