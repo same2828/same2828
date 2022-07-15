@@ -1,11 +1,23 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [CSS](#css)
-- [Make content take up full viewport](#make-content-take-up-full-viewport)
+- [Background](#background)
 - [Include the padding and border in an element's total width and height](#include-the-padding-and-border-in-an-elements-total-width-and-height)
+- [Make content take up full viewport](#make-content-take-up-full-viewport)
 
-# CSS
+# Background
+
+```css
+background-size: cover;
+```
+
+# Include the padding and border in an element's total width and height
+
+```css
+.container {
+  box-sizing: border-box;
+}
+```
 
 # Make content take up full viewport
 
@@ -16,13 +28,5 @@ body {
   height: 100%;
   width: 100%;
   font-family: Arial, Helvetica, sans-serif;
-}
-```
-
-# Include the padding and border in an element's total width and height
-
-```css
-.container {
-  box-sizing: border-box;
 }
 ```

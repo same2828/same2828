@@ -140,6 +140,10 @@
 
 - https://code.visualstudio.com/docs/getstarted/themes
 - https://code.visualstudio.com/api/references/theme-color
+- Settings -> Gitlens -> Current Line -> Enabled -> TURN OFF
+
+## Clang Auto Format Options
+- https://clang.llvm.org/docs/ClangFormatStyleOptions.html
 
 # Extensions
 
@@ -148,11 +152,13 @@
 - Better Comments
 - Better Perl Syntax
 - Better Shell Syntax
-- Bracket Pair Colorizer 2 (Disabled)
 - C/C++
 - C/C++ Extension Pack (Disabled)
 - C#
-- CMake + CMakeTools (Disabled)
+- clangd (Need to disable C/C++ extension from Microsoft)
+- CMake
+- CMakeTools
+- CodeLLDB
 - Code Spell Checker
 - Color Highlight
 - CSS Peek
@@ -175,6 +181,8 @@
 - Markdown Preview Enhanced (Disabled)
 - Material Icon Theme
 - MIPS Support
+- Native Debug (WebFreak)
+- PostCSS Soritng (mrmlnc) (Ctrl+Shift+P -> PostCSS Sorting: Run)
 - Prettier
 - Pylance
 - Python
@@ -184,7 +192,6 @@
 - Remote - WSL
 - Remote Development
 - Remove Non ASCII Characters
-- Settings -> Gitlens -> Current Line ->Enabled -> TURN OFF
 - ShellCheck
 - SQLTools
 - SSH FS

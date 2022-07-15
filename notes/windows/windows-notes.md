@@ -6,6 +6,7 @@
 - [View HEIC files](#view-heic-files)
 - [Disable Bing Search Windows 10 Start Menu](#disable-bing-search-windows-10-start-menu)
 - [Shutdown Event Tracker](#shutdown-event-tracker)
+- [Restart WSL](#restart-wsl)
 
 # Enter Boot Options
 
@@ -76,3 +77,11 @@ Set-ExecutionPolicy -Scope LocalMachine -ExecutionPolicy RemoteSigned -Force
   ```
 
 - Restart PC
+
+# Restart WSL
+
+- Run Windows PowerShell as Admin
+
+```
+Get-Service LxssManager | Restart-Service
+```

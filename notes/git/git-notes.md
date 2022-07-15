@@ -5,6 +5,8 @@
 - [Git Setup Machine First Time](#git-setup-machine-first-time)
   - [Update Git Config with name + email](#update-git-config-with-name--email)
   - [To check](#to-check)
+- [SSH Key for CSE Not Saving](#ssh-key-for-cse-not-saving)
+- [Authorized Keys](#authorized-keys)
 
 # SSH Keys for Multiple GitHub Accounts
 
@@ -35,8 +37,8 @@ git config user.name "newName"
 ## Update Git Config with name + email
 
 ```
-git config --global user.name "same2828"
-git config --global user.email "same2828@gmail.com"
+git config --global user.name "samsolichin"
+git config --global user.email "samsolichin01@gmail.com"
 ```
 
 ## To check
@@ -45,4 +47,18 @@ git config --global user.email "same2828@gmail.com"
 git config --global --list
 git config --global push.default simple
 git config --global pull.rebase true
+```
+
+# SSH Key for CSE Not Saving
+
+```shell
+eval "$(ssh-agent -s)"
+ssh-add ~/.ssh/gitlab-cse
+```
+
+# Authorized Keys
+
+```
+cat ~/.ssh/gitlab-cse.pub >> ~/.ssh/authorized_keys
+chmod 600 ~/.ssh/authorized_keys
 ```

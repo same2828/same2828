@@ -49,8 +49,9 @@ class Solution {
   
     // Post-processing:
     // End Condition: left == right
-    if (left != nums.length && nums[left] == target)
+    if (left != nums.length && nums[left] == target) {
       return left;
+    }
     return -1;
   }
 
@@ -78,10 +79,12 @@ class Solution {
   
     // Post-processing:
     // End Condition: left + 1 == right
-    if (nums[left] == target)
+    if (nums[left] == target) {
       return left;
-    if (nums[right] == target)
+    }
+    if (nums[right] == target) {
       return right;
+    }
     return -1;
   }
 }

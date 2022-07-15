@@ -3,6 +3,7 @@
 - [Add to HTML `<head>`](#add-to-html-head)
 - [Classes and IDs](#classes-and-ids)
 - [CSS Animatable Properties](#css-animatable-properties)
+- [CSS Combinator Selectors](#css-combinator-selectors)
 - [CSS Default Values](#css-default-values)
 - [CSS Functions](#css-functions)
 - [CSS Properties](#css-properties)
@@ -172,6 +173,16 @@
 | `width`                      |
 | `word-spacing`               |
 | `z-index`                    |
+
+# CSS Combinator Selectors
+
+| Name               | Selector             | Info                                                                                                      | Example      | Example description                                                                |
+| ------------------ | -------------------- | --------------------------------------------------------------------------------------------------------- | ------------ | ---------------------------------------------------------------------------------- |
+| General Descendent | `element element`    | An element that is below (in the document tree) another element - no matter how many levels below         | `div p`      | Selects all `<p>` elements inside `<div>` elements                                 |
+| Direct Child       | `element>element`    | An element that is directly below (in the document tree) another element                                  | `div > p`    | Selects all `<p>` elements where the parent is a `<div>` element                   |
+| Adjacent Sibling   | `element+element`    | All elements that share the same parent and elements are in the same immediate sequence                   | `div + p`    | Selects the first `<p>` element that are placed immediately after `<div>` elements |
+| General Sibling    | `element1~element2`  | All elements that share the same parent and elements are in the same sequence (not necessarily immediate) | `p ~ ul`     | Selects every `<ul>` element that are preceded by a `<p>` element                  |
+| Grouping           | `element1, element2` | Multiple elements of different types                                                                      | `h1, h2, h3` | Selects all `h1`, `h2`, `h3` elements                                              |
 
 # CSS Default Values
 
@@ -652,6 +663,8 @@
 | `resize`     | `none \| both \| horizontal \| vertical \| inherit`                                                                                                                                                                                                                                                                                                                 |
 
 # CSS Selectors
+
+- [MDN Reference](https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Selectors)
 
 | Selector                | Example                 | Example Description                                                                                      |
 | ----------------------- | ----------------------- | -------------------------------------------------------------------------------------------------------- |

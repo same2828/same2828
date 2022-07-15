@@ -13,10 +13,13 @@
   Hello! 👋
   <br>
   <h2 style='border-bottom: none' align='center'>
-    I'm Same2828
+    I'm Sam
     <br>
     <br>
-    Check Out <a href='https://same2828.github.io'> My Website ☁️ <a>
+    3rd Year Computer Science Student @UNSW
+    <br>
+    <br>
+    Check Out <a href='https://samsolichin.github.io'> My Website ☁️ <a>
   </h2>
 </h1>
 ```

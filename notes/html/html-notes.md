@@ -21,6 +21,41 @@
   - [Interactive Elements](#interactive-elements)
   - [Web Components](#web-components)
   - [Obsolete and Deprecated elements](#obsolete-and-deprecated-elements)
+- [HTML Attributes](#html-attributes)
+- [HTML Global Attributes](#html-global-attributes)
+- [HTML Event Attributes](#html-event-attributes)
+  - [Clipboard Events](#clipboard-events)
+  - [Drag Events](#drag-events)
+  - [Form Events](#form-events)
+  - [Keyboard Events](#keyboard-events)
+  - [Media Events](#media-events)
+  - [Misc Events](#misc-events)
+  - [Mouse Events](#mouse-events)
+  - [Window Event Attributes](#window-event-attributes)
+- [HTML Colors](#html-colors)
+- [HTML DOM](#html-dom)
+  - [HTML DOM Documents](#html-dom-documents)
+    - [Document Object Properties and Methods](#document-object-properties-and-methods)
+  - [HTML DOM Elements](#html-dom-elements)
+    - [classList](#classlist)
+      - [classList Properties and Methods](#classlist-properties-and-methods)
+  - [HTML DOM Event Objects](#html-dom-event-objects)
+    - [Animation Event](#animation-event)
+    - [Clipboard Event](#clipboard-event)
+    - [Drag Event](#drag-event)
+    - [Focus Event](#focus-event)
+    - [HashChange Event](#hashchange-event)
+    - [Input Event](#input-event)
+    - [Keyboard Event](#keyboard-event)
+    - [Mouse Event](#mouse-event)
+    - [PageTransition Event](#pagetransition-event)
+    - [PopState Event](#popstate-event)
+    - [Progress Event](#progress-event)
+    - [Storage Event](#storage-event)
+    - [Touch Event](#touch-event)
+    - [Transition Event](#transition-event)
+    - [UI Event](#ui-event)
+    - [Wheel Event](#wheel-event)
 
 # Boilerplate
 
@@ -336,3 +371,1009 @@ You can embed SVG and MathML content directly into HTML documents, using the `<s
 | `<strike>`    | The `<strike>` HTML element places a strikethrough (horizontal line) over text                                                                                                                                                                                                                                                                                                                                                            |
 | `<tt>`        | The `<tt>` HTML element creates inline text which is presented using the user agent default monospace font face. This element was created for the purpose of rendering text as it would be displayed on a fixed-width display such as a teletype, text-only screen, or line printer                                                                                                                                                       |
 | `<xmp>`       | The `<xmp>` HTML element renders text between the start and end tags without interpreting the HTML in between and using a monospaced font. The HTML2 specification recommended that it should be rendered wide enough to allow 80 characters per line                                                                                                                                                                                     |
+
+# HTML Attributes
+
+- The table below lists all HTML attributes and what elements they can be used within
+- [Read more](https://www.w3schools.com/tags/ref_attributes.asp)
+
+| Attribute          | Belongs to                                                                                                          | Description                                                                                                                      |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| `accept`           | `<input>`                                                                                                           | Specifies the types of files that the server accepts (only for type="file")                                                      |
+| `accept-charset`   | `<form>`                                                                                                            | Specifies the character encodings that are to be used for the form submission                                                    |
+| `accesskey`        | Global Attributes                                                                                                   | Specifies a shortcut key to activate/focus an element                                                                            |
+| `action`           | `<form>`                                                                                                            | Specifies where to send the form-data when a form is submitted                                                                   |
+| `alt`              | `<area>, <img>, <input>`                                                                                            | Specifies an alternate text when the original element fails to display                                                           |
+| `async`            | `<script>`                                                                                                          | Specifies that the script is executed asynchronously (only for external scripts)                                                 |
+| `autocomplete`     | `<form>, <input>`                                                                                                   | Specifies whether the `<form>` or the `<input>` element should have autocomplete enabled                                         |
+| `autofocus`        | `<button>, <input>, <select>, <textarea>`                                                                           | Specifies that the element should automatically get focus when the page loads                                                    |
+| `autoplay`         | `<audio>, <video>`                                                                                                  | Specifies that the audio/video will start playing as soon as it is ready                                                         |
+| `charset`          | `<meta>, <script>`                                                                                                  | Specifies the character encoding                                                                                                 |
+| `checked`          | `<input>`                                                                                                           | Specifies that an `<input>` element should be pre-selected when the page loads (for type="checkbox" or type="radio")             |
+| `cite`             | `<blockquote>, <del>, <ins>, <q>`                                                                                   | Specifies a URL which explains the quote/deleted/inserted text                                                                   |
+| `class`            | Global Attributes                                                                                                   | Specifies one or more classnames for an element (refers to a class in a style sheet)                                             |
+| `cols`             | `<textarea>`                                                                                                        | Specifies the visible width of a text area                                                                                       |
+| `colspan`          | `<td>, <th>`                                                                                                        | Specifies the number of columns a table cell should span                                                                         |
+| `content`          | `<meta>`                                                                                                            | Gives the value associated with the http-equiv or name attribute                                                                 |
+| `contenteditable`  | Global Attributes                                                                                                   | Specifies whether the content of an element is editable or not                                                                   |
+| `controls`         | `<audio>, <video>`                                                                                                  | Specifies that audio/video controls should be displayed (such as a play/pause button etc)                                        |
+| `coords`           | `<area>`                                                                                                            | Specifies the coordinates of the area                                                                                            |
+| `data`             | `<object>`                                                                                                          | Specifies the URL of the resource to be used by the object                                                                       |
+| `data-*`           | Global Attributes                                                                                                   | Used to store custom data private to the page or application                                                                     |
+| `datetime`         | `<del>, <ins>, <time>`                                                                                              | Specifies the date and time                                                                                                      |
+| `default`          | `<track>`                                                                                                           | Specifies that the track is to be enabled if the user's preferences do not indicate that another track would be more appropriate |
+| `defer`            | `<script>`                                                                                                          | Specifies that the script is executed when the page has finished parsing (only for external scripts)                             |
+| `dir`              | Global Attributes                                                                                                   | Specifies the text direction for the content in an element                                                                       |
+| `dirname`          | `<input>, <textarea>`                                                                                               | Specifies that the text direction will be submitted                                                                              |
+| `disabled`         | `<button>, <fieldset>, <input>, <optgroup>, <option>, <select>, <textarea>`                                         | Specifies that the specified element/group of elements should be disabled                                                        |
+| `download`         | `<a>, <area>`                                                                                                       | Specifies that the target will be downloaded when a user clicks on the hyperlink                                                 |
+| `draggable`        | Global Attributes                                                                                                   | Specifies whether an element is draggable or not                                                                                 |
+| `enctype`          | `<form>`                                                                                                            | Specifies how the form-data should be encoded when submitting it to the server (only for method="post")                          |
+| `for`              | `<label>, <output>`                                                                                                 | Specifies which form element(s) a label/calculation is bound to                                                                  |
+| `form`             | `<button>, <fieldset>, <input>, <label>, <meter>, <object>, <output>, <select>, <textarea>`                         | Specifies the name of the form the element belongs to                                                                            |
+| `formaction`       | `<button>, <input>`                                                                                                 | Specifies where to send the form-data when a form is submitted. Only for type="submit"                                           |
+| `headers`          | `<td>, <th>`                                                                                                        | Specifies one or more headers cells a cell is related to                                                                         |
+| `height`           | `<canvas>, <embed>, <iframe>, <img>, <input>, <object>, <video>`                                                    | Specifies the height of the element                                                                                              |
+| `hidden`           | Global Attributes                                                                                                   | Specifies that an element is not yet, or is no longer, relevant                                                                  |
+| `high`             | `<meter>`                                                                                                           | Specifies the range that is considered to be a high value                                                                        |
+| `href`             | `<a>, <area>, <base>, <link>`                                                                                       | Specifies the URL of the page the link goes to                                                                                   |
+| `hreflang`         | `<a>, <area>, <link>`                                                                                               | Specifies the language of the linked document                                                                                    |
+| `http-equiv`       | `<meta>`                                                                                                            | Provides an HTTP header for the information/value of the content attribute                                                       |
+| `id`               | Global Attributes                                                                                                   | Specifies a unique id for an element                                                                                             |
+| `ismap`            | `<img>`                                                                                                             | Specifies an image as a server-side image map                                                                                    |
+| `kind`             | `<track>`                                                                                                           | Specifies the kind of text track                                                                                                 |
+| `label`            | `<track>, <option>, <optgroup>`                                                                                     | Specifies the title of the text track                                                                                            |
+| `lang`             | Global Attributes                                                                                                   | Specifies the language of the element's content                                                                                  |
+| `list`             | `<input>`                                                                                                           | Refers to a `<datalist>` element that contains pre-defined options for an `<input>` element                                      |
+| `loop`             | `<audio>, <video>`                                                                                                  | Specifies that the audio/video will start over again, every time it is finished                                                  |
+| `low`              | `<meter>`                                                                                                           | Specifies the range that is considered to be a low value                                                                         |
+| `max`              | `<input>, <meter>, <progress>`                                                                                      | Specifies the maximum value                                                                                                      |
+| `maxlength`        | `<input>, <textarea>`                                                                                               | Specifies the maximum number of characters allowed in an element                                                                 |
+| `media`            | `<a>, <area>, <link>, <source>, <style>`                                                                            | Specifies what media/device the linked document is optimized for                                                                 |
+| `method`           | `<form>`                                                                                                            | Specifies the HTTP method to use when sending form-data                                                                          |
+| `min`              | `<input>, <meter>`                                                                                                  | Specifies a minimum value                                                                                                        |
+| `multiple`         | `<input>, <select>`                                                                                                 | Specifies that a user can enter more than one value                                                                              |
+| `muted`            | `<video>, <audio>`                                                                                                  | Specifies that the audio output of the video should be muted                                                                     |
+| `name`             | `<button>, <fieldset>, <form>, <iframe>, <input>, <map>, <meta>, <object>, <output>, <param>, <select>, <textarea>` | Specifies the name of the element                                                                                                |
+| `novalidate`       | `<form>`                                                                                                            | Specifies that the form should not be validated when submitted                                                                   |
+| `onabort`          | `<audio>, <embed>, <img>, <object>, <video>`                                                                        | Script to be run on abort                                                                                                        |
+| `onafterprint`     | `<body>`                                                                                                            | Script to be run after the document is printed                                                                                   |
+| `onbeforeprint`    | `<body>`                                                                                                            | Script to be run before the document is printed                                                                                  |
+| `onbeforeunload`   | `<body>`                                                                                                            | Script to be run when the document is about to be unloaded                                                                       |
+| `onblur`           | All visible elements                                                                                                | Script to be run when the element loses focus                                                                                    |
+| `oncanplay`        | `<audio>, <embed>, <object>, <video>`                                                                               | Script to be run when a file is ready to start playing (when it has buffered enough to begin)                                    |
+| `oncanplaythrough` | `<audio>, <video>`                                                                                                  | Script to be run when a file can be played all the way to the end without pausing for buffering                                  |
+| `onchange`         | All visible elements                                                                                                | Script to be run when the value of the element is changed                                                                        |
+| `onclick`          | All visible elements                                                                                                | Script to be run when the element is being clicked                                                                               |
+| `oncontextmenu`    | All visible elements                                                                                                | Script to be run when a context menu is triggered                                                                                |
+| `oncopy`           | All visible elements                                                                                                | Script to be run when the content of the element is being copied                                                                 |
+| `oncuechange`      | `<track>`                                                                                                           | Script to be run when the cue changes in a `<track>` element                                                                     |
+| `oncut`            | All visible elements                                                                                                | Script to be run when the content of the element is being cut                                                                    |
+| `ondblclick`       | All visible elements                                                                                                | Script to be run when the element is being double-clicked                                                                        |
+| `ondrag`           | All visible elements                                                                                                | Script to be run when the element is being dragged                                                                               |
+| `ondragend`        | All visible elements                                                                                                | Script to be run at the end of a drag operation                                                                                  |
+| `ondragenter`      | All visible elements                                                                                                | Script to be run when an element has been dragged to a valid drop target                                                         |
+| `ondragleave`      | All visible elements                                                                                                | Script to be run when an element leaves a valid drop target                                                                      |
+| `ondragover`       | All visible elements                                                                                                | Script to be run when an element is being dragged over a valid drop target                                                       |
+| `ondragstart`      | All visible elements                                                                                                | Script to be run at the start of a drag operation                                                                                |
+| `ondrop`           | All visible elements                                                                                                | Script to be run when dragged element is being dropped                                                                           |
+| `ondurationchange` | `<audio>, <video>`                                                                                                  | Script to be run when the length of the media changes                                                                            |
+| `onemptied`        | `<audio>, <video>`                                                                                                  | Script to be run when something bad happens and the file is suddenly unavailable (like unexpectedly disconnects)                 |
+| `onended`          | `<audio>, <video>`                                                                                                  | Script to be run when the media has reach the end (a useful event for messages like "thanks for listening")                      |
+| `onerror`          | `<audio>, <body>, <embed>, <img>, <object>, <script>, <style>, <video>`                                             | Script to be run when an error occurs                                                                                            |
+| `onfocus`          | All visible elements                                                                                                | Script to be run when the element gets focus                                                                                     |
+| `onhashchange`     | `<body>`                                                                                                            | Script to be run when there has been changes to the anchor part of the a URL                                                     |
+| `oninput`          | All visible elements                                                                                                | Script to be run when the element gets user input                                                                                |
+| `oninvalid`        | All visible elements                                                                                                | Script to be run when the element is invalid                                                                                     |
+| `onkeydown`        | All visible elements                                                                                                | Script to be run when a user is pressing a key                                                                                   |
+| `onkeypress`       | All visible elements                                                                                                | Script to be run when a user presses a key                                                                                       |
+| `onkeyup`          | All visible elements                                                                                                | Script to be run when a user releases a key                                                                                      |
+| `onload`           | `<body>, <iframe>, <img>, <input>, <link>, <script>, <style>`                                                       | Script to be run when the element is finished loading                                                                            |
+| `onloadeddata`     | `<audio>, <video>`                                                                                                  | Script to be run when media data is loaded                                                                                       |
+| `onloadedmetadata` | `<audio>, <video>`                                                                                                  | Script to be run when meta data (like dimensions and duration) are loaded                                                        |
+| `onloadstart`      | `<audio>, <video>`                                                                                                  | Script to be run just as the file begins to load before anything is actually loaded                                              |
+| `onmousedown`      | All visible elements                                                                                                | Script to be run when a mouse button is pressed down on an element                                                               |
+| `onmousemove`      | All visible elements                                                                                                | Script to be run as long as the mouse pointer is moving over an element                                                          |
+| `onmouseout`       | All visible elements                                                                                                | Script to be run when a mouse pointer moves out of an element                                                                    |
+| `onmouseover`      | All visible elements                                                                                                | Script to be run when a mouse pointer moves over an element                                                                      |
+| `onmouseup`        | All visible elements                                                                                                | Script to be run when a mouse button is released over an element                                                                 |
+| `onmousewheel`     | All visible elements                                                                                                | Script to be run when a mouse wheel is being scrolled over an element                                                            |
+| `onoffline`        | `<body>`                                                                                                            | Script to be run when the browser starts to work offline                                                                         |
+| `ononline`         | `<body>`                                                                                                            | Script to be run when the browser starts to work online                                                                          |
+| `onpagehide`       | `<body>`                                                                                                            | Script to be run when a user navigates away from a page                                                                          |
+| `onpageshow`       | `<body>`                                                                                                            | Script to be run when a user navigates to a page                                                                                 |
+| `onpaste`          | All visible elements                                                                                                | Script to be run when the user pastes some content in an element                                                                 |
+| `onpause`          | `<audio>, <video>`                                                                                                  | Script to be run when the media is paused either by the user or programmatically                                                 |
+| `onplay`           | `<audio>, <video>`                                                                                                  | Script to be run when the media has started playing                                                                              |
+| `onplaying`        | `<audio>, <video>`                                                                                                  | Script to be run when the media has started playing                                                                              |
+| `onpopstate`       | `<body>`                                                                                                            | Script to be run when the window's history changes.                                                                              |
+| `onprogress`       | `<audio>, <video>`                                                                                                  | Script to be run when the browser is in the process of getting the media data                                                    |
+| `onratechange`     | `<audio>, <video>`                                                                                                  | Script to be run each time the playback rate changes (like when a user switches to a slow motion or fast forward mode).          |
+| `onreset`          | `<form>`                                                                                                            | Script to be run when a reset button in a form is clicked.                                                                       |
+| `onresize`         | `<body>`                                                                                                            | Script to be run when the browser window is being resized.                                                                       |
+| `onscroll`         | All visible elements                                                                                                | Script to be run when an element's scrollbar is being scrolled                                                                   |
+| `onsearch`         | `<input>`                                                                                                           | Script to be run when the user writes something in a search field (for `<input="search">`)                                       |
+| `onseeked`         | `<audio>, <video>`                                                                                                  | Script to be run when the seeking attribute is set to false indicating that seeking has ended                                    |
+| `onseeking`        | `<audio>, <video>`                                                                                                  | Script to be run when the seeking attribute is set to true indicating that seeking is active                                     |
+| `onselect`         | All visible elements                                                                                                | Script to be run when the element gets selected                                                                                  |
+| `onstalled`        | `<audio>, <video>`                                                                                                  | Script to be run when the browser is unable to fetch the media data for whatever reason                                          |
+| `onstorage`        | `<body>`                                                                                                            | Script to be run when a Web Storage area is updated                                                                              |
+| `onsubmit`         | `<form>`                                                                                                            | Script to be run when a form is submitted                                                                                        |
+| `onsuspend`        | `<audio>, <video>`                                                                                                  | Script to be run when fetching the media data is stopped before it is completely loaded for whatever reason                      |
+| `ontimeupdate`     | `<audio>, <video>`                                                                                                  | Script to be run when the playing position has changed (like when the user fast forwards to a different point in the media)      |
+| `ontoggle`         | `<details>`                                                                                                         | Script to be run when the user opens or closes the `<details>` element                                                           |
+| `onunload`         | `<body>`                                                                                                            | Script to be run when a page has unloaded (or the browser window has been closed)                                                |
+| `onvolumechange`   | `<audio>, <video>`                                                                                                  | Script to be run each time the volume of a video/audio has been changed                                                          |
+| `onwaiting`        | `<audio>, <video>`                                                                                                  | Script to be run when the media has paused but is expected to resume (like when the media pauses to buffer more data)            |
+| `onwheel`          | All visible elements                                                                                                | Script to be run when the mouse wheel rolls up or down over an element                                                           |
+| `open`             | `<details>`                                                                                                         | Specifies that the details should be visible (open) to the user                                                                  |
+| `optimum`          | `<meter>`                                                                                                           | Specifies what value is the optimal value for the gauge                                                                          |
+| `pattern`          | `<input>`                                                                                                           | Specifies a regular expression that an `<input>` element's value is checked against                                              |
+| `placeholder`      | `<input>, <textarea>`                                                                                               | Specifies a short hint that describes the expected value of the element                                                          |
+| `poster`           | `<video>`                                                                                                           | Specifies an image to be shown while the video is downloading, or until the user hits the play button                            |
+| `preload`          | `<audio>, <video>`                                                                                                  | Specifies if and how the author thinks the audio/video should be loaded when the page loads                                      |
+| `readonly`         | `<input>, <textarea>`                                                                                               | Specifies that the element is read-only                                                                                          |
+| `rel`              | `<a>, <area>, <form>, <link>`                                                                                       | Specifies the relationship between the current document and the linked document                                                  |
+| `required`         | `<input>, <select>, <textarea>`                                                                                     | Specifies that the element must be filled out before submitting the form                                                         |
+| `reversed`         | `<ol>`                                                                                                              | Specifies that the list order should be descending (9,8,7...)                                                                    |
+| `rows`             | `<textarea>`                                                                                                        | Specifies the visible number of lines in a text area                                                                             |
+| `rowspan`          | `<td>, <th>`                                                                                                        | Specifies the number of rows a table cell should span                                                                            |
+| `sandbox`          | `<iframe>`                                                                                                          | Enables an extra set of restrictions for the content in an `<iframe>`                                                            |
+| `scope`            | `<th>`                                                                                                              | Specifies whether a header cell is a header for a column, row, or group of columns or rows                                       |
+| `selected`         | `<option>`                                                                                                          | Specifies that an option should be pre-selected when the page loads                                                              |
+| `shape`            | `<area>`                                                                                                            | Specifies the shape of the area                                                                                                  |
+| `size`             | `<input>, <select>`                                                                                                 | Specifies the width, in characters (for `<input>`) or specifies the number of visible options (for `<select>`)                   |
+| `sizes`            | `<img>, <link>, <source>`                                                                                           | Specifies the size of the linked resource                                                                                        |
+| `span`             | `<col>, <colgroup>`                                                                                                 | Specifies the number of columns to span                                                                                          |
+| `spellcheck`       | Global Attributes                                                                                                   | Specifies whether the element is to have its spelling and grammar checked or not                                                 |
+| `src`              | `<audio>, <embed>, <iframe>, <img>, <input>, <script>, <source>, <track>, <video>`                                  | Specifies the URL of the media file                                                                                              |
+| `srcdoc`           | `<iframe>`                                                                                                          | Specifies the HTML content of the page to show in the `<iframe>`                                                                 |
+| `srclang`          | `<track>`                                                                                                           | Specifies the language of the track text data (required if kind="subtitles")                                                     |
+| `srcset`           | `<img>, <source>`                                                                                                   | Specifies the URL of the image to use in different situations                                                                    |
+| `start`            | `<ol>`                                                                                                              | Specifies the start value of an ordered list                                                                                     |
+| `step`             | `<input>`                                                                                                           | Specifies the legal number intervals for an input field                                                                          |
+| `style`            | Global Attributes                                                                                                   | Specifies an inline CSS style for an element                                                                                     |
+| `tabindex`         | Global Attributes                                                                                                   | Specifies the tabbing order of an element                                                                                        |
+| `target`           | `<a>, <area>, <base>, <form>`                                                                                       | Specifies the target for where to open the linked document or where to submit the form                                           |
+| `title`            | Global Attributes                                                                                                   | Specifies extra information about an element                                                                                     |
+| `translate`        | Global Attributes                                                                                                   | Specifies whether the content of an element should be translated or not                                                          |
+| `type`             | `<a>, <button>, <embed>, <input>, <link>, <menu>, <object>, <script>, <source>, <style>`                            | Specifies the type of element                                                                                                    |
+| `usemap`           | `<img>, <object>`                                                                                                   | Specifies an image as a client-side image map                                                                                    |
+| `value`            | `<button>, <input>, <li>, <option>, <meter>, <progress>, <param>`                                                   | Specifies the value of the element                                                                                               |
+| `width`            | `<canvas>, <embed>, <iframe>, <img>, <input>, <object>, <video>`                                                    | Specifies the width of the element                                                                                               |
+| `wrap`             | `<textarea>`                                                                                                        | Specifies how the text in a text area is to be wrapped when submitted in a form                                                  |
+
+# HTML Global Attributes
+
+- The global attributes are attributes that can be used with all HTML elements
+- [Read more](https://www.w3schools.com/tags/ref_standardattributes.asp)
+
+| Attribute         | Description                                                                          |
+| ----------------- | ------------------------------------------------------------------------------------ |
+| `accesskey`       | Specifies a shortcut key to activate/focus an element                                |
+| `class`           | Specifies one or more classnames for an element (refers to a class in a style sheet) |
+| `contenteditable` | Specifies whether the content of an element is editable or not                       |
+| `data-*`          | Used to store custom data private to the page or application                         |
+| `dir`             | Specifies the text direction for the content in an element                           |
+| `draggable`       | Specifies whether an element is draggable or not                                     |
+| `hidden`          | Specifies that an element is not yet, or is no longer, relevant                      |
+| `id`              | Specifies a unique id for an element                                                 |
+| `lang`            | Specifies the language of the element's content                                      |
+| `spellcheck`      | Specifies whether the element is to have its spelling and grammar checked or not     |
+| `style`           | Specifies an inline CSS style for an element                                         |
+| `tabindex`        | Specifies the tabbing order of an element                                            |
+| `title`           | Specifies extra information about an element                                         |
+| `translate`       | Specifies whether the content of an element should be translated or not              |
+
+# HTML Event Attributes
+
+- HTML has the ability to let events trigger actions in a browser, like starting a JavaScript 'script' when a user clicks on an element
+- Below are the global event attributes that can be added to HTML elements to define event actions
+- Note this is different to `HTML DOM Events`
+- [Read more](https://www.w3schools.com/tags/ref_eventattributes.asp)
+
+## Clipboard Events
+
+| Attribute | Value  | Description                                           |
+| --------- | ------ | ----------------------------------------------------- |
+| `oncopy`  | script | Fires when the user copies the content of an element  |
+| `oncut`   | script | Fires when the user cuts the content of an element    |
+| `onpaste` | script | Fires when the user pastes some content in an element |
+
+## Drag Events
+
+| Attribute     | Value  | Description                                                                |
+| ------------- | ------ | -------------------------------------------------------------------------- |
+| `ondrag`      | script | Script to be run when an element is dragged                                |
+| `ondragend`   | script | Script to be run at the end of a drag operation                            |
+| `ondragenter` | script | Script to be run when an element has been dragged to a valid drop target   |
+| `ondragleave` | script | Script to be run when an element leaves a valid drop target                |
+| `ondragover`  | script | Script to be run when an element is being dragged over a valid drop target |
+| `ondragstart` | script | Script to be run at the start of a drag operation                          |
+| `ondrop`      | script | Script to be run when dragged element is being dropped                     |
+| `onscroll`    | script | Script to be run when an element's scrollbar is being scrolled             |
+
+## Form Events
+
+- Events triggered by actions inside a HTML form (applies to almost all HTML elements, but is most used in form elements)
+
+| Attribute       | Value  | Description                                                                     |
+| --------------- | ------ | ------------------------------------------------------------------------------- |
+| `onblur`        | script | Fires the moment that the element loses focus                                   |
+| `onchange`      | script | Fires the moment when the value of the element is changed                       |
+| `oncontextmenu` | script | Script to be run when a context menu is triggered                               |
+| `onfocus`       | script | Fires the moment when the element gets focus                                    |
+| `oninput`       | script | Script to be run when an element gets user input                                |
+| `oninvalid`     | script | Script to be run when an element is invalid                                     |
+| `onreset`       | script | Fires when the Reset button in a form is clicked                                |
+| `onsearch`      | script | Fires when the user writes something in a search field (for `<input="search">`) |
+| `onselect`      | script | Fires after some text has been selected in an element                           |
+| `onsubmit`      | script | Fires when a form is submitted                                                  |
+
+## Keyboard Events
+
+| Attribute    | Value  | Description                         |
+| ------------ | ------ | ----------------------------------- |
+| `onkeydown`  | script | Fires when a user is pressing a key |
+| `onkeypress` | script | Fires when a user presses a key     |
+| `onkeyup`    | script | Fires when a user releases a key    |
+
+## Media Events
+
+- Events triggered by medias like videos, images and audio (applies to all HTML elements, but is most common in media elements, like `<audio>`, `<embed>`, `<img>`, `<object>`, and `<video>`)
+
+| Attribute          | Value  | Description                                                                                                                 |
+| ------------------ | ------ | --------------------------------------------------------------------------------------------------------------------------- |
+| `onabort`          | script | Script to be run on abort                                                                                                   |
+| `oncanplay`        | script | Script to be run when a file is ready to start playing (when it has buffered enough to begin)                               |
+| `oncanplaythrough` | script | Script to be run when a file can be played all the way to the end without pausing for buffering                             |
+| `oncuechange`      | script | Script to be run when the cue changes in a `<track>` element                                                                |
+| `ondurationchange` | script | Script to be run when the length of the media changes                                                                       |
+| `onemptied`        | script | Script to be run when something bad happens and the file is suddenly unavailable (like unexpectedly disconnects)            |
+| `onended`          | script | Script to be run when the media has reach the end (a useful event for messages like "thanks for listening")                 |
+| `onerror`          | script | Script to be run when an error occurs when the file is being loaded                                                         |
+| `onloadeddata`     | script | Script to be run when media data is loaded                                                                                  |
+| `onloadedmetadata` | script | Script to be run when meta data (like dimensions and duration) are loaded                                                   |
+| `onloadstart`      | script | Script to be run just as the file begins to load before anything is actually loaded                                         |
+| `onpause`          | script | Script to be run when the media is paused either by the user or programmatically                                            |
+| `onplay`           | script | Script to be run when the media is ready to start playing                                                                   |
+| `onplaying`        | script | Script to be run when the media actually has started playing                                                                |
+| `onprogress`       | script | Script to be run when the browser is in the process of getting the media data                                               |
+| `onratechange`     | script | Script to be run each time the playback rate changes (like when a user switches to a slow motion or fast forward mode)      |
+| `onseeked`         | script | Script to be run when the seeking attribute is set to false indicating that seeking has ended                               |
+| `onseeking`        | script | Script to be run when the seeking attribute is set to true indicating that seeking is active                                |
+| `onstalled`        | script | Script to be run when the browser is unable to fetch the media data for whatever reason                                     |
+| `onsuspend`        | script | Script to be run when fetching the media data is stopped before it is completely loaded for whatever reason                 |
+| `ontimeupdate`     | script | Script to be run when the playing position has changed (like when the user fast forwards to a different point in the media) |
+| `onvolumechange`   | script | Script to be run each time the volume is changed which (includes setting the volume to "mute")                              |
+| `onwaiting`        | script | Script to be run when the media has paused but is expected to resume (like when the media pauses to buffer more data)       |
+
+## Misc Events
+
+| Attribute  | Value  | Description                                                 |
+| ---------- | ------ | ----------------------------------------------------------- |
+| `ontoggle` | script | Fires when the user opens or closes the `<details>` element |
+
+## Mouse Events
+
+| Attribute      | Value  | Description                                                        |
+| -------------- | ------ | ------------------------------------------------------------------ |
+| `onclick`      | script | Fires on a mouse click on the element                              |
+| `ondblclick`   | script | Fires on a mouse double-click on the element                       |
+| `onmousedown`  | script | Fires when a mouse button is pressed down on an element            |
+| `onmousemove`  | script | Fires when the mouse pointer is moving while it is over an element |
+| `onmouseout`   | script | Fires when the mouse pointer moves out of an element               |
+| `onmouseover`  | script | Fires when the mouse pointer moves over an element                 |
+| `onmouseup`    | script | Fires when a mouse button is released over an element              |
+| `onmousewheel` | script | Deprecated. Use the onwheel attribute instead                      |
+| `onwheel`      | script | Fires when the mouse wheel rolls up or down over an element        |
+
+## Window Event Attributes
+
+- Events triggered for the window object (applies to the `<body>` tag)
+
+| Attribute        | Value  | Description                                                                  |
+| ---------------- | ------ | ---------------------------------------------------------------------------- |
+| `onafterprint`   | script | Script to be run after the document is printed                               |
+| `onbeforeprint`  | script | Script to be run before the document is printed                              |
+| `onbeforeunload` | script | Script to be run when the document is about to be unloaded                   |
+| `onerror`        | script | Script to be run when an error occurs                                        |
+| `onhashchange`   | script | Script to be run when there has been changes to the anchor part of the a URL |
+| `onload`         | script | Fires after the page is finished loading                                     |
+| `onmessage`      | script | Script to be run when the message is triggered                               |
+| `onoffline`      | script | Script to be run when the browser starts to work offline                     |
+| `ononline`       | script | Script to be run when the browser starts to work online                      |
+| `onpagehide`     | script | Script to be run when a user navigates away from a page                      |
+| `onpageshow`     | script | Script to be run when a user navigates to a page                             |
+| `onpopstate`     | script | Script to be run when the window's history changes                           |
+| `onresize`       | script | Fires when the browser window is resized                                     |
+| `onstorage`      | script | Script to be run when a Web Storage area is updated                          |
+| `onunload`       | script | Fires once a page has unloaded (or the browser window has been closed)       |
+
+# HTML Colors
+
+- [Read more](https://www.w3schools.com/tags/ref_colornames.asp)
+- [Read more](https://www.htmlcsscolor.com/html-color-names)
+
+| ColorName            | Hex Code |
+| -------------------- | -------- |
+| AliceBlue            | #F0F8FF  |
+| AntiqueWhite         | #FAEBD7  |
+| Aqua                 | #00FFFF  |
+| Aquamarine           | #7FFFD4  |
+| Azure                | #F0FFFF  |
+| Beige                | #F5F5DC  |
+| Bisque               | #FFE4C4  |
+| Black                | #000000  |
+| BlanchedAlmond       | #FFEBCD  |
+| Blue                 | #0000FF  |
+| BlueViolet           | #8A2BE2  |
+| Brown                | #A52A2A  |
+| BurlyWood            | #DEB887  |
+| CadetBlue            | #5F9EA0  |
+| Chartreuse           | #7FFF00  |
+| Chocolate            | #D2691E  |
+| Coral                | #FF7F50  |
+| CornflowerBlue       | #6495ED  |
+| Cornsilk             | #FFF8DC  |
+| Crimson              | #DC143C  |
+| Cyan                 | #00FFFF  |
+| DarkBlue             | #00008B  |
+| DarkCyan             | #008B8B  |
+| DarkGoldenRod        | #B8860B  |
+| DarkGray             | #A9A9A9  |
+| DarkGrey             | #A9A9A9  |
+| DarkGreen            | #006400  |
+| DarkKhaki            | #BDB76B  |
+| DarkMagenta          | #8B008B  |
+| DarkOliveGreen       | #556B2F  |
+| DarkOrange           | #FF8C00  |
+| DarkOrchid           | #9932CC  |
+| DarkRed              | #8B0000  |
+| DarkSalmon           | #E9967A  |
+| DarkSeaGreen         | #8FBC8F  |
+| DarkSlateBlue        | #483D8B  |
+| DarkSlateGray        | #2F4F4F  |
+| DarkSlateGrey        | #2F4F4F  |
+| DarkTurquoise        | #00CED1  |
+| DarkViolet           | #9400D3  |
+| DeepPink             | #FF1493  |
+| DeepSkyBlue          | #00BFFF  |
+| DimGray              | #696969  |
+| DimGrey              | #696969  |
+| DodgerBlue           | #1E90FF  |
+| FireBrick            | #B22222  |
+| FloralWhite          | #FFFAF0  |
+| ForestGreen          | #228B22  |
+| Fuchsia              | #FF00FF  |
+| Gainsboro            | #DCDCDC  |
+| GhostWhite           | #F8F8FF  |
+| Gold                 | #FFD700  |
+| GoldenRod            | #DAA520  |
+| Gray                 | #808080  |
+| Grey                 | #808080  |
+| Green                | #008000  |
+| GreenYellow          | #ADFF2F  |
+| HoneyDew             | #F0FFF0  |
+| HotPink              | #FF69B4  |
+| IndianRed            | #CD5C5C  |
+| Indigo               | #4B0082  |
+| Ivory                | #FFFFF0  |
+| Khaki                | #F0E68C  |
+| Lavender             | #E6E6FA  |
+| LavenderBlush        | #FFF0F5  |
+| LawnGreen            | #7CFC00  |
+| LemonChiffon         | #FFFACD  |
+| LightBlue            | #ADD8E6  |
+| LightCoral           | #F08080  |
+| LightCyan            | #E0FFFF  |
+| LightGoldenRodYellow | #FAFAD2  |
+| LightGray            | #D3D3D3  |
+| LightGrey            | #D3D3D3  |
+| LightGreen           | #90EE90  |
+| LightPink            | #FFB6C1  |
+| LightSalmon          | #FFA07A  |
+| LightSeaGreen        | #20B2AA  |
+| LightSkyBlue         | #87CEFA  |
+| LightSlateGray       | #778899  |
+| LightSlateGrey       | #778899  |
+| LightSteelBlue       | #B0C4DE  |
+| LightYellow          | #FFFFE0  |
+| Lime                 | #00FF00  |
+| LimeGreen            | #32CD32  |
+| Linen                | #FAF0E6  |
+| Magenta              | #FF00FF  |
+| Maroon               | #800000  |
+| MediumAquaMarine     | #66CDAA  |
+| MediumBlue           | #0000CD  |
+| MediumOrchid         | #BA55D3  |
+| MediumPurple         | #9370DB  |
+| MediumSeaGreen       | #3CB371  |
+| MediumSlateBlue      | #7B68EE  |
+| MediumSpringGreen    | #00FA9A  |
+| MediumTurquoise      | #48D1CC  |
+| MediumVioletRed      | #C71585  |
+| MidnightBlue         | #191970  |
+| MintCream            | #F5FFFA  |
+| MistyRose            | #FFE4E1  |
+| Moccasin             | #FFE4B5  |
+| NavajoWhite          | #FFDEAD  |
+| Navy                 | #000080  |
+| OldLace              | #FDF5E6  |
+| Olive                | #808000  |
+| OliveDrab            | #6B8E23  |
+| Orange               | #FFA500  |
+| OrangeRed            | #FF4500  |
+| Orchid               | #DA70D6  |
+| PaleGoldenRod        | #EEE8AA  |
+| PaleGreen            | #98FB98  |
+| PaleTurquoise        | #AFEEEE  |
+| PaleVioletRed        | #DB7093  |
+| PapayaWhip           | #FFEFD5  |
+| PeachPuff            | #FFDAB9  |
+| Peru                 | #CD853F  |
+| Pink                 | #FFC0CB  |
+| Plum                 | #DDA0DD  |
+| PowderBlue           | #B0E0E6  |
+| Purple               | #800080  |
+| RebeccaPurple        | #663399  |
+| Red                  | #FF0000  |
+| RosyBrown            | #BC8F8F  |
+| RoyalBlue            | #4169E1  |
+| SaddleBrown          | #8B4513  |
+| Salmon               | #FA8072  |
+| SandyBrown           | #F4A460  |
+| SeaGreen             | #2E8B57  |
+| SeaShell             | #FFF5EE  |
+| Sienna               | #A0522D  |
+| Silver               | #C0C0C0  |
+| SkyBlue              | #87CEEB  |
+| SlateBlue            | #6A5ACD  |
+| SlateGray            | #708090  |
+| SlateGrey            | #708090  |
+| Snow                 | #FFFAFA  |
+| SpringGreen          | #00FF7F  |
+| SteelBlue            | #4682B4  |
+| Tan                  | #D2B48C  |
+| Teal                 | #008080  |
+| Thistle              | #D8BFD8  |
+| Tomato               | #FF6347  |
+| Turquoise            | #40E0D0  |
+| Violet               | #EE82EE  |
+| Wheat                | #F5DEB3  |
+| White                | #FFFFFF  |
+| WhiteSmoke           | #F5F5F5  |
+| Yellow               | #FFFF00  |
+| YellowGreen          | #9ACD32  |
+
+# HTML DOM
+
+## HTML DOM Documents
+
+- The Document Object
+  - When an HTML document is loaded into a web browser, it becomes a **document object**
+  - The **document object** is the root node of the HTML document
+  - The **document object** is a property of the **window object**
+  - The **document object** is accessed with:
+  - `window.document` or just `document`
+  ```js
+  // Example
+  let url = window.document.URL;
+  let url = document.URL;
+  ```
+- [Read more](https://www.w3schools.com/jsref/dom_obj_document.asp)
+
+### Document Object Properties and Methods
+
+- The following properties and methods can be used on HTML documents
+
+| Property / Method          | Description                                                                                                |
+| -------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `activeElement`            | Returns the currently focused element in the document                                                      |
+| `addEventListener()`       | Attaches an event handler to the document                                                                  |
+| `adoptNode()`              | Adopts a node from another document                                                                        |
+| `anchors`                  | Deprecated                                                                                                 |
+| `applets`                  | Deprecated                                                                                                 |
+| `baseURI`                  | Returns the absolute base URI of a document                                                                |
+| `body`                     | Sets or returns the document's body (the `<body>` element)                                                 |
+| `charset`                  | Deprecated                                                                                                 |
+| `characterSet`             | Returns the character encoding for the document                                                            |
+| `close()`                  | Closes the output stream previously opened with document.open()                                            |
+| `cookie`                   | Returns all name/value pairs of cookies in the document                                                    |
+| `createAttribute()`        | Creates an attribute node                                                                                  |
+| `createComment()`          | Creates a Comment node with the specified text                                                             |
+| `createDocumentFragment()` | Creates an empty DocumentFragment node                                                                     |
+| `createElement()`          | Creates an Element node                                                                                    |
+| `createEvent()`            | Creates a new event                                                                                        |
+| `createTextNode()`         | Creates a Text node                                                                                        |
+| `defaultView`              | Returns the window object associated with a document, or null if none is available.                        |
+| `designMode`               | Controls whether the entire document should be editable or not.                                            |
+| `doctype`                  | Returns the Document Type Declaration associated with the document                                         |
+| `documentElement`          | Returns the Document Element of the document (the `<html>` element)                                        |
+| `documentMode`             | Deprecated                                                                                                 |
+| `documentURI`              | Sets or returns the location of the document                                                               |
+| `domain`                   | Returns the domain name of the server that loaded the document                                             |
+| `domConfig`                | Deprecated                                                                                                 |
+| `embeds`                   | Returns a collection of all `<embed>` elements the document                                                |
+| `execCommand()`            | Deprecated                                                                                                 |
+| `forms`                    | Returns a collection of all `<form>` elements in the document                                              |
+| `getElementById()`         | Returns the element that has the ID attribute with the specified value                                     |
+| `getElementsByClassName()` | Returns an HTMLCollection containing all elements with the specified class name                            |
+| `getElementsByName()`      | Returns an live NodeList containing all elements with the specified name                                   |
+| `getElementsByTagName()`   | Returns an HTMLCollection containing all elements with the specified tag name                              |
+| `hasFocus()`               | Returns a Boolean value indicating whether the document has focus                                          |
+| `head`                     | Returns the `<head>` element of the document                                                               |
+| `images`                   | Returns a collection of all `<img>` elements in the document                                               |
+| `implementation`           | Returns the DOMImplementation object that handles this document                                            |
+| `importNode()`             | Imports a node from another document                                                                       |
+| `inputEncoding`            | Deprecated                                                                                                 |
+| `lastModified`             | Returns the date and time the document was last modified                                                   |
+| `links`                    | Returns a collection of all `<a>` and `<area>` elements in the document that have a href attribute         |
+| `normalize()`              | Removes empty Text nodes, and joins adjacent nodes                                                         |
+| `normalizeDocument()`      | Deprecated                                                                                                 |
+| `open()`                   | Opens an HTML output stream to collect output from document.write()                                        |
+| `querySelector()`          | Returns the first element that matches a specified CSS selector(s) in the document                         |
+| `querySelectorAll()`       | Returns a static NodeList containing all elements that matches a specified CSS selector(s) in the document |
+| `readyState`               | Returns the (loading) status of the document                                                               |
+| `referrer`                 | Returns the URL of the document that loaded the current document                                           |
+| `removeEventListener()`    | Removes an event handler from the document (that has been attached with the addEventListener() method)     |
+| `renameNode()`             | Deprecated                                                                                                 |
+| `scripts`                  | Returns a collection of `<script>` elements in the document                                                |
+| `strictErrorChecking`      | Deprecated                                                                                                 |
+| `title`                    | Sets or returns the title of the document                                                                  |
+| `URL`                      | Returns the full URL of the HTML document                                                                  |
+| `write()`                  | Writes HTML expressions or JavaScript code to a document                                                   |
+| `writeln()`                | Same as write(), but adds a newline character after each statement                                         |
+
+## HTML DOM Elements
+
+- The Element Object
+  - In the HTML DOM, the Element object represents an HTML element, like p, div, a, table, or any other HTML element
+- Properties and Methods
+  - The following properties and methods can be used on all HTML elements
+- [Read more](https://www.w3schools.com/jsref/dom_obj_all.asp)
+
+| Property / Method           | Description                                                                         |
+| --------------------------- | ----------------------------------------------------------------------------------- |
+| `accessKey`                 | Sets or returns the accesskey attribute of an element                               |
+| `addEventListener()`        | Attaches an event handler to an element                                             |
+| `appendChild()`             | Adds (appends) a new child node to an element                                       |
+| `attributes`                | Returns a NamedNodeMap of an element's attributes                                   |
+| `blur()`                    | Removes focus from an element                                                       |
+| `childElementCount`         | Returns an elements's number of child elements                                      |
+| `childNodes`                | Returns a NodeList of an element's child nodes                                      |
+| `children`                  | Returns an HTMLCollection of an element's child elements                            |
+| `classList`                 | Returns the class name(s) of an element                                             |
+| `className`                 | Sets or returns the value of the class attribute of an element                      |
+| `click()`                   | Simulates a mouse-click on an element                                               |
+| `clientHeight`              | Returns the height of an element, including padding                                 |
+| `clientLeft`                | Returns the width of the left border of an element                                  |
+| `clientTop`                 | Returns the width of the top border of an element                                   |
+| `clientWidth`               | Returns the width of an element, including padding                                  |
+| `cloneNode()`               | Clones an element                                                                   |
+| `closest()`                 | Searches the DOM tree for the closest element that matches a CSS selector           |
+| `compareDocumentPosition()` | Compares the document position of two elements                                      |
+| `contains()`                | Returns true if a node is a descendant of a node                                    |
+| `contentEditable`           | Sets or returns whether the content of an element is editable or not                |
+| `dir`                       | Sets or returns the value of the dir attribute of an element                        |
+| `firstChild`                | Returns the first child node of an element                                          |
+| `firstElementChild`         | Returns the first child element of an element                                       |
+| `focus()`                   | Gives focus to an element                                                           |
+| `getAttribute()`            | Returns the value of an element's attribute                                         |
+| `getAttributeNode()`        | Returns an attribute node                                                           |
+| `getBoundingClientRect()`   | Returns the size of an element and its position relative to the viewport            |
+| `getElementsByClassName()`  | Returns a collection of child elements with a given class name                      |
+| `getElementsByTagName()`    | Returns a collection of child elements with a given tag name                        |
+| `hasAttribute()`            | Returns true if an element has a given attribute                                    |
+| `hasAttributes()`           | Returns true if an element has any attributes                                       |
+| `hasChildNodes()`           | Returns true if an element has any child nodes                                      |
+| `id`                        | Sets or returns the value of the id attribute of an element                         |
+| `innerHTML`                 | Sets or returns the content of an element                                           |
+| `innerText`                 | Sets or returns the text content of a node and its descendants                      |
+| `insertAdjacentElement()`   | Inserts a new HTML element at a position relative to an element                     |
+| `insertAdjacentHTML()`      | Inserts an HTML formatted text at a position relative to an element                 |
+| `insertAdjacentText()`      | Inserts text into a position relative to an element                                 |
+| `insertBefore()`            | Inserts a new child node before an existing child node                              |
+| `isContentEditable`         | Returns true if an element's content is editable                                    |
+| `isDefaultNamespace()`      | Returns true if a given namespaceURI is the default                                 |
+| `isEqualNode()`             | Checks if two elements are equal                                                    |
+| `isSameNode()`              | Checks if two elements are the same node                                            |
+| `isSupported()`             | Deprecated                                                                          |
+| `lang`                      | Sets or returns the value of the lang attribute of an element                       |
+| `lastChild`                 | Returns the last child node of an element                                           |
+| `lastElementChild`          | Returns the last child element of an element                                        |
+| `matches()`                 | Returns true if an element is matched by a given CSS selector                       |
+| `namespaceURI`              | Returns the namespace URI of an element                                             |
+| `nextSibling`               | Returns the next node at the same node tree level                                   |
+| `nextElementSibling`        | Returns the next element at the same node tree level                                |
+| `nodeName`                  | Returns the name of a node                                                          |
+| `nodeType`                  | Returns the node type of a node                                                     |
+| `nodeValue`                 | Sets or returns the value of a node                                                 |
+| `normalize()`               | Joins adjacent text nodes and removes empty text nodes in an element                |
+| `offsetHeight`              | Returns the height of an element, including padding, border and scrollbar           |
+| `offsetWidth`               | Returns the width of an element, including padding, border and scrollbar            |
+| `offsetLeft`                | Returns the horizontal offset position of an element                                |
+| `offsetParent`              | Returns the offset container of an element                                          |
+| `offsetTop`                 | Returns the vertical offset position of an element                                  |
+| `outerHTML`                 | Sets or returns the content of an element (including the start tag and the end tag) |
+| `outerText`                 | Sets or returns the outer text content of a node and its descendants                |
+| `ownerDocument`             | Returns the root element (document object) for an element                           |
+| `parentNode`                | Returns the parent node of an element                                               |
+| `parentElement`             | Returns the parent element node of an element                                       |
+| `previousSibling`           | Returns the previous node at the same node tree level                               |
+| `previousElementSibling`    | Returns the previous element at the same node tree level                            |
+| `querySelector()`           | Returns the first child element that matches a CSS selector(s)                      |
+| `querySelectorAll()`        | Returns all child elements that matches a CSS selector(s)                           |
+| `remove()`                  | Removes an element from the DOM                                                     |
+| `removeAttribute()`         | Removes an attribute from an element                                                |
+| `removeAttributeNode()`     | Removes an attribute node, and returns the removed node                             |
+| `removeChild()`             | Removes a child node from an element                                                |
+| `removeEventListener()`     | Removes an event handler that has been attached with the addEventListener() method  |
+| `replaceChild()`            | Replaces a child node in an element                                                 |
+| `scrollHeight`              | Returns the entire height of an element, including padding                          |
+| `scrollIntoView()`          | Scrolls the an element into the visible area of the browser window                  |
+| `scrollLeft`                | Sets or returns the number of pixels an element's content is scrolled horizontally  |
+| `scrollTop`                 | Sets or returns the number of pixels an element's content is scrolled vertically    |
+| `scrollWidth`               | Returns the entire width of an element, including padding                           |
+| `setAttribute()`            | Sets or changes an attribute's value                                                |
+| `setAttributeNode()`        | Sets or changes an attribute node                                                   |
+| `style`                     | Sets or returns the value of the style attribute of an element                      |
+| `tabIndex`                  | Sets or returns the value of the tabindex attribute of an element                   |
+| `tagName`                   | Returns the tag name of an element                                                  |
+| `textContent`               | Sets or returns the textual content of a node and its descendants                   |
+| `title`                     | Sets or returns the value of the title attribute of an element                      |
+| `toString()`                | Converts an element to a string                                                     |
+
+### classList
+
+- The classList property returns the CSS classnames of an element
+- The classList property returns a DOMTokenList
+
+#### classList Properties and Methods
+
+| Name         | Description                                                       |
+| ------------ | ----------------------------------------------------------------- |
+| `add()`      | Adds one or more tokens to the list                               |
+| `contains()` | Returns true if the list contains a class                         |
+| `entries()`  | Returns an Iterator with key/value pairs from the list            |
+| `forEach()`  | Executes a callback function for each token in the list           |
+| `item()`     | Returns the token at a specified index                            |
+| `keys()`     | Returns an Iterator with the keys in the list                     |
+| `length R`   | turns the number of tokens in the list                            |
+| `remove()`   | Removes one or more tokens from the list                          |
+| `replace()`  | Replaces a token in the list                                      |
+| `supports()` | Returns true if a token is one of an attribute's supported tokens |
+| `toggle()`   | Toggles between tokens in the list                                |
+| `value`      | Returns the token list as a string                                |
+| `values()`   | Returns an Iterator with the values in the list                   |
+
+- Examples
+
+```js
+// Add a "myStyle" class to an element:
+const list = element.classList;
+list.add('myStyle');
+
+// Remove the "myStyle" class from an element:
+const list = element.classList;
+list.remove('myStyle');
+
+// Toggle "myStyle" on and off:
+const list = element.classList;
+list.toggle('myStyle');
+
+// Add multiple classes to the an element:
+element.classList.add('myStyle', 'anotherClass', 'thirdClass');
+
+// Remove multiple classes from an element:
+element.classList.remove('myStyle', 'anotherClass', 'thirdClass');
+// How many class names the element have:
+let numb = element.classList.length;
+
+// Get the class names of the "myDIV" element:
+<div id='myDIV' class='myStyle anotherClass thirdClass'>
+  <p>I am myDIV.</p>
+</div>;
+
+const list = document.getElementById('myDIV').classList;
+
+// Get the first class of an element:
+let className = element.classList.item(0);
+
+// Does an an element has a "myStyle" class?
+let x = element.classList.contains('myStyle');
+
+// Remove "anotherClass" if an element has a "myStyle" class.
+if (element.classList.contains('mystyle')) {
+  element.classList.remove('anotherClass');
+}
+
+// Toggle between classes to create a dropdown button:
+document.getElementById('myBtn').onclick = function () {
+  myFunction();
+};
+
+function myFunction() {
+  document.getElementById('myDropdown').classList.toggle('show');
+}
+
+//------------------------Create a sticky navigation bar------------------------
+
+// Get the navbar
+const navbar = document.getElementById('navbar');
+
+// Get the offset position of the navbar
+const sticky = navbar.offsetTop;
+
+// Add the sticky class to the navbar when you reach its scroll position
+// Remove it when you leave the scroll position
+function myFunction() {
+  if (window.pageYOffset >= sticky) {
+    navbar.classList.add('sticky');
+  } else {
+    navbar.classList.remove('sticky');
+  }
+}
+```
+
+## HTML DOM Event Objects
+
+- When an event occurs in HTML, the event belongs to a certain event object, like a mouse click event belongs to the MouseEvent object
+- [Read more](https://www.w3schools.com/jsref/obj_events.asp)
+
+### Animation Event
+
+- For CSS animations
+
+| Property/Method | Description                                                 |
+| --------------- | ----------------------------------------------------------- |
+| `animationName` | Returns the name of the animation                           |
+| `elapsedTime`   | Returns the number of seconds an animation has been running |
+| `pseudoElement` | Returns the name of the pseudo-element of the animation     |
+
+| Event Type           | Description                                         |
+| -------------------- | --------------------------------------------------- |
+| `animationend`       | The event occurs when a CSS animation has completed |
+| `animationiteration` | The event occurs when a CSS animation is repeated   |
+| `animationstart`     | The event occurs when a CSS animation has started   |
+
+### Clipboard Event
+
+- For modification of the clipboard
+
+| Property/Method | Description                                                               |
+| --------------- | ------------------------------------------------------------------------- |
+| `clipboardData` | Returns an object containing the data affected by the clipboard operation |
+
+| Event Type | Description                                                      |
+| ---------- | ---------------------------------------------------------------- |
+| `oncopy`   | The event occurs when the user copies the content of an element  |
+| `oncut`    | The event occurs when the user cuts the content of an element    |
+| `onpaste`  | The event occurs when the user pastes some content in an element |
+
+### Drag Event
+
+- For drag and drop interaction
+
+| Property/Method | Description                              |
+| --------------- | ---------------------------------------- |
+| `dataTransfer`  | Returns the data that is dragged/dropped |
+
+| Event Type    | Description                                                             |
+| ------------- | ----------------------------------------------------------------------- |
+| `ondrag`      | The event occurs when an element is being dragged                       |
+| `ondragend`   | The event occurs when the user has finished dragging an element         |
+| `ondragenter` | The event occurs when the dragged element enters the drop target        |
+| `ondragleave` | The event occurs when the dragged element leaves the drop target        |
+| `ondragover`  | The event occurs when the dragged element is over the drop target       |
+| `ondragstart` | The event occurs when the user starts to drag an element                |
+| `ondrop`      | The event occurs when the dragged element is dropped on the drop target |
+
+### Focus Event
+
+| Property/Method | Description                                                         |
+| --------------- | ------------------------------------------------------------------- |
+| `relatedTarget` | Returns the element related to the element that triggered the event |
+
+| Event Type   | Description                                             |
+| ------------ | ------------------------------------------------------- |
+| `onblur`     | The event occurs when an element loses focus            |
+| `onfocus`    | The event occurs when an element gets focus             |
+| `onfocusin`  | The event occurs when an element is about to get focus  |
+| `onfocusout` | The event occurs when an element is about to lose focus |
+
+### HashChange Event
+
+| Property/Method | Description                                                      |
+| --------------- | ---------------------------------------------------------------- |
+| `newURL`        | Returns the URL of the document, after the hash has been changed |
+| `oldURL`        | Returns the URL of the document, before the hash was changed     |
+
+| Event Type     | Description                                                              |
+| -------------- | ------------------------------------------------------------------------ |
+| `onhashchange` | The event occurs when there has been changes to the anchor part of a URL |
+
+### Input Event
+
+| Property/Method     | Description                                                                               |
+| ------------------- | ----------------------------------------------------------------------------------------- |
+| `data`              | Returns the inserted characters                                                           |
+| `dataTransfer`      | Returns an object containing information about the inserted/deleted data                  |
+| `getTargetRanges()` | Returns an array containing target ranges that will be affected by the insertion/deletion |
+| `inputType`         | Returns the type of the change (i.e "inserting" or "deleting")                            |
+| `isComposing`       | Returns whether the state of the event is composing or not                                |
+
+| Event Type | Description                                      |
+| ---------- | ------------------------------------------------ |
+| `oninput`  | The event occurs when an element gets user input |
+
+### Keyboard Event
+
+| Property/Method      | Description                                                                                                                                                         |
+| -------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `altKey`             | Returns whether the "ALT" key was pressed when the key event was triggered                                                                                          |
+| `charCode`           | Returns the Unicode character code of the key that triggered the event                                                                                              |
+| `code`               | Returns the code of the key that triggered the event                                                                                                                |
+| `ctrlKey`            | Returns whether the "CTRL" key was pressed when the key event was triggered                                                                                         |
+| `getModifierState()` | Returns true if the specified key is activated                                                                                                                      |
+| `isComposing`        | Returns whether the state of the event is composing or not                                                                                                          |
+| `key`                | Returns the key value of the key represented by the event                                                                                                           |
+| `location`           | Returns the location of a key on the keyboard or device                                                                                                             |
+| `metaKey`            | Returns whether the "meta" key was pressed when the key event was triggered                                                                                         |
+| `repeat`             | Returns whether a key is being hold down repeatedly, or not                                                                                                         |
+| `shiftKey`           | Returns whether the "SHIFT" key was pressed when the key event was triggered                                                                                        |
+| `which`              | Returns the Unicode character code of the key that triggered the onkeypress event, or the Unicode key code of the key that triggered the onkeydown or onkeyup event |
+
+| Event Type   | Description                                      |
+| ------------ | ------------------------------------------------ |
+| `onkeydown`  | The event occurs when the user is pressing a key |
+| `onkeypress` | The event occurs when the user presses a key     |
+| `onkeyup`    | The event occurs when the user releases a key    |
+
+### Mouse Event
+
+| Property/Method      | Description                                                                                                                |
+| -------------------- | -------------------------------------------------------------------------------------------------------------------------- |
+| `altKey`             | Returns whether the "ALT" key was pressed when the mouse event was triggered                                               |
+| `button`             | Returns which mouse button was pressed when the mouse event was triggered                                                  |
+| `buttons`            | Returns which mouse buttons were pressed when the mouse event was triggered                                                |
+| `clientX`            | Returns the horizontal coordinate of the mouse pointer, relative to the current window, when the mouse event was triggered |
+| `clientY`            | Returns the vertical coordinate of the mouse pointer, relative to the current window, when the mouse event was triggered   |
+| `ctrlKey`            | Returns whether the "CTRL" key was pressed when the mouse event was triggered                                              |
+| `getModifierState()` | Returns true if the specified key is activated                                                                             |
+| `metaKey`            | Returns whether the "META" key was pressed when an event was triggered                                                     |
+| `movementX`          | Returns the horizontal coordinate of the mouse pointer relative to the position of the last mousemove event                |
+| `movementY`          | Returns the vertical coordinate of the mouse pointer relative to the position of the last mousemove event                  |
+| `offsetX`            | Returns the horizontal coordinate of the mouse pointer relative to the position of the edge of the target element          |
+| `offsetY`            | Returns the vertical coordinate of the mouse pointer relative to the position of the edge of the target element            |
+| `pageX`              | Returns the horizontal coordinate of the mouse pointer, relative to the document, when the mouse event was triggered       |
+| `pageY`              | Returns the vertical coordinate of the mouse pointer, relative to the document, when the mouse event was triggered         |
+| `region`             |                                                                                                                            |
+| `relatedTarget`      | Returns the element related to the element that triggered the mouse event                                                  |
+| `screenX`            | Returns the horizontal coordinate of the mouse pointer, relative to the screen, when an event was triggered                |
+| `screenY`            | Returns the vertical coordinate of the mouse pointer, relative to the screen, when an event was triggered                  |
+| `shiftKey`           | Returns whether the "SHIFT" key was pressed when an event was triggered                                                    |
+| `which`              | Returns which mouse button was pressed when the mouse event was triggered                                                  |
+
+| Event Type      | Description                                                                                           |
+| --------------- | ----------------------------------------------------------------------------------------------------- |
+| `onclick`       | The event occurs when the user clicks on an element                                                   |
+| `oncontextmenu` | The event occurs when the user right-clicks on an element to open a context menu                      |
+| `ondblclick`    | The event occurs when the user double-clicks on an element                                            |
+| `onmousedown`   | The event occurs when the user presses a mouse button over an element                                 |
+| `onmouseenter`  | The event occurs when the pointer is moved onto an element                                            |
+| `onmouseleave`  | The event occurs when the pointer is moved out of an element                                          |
+| `onmousemove`   | The event occurs when the pointer is moving while it is over an element                               |
+| `onmouseout`    | The event occurs when a user moves the mouse pointer out of an element, or out of one of its children |
+| `onmouseover`   | The event occurs when the pointer is moved onto an element, or onto one of its children               |
+| `onmouseup`     | The event occurs when a user releases a mouse button over an element                                  |
+
+### PageTransition Event
+
+| Property/Method | Description                                           |
+| --------------- | ----------------------------------------------------- |
+| `persisted`     | Returns whether the webpage was cached by the browser |
+
+| Event Type | Description                                                  |
+| ---------- | ------------------------------------------------------------ |
+| `pagehide` | The event occurs when the user navigates away from a webpage |
+| `pageshow` | The event occurs when the user navigates to a webpage        |
+
+### PopState Event
+
+| Property/Method | Description                                                |
+| --------------- | ---------------------------------------------------------- |
+| `state`         | Returns an object containing a copy of the history entries |
+
+| Event Type | Description                                        |
+| ---------- | -------------------------------------------------- |
+| `popstate` | The event occurs when the window's history changes |
+
+### Progress Event
+
+| Property/Method    | Description                                                         |
+| ------------------ | ------------------------------------------------------------------- |
+| `lengthComputable` | Returns whether the length of the progress can be computable or not |
+| `loaded`           | Returns how much work has been loaded                               |
+| `total`            | Returns the total amount of work that will be loaded                |
+
+| Event Type    | Description                                                              |
+| ------------- | ------------------------------------------------------------------------ |
+| `onerror`     | The event occurs when an error occurs while loading an external file     |
+| `onloadstart` | The event occurs when the browser starts looking for the specified media |
+
+### Storage Event
+
+| Property/Method | Description                                                |
+| --------------- | ---------------------------------------------------------- |
+| `key`           | Returns the key of the changed storage item                |
+| `newValue`      | Returns the new value of the changed storage item          |
+| `oldValue`      | Returns the old value of the changed storage item          |
+| `storageArea`   | Returns an object representing the affected storage object |
+| `url`           | Returns the URL of the changed item's document             |
+
+| Event Type | Description                                         |
+| ---------- | --------------------------------------------------- |
+| `storage`  | The event occurs when a Web Storage area is updated |
+
+### Touch Event
+
+| Property/Method  | Description                                                                                                                                                                  |
+| ---------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `altKey`         | Returns whether the "ALT" key was pressed when the touch event was triggered                                                                                                 |
+| `changedTouches` | Returns a list of all the touch objects whose state changed between the previous touch and this touch                                                                        |
+| `ctrlKey`        | Returns whether the "CTRL" key was pressed when the touch event was triggered                                                                                                |
+| `metaKey`        | Returns whether the "meta" key was pressed when the touch event was triggered                                                                                                |
+| `shiftKey`       | Returns whether the "SHIFT" key was pressed when the touch event was triggered                                                                                               |
+| `targetTouches`  | Returns a list of all the touch objects that are in contact with the surface and where the touchstart event occured on the same target element as the current target element |
+| `touches`        | Returns a list of all the touch objects that are currently in contact with the surface                                                                                       |
+
+| Event Type      | Description                                                   |
+| --------------- | ------------------------------------------------------------- |
+| `ontouchcancel` | The event occurs when the touch is interrupted                |
+| `ontouchend`    | The event occurs when a finger is removed from a touch screen |
+| `ontouchmove`   | The event occurs when a finger is dragged across the screen   |
+| `ontouchstart`  | The event occurs when a finger is placed on a touch screen    |
+
+### Transition Event
+
+| Property/Method | Description                                                 |
+| --------------- | ----------------------------------------------------------- |
+| `propertyName`  | Returns the name of the transition                          |
+| `elapsedTime`   | Returns the number of seconds a transition has been running |
+| `pseudoElement` | Returns the name of the pseudo-element of the transition    |
+
+| Event Type      | Description                                          |
+| --------------- | ---------------------------------------------------- |
+| `transitionend` | The event occurs when a CSS transition has completed |
+
+### UI Event
+
+| Property/Method | Description                                                       |
+| --------------- | ----------------------------------------------------------------- |
+| `detail`        | Returns a number with details about the event                     |
+| `view`          | Returns a reference to the Window object where the event occurred |
+
+| Event Type       | Description                                                                        |
+| ---------------- | ---------------------------------------------------------------------------------- |
+| `onabort`        | The event occurs when the loading of a media is aborted                            |
+| `onbeforeunload` | The event occurs before the document is about to be unloaded                       |
+| `onerror`        | The event occurs when an error occurred during the loading of a media file         |
+| `onload`         | The event occurs when an object has loaded                                         |
+| `onresize`       | The event occurs when the document view is resized                                 |
+| `onscroll`       | The event occurs when an element's scrollbar is being scrolled                     |
+| `onselect`       | The event occurs after the user selects some text (for `<input>` and `<textarea>`) |
+| `onunload`       | The event occurs once a page has unloaded (for `<body>`)                           |
+
+### Wheel Event
+
+| Property/Method | Description                                                                                         |
+| --------------- | --------------------------------------------------------------------------------------------------- |
+| `deltaX`        | Returns the horizontal scroll amount of a mouse wheel (x-axis)                                      |
+| `deltaY`        | Returns the vertical scroll amount of a mouse wheel (y-axis)                                        |
+| `deltaZ`        | Returns the scroll amount of a mouse wheel for the z-axis                                           |
+| `deltaMode`     | Returns a number that represents the unit of measurements for delta values (pixels, lines or pages) |
+
+| Event Type | Description                                                            |
+| ---------- | ---------------------------------------------------------------------- |
+| `onwheel`  | The event occurs when the mouse wheel rolls up or down over an element |
