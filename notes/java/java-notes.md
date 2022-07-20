@@ -21,7 +21,8 @@
     - [.arraycopy()](#arraycopy)
     - [.copyOf(), .copyOfRange()](#copyof-copyofrange)
     - [.clone()](#clone)
-- [Collections (Interface)](#collections-interface)
+- [Collection (Interface)](#collection-interface)
+- [Collections (Class)](#collections-class)
   - [List (Interface)](#list-interface)
     - [ArrayList (Class)](#arraylist-class)
       - [Constructor](#constructor-1)
@@ -441,7 +442,70 @@ int[] sourceArray = {1, 2, 3, 4, 5};
 int[] targetArray = sourceArray.clone();
 ```
 
-# Collections (Interface)
+# Collection (Interface)
+
+- `import java.util.*;`
+- All Known Implementing Classes:
+  - AbstractCollection
+  - AbstractList
+  - AbstractQueue
+  - AbstractSequentialList
+  - AbstractSet
+  - ArrayBlockingQueue
+  - ArrayDeque
+  - ArrayList
+  - AttributeList
+  - BeanContextServicesSupport
+  - BeanContextSupport
+  - ConcurrentHashMap.KeySetView
+  - ConcurrentLinkedDeque
+  - ConcurrentLinkedQueue
+  - ConcurrentSkipListSet
+  - CopyOnWriteArrayList
+  - CopyOnWriteArraySet
+  - DelayQueue
+  - EnumSet
+  - HashSet
+  - JobStateReasons
+  - LinkedBlockingDeque
+  - LinkedBlockingQueue
+  - LinkedHashSet
+  - LinkedList
+  - LinkedTransferQueue
+  - PriorityBlockingQueue
+  - PriorityQueue
+  - RoleList
+  - RoleUnresolvedList
+  - Stack
+  - SynchronousQueue
+  - TreeSet
+  - Vector
+- [Read more](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Collection.html)
+
+| Return                   | Method                                  | Description                                                                                                                               |
+| ------------------------ | --------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| boolean                  | `add(E e)`                              | Ensures that this collection contains the specified element (optional operation)                                                          |
+| boolean                  | `addAll(Collection<? extends E> c)`     | Adds all of the elements in the specified collection to this collection (optional operation)                                              |
+| void                     | `clear()`                               | Removes all of the elements from this collection (optional operation)                                                                     |
+| boolean                  | `contains(Object o)`                    | Returns true if this collection contains the specified element                                                                            |
+| boolean                  | `containsAll(Collection<?> c)`          | Returns true if this collection contains all of the elements in the specified collection                                                  |
+| boolean                  | `equals(Object o)`                      | Compares the specified object with this collection for equality                                                                           |
+| int                      | `hashCode()`                            | Returns the hash code value for this collection                                                                                           |
+| boolean                  | `isEmpty()`                             | Returns true if this collection contains no elements                                                                                      |
+| `Iterator<E>`            | `iterator()`                            | Returns an iterator over the elements in this collection                                                                                  |
+| `default Stream<E>`      | `parallelStream()`                      | Returns a possibly parallel Stream with this collection as its source                                                                     |
+| boolean                  | `remove(Object o)`                      | Removes a single instance of the specified element from this collection, if it is present (optional operation)                            |
+| boolean                  | `removeAll(Collection<?> c)`            | Removes all of this collection's elements that are also contained in the specified collection (optional operation)                        |
+| default boolean          | `removeIf(Predicate<? super E> filter)` | Removes all of the elements of this collection that satisfy the given predicate                                                           |
+| boolean                  | `retainAll(Collection<?> c)`            | Retains only the elements in this collection that are contained in the specified collection (optional operation)                          |
+| int                      | `size()`                                | Returns the number of elements in this collection                                                                                         |
+| `default Spliterator<E>` | `spliterator()`                         | Creates a Spliterator over the elements in this collection                                                                                |
+| `default Stream<E>`      | `stream()`                              | Returns a sequential Stream with this collection as its source                                                                            |
+| Object[]                 | `toArray()`                             | Returns an array containing all of the elements in this collection                                                                        |
+| `default <T> T[]`        | `toArray(IntFunction<T[]> generator)`   | Returns an array containing all of the elements in this collection, using the provided generator function to allocate the returned array  |
+| `<T> T[]`                | `toArray(T[] a)`                        | Returns an array containing all of the elements in this collection; the runtime type of the returned array is that of the specified array |
+
+# Collections (Class)
 
 - `import java.util.Collections;`
 - "Collections" is a utility class
