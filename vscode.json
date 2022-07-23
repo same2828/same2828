@@ -12,6 +12,9 @@
   "[html]": {
     "editor.defaultFormatter": "vscode.html-language-features"
   },
+  "[java]": {
+    "editor.defaultFormatter": "redhat.java"
+  },
   "[javascript]": {
     "editor.defaultFormatter": "vscode.typescript-language-features"
   },
@@ -107,8 +110,8 @@
       "underline": false
     }
   ],
-  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, AllowShortBlocksOnASingleLine: Empty, AllowShortCaseLabelsOnASingleLine: false, AllowShortEnumsOnASingleLine: false, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLambdasOnASingleLine: Empty, AllowShortLoopsOnASingleLine: false, BreakBeforeBraces: Attach, ColumnLimit: 120, IndentWidth: 2, NamespaceIndentation: All , TabWidth: 2, IndentAccessModifiers: true, ReferenceAlignment: Right }",
-  "C_Cpp.clang_format_style": "{ BasedOnStyle: LLVM, AllowShortBlocksOnASingleLine: Empty, AllowShortCaseLabelsOnASingleLine: false, AllowShortEnumsOnASingleLine: false, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLambdasOnASingleLine: Empty, AllowShortLoopsOnASingleLine: false, BreakBeforeBraces: Attach, ColumnLimit: 120, IndentWidth: 2, NamespaceIndentation: All , TabWidth: 2, IndentAccessModifiers: true, ReferenceAlignment: Right }",
+  "C_Cpp.clang_format_fallbackStyle": "{ BasedOnStyle: LLVM, AllowShortBlocksOnASingleLine: Empty, AllowShortCaseLabelsOnASingleLine: false, AllowShortEnumsOnASingleLine: false, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLambdasOnASingleLine: Empty, AllowShortLoopsOnASingleLine: false, BreakBeforeBraces: Attach, ColumnLimit: 120, IndentWidth: 2, NamespaceIndentation: All , TabWidth: 2, IndentAccessModifiers: true, ReferenceAlignment: Right , AlwaysBreakTemplateDeclarations: Yes, ContinuationIndentWidth: 2 }",
+  "C_Cpp.clang_format_style": "{ BasedOnStyle: LLVM, AllowShortBlocksOnASingleLine: Empty, AllowShortCaseLabelsOnASingleLine: false, AllowShortEnumsOnASingleLine: false, AllowShortFunctionsOnASingleLine: Empty, AllowShortIfStatementsOnASingleLine: Never, AllowShortLambdasOnASingleLine: Empty, AllowShortLoopsOnASingleLine: false, BreakBeforeBraces: Attach, ColumnLimit: 120, IndentWidth: 2, NamespaceIndentation: All , TabWidth: 2, IndentAccessModifiers: true, ReferenceAlignment: Right , AlwaysBreakTemplateDeclarations: Yes, ContinuationIndentWidth: 2 }",
   "C_Cpp.codeAnalysis.clangTidy.checks.enabled": [
     "readability-braces-around-statements"
   ],
@@ -120,6 +123,10 @@
   "cmake.buildBeforeRun": true,
   "cmake.configureOnOpen": true,
   "cmake.saveBeforeBuild": true,
+  "cSpell.diagnosticLevel": "Information",
+  "cSpell.ignoreWords": [
+    "neighbour"
+  ],
   "cSpell.userWords": [
     "adoptium",
     "ageing",
@@ -203,6 +210,7 @@
     "monopolise",
     "monopolised",
     "monopolising",
+    "neighbour",
     "neighbours",
     "optimisation",
     "optimise",
@@ -267,6 +275,7 @@
   ],
   "diffEditor.ignoreTrimWhitespace": false,
   "editor.bracketPairColorization.enabled": true,
+  "editor.cursorBlinking": "solid",
   "editor.detectIndentation": false,
   "editor.fontFamily": "InconsolataLGC Nerd Font Mono, Consolas, 'Courier New', monospace",
   "editor.fontLigatures": false,
@@ -558,8 +567,6 @@
     "REMOTE_COMMANDS"
   ],
   "tabnine.experimentalAutoImports": false,
-  "telemetry.enableCrashReporter": false,
-  "telemetry.enableTelemetry": false,
   "telemetry.telemetryLevel": "off",
   "terminal.integrated.fontFamily": "InconsolataLGC Nerd Font Mono",
   "terminal.integrated.gpuAcceleration": "off",
@@ -599,6 +606,7 @@
     "editorBracketPairGuide.background4": "#ffd700",
     "editorBracketPairGuide.background5": "#da70d6",
     "editorBracketPairGuide.background6": "#87cefa",
+    "editorCursor.foreground": "#dddddd",
     "editorLineNumber.activeForeground": "#eee",
     "editorLineNumber.foreground": "#7083bd",
     "gitDecoration.conflictingResourceForeground": "#1a1816",
@@ -651,7 +659,8 @@
     "terminal.ansiYellow": "#FAC03B",
     "terminal.background": "#282a36",
     "terminal.border": "#282a36",
-    "terminal.foreground": "#f8f8f2"
+    "terminal.foreground": "#f8f8f2",
+    "terminalCursor.foreground": "#dddddd"
   },
   "workbench.colorTheme": "Dracula",
   "workbench.editor.untitled.hint": "hidden",
