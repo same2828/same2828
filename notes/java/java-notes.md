@@ -86,6 +86,7 @@
   - [Ascii Codes](#ascii-codes)
   - [Boolean](#boolean)
   - [Calendar Class](#calendar-class)
+  - [Comparing Objects (Comparison)](#comparing-objects-comparison)
   - [Date Class (Deprecated)](#date-class-deprecated)
   - [For-Each Loop](#for-each-loop)
   - [Numeric Data Types](#numeric-data-types)
@@ -1512,6 +1513,20 @@ public class Calendar {
     System.out.println("The Current Date is: " + c.getTime());
   }
 }
+```
+
+## Comparing Objects (Comparison)
+
+- Remember to use `.equals()` when comparing for equality and NOT `==`
+- `==` tests for reference equality (whether they are the same object)
+- `.equals()` tests for value equality (whether they are logically "equal")
+  - `Objects.equals()` checks for null before calling .equals() so you don't have to
+
+```java
+// String comparison
+String a = "hello";
+String b = "hello";
+return a.equals(b) : true : false;
 ```
 
 ## Date Class (Deprecated)
