@@ -635,7 +635,7 @@ int[] targetArray = sourceArray.clone();
 ### LinkedList (Class)
 
 - `import java.util.LinkedList;`
-- Can be used to implement a **stack**
+- Can be used to implement a **deque, stack**
 - [Read more](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/LinkedList.html)
 
 #### Constructor
