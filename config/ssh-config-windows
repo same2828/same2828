@@ -1,0 +1,8 @@
+# https://manpages.ubuntu.com/manpages/focal/en/man5/ssh_config.5.html
+
+# samsolichin
+Host github.com
+  HostName github.com
+  IdentityFile "C:\Users\same\.ssh\github-samsolichin"
+  AddKeysToAgent yes
+  IdentitiesOnly yes

@@ -1,0 +1,15 @@
+[core]
+	autocrlf = false
+	editor = code --wait
+	pager = less -F -X
+[init]
+  defaultBranch = master
+[log]
+	date = local
+[pull]
+	rebase = true
+[push]
+	default = simple
+[user]
+	name = samsolichin
+	email = samsolichin01@gmail.com

@@ -1,0 +1,16 @@
+- White
+  - #FFFFFF
+- Cyan + Blue
+  - #74FFFF
+- Purple
+  - #C297FF
+  - #FF2EFF
+- Yellow
+  - #F1FA8C
+- Green
+  - #50FA7B
+- Red
+  - #FF5555
+- Black
+  - #767676
+  - #0C0C0C

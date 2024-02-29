@@ -1,0 +1,94 @@
+// Place your key bindings in this file to override the defaultsauto[]
+[
+  {
+    "command": "workbench.action.files.saveWithoutFormatting",
+    "key": "cmd+s"
+  },
+  {
+    "command": "-workbench.action.files.saveWithoutFormatting",
+    "key": "cmd+k s"
+  },
+  {
+    "command": "workbench.action.files.save",
+    "key": "alt+s"
+  },
+  {
+    "command": "-workbench.action.files.save",
+    "key": "cmd+s"
+  },
+  {
+    "command": "-tabnine.accept-inline-suggestion",
+    "key": "tab",
+    "when": "tabnine.in-inline-suggestions && tabnine.inline-suggestion:enabled || tabnine.in-inline-suggestions && tabnine.snippet-suggestion:enabled"
+  },
+  {
+    "command": "workbench.explorer.fileView.focus",
+    "key": "cmd+k f"
+  },
+  {
+    "command": "-workbench.action.closeFolder",
+    "key": "cmd+k f",
+    "when": "emptyWorkspaceSupport && workbenchState != 'empty'"
+  },
+  {
+    "command": "explorer.newFile",
+    "key": "cmd+n",
+    "when": "explorerViewletFocus"
+  },
+  {
+    "command": "explorer.newFolder",
+    "key": "cmd+shift+n",
+    "when": "explorerViewletFocus"
+  },
+  {
+    "command": "redo",
+    "key": "cmd+y"
+  },
+  {
+    "command": "-redo",
+    "key": "shift+cmd+z"
+  },
+  {
+    "command": "-rerunSearchEditorSearch",
+    "key": "shift+cmd+r",
+    "when": "inSearchEditor"
+  },
+  {
+    "command": "revealFileInOS",
+    "key": "shift+cmd+r",
+    "when": "!editorFocus"
+  },
+  {
+    "command": "-revealFileInOS",
+    "key": "alt+cmd+r",
+    "when": "!editorFocus"
+  },
+  {
+    "command": "workbench.action.files.revealActiveFileInWindows",
+    "key": "shift+cmd+r"
+  },
+  {
+    "command": "-workbench.action.files.revealActiveFileInWindows",
+    "key": "cmd+k r"
+  },
+  {
+    "command": "renameFile",
+    "key": "shift+enter",
+    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+  },
+  {
+    "command": "-renameFile",
+    "key": "enter",
+    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+  },
+  {
+    "command": "explorer.openAndPassFocus",
+    "key": "enter",
+    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsFolder && !inputFocus"
+  },
+  {
+    "command": "-explorer.openAndPassFocus",
+    "key": "cmd+down",
+    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsFolder && !inputFocus"
+  }
+]

@@ -1,0 +1,672 @@
+- [Table of Contents](#table-of-contents)
+- [Metadata](#metadata)
+- [DFS Cycle Removal](#dfs-cycle-removal)
+- [Need C++ Write Up](#need-c-write-up)
+- [Questions to Skip](#questions-to-skip)
+- [Up Next](#up-next)
+  - [Dynamic Programming](#dynamic-programming)
+  - [BFS](#bfs)
+  - [Heap (Priority Queue)](#heap-priority-queue)
+  - [Graph](#graph)
+  - [Union Find](#union-find)
+- [Entire List](#entire-list)
+
+# Table of Contents
+
+# Metadata
+
+- wip == need to understand
+- write up == need to finish writing up copy of official solutions
+
+# DFS Cycle Removal
+
+- 1192 dfs() removes ALL edges that are in cycle
+- 1579 dfs() removes SINGLE edge that causes cycle
+
+# Need C++ Write Up
+
+- 3032.count-numbers-with-unique-digits-ii
+
+# Questions to Skip
+
+- Bad Solution or Retarded Code
+
+- 0044
+- 0233 (binary/bits)
+- 0338 (binary/bits)
+- 0466 (bad solution)
+- 0474 (binary/bits)
+- 0552 (bad solution)
+- 0553 (bad solution)
+- 0600 (bad solution but check comments)
+- 0639 (bad solution)
+- 0688 (bad solution)
+- 0689 (bad solution)
+- 0712 (ascii sum)
+- 0750 (bad solution)
+- 0879 (bad solution)
+- 0898 (binary/bits)
+- 0913 (bad solution)
+- 0918 (bad solution)
+- 0920 (bad solution)
+- 0940 (too hard?)
+- 0943 (bitmasking/try again later)
+
+# Up Next
+
+## Dynamic Programming
+
+- Add javascript
+  - 1578
+  - 1908
+- 2501 is next
+
+- 0044 (hard)
+- 0087 (hard)
+- 0233 (bits)
+- 0313 (ceebs + don't understand)
+- 0338 (bits)
+- 0343 (math + ceebs)
+- 0375 (ceebs + hard)
+- 0396 (math)
+- 0397 (math)
+- 0458 (math + ceebs)
+- 0466 (hard + ceebs)
+- 0474 (ceebs)
+- 0488 (ceebs)
+- 0514 (ceebs + hard)
+- 0552 (titf maths)
+- 0553 (maths + ceebs)
+- 0600 (binary/bits)
+- 0639 (ceebs + hard + maths)
+- 0651 (ceebs)
+- 0664 (ceebs)
+- 0688 (maths + ceebs)
+- 0689 (ceebs)
+- 0730 (ceebs + hard)
+- 0790 (maths + hard)
+- 0801 (ceebs)
+- 0805 (ceebs)
+- 0808 (ceebs)
+- 0834 (titf hard + tree)
+- 0837 (probabilities)
+- 0879 (ceebs)
+- 0894 (ceebs + tree + doable)
+- 0898 (ceebs + bits)
+- 0903 (ceebs)
+- 0913 (ceebs + no good solution)
+- 0918 (ceebs)
+- 0920 (ceebs + doable)
+- 0935
+- 0940
+- 0943 (bits)
+- 0956 (so close to understanding)
+- 0960
+- 0964
+- 1049 (so close to understanding)
+- 1066 (bits)
+- 1067 (math)
+- 1269 (so close to understanding)
+- 1349 (bitmask - good bitmask forum solution)
+- 1395 (hard)
+- 1397 (bits)
+- 1434 (bits)
+- 1483 (bits)
+- 1494 (bits)
+- 1595 (bitmask)
+- 1617 (bitmask)
+- 1655 (bitmask)
+- 1787 (bitmask)
+- 1799 (bitmask)
+- 1815 (hard)
+- 2184 (bitmask)
+- 2263 (heap priority queue, makes no sense why we need to offer twice)
+
+## BFS
+
+- Just did 0433
+
+## Heap (Priority Queue)
+
+- 420 (hard)
+- 506 (easy)
+- 703 (easy)
+- 786 (easy)
+- 912 (easy)
+- 1046 (easy)
+- 1172 (design)
+- 1183 (hard)
+- 1263 (hard)
+- 1337 (easy)
+- 1405 (hard)
+- 1464 (easy)
+- 1500 (design)
+- 1648 (math wtf)
+- 1687 (hard)
+- 1738 (bits)
+- 1753
+- 1776
+- 1810 (interactive)
+- 1825 (math)
+- 1845 (design)
+- 1878
+- 1912 (design)
+- 2015 (hard)
+- 2102 (design)
+- 2231 (easy)
+- 2333 (no good solutions)
+- 2336 (design)
+- 2349 (design)
+- 2353 (design)
+- 2424 (design)
+- 2454 (hard)
+
+## Graph
+
+- 765 (math)
+- 834 (hard)
+- 913 (hard)
+- 959 (ceebs + hard)
+- 1377
+- 1489
+- 1494 (bitmask)
+- 1548
+- 1719 (tree hard)
+- 1728 (hard titf)
+- 1778 (ceebs)
+- 1791 (easy)
+- 1810 (ceebs)
+- 1916 (tree hard)
+- 2123 (hard)
+- 2127 (hard)
+- 2247 (bitmask)
+- 2297 (hard)
+- 2307 (hard, but possibly doable)
+- 2421 (hard union find)
+
+## Union Find
+
+- 1254 (not suitable)
+- 1258 (not suitable + titf hard)
+- 1267 (not suitable, too easy)
+- 1632 (ceebs + hard)
+- 2204 (not suitable)
+- 2371 (not suitable)
+
+# Entire List
+
+- [Read more](https://unix.stackexchange.com/questions/509553/how-to-delete-every-two-lines-after-3rd-lines-in-a-file-contains-very-large-numb)
+- `awk '(NR-1)%3<1' test.txt`
+
+  - The command `(NR-1)%3<1` tells awk to print any line for which `(NR-1)%3<1` is `true`
+  - In awk, `NR` is the line number with the first line counting as `1`
+  - For every three lines in the file, that statement will be true for the first line
+
+- 0001.two-sum
+- 0003.longest-substring-without-repeating-characters
+- 0005.longest-palindromic-substring
+- 0010.regular-expression-matching
+- 0011.container-with-most-water
+- 0014.longest-common-prefix
+- 0022.generate-parentheses
+- 0023.merge-k-sorted-lists
+- 0032.longest-valid-parentheses
+- 0042.trapping-rain-water
+- 0045.jump-game-ii
+- 0049.group-anagrams
+- 0053.maximum-subarray
+- 0055.jump-game
+- 0056.merge-intervals
+- 0062.unique-paths
+- 0063.unique-paths-ii
+- 0064.minimum-path-sum
+- 0070.climbing-stairs
+- 0072.edit-distance
+- 0074.search-a-2d-matrix
+- 0085.maximal-rectangle
+- 0091.decode-ways
+- 0094.binary-tree-inorder-traversal
+- 0095.unique-binary-search-trees-ii
+- 0096.unique-binary-search-trees
+- 0097.interleaving-string
+- 0100.same-tree
+- 0101.symmetric-tree
+- 0102.binary-tree-level-order-traversal
+- 0103.binary-tree-zigzag-level-order-traversal
+- 0104.maximum-depth-of-binary-tree
+- 0107.binary-tree-level-order-traversal-ii
+- 0111.minimum-depth-of-binary-tree
+- 0112.path-sum
+- 0115.distinct-subsequences
+- 0118.pascal's-triangle
+- 0119.pascal's-triangle-ii
+- 0120.triangle
+- 0121.best-time-to-buy-and-sell-stock
+- 0122.best-time-to-buy-and-sell-stock-ii
+- 0123.best-time-to-buy-and-sell-stock-iii
+- 0124.binary-tree-maximum-path-sum
+- 0126.word-ladder-ii
+- 0127.word-ladder
+- 0128.longest-consecutive-sequence
+- 0130.surrounded-regions
+- 0131.palindrome-partitioning
+- 0132.palindrome-partitioning-ii
+- 0133.clone-graph
+- 0139.word-break
+- 0140.word-break-ii
+- 0152.maximum-product-subarray
+- 0167.two-sum-ii---input-array-is-sorted
+- 0174.dungeon-game
+- 0188.best-time-to-buy-and-sell-stock-iv
+- 0198.house-robber
+- 0200.number-of-islands
+- 0207.course-schedule
+- 0210.course-schedule-ii
+- 0213.house-robber-ii
+- 0215.kth-largest-element-in-an-array
+- 0218.the-skyline-problem
+- 0221.maximal-square
+- 0226.invert-binary-tree
+- 0235.lowest-common-ancestor-of-a-binary-search-tree
+- 0236.lowest-common-ancestor-of-a-binary-tree
+- 0239.sliding-window-maximum
+- 0241.different-ways-to-add-parentheses
+- 0253.meeting-rooms-ii
+- 0256.paint-house
+- 0261.graph-valid-tree
+- 0264.ugly-number-ii
+- 0265.paint-house-ii
+- 0269.alien-dictionary
+- 0271.encode-and-decode-strings
+- 0272.closest-binary-search-tree-value-ii
+- 0276.paint-fence
+- 0277.find-the-celebrity
+- 0279.perfect-squares
+- 0286.walls-and-gates
+- 0294.flip-game-ii
+- 0295.find-median-from-data-stream
+- 0300.longest-increasing-subsequence
+- 0305.number-of-islands-ii
+- 0309.best-time-to-buy-and-sell-stock-with-cooldown
+- 0310.minimum-height-trees
+- 0312.burst-balloons
+- 0314.binary-tree-vertical-order-traversal
+- 0317.shortest-distance-from-all-buildings
+- 0322.coin-change
+- 0323.number-of-connected-components-in-an-undirected-graph
+- 0329.longest-increasing-path-in-a-matrix
+- 0332.reconstruct-itinerary
+- 0333.largest-bst-subtree
+- 0337.house-robber-iii
+- 0339.nested-list-weight-sum
+- 0347.top-k-frequent-elements
+- 0351.android-unlock-patterns
+- 0354.russian-doll-envelopes
+- 0357.count-numbers-with-unique-digits
+- 0358.rearrange-string-k-distance-apart
+- 0361.bomb-enemy
+- 0363.max-sum-of-rectangle-no-larger-than-k
+- 0364.nested-list-weight-sum-ii
+- 0368.largest-divisible-subset
+- 0373.find-k-pairs-with-smallest-sums
+- 0376.wiggle-subsequence
+- 0377.combination-sum-iv
+- 0378.kth-smallest-element-in-a-sorted-matrix
+- 0392.is-subsequence
+- 0403.frog-jump
+- 0407.trapping-rain-water-ii
+- 0410.split-array-largest-sum
+- 0413.arithmetic-slices
+- 0416.partition-equal-subset-sum
+- 0417.pacific-atlantic-water-flow
+- 0418.sentence-screen-fitting
+- 0423.reconstruct-original-digits-from-english
+- 0424.longest-repeating-character-replacement
+- 0433.minimum-genetic-mutation
+- 0435.non-overlapping-intervals
+- 0446.arithmetic-slices-ii---subsequence
+- 0451.sort-characters-by-frequency
+- 0463.island-perimeter
+- 0464.can-i-win
+- 0465.optimal-account-balancing
+- 0467.unique-substrings-in-wraparound-string
+- 0471.encode-string-with-shortest-length
+- 0472.concatenated-words
+- 0473.matchsticks-to-square
+- 0480.sliding-window-median
+- 0486.predict-the-winner
+- 0487.max-consecutive-ones-ii
+- 0490.the-maze
+- 0494.target-sum
+- 0499.the-maze-iii
+- 0502.ipo
+- 0505.the-maze-ii
+- 0509.fibonacci-number
+- 0516.longest-palindromic-subsequence
+- 0518.coin-change-ii
+- 0526.beautiful-arrangement
+- 0542.01-matrix
+- 0543.diameter-of-binary-tree
+- 0546.remove-boxes
+- 0547.number-of-provinces
+- 0560.subarray-sum-equals-k
+- 0562.longest-line-of-consecutive-one-in-matrix
+- 0567.permutation-in-string
+- 0568.maximum-vacation-days
+- 0576.out-of-boundary-paths
+- 0582.kill-process
+- 0583.delete-operation-for-two-strings
+- 0621.task-scheduler
+- 0629.k-inverse-pairs-array
+- 0630.course-schedule-iii
+- 0632.smallest-range-covering-elements-from-k-lists
+- 0634.find-the-derangement-of-an-array
+- 0638.shopping-offers
+- 0646.maximum-length-of-pair-chain
+- 0647.palindromic-substrings
+- 0650.2-keys-keyboard
+- 0656.coin-path
+- 0658.find-k-closest-elements
+- 0659.split-array-into-consecutive-subsequences
+- 0662.maximum-width-of-binary-tree
+- 0673.number-of-longest-increasing-subsequence
+- 0675.cut-off-trees-for-golf-event
+- 0678.valid-parenthesis-string
+- 0684.redundant-connection
+- 0685.redundant-connection-ii
+- 0691.stickers-to-spell-word
+- 0692.top-k-frequent-words
+- 0694.number-of-distinct-islands
+- 0695.max-area-of-island
+- 0698.partition-to-k-equal-sum-subsets
+- 0712.minimum-ascii-delete-sum-for-two-strings
+- 0714.best-time-to-buy-and-sell-stock-with-transaction-fee
+- 0718.maximum-length-of-repeated-subarray
+- 0721.accounts-merge
+- 0727.minimum-window-subsequence
+- 0737.sentence-similarity-ii
+- 0740.delete-and-earn
+- 0741.cherry-pickup
+- 0743.network-delay-time
+- 0746.min-cost-climbing-stairs
+- 0750.number-of-corner-rectangles
+- 0753.cracking-the-safe
+- 0759.employee-free-time
+- 0764.largest-plus-sign
+- 0765.couples-holding-hands
+- 0767.reorganize-string
+- 0778.swim-in-rising-water
+- 0785.is-graph-bipartite?
+- 0787.cheapest-flights-within-k-stops
+- 0788.rotated-digits
+- 0797.all-paths-from-source-to-target
+- 0799.champagne-tower
+- 0802.find-eventual-safe-states
+- 0811.subdomain-visit-count
+- 0813.largest-sum-of-averages
+- 0815.bus-routes
+- 0818.race-car
+- 0823.binary-trees-with-factors
+- 0827.making-a-large-island
+- 0828.count-unique-characters-of-all-substrings-of-a-given-string
+- 0838.push-dominoes
+- 0839.similar-string-groups
+- 0841.keys-and-rooms
+- 0845.longest-mountain-in-array
+- 0847.shortest-path-visiting-all-nodes
+- 0851.loud-and-rich
+- 0857.minimum-cost-to-hire-k-workers
+- 0862.shortest-subarray-with-sum-at-least-k
+- 0863.all-nodes-distance-k-in-binary-tree
+- 0871.minimum-number-of-refueling-stops
+- 0873.length-of-longest-fibonacci-subsequence
+- 0875.koko-eating-bananas
+- 0877.stone-game
+- 0882.reachable-nodes-in-subdivided-graph
+- 0886.possible-bipartition
+- 0887.super-egg-drop
+- 0902.numbers-at-most-n-given-digit-set
+- 0907.sum-of-subarray-minimums
+- 0924.minimize-malware-spread
+- 0926.flip-string-to-monotone-increasing
+- 0928.minimize-malware-spread-ii
+- 0931.minimum-falling-path-sum
+- 0947.most-stones-removed-with-same-row-or-column
+- 0952.largest-component-size-by-common-factor
+- 0968.binary-tree-cameras
+- 0973.k-closest-points-to-origin
+- 0983.minimum-cost-for-tickets
+- 0987.vertical-order-traversal-of-a-binary-tree
+- 0990.satisfiability-of-equality-equations
+- 0994.rotting-oranges
+- 0997.find-the-town-judge
+- 1014.best-sightseeing-pair
+- 1020.number-of-enclaves
+- 1024.video-stitching
+- 1027.longest-arithmetic-subsequence
+- 1031.maximum-sum-of-two-non-overlapping-subarrays
+- 1035.uncrossed-lines
+- 1039.minimum-score-triangulation-of-polygon
+- 1042.flower-planting-with-no-adjacent
+- 1043.partition-array-for-maximum-sum
+- 1048.longest-string-chain
+- 1054.distant-barcodes
+- 1055.shortest-way-to-form-string
+- 1059.all-paths-from-source-lead-to-destination
+- 1061.lexicographically-smallest-equivalent-string
+- 1087.brace-expansion
+- 1091.shortest-path-in-binary-matrix
+- 1092.shortest-common-supersequence
+- 1094.car-pooling
+- 1101.the-earliest-moment-when-everyone-become-friends
+- 1102.path-with-maximum-minimum-value
+- 1105.filling-bookcase-shelves
+- 1129.shortest-path-with-alternating-colors
+- 1135.connecting-cities-with-minimum-cost
+- 1136.parallel-courses
+- 1137.n-th-tribonacci-number
+- 1143.longest-common-subsequence
+- 1155.number-of-dice-rolls-with-target-sum
+- 1161.maximum-level-sum-of-a-binary-tree
+- 1162.as-far-from-land-as-possible
+- 1167.minimum-cost-to-connect-sticks
+- 1168.optimize-water-distribution-in-a-village
+- 1182.shortest-distance-to-target-color
+- 1186.maximum-subarray-sum-with-one-deletion
+- 1192.critical-connections-in-a-network
+- 1197.minimum-knight-moves
+- 1199.minimum-time-to-build-blocks
+- 1202.smallest-string-with-swaps
+- 1203.sort-items-by-groups-respecting-dependencies
+- 1216.valid-palindrome-iii
+- 1218.longest-arithmetic-subsequence-of-given-difference
+- 1220.count-vowels-permutation
+- 1235.maximum-profit-in-job-scheduling
+- 1245.tree-diameter
+- 1249.minimum-remove-to-make-valid-parentheses
+- 1254.number-of-closed-islands
+- 1258.synonymous-sentences
+- 1267.count-servers-that-communicate
+- 1277.count-square-submatrices-with-all-ones
+- 1278.palindrome-partitioning-iii
+- 1289.minimum-falling-path-sum-ii
+- 1293.shortest-path-in-a-grid-with-obstacles-elimination
+- 1298.maximum-candies-you-can-get-from-boxes
+- 1301.number-of-paths-with-max-score
+- 1306.jump-game-iii
+- 1311.get-watched-videos-by-your-friends
+- 1312.minimum-insertion-steps-to-make-a-string-palindrome
+- 1319.number-of-operations-to-make-network-connected
+- 1326.minimum-number-of-taps-to-open-to-water-a-garden
+- 1334.find-the-city-with-the-smallest-number-of-neighbors-at-a-threshold-distance
+- 1335.minimum-difficulty-of-a-job-schedule
+- 1338.reduce-array-size-to-the-half
+- 1340.jump-game-v
+- 1353.maximum-number-of-events-that-can-be-attended
+- 1354.construct-target-array-with-multiple-sums
+- 1359.count-all-valid-pickup-and-delivery-options
+- 1361.validate-binary-tree-nodes
+- 1368.minimum-cost-to-make-at-least-one-valid-path-in-a-grid
+- 1372.longest-zigzag-path-in-a-binary-tree
+- 1373.maximum-sum-bst-in-binary-tree
+- 1383.maximum-performance-of-a-team
+- 1387.sort-integers-by-the-power-value
+- 1388.pizza-with-3n-slices
+- 1402.reducing-dishes
+- 1406.stone-game-iii
+- 1411.number-of-ways-to-paint-n-×-3-grid
+- 1416.restore-the-array
+- 1424.diagonal-traverse-ii
+- 1425.constrained-subsequence-sum
+- 1438.longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit
+- 1439.find-the-kth-smallest-sum-of-a-matrix-with-sorted-rows
+- 1444.number-of-ways-of-cutting-a-pizza
+- 1449.form-largest-integer-with-digits-that-add-up-to-target
+- 1458.max-dot-product-of-two-subsequences
+- 1462.course-schedule-iv
+- 1463.cherry-pickup-ii
+- 1466.reorder-routes-to-make-all-paths-lead-to-the-city-zero
+- 1473.paint-house-iii
+- 1477.find-two-non-overlapping-sub-arrays-each-with-target-sum
+- 1478.allocate-mailboxes
+- 1488.avoid-flood-in-the-city
+- 1489.find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree
+- 1493.longest-subarray-of-1's-after-deleting-one-element
+- 1499.max-value-of-equation
+- 1510.stone-game-iv
+- 1514.path-with-maximum-probability
+- 1524.number-of-sub-arrays-with-odd-sum
+- 1525.number-of-good-ways-to-split-a-string
+- 1526.minimum-number-of-increments-on-subarrays-to-form-a-target-array
+- 1531.string-compression-ii
+- 1537.get-the-maximum-score
+- 1547.minimum-cost-to-cut-a-stick
+- 1553.minimum-number-of-days-to-eat-n-oranges
+- 1557.minimum-number-of-vertices-to-reach-all-nodes
+- 1559.detect-cycles-in-2d-grid
+- 1563.stone-game-v
+- 1567.maximum-length-of-subarray-with-positive-product
+- 1575.count-all-possible-routes
+- 1578.minimum-time-to-make-rope-colorful
+- 1579.remove-max-number-of-edges-to-keep-graph-fully-traversable
+- 1584.min-cost-to-connect-all-points
+- 1591.strange-printer-ii
+- 1606.find-servers-that-handled-most-number-of-requests
+- 1615.maximal-network-rank
+- 1626.best-team-with-no-conflicts
+- 1631.path-with-minimum-effort
+- 1632.rank-transform-of-a-matrix
+- 1638.count-substrings-that-differ-by-one-character
+- 1639.number-of-ways-to-form-a-target-string-given-a-dictionary
+- 1641.count-sorted-vowel-strings
+- 1642.furthest-building-you-can-reach
+- 1643.kth-smallest-instructions
+- 1646.get-maximum-in-generated-array
+- 1653.minimum-deletions-to-make-string-balanced
+- 1654.minimum-jumps-to-reach-home
+- 1659.maximize-grid-happiness
+- 1664.ways-to-make-a-fair-array
+- 1671.minimum-number-of-removals-to-make-mountain-array
+- 1675.minimize-deviation-in-array
+- 1681.minimum-incompatibility
+- 1682.longest-palindromic-subsequence-ii
+- 1686.stone-game-vi
+- 1687.delivering-boxes-from-storage-to-ports
+- 1690.stone-game-vii
+- 1696.jump-game-vi
+- 1697.checking-existence-of-edge-length-limited-paths
+- 1705.maximum-number-of-eaten-apples
+- 1722.minimize-hamming-distance-after-swap-operations
+- 1723.find-minimum-time-to-finish-all-jobs
+- 1724.checking-existence-of-edge-length-limited-paths-ii
+- 1745.palindrome-partitioning-iv
+- 1746.maximum-subarray-sum-after-one-operation
+- 1749.maximum-absolute-sum-of-any-subarray
+- 1751.maximum-number-of-events-that-can-be-attended-ii
+- 1755.closest-subsequence-sum
+- 1761.minimum-degree-of-a-connected-trio-in-a-graph
+- 1770.maximum-score-from-performing-multiplication-operations
+- 1771.maximize-palindrome-length-from-subsequences
+- 1774.closest-dessert-cost
+- 1782.count-pairs-of-nodes
+- 1786.number-of-restricted-paths-from-first-to-last-node
+- 1792.maximum-average-pass-ratio
+- 1801.number-of-orders-in-the-backlog
+- 1824.minimum-sideway-jumps
+- 1834.single-threaded-cpu
+- 1851.minimum-interval-to-include-each-query
+- 1857.largest-color-value-in-a-directed-graph
+- 1866.number-of-ways-to-rearrange-sticks-with-k-sticks-visible
+- 1882.process-tasks-using-servers
+- 1884.egg-drop-with-2-eggs-and-n-floors
+- 1908.game-of-nim
+- 1911.maximum-alternating-subsequence-sum
+- 1928.minimum-cost-to-reach-destination-in-time
+- 1937.maximum-number-of-points-with-cost
+- 1942.the-number-of-the-smallest-unoccupied-chair
+- 1947.maximum-compatibility-score-sum
+- 1955.count-number-of-special-subsequences
+- 1959.minimum-total-space-wasted-with-k-resizing-operations
+- 1962.remove-stones-to-minimize-the-total
+- 1971.find-if-path-exists-in-graph
+- 1976.number-of-ways-to-arrive-at-destination
+- 1981.minimize-the-difference-between-target-and-chosen-elements
+- 1985.find-the-kth-largest-integer-in-the-array
+- 1986.minimum-number-of-work-sessions-to-finish-the-tasks
+- 1987.number-of-unique-good-subsequences
+- 2002.maximum-product-of-the-length-of-two-palindromic-subsequences
+- 2003.smallest-missing-genetic-value-in-each-subtree
+- 2008.maximum-earnings-from-taxi
+- 2034.stock-price-fluctuation
+- 2035.partition-array-into-two-arrays-to-minimize-sum-difference
+- 2036.maximum-alternating-subarray-sum
+- 2039.the-time-when-the-network-becomes-idle
+- 2045.second-minimum-time-to-reach-destination
+- 2050.parallel-courses-iii
+- 2052.minimum-cost-to-separate-sentence-into-rows
+- 2054.two-best-non-overlapping-events
+- 2060.check-if-an-original-string-exists-given-two-encoded-strings
+- 2065.maximum-path-quality-of-a-graph
+- 2076.process-restricted-friend-requests
+- 2077.paths-in-maze-that-lead-to-same-room
+- 2092.find-all-people-with-secret
+- 2093.minimum-cost-to-reach-city-with-discounts
+- 2097.valid-arrangement-of-pairs
+- 2099.find-subsequence-of-length-k-with-the-largest-sum
+- 2101.detonate-the-maximum-bombs
+- 2115.find-all-possible-recipes-from-given-supplies
+- 2146.k-highest-ranked-items-within-a-price-range
+- 2163.minimum-difference-in-sums-after-removal-of-elements
+- 2182.construct-string-with-repeat-limit
+- 2192.all-ancestors-of-a-node-in-a-directed-acyclic-graph
+- 2203.minimum-weighted-subgraph-with-the-required-paths
+- 2204.distance-to-a-cycle-in-undirected-graph
+- 2208.minimum-operations-to-halve-array-sum
+- 2233.maximum-product-after-k-increments
+- 2242.maximum-score-of-a-node-sequence
+- 2246.longest-path-with-different-adjacent-characters
+- 2285.maximum-total-importance-of-roads
+- 2290.minimum-obstacle-removal-to-reach-corner
+- 2316.count-unreachable-pairs-of-nodes-in-an-undirected-graph
+- 2328.number-of-increasing-paths-in-a-grid
+- 2335.minimum-amount-of-time-to-fill-cups
+- 2342.max-sum-of-a-pair-with-equal-sum-of-digits
+- 2343.query-kth-smallest-trimmed-number
+- 2344.minimum-deletions-to-make-array-divisible
+- 2357.make-array-zero-by-subtracting-equal-amounts
+- 2359.find-closest-node-to-given-two-nodes
+- 2360.longest-cycle-in-a-graph
+- 2368.reachable-nodes-with-restrictions
+- 2371.minimize-maximum-value-in-a-grid
+- 2374.node-with-highest-edge-score
+- 2386.find-the-k-sum-of-an-array
+- 2392.build-a-matrix-with-conditions
+- 2398.maximum-number-of-robots-within-budget
+- 2402.meeting-rooms-iii
+- 2406.divide-intervals-into-minimum-number-of-groups
+- 2421.number-of-good-paths
+- 2456.most-popular-video-creator
+- 2462.total-cost-to-hire-k-workers
+- 2473.minimum-cost-to-buy-apples
+- 2497.maximum-star-sum-of-a-graph
+- 2503.maximum-number-of-points-from-grid-queries

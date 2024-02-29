@@ -1,0 +1,2875 @@
+# Table of Contents
+
+- [Table of Contents](#table-of-contents)
+- [Official Docs](#official-docs)
+- [Playground](#playground)
+  - [Simple Rest API (No DB)](#simple-rest-api-no-db)
+- [Resources](#resources)
+- [Miscellaneous](#miscellaneous)
+  - [Dependency Injection (DI)](#dependency-injection-di)
+  - [Inversion of Control (IOC)](#inversion-of-control-ioc)
+- [Spring Boot 3 - Amigoscode](#spring-boot-3---amigoscode)
+  - [Spring Initializr](#spring-initializr)
+  - [Project Setup](#project-setup)
+  - [pom.xml](#pomxml)
+  - [Getting Started](#getting-started)
+    - [Deleting Default Files](#deleting-default-files)
+    - [Starting From Scratch](#starting-from-scratch)
+  - [Embedded Web Server (Apache Tomcat)](#embedded-web-server-apache-tomcat)
+  - [Configuring Embedded Web Server](#configuring-embedded-web-server)
+  - [First API](#first-api)
+  - [Annotations/Decorators](#annotationsdecorators)
+    - [Spring Boot](#spring-boot)
+    - [`@SpringBootApplication`](#springbootapplication)
+      - [`@EnableAutoConfiguration`](#enableautoconfiguration)
+    - [Spring](#spring)
+      - [`@Bean`](#bean)
+      - [`@Component`](#component)
+      - [`@ComponentScan`](#componentscan)
+      - [`@Configuration`](#configuration)
+      - [`@Service`](#service)
+      - [`@Repository`](#repository)
+      - [`@Autowired`](#autowired)
+      - [`@Qualifier`](#qualifier)
+      - [`@PropertySource`](#propertysource)
+    - [Spring Web MVC](#spring-web-mvc)
+      - [`@Controller`](#controller)
+      - [`@RestController`](#restcontroller)
+      - [`@ResponseBody`](#responsebody)
+      - [`@RequestBody`](#requestbody)
+      - [`@RequestMapping(method=RequestMethod.GET, value="/path")`](#requestmappingmethodrequestmethodget-valuepath)
+      - [`@GetMapping(value="/path")`](#getmappingvaluepath)
+      - [`@PostMapping(value="/path")`](#postmappingvaluepath)
+      - [`@PutMapping(value="/path")`](#putmappingvaluepath)
+      - [`@DeleteMapping(value="/path")`](#deletemappingvaluepath)
+      - [`@RequestParam(value="name", defaultValue="Hello")`](#requestparamvaluename-defaultvaluehello)
+      - [`@PathVariable("placeholderName")`](#pathvariableplaceholdername)
+  - [JSON for Java](#json-for-java)
+    - [Records](#records)
+  - [Java Objects to JSON Objects](#java-objects-to-json-objects)
+  - [N Tier Diagram](#n-tier-diagram)
+  - [Model](#model)
+  - [DB + JPA Overview](#db--jpa-overview)
+  - [PostgreSQL + Docker](#postgresql--docker)
+  - [Installing PostgreSQL Driver and Spring Data JPA Dependencies](#installing-postgresql-driver-and-spring-data-jpa-dependencies)
+- [Spring MVC - Teddy](#spring-mvc---teddy)
+  - [MVC](#mvc)
+    - [Controller Layer](#controller-layer)
+    - [Model Layer](#model-layer)
+    - [View Layer](#view-layer)
+    - [Dispatcher Servlet](#dispatcher-servlet)
+- [Spring - Teddy](#spring---teddy)
+  - [Intro](#intro)
+  - [Spring Intialiser](#spring-intialiser)
+  - [File Structure](#file-structure)
+  - [Architecture Overview](#architecture-overview)
+    - [Spring Core](#spring-core)
+    - [Infrastructure](#infrastructure)
+    - [Data Access](#data-access)
+    - [Web](#web)
+    - [Repository Pattern / Dependency Injection / Inversion of Control](#repository-pattern--dependency-injection--inversion-of-control)
+  - [Models](#models)
+    - [Method 1 (Traditional)](#method-1-traditional)
+    - [Method 2 (Lombok)](#method-2-lombok)
+  - [Setup Spring Data](#setup-spring-data)
+    - [Spring Data JPA](#spring-data-jpa)
+  - [Controllers](#controllers)
+    - [Testing API with Postman](#testing-api-with-postman)
+  - [`@PathVariable`](#pathvariable)
+  - [`@RequestBody`](#requestbody-1)
+  - [JpaRepository + N-Tier Architecture](#jparepository--n-tier-architecture)
+    - [Control Flow](#control-flow)
+    - [Inheritance Flow](#inheritance-flow)
+  - [Services \& Autowired](#services--autowired)
+    - [Data Transfer Object (DTO)](#data-transfer-object-dto)
+  - [GetAll + Mapping](#getall--mapping)
+  - [Exception Handling](#exception-handling)
+    - [Per Exception](#per-exception)
+    - [Per Controller](#per-controller)
+    - [Global Exception Handling](#global-exception-handling)
+  - [Detail + Update + Delete Pokemon Endpoints](#detail--update--delete-pokemon-endpoints)
+  - [Pagination](#pagination)
+  - [One-To-Many Relationships](#one-to-many-relationships)
+  - [Query Methods](#query-methods)
+    - [Insert Raw SQL](#insert-raw-sql)
+    - [Pokemon Project Continued](#pokemon-project-continued)
+  - [Detail + Update + Delete Review Endpoints](#detail--update--delete-review-endpoints)
+    - [Review Exception](#review-exception)
+
+# Official Docs
+
+- [Spring Boot Docs](https://spring.io/projects/spring-boot)
+- [Spring Boot Reference Documentation](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
+
+# Playground
+
+## Simple Rest API (No DB)
+
+Test with Postman
+
+- URL: GET `http://localhost:8080/api/hello`
+- URL: GET `http://localhost:8080/api/users`
+- URL: POST `http://localhost:8080/api/users/create`
+  - Request Body: Raw JSON `{ "name": "Seth", "age": 22, "skills": ["HTML", "CSS", "ReactJS", "TypeScript", "NextJS"] }`
+  - Request Body: Raw JSON `{ "name": "Bob", "age": 23, "skills": ["CPP", "Rust", "Go"] }`
+
+```java
+// src/main/java/com/demo/Main.java
+package com.demo;
+
+import java.util.*;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.SpringApplication;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+// import org.springframework.web.bind.annotation.*;
+
+@SpringBootApplication
+@RestController
+@RequestMapping(value = "/api")
+public class Main {
+  private List<User> users = new ArrayList<>();
+
+  public static void main(String[] args) {
+    SpringApplication.run(Main.class, args);
+  }
+
+  @GetMapping("/hello")
+  public User hello() {
+    return new User("Sam", 22, List.of("Java", "TypeScript", "Go"));
+  }
+
+  @GetMapping("/users")
+  public List<User> getAllUsers() {
+    return users;
+  }
+
+  @PostMapping("/users/create")
+  public void createUser(@RequestBody User user) {
+    users.add(user);
+  }
+
+  record User(String name, int age, List<String> skills) {}
+}
+```
+
+# Resources
+
+- [Spring Boot - Teddy Smith](https://www.youtube.com/playlist?list=PL82C6-O4XrHfX-kHudgC4cPfMy6QPaF-H)
+  - [GitHub Repo](https://github.com/teddysmithdev/pokemon-review-springboot)
+- [Spring MVC - Teddy Smith](https://www.youtube.com/playlist?list=PL82C6-O4XrHejlASdecIsroNEbZFYo_X1)
+  - [GitHub Repo](https://github.com/teddysmithdev/RunGroop-Java)
+- [Spring Boot 3 - Amigoscode](https://www.youtube.com/watch?v=-mwpoE0x0JQ)
+- [Spring Boot - Amigoscode](https://www.youtube.com/watch?v=9SGDpanrc8U)
+- [Spring Boot - Devtiro](https://www.youtube.com/watch?v=Nv2DERaMx-4)
+
+# Miscellaneous
+
+## Dependency Injection (DI)
+
+- Remove the `new` keyword in all classes/code
+- Delegate/leave creation and management of objects to frameworks (Spring/Guice/Dagger)
+- Objects are created by default as a singleton (meaning if injected into multiple classes, the same instance will be reused and hence greatly benefits horizontal scaling)
+- [YouTube Explanation - Amigoscode](https://www.youtube.com/watch?v=oqYRl06DNHQ)
+
+**BEFORE Dependency Injection**
+
+```java
+public class EmailService {
+  private final ContactListService contactListService;
+
+  public EmailService() {
+    this.contactListService = new ContactListService();
+  }
+
+  sendEmail() {
+    contactListService.getContacts().forEach(() -> contactListService::send);
+  }
+}
+
+public class MailChimpEmailService {
+  private final ContactListService contactListService;
+
+  public MailChimpEmailService() {
+    this.contactListService = new ContactListService();
+  }
+
+  sendEmail() {
+    contactListService.getContacts().forEach(() -> contactListService::send);
+  }
+}
+
+public class ContactListService {
+  public ContactListService() {
+    //...
+  }
+
+  public List<Contacts> getContacts() {
+    // db operation...
+    return ImmutableList.copyOf(...);
+  }
+
+  void send(Contact contact) {
+    //...
+  }
+}
+```
+
+**AFTER Dependency Injection**
+
+```java
+public class EmailService {
+  private final ContactListService contactListService;
+
+  @Inject
+  public EmailService(ContactListService contactListService) {
+    this.contactListService = contactListService;
+  }
+
+  sendEmail() {
+    contactListService.getContacts().forEach(() -> contactListService::send);
+  }
+}
+
+public class MailChimpEmailService {
+  private final ContactListService contactListService;
+
+  @Inject
+  public MailChimpEmailService(ContactListService contactListService) {
+    this.contactListService = contactListService;
+  }
+
+  sendEmail() {
+    contactListService.getContacts().forEach(() -> contactListService::send);
+  }
+}
+
+@Service
+public class ContactListService {
+  public ContactListService() {
+    //...
+  }
+
+  public List<Contacts> getContacts() {
+    // db operation...
+    return ImmutableList.copyOf(...);
+  }
+
+  void send(Contact contact) {
+    //...
+  }
+}
+```
+
+## Inversion of Control (IOC)
+
+- Traditional Procedural Programming is where Class A uses methods from Class B i.e. Class A depends on Class B
+- Class A would instantiate (have a a copy of) Class B within itself
+
+```java
+public class User {
+  MySQLDatabase db;
+
+  public User() {
+    this.db = new MySQLDatabase();
+  }
+
+  public void add(String data) {
+    db.persist(data);
+  }
+}
+```
+
+Procedural Programming Flow of Control
+
+```
+                                Main
+                    ------------|  |------------
+                    |                          |
+                    v                          v
+              High Level Func             High Level Func
+                    |                          |
+                    v                          v
+              Mid Level Func             Mid Level Func
+                    |                          |
+                    v                          v
+```
+
+Structured Inversion of Control (IOC)
+
+- Instead of the user initialising/instantiating another object, the user would use a framework (or higher up dependency) to initialise/instantiate the database instance for the user and pass it to user as a parameter to use
+- Therefore the user relinquishes all responsibility of the database object and depend more upon abstractions rather than concrete implementations which promotes loosely coupled architecture and greater flexibility within code
+
+```
+                                Main
+                                ^  ^
+                    ------------|  |------------
+                    ^                          ^
+                    |                          |
+              High Level Func             High Level Func
+                    ^                          ^
+                    |                          |
+              Mid Level Func             Mid Level Func
+                    ^                          ^
+                    |                          |
+```
+
+- Inversion of Control (IOC):
+
+  - Objects do NOT create other objects on which they rely to do their work
+  - Instead, they get the objects that they need from an outside source (e.g. a framework or an xml configuration file)
+
+- Dependency Injection (DI):
+  - Dependency injection generally means passing a dependent object as a parameter to a method, rather than having the method instantiate/create the dependent object itself
+  - What it means in practice is that the method does NOT have a direct dependency on a particular implementation; any implementation that meets the requirements can be passed as a parameter
+  - Previously Spring Boot used the `@Autowired` annotation/decorator
+  - Currently Spring Boot uses "Constructor-Based Dependency Injection" where we place the required dependencies in the class/object's own constructor (see code below)
+
+```java
+// src/main/java/com/demo/Main.java
+package com.demo;
+
+import java.util.*;
+
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.SpringApplication;
+import org.springframework.web.bind.annotation.*;
+
+@SpringBootApplication
+@RestController
+@RequestMapping(value = "/api")
+public class Main {
+  private final UserRepo userRepo;
+
+  public static void main(String[] args) {
+    SpringApplication.run(Main.class, args);
+  }
+
+  public Main(UserRepo userRepo) { // <-- Constructor-based Dependency Injection HERE
+    this.userRepo = userRepo;
+  }
+
+  //...
+}
+```
+
+# Spring Boot 3 - Amigoscode
+
+- Official Docs
+  - [Spring Boot Docs](https://spring.io/projects/spring-boot)
+  - [Spring Boot Reference Documentation](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
+  - [GraalVM](https://www.graalvm.org/)
+
+## Spring Initializr
+
+- [Spring Initializr](https://start.spring.io/)
+
+Config Options
+
+- Project = `Maven`
+- Language = `Java`
+- Spring Boot = `3.2.3` (do NOT choose SNAPSHOT)
+- Project Metadata:
+  - Group: `com.demo`
+  - Artifact: `spring-boot-example`
+  - Name: `spring-boot-example`
+  - Description: `Demo project for Spring Boot`
+  - Package Name: `com.demo`
+  - Packaging: `jar`
+  - Java: `17`
+- Dependencies
+  - `Spring Web`
+
+## Project Setup
+
+- `File > Project Structure > Project Settings > Project > SDK`
+  - Make sure SDK version is 17+
+
+## pom.xml
+
+- Dependencies are in `<dependencies></dependencies>`
+- `<parent><version>3.0.0</version></parent>` manages versions for dependencies
+
+## Getting Started
+
+### Deleting Default Files
+
+- `src/main/java/com.demo/SpringBootExampleApplication.java`
+  - Click on "Run" to make sure application can run successfully (can also right-click on file)
+  - Make sure you see `Tomcat started on port(s): 8080...` in terminal
+- Afterwards delete the following files:
+  - src/main/java/com.demo
+  - src/main/java/com
+  - src/main/java/resources/static
+  - src/main/java/resources/templates
+  - src/main/java/resources/application.properties
+  - src/test/java/com.demo
+  - src/test/java/com
+- Go to top right hand corner and click on the dropdown menu > Edit Configurations > DELETE "SpringBootExampleApplication"
+
+### Starting From Scratch
+
+- Structure Folder Overview
+  - Java code reside in `src/main/java`
+  - Resources files (html) reside in `src/main/resources`
+  - Test code reside in `src/test/java`
+- Create
+  - `src/main/java/com.demo` package (right-click on "java" folder > New > Package)
+  - `src/main/java/com.demo/Main.java` class (right-click on "com.demo" > New > Java Class)
+    - Shortcut = Enter "main" and press enter (to generate `main` method)
+- Note: `com.demo` == `com/demo` (2 nested folders)
+- Add `@SpringBootApplication` annotation/decorator to indicate "Main" is a "Spring Boot Application" above `public class Main`
+- Add `SpringApplication.run()` inside `main` method
+
+```java
+// src/main/java/com/demo/Main.java
+package com.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class Main {
+  public static void main(String[] args) {
+    SpringApplication.run(Main.class, args);
+  }
+}
+```
+
+## Embedded Web Server (Apache Tomcat)
+
+- Apache Tomcat (called "Tomcat" for short) is a free and open-source implementation of the Jakarta Servlet, Jakarta Expression Language, and WebSocket technologies
+- It provides a "pure Java" HTTP web server environment in which Java code can also run
+- Thus it is a Java web application server (although not a full JEE application server)
+- [Wikipedia](https://en.wikipedia.org/wiki/Apache_Tomcat)
+- ![](images/pic1.png)
+- TLDR: Each Spring Boot application contains an embedded web server
+  - This means anyone can send a request on a given port which the servlet container is listening on (e.g. 8080) and we can process the request and send a response to any given client
+- TomCat == Embedded Web Server
+  - Alternatives: Jetty, Undertow
+- Go to URL: `localhost:8080`
+  - Should see "Whitelabel Error Page"
+
+## Configuring Embedded Web Server
+
+- Create `src/main/resources/application.yml` file (can also create `application.properties` if we do NOT want to use yaml)
+  - This `application.yml` file allows us to configure aspects of our Spring Boot application (e.g. server)
+
+```yml
+# src/main/resources/application.yml
+server:
+  port: 8080
+
+spring:
+  main:
+    web-application-type: servlet
+    # web-application-type: none # Disable server
+```
+
+- [Read more](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/#howto.webserver)
+
+## First API
+
+- Add `@RestController` annotation/decorator above `Main` class to allow for rest endpoints to be created and exposed within class
+- Create `hello()` method within `src/main/java/com.demo/Main.java`
+- Add `@GetMapping("/hello")` annotation/decorator above `hello()` method to expose method as a rest endpoint
+- Restart server for changes to take effect
+- Go to `http://localhost:8080/hello`
+- Note: Can also set it as root path with `@GetMapping("/")`
+
+```java
+// src/main/java/com/demo/Main.java
+package com.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@SpringBootApplication
+@RestController
+public class Main {
+  public static void main(String[] args) {
+    SpringApplication.run(Main.class, args);
+  }
+
+  @GetMapping("/hello")
+  public String hello() {
+    return "Hello World";
+  }
+}
+```
+
+## Annotations/Decorators
+
+```java
+// src/main/java/com/demo/Main.java
+package com.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@SpringBootApplication // Note: @SpringBootApplication == Uncommenting the 3 lines below
+// @ComponentScan(basePackages = "com.demo") // Note: `@ComponentScan()` also works as well
+// @EnableAutoConfiguration
+// @Configuration
+@RestController
+public class Main {
+  public static void main(String[] args) {
+    SpringApplication.run(Main.class, args);
+  }
+
+  @GetMapping("/hello")
+  public String hello() {
+    return "Hello World";
+  }
+}
+```
+
+### Spring Boot
+
+### `@SpringBootApplication`
+
+- `@SpringBootApplication` is a syntactic sugar for combining other annotations.
+- `@SpringBootApplication` is `@Configuration`, `@EnableAutoConfiguration` and `@ComponentScan` annotations combined, configured with their default attributes
+- We add this annotation just once, to the main class of our application
+
+#### `@EnableAutoConfiguration`
+
+- `@EnableAutoConfiguration` annotation is even better
+- It makes Spring guess the configuration based on the JAR files available on the `classpath`
+- It can figure out what libraries you use and pre-configure their components automatically for you
+- It is how all the spring-boot-starter libraries work, meaning it's a major lifesaver both when you're just starting to work with a library as well as when you know and trust the default config to be reasonable
+
+### Spring
+
+#### `@Bean`
+
+- Each component in your Spring application is called a Bean
+- A class is annotated as being such with `@bean`, or another annotation/decorator which inherits from it
+- This is what tells the IOC/DI system inside Spring to treat the class as a component within the system, so it can be injected as a dependency, or receive dependency injects into it via `@Autowired` annotation/decorator
+
+#### `@Component`
+
+- If you're developing a spring boot application, one of the first things you'll need to do is annotate your components with the `@Component` annotation/decorator
+- This annotation/decorator tells spring that this class is a component and should be managed by the spring container
+- In addition to the `@Component` annotation/decorator, you can also use `@Repository`, `@Service`, and `@Controller` annotations
+- Each of these annotations has a specific purpose and spring will manage your components accordingly
+- For example, the `@Repository` annotation/decorator is used for classes that implement data access objects (DAOs)
+
+#### `@ComponentScan`
+
+- `@ComponentScan` is responsible for telling Spring where to look for components
+- This annotation is part of `@SpringBootApplication` which can be found on the main class of any Spring Boot application
+- By default, Spring will search within the package that the main class is located, along with all of its child packages
+- As such, it is very important to only put components in the same package or a child package
+- Insert diagram here
+
+#### `@Configuration`
+
+- Configuration classes are used to create beans, conventionally called `AppConfig`, if you want to have a bean dependent on another bean you must define it inside of a configuration class
+
+#### `@Service`
+
+- Service, unlike the other types of component, offers no special functionality over `@Component` and is instead merely used to further show the intent of the class
+
+#### `@Repository`
+
+- Used on classes that directly access the database (e.g. used in DAO layer)
+
+#### `@Autowired`
+
+- Spring `@Autowired` annotation/decorator is used for automatic injection of beans
+- Spring `@Qualifier` annotation/decorator is used in conjunction with `@Autowired` to avoid confusion when we have two or more beans configured for same type
+
+#### `@Qualifier`
+
+- TODO
+
+#### `@PropertySource`
+
+- TODO
+
+### Spring Web MVC
+
+- `@RestController`, `@GetMapping` are annotations that are part of the "Spring Web MVC"
+
+- The Spring Web MVC (model-view-controller) framework provides a very easy way of implementing MVC architecture in our web applications
+- The Java language has a low level API called the Servelets API, which allows us to write servlets which are special Java classes for
+  handling HTTP requests/responses
+  - However, working directly with the servlets API can be clunky when working on large, enterprise grade applications
+- Spring MVC abstracts away a lot of the messy details you would have to understand and manage yourself if writing servlets manually
+  - Servlet = Process that handles HTTP requests
+  - It exposes a custom set of annotations which we apply to our classes and methods to assign their responsibility within the MVC architecture
+  - By using annotations to mark the responsibilities of our classes, Spring Web MVC cuts out a lot of boilerplate
+  - Creating RESTful services becomes very easy
+
+#### `@Controller`
+
+- Marks the class as a web controller
+- A specialisation of the `@component` annotation, which allows Spring to auto-detect implementation classes/beans by scanning the classpath
+
+#### `@RestController`
+
+- The `@RestController` annotation is a convenience syntax for `@Controller` and `@ResponseBody` together
+- This indicates that the class is a controller, and that all the methods in the marked class will return a JSON response
+
+#### `@ResponseBody`
+
+- The `@ResponseBody` is a utility annotation that tells Spring to automatically serialize return value(s) of this class' methods into HTTP responses
+- When building a JSON endpoint, this is an amazing way to "magically" convert your objects into JSON for easier consumption
+- If we use the `@RestController` annotation on our class, we do NOT need this annotation because `@RestController` inherits from it
+
+#### `@RequestBody`
+
+- The `@RequestBody` annotation is used to bind the HTTP request body to a Java object
+- The `@RequestBody` annotation is part of the spring framework and is used in conjunction with the Spring MVC Web framework
+- The Spring MVC Web framework is a Java-based web application framework that provides a comprehensive set of features for building web applications
+- The Spring MVC web framework is based on the Model-View-Controller (MVC) architecture
+  - The MVC architecture is a design pattern that separates an application into three components: the model, the view, and the controller
+  - The "model" is the data representation
+  - The `@RequestBody` annotation is used to bind the HTTP request body to the "controller"
+  - The "controller" processes the request and then sends the response back to the "view"
+  - The "view" plays the response to the user
+
+#### `@RequestMapping(method=RequestMethod.GET, value="/path")`
+
+- The `@RequestMapping(method=RequestMethod.GET, value="/path")` annotation specifies a method in the controller that should be responsible for serving the HTTP request to the given path, or endpoint
+- Spring handles the mechanical details of how this is achieved for you
+- You simply specify the method and path parameters on the annotation and Spring will route the requests into the correct action methods
+- If you do NOT specify a method value, it will default to GET
+
+#### `@GetMapping(value="/path")`
+
+- An abbreviated form of `@RequestMapping` specifically for HTTP GET requests, which only takes an optional `value` argument and NO `method` argument
+- The "Read" in "CRUD"
+
+#### `@PostMapping(value="/path")`
+
+- An abbreviated form of `@RequestMapping` specifically for HTTP POST requests, which only takes an optional `value` argument and NO `method` argument
+- The "Create" in "CRUD"
+
+#### `@PutMapping(value="/path")`
+
+- An abbreviated form of `@RequestMapping` specifically for HTTP PUT requests, which only takes an optional `value` argument and NO `method` argument
+- The "Update" in "CRUD"
+
+#### `@DeleteMapping(value="/path")`
+
+- An abbreviated form of `@RequestMapping` specifically for HTTP DELETE requests, which only takes an optional `value` argument and NO `method` argument
+- The "Delete" in "CRUD"
+
+#### `@RequestParam(value="name", defaultValue="Hello")`
+
+- Naturally, the methods handling the requests might take parameters
+- To help you with binding the HTTP parameters into the action method arguments, you can use the `@RequestParam(value="name", defaultValue="Hello")` annotation
+- Spring will parse the request parameters and put the appropriate ones into your method arguments
+
+#### `@PathVariable("placeholderName")`
+
+- Another common way to provide information to the backend is to encode it in the URL
+- Then you can use the `@PathVariable("placeholderName")` annotation to bring the values from the URL to the method arguments
+
+## JSON for Java
+
+Code Example
+
+- `http://localhost:8080/hello` returns `{"response":"Hello World"}`
+  - Notice how the URL returns a JSON response because of the `@RestController` annotation/decorator
+
+```java
+// src/main/java/com/demo/Main.java
+package com.demo;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@SpringBootApplication
+@RestController
+public class Main {
+  public static void main(String[] args) {
+    SpringApplication.run(Main.class, args);
+  }
+
+  @GetMapping("/hello")
+  public HelloResponse hello() {
+    return new HelloResponse("Hello World");
+  }
+
+  record HelloResponse(String response) {}
+}
+```
+
+- The Jackson library (Java JSON Library) is responsible for handling all the JSON within our Spring Boot Application
+- Inside IntelliJ, go to Projects > External Libraries and find `com.fasterxml.jackson...`
+- [GitHub Link](https://github.com/FasterXML/jackson)
+- Download ["JSON Viewer" (tulios) Chrome Extension](https://chromewebstore.google.com/detail/json-viewer/gbmdgpbipfallnflgajpaliibnhdgobh)
+
+### Records
+
+```java
+// src/main/java/com/demo/Main.java
+package com.demo;
+
+import java.util.Objects;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@SpringBootApplication
+@RestController
+public class Main {
+  public static void main(String[] args) {
+    SpringApplication.run(Main.class, args);
+  }
+
+  @GetMapping("/hello")
+  public HelloResponse hello() {
+    return new HelloResponse("Hello World");
+  }
+
+  // record HelloResponse(String response) {}
+  // Note: The line above is equivalent to all the boilerplate code below
+  class HelloResponse {
+    private final String response;
+
+    HelloResponse(String response) {
+      this.response = response;
+    }
+
+    public String getResponse() {
+      return response;
+    }
+
+    @Override
+    public String toString() {
+      return "HelloResponse{" + "response='" + response + '\'' + '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+      if (this == o) {
+        return true;
+      }
+      if (o == null || this.getClass() != o.getClass()) {
+        return false;
+      }
+      HelloResponse that = (HelloResponse) o;
+      return Objects.equals(response, that.response);
+    }
+
+    @Override
+    public int hashCode() {
+      return Objects.hash(response);
+    }
+  }
+}
+```
+
+## Java Objects to JSON Objects
+
+- URL: `http://localhost:8080/hello`
+  - Response: `{"response":"Hello World","favLangs":["Java","Go","TypeScript"],"person":{"name":"Seth","age":28,"savings":90000.0}}`
+
+```java
+// src/main/java/com/demo/Main.java
+package com.demo;
+
+import java.util.List;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@SpringBootApplication
+@RestController
+public class Main {
+  public static void main(String[] args) {
+    SpringApplication.run(Main.class, args);
+  }
+
+  @GetMapping("/hello")
+  public HelloResponse hello() {
+    return new HelloResponse("Hello World", List.of("Java", "Go", "TypeScript"), new Person("Seth", 23, 90_000));
+  }
+
+  record Person(String name, int age, double savings) {}
+
+  record HelloResponse(String response, List<String> favLangs, Person person) {}
+}
+```
+
+## N Tier Diagram
+
+![](images/pic2.png)
+
+- Note: The DB is normally run on Docker
+- N Tier Architecture = Many layers with each layer responsible for one thing
+
+## Model
+
+![](images/pic3.png)
+
+- Create `src/main/java/com.demo/Customer.java`
+
+```java
+// src/main/java/com.demo/Customer.java
+package com.demo;
+
+import java.util.Objects;
+
+public class Customer {
+  private Integer id;
+  private Integer age;
+  private String name;
+  private String email;
+
+  public Customer(Integer id, Integer age, String name, String email) {
+    this.id = id;
+    this.age = age;
+    this.name = name;
+    this.email = email;
+  }
+
+  public Customer() {}
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
+  }
+
+  public Integer getAge() {
+    return age;
+  }
+
+  public void setAge(Integer age) {
+    this.age = age;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getEmail() {
+    return email;
+  }
+
+  public void setEmail(String email) {
+    this.email = email;
+  }
+
+  @Override
+  public int hashCode() {
+    // final int prime = 31;
+    // int result = 1;
+    // result = prime * result + ((id == null) ? 0 : id.hashCode());
+    // result = prime * result + ((age == null) ? 0 : age.hashCode());
+    // result = prime * result + ((name == null) ? 0 : name.hashCode());
+    // result = prime * result + ((email == null) ? 0 : email.hashCode());
+    // return result;
+    return Objects.hash(id, age, name, email);
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) {
+      return true;
+    }
+    if (obj == null || getClass() != obj.getClass()) {
+      return false;
+    }
+    Customer other = (Customer) obj;
+    return Objects.equals(id, other.id) && Objects.equals(age, other.age) && Objects.equals(name, other.name) && Objects.equals(email, other.email);
+  }
+
+  @Override
+  public String toString() {
+    return "Customer [id=" + id + ", age=" + age + ", name=" + name + ", email=" + email + "]";
+  }
+}
+```
+
+## DB + JPA Overview
+
+![](images/pic4.png)
+
+- JPA = Jakarta Persistence is a Jakarta EE API specificiation that describes the management of relational data in enterprise Java applications
+  - TLDR = Take Java classes and map into a database table and interact with the database without needing to write SQL
+  - [Link 1](https://spring.io/projects/spring-data-jpa)
+  - [Link 2](https://en.wikipedia.org/wiki/Jakarta_Persistence)
+
+## PostgreSQL + Docker
+
+- [Download Docker Desktop](https://docs.docker.com/get-docker/)
+- Create `~/docker-compose.yml` file in root of project
+- Start with `docker compose up -d`
+- Check service with `docker compose ps`
+- View logs with `docker logs postgres -f` (where "postgres" is the name of the container and `-f` == follow)
+
+```yml
+# ~/docker-compose.yml
+services:
+  db:
+    container_name: postgres
+    image: postgres
+    environment:
+      POSTGRES_USER: usr
+      POSTGRES_PWD: pwd
+      PGDATA: /data/postgres
+    volumes:
+      - db: /data/postgres
+    ports:
+      # hostPort:ctnrPort
+      - '5332:5432'
+    networks:
+      - db
+    restart: unless-stopped
+networks:
+  db:
+    driver: bridge
+
+volumes:
+  db:
+```
+
+## Installing PostgreSQL Driver and Spring Data JPA Dependencies
+
+- [PostgreSQL JDBC Driver](https://jdbc.postgresql.org/)
+- Open up the `~/pom.xml` file and add the following under the `<dependencies></dependencies>` tags
+
+```xml
+<dependency>
+  <groupId>org.postgresql</groupId>
+  <artifactId>postgresql</artifactId>
+  <scope>runtime</scope>
+</dependency>
+```
+
+- Spring Data JPA allows us to map Java classes to database tables and use class to directly interact with DB without having to write SQL
+- [Spring Data JPA](https://spring.io/projects/spring-data-jpa)
+- [Spring Data JPA Reference](https://docs.spring.io/spring-data/jpa/reference/jpa.html)
+- Open up the `~/pom.xml` file and add the following under the `<dependencies></dependencies>` tags
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+```
+
+# Spring MVC - Teddy
+
+- Spring MVC is a library within Spring framework that simplifies HTTP requests and responses
+- MVC = Model-View-Controller
+  - MVC allows the separation of business, presentation, and navigation logic
+
+## MVC
+
+### Controller Layer
+
+- Controller Layer = For URLS `http://localhost:8080
+- URLs control navigation, displaying of data
+
+### Model Layer
+
+- Model Layer = Data representation (representation of DB tables)
+
+### View Layer
+
+- View Layer = Webpage (displaying data from DB onto webpage)
+
+### Dispatcher Servlet
+
+- Dispatcher Servlet = Code pattern that handles an incoming HttpRequest, delegates and processes the request
+- Requests will first go through a "Dispatcher Servlet" then through a "Handler Mapping" that checks the request of the URL then through a "Controller" which executes and then displays the "View"
+
+```
+Dispatcher Servlet -> Handler Mapping -> Controller -> View
+```
+
+# Spring - Teddy
+
+## Intro
+
+- Benefits
+  - Opinionated
+  - Established
+  - Easy to setup
+- Based on "dependency injection" and "inversion of control"
+- The whole idea behind Spring is to inject "Objects/Beans" via dependency injection
+- Spring focuses on the "plumbing" of enterprise applications so that teams can focus on application-level business logic, without unnecessary ties to specific deployment environments
+- Maven = How to manage dependencies in your project (`pom.xml`) (how to get jar files into local pc from centralised cloud repository)
+
+## Spring Intialiser
+
+[Spring Initializr](https://start.spring.io/)
+
+Project Options:
+
+- Project = `Maven`
+- Spring Boot = `3.2.3`
+  - Do NOT use "SNAPSHOT" (beta versions)
+- Project Metadata
+  - Group = `com.pokemonreview`
+  - Artifact = `api`
+  - Name = `api`
+  - Description = `Pokemon Review API Course 2022`
+  - Package name = `com.pokemonreview.api`
+  - Packaging = `Jar`
+- Java = `17`
+- Depedencies
+  - `Spring Web`
+  - `Lombok`
+  - `Spring Data JPA`
+  - `PostgreSQL Driver`
+
+Will get initial error with JPA because database (DB) is not hooked up yet
+
+## File Structure
+
+- src/main/java/com/pokemonreview/api/ApiApplication
+- `api/src/main/java` = Application Implementation Files
+- `api/src/main/resources` = Static, options, properties
+- `api/src/test` = Unit tests
+- `api/target/` = Where code is generated
+- `api/pom.xml` = Add extra dependencies here
+- `/External Libraries` = Location of all jar files
+- `/Scratches and Consoles` = Can ignore
+
+## Architecture Overview
+
+### Spring Core
+
+- Insert diagram here
+
+|               | Spring Core |      |      |
+| ------------- | ----------- | ---- | ---- |
+| Beans/Objects | Context     | Core | SpEL |
+
+- You declare and put beans/objects within your context
+- Sprint Context = Bean Box
+
+### Infrastructure
+
+- Insert diagram here
+
+|     | Infrastructure |                 |
+| --- | -------------- | --------------- |
+| AOP | Aspects        | Instrumentation |
+
+### Data Access
+
+- Insert diagram here
+
+|      | Data Access |     |     |
+| ---- | ----------- | --- | --- | ------------ |
+| JDBC | JMS         | ORM | OXM | Transactions |
+
+- JPA = Specification for ORM Data Access Layer
+- An ORM controls and abstracts verbose code used to access DB
+- "Hibernate" ORM is a wrapper/abstraction for JDBC
+
+### Web
+
+- Insert diagram here
+
+|         | Web     |        |     |
+| ------- | ------- | ------ | --- |
+| Portlet | Servlet | Struts | Web |
+
+- "Spring Web" allows you to build backends and get access to controllers (for MVC)
+- "Servlet"
+
+### Repository Pattern / Dependency Injection / Inversion of Control
+
+- Insert diagram here
+- Flow Diagram
+
+```
+Customer -> Controller -> Service -> Repository -> (SQL)
+```
+
+- `www.pokemonapi.com/pokemon`
+- HTTP Methods
+  - GET
+  - POST
+  - PUT
+  - DELETE
+- CRUD = Create Read Update Delete
+- Analogy
+  - Think of controller as base of tree with many roots
+  - Within these roots we are going to be accessing the database DB
+- The "controller" will route to a "service"
+- The "service" will have logic to control how to access database DB
+- The "repository" will have specific methods for CRUD (Create Read Update Delete)
+- Quote: "Thin controllers, fat services, fat controllers"
+
+## Models
+
+- Models = POJO (Plain Old Java Object)
+- Package = Folder
+- Create "models" folder in `src/main/java/com/pokemonreview/api/`
+
+### Method 1 (Traditional)
+
+```java
+// src/main/java/com/pokemonreview/api/Pokemon.java
+package.com.pokemonreview.api.models;
+
+public class Pokemon {
+  private int id;
+  private String name;
+  private String type;
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public String getName() {
+    return name;
+  }
+
+  public void setName(String name) {
+    this.name = name;
+  }
+
+  public String getType() {
+    return type;
+  }
+
+  public void setType(String type) {
+    this.type = type;
+  }
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/Reivew.java
+package.com.pokemonreview.api.models;
+
+public class Review {
+  private int id;
+  private String title;
+  private String content;
+  private int stars;
+
+  public int getId() {
+    return id;
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public String getTitle() {
+    return title;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public String getContent() {
+    return content;
+  }
+
+  public void setContent(String content) {
+    this.content = content;
+  }
+
+  public int getStars() {
+    return stars;
+  }
+
+  public void setStars(int stars) {
+    this.stars = stars;
+  }
+}
+```
+
+### Method 2 (Lombok)
+
+Utilising Lombok to automatically generate getters and setters
+
+```java
+// src/main/java/com/pokemonreview/api/Pokemon.java
+package.com.pokemonreview.api.models;
+
+import lombok.Data;
+
+// Getters and Setters automatically generated by lombok
+@Data
+public class Pokemon {
+  private int id;
+  private String name;
+  private String type;
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/Review.java
+package.com.pokemonreview.api.models;
+
+import lombok.Data;
+
+// Getters and Setters automatically generated by lombok
+@Data
+public class Review {
+  private int id;
+  private String title;
+  private String content;
+  private int stars;
+}
+```
+
+## Setup Spring Data
+
+- Download PostgreSQL
+- Create DB in Intellij (`shift + shift > Database > Add (+) > Data Source > PostgreSQL`)
+- Right click on DB (New > Database)
+  - Name = `pokemonapicourse` (leave everything else blank and click OK)
+  - Make sure all schemas are shown by right clicking and making sure all shemass are displayed
+
+### Spring Data JPA
+
+- Add annotations/decorators `@` to get Spring Data JPA to automatically create models/tables in the DB
+- Also need to add primary key for table
+- `@GeneratedValue(strategy = GenerationType.Identity)` prevents JPA from incrementing primary key and gets PostgreSQL DB to handle generating unique ids
+- `@Id` = Gets
+
+```java
+// src/main/java/com/pokemonreview/api/Pokemon.java
+package.com.pokemonreview.api.models;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+public class Pokemon {
+  @Id
+  @GeneratedValue(strategy = GenerationType.Identity)
+  private int id;
+  private String name;
+  private String type;
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/Review.java
+package.com.pokemonreview.api.models;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Entity
+public class Review {
+  @Id
+  @GeneratedValue(strategy = GenerationType.Identity)
+  private int id;
+  private String title;
+  private String content;
+  private int stars;
+}
+```
+
+- After editing your Java files, go to `src/main/resources/application.properties` and add DB address
+  - Note: `pokemonapicourse` is the NAME of the DB
+
+```sh
+# src/main/resources/application.properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/pokemonapicourse
+spring.datasource.username=psql
+spring.datasource.password=psql
+spring.datasource.driver-class-name=org.postgresql.Driver
+# Get JPA to automatically create updated tables
+spring.jpa.hibernate.ddl-auto=update
+# Show JPA SQL commands in terminal
+spring.jpa.show-sql=true
+```
+
+## Controllers
+
+- Controllers control how the requests are handled in our API
+  - This is done by controlling how URLs are accessed
+  - Analogy: Controllers == Doorway to perform CRUD operations
+- HTTP Methods
+  - GET
+  - POST
+  - PUT
+  - DELETE
+  - CRUD = Create Read Update Delete
+- 2 main APIs for this project
+  - `www.pokmeonapi.com/pokemon`
+  - `www.pokmeonapi.com/review`
+- Add
+  - **`@RestController`**
+  - **`@RequestMapping("/api/")`**
+    - Note: This will append `/api/` to your base url
+
+```java
+// src/main/java/com/pokemonreview/api/controllers/PokemonController.java
+package com.pokemonreview.api.controllers;
+
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
+import com.pokemonreview.api.models.Pokemon; // <-- HERE
+import com.pokemonreview.api.service.PokemonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/")
+public class PokemonController {
+
+  @GetMapping("pokemon")
+  public ResponseEntity<List<Pokemon>> getPokemons() {
+    List<Pokemon> pokemons = new ArrayList<>();
+    pokemons.add(new Pokemon(1, "Squirtle", "Water"));
+    pokemons.add(new Pokemon(2, "Pikachu", "Electric"));
+    pokemons.add(new Pokemon(3, "Charmander", "Fire"));
+    return ResponseEntity.ok(pokemons);
+    // return new ResponseEntity<>(pokemons, HttpStatus.OK);
+  }
+}
+```
+
+### Testing API with Postman
+
+- Create "account" with Postman
+- Create "workspace"
+- Create "collection"
+- Create "folder" within collection (by right-clicking on collection)
+- Create "request" within folder
+  - Make sure to NOT use `https` and use `http` instead
+  - URL example: GET `http://localhost:8080/api/pokemon`
+
+## `@PathVariable`
+
+- `@PathVariable` allows you to fetch a resource by URI/id
+  - URL example: GET `http://localhost:8080/api/pokemon/1`
+
+## `@RequestBody`
+
+- `@RequestBody` allows you to create resources
+  - Request Body example: `{ "id": 1, "name": "Pikachu", "type": "Electric" }`
+    - In Postman `Body > raw > JSON` and enter above
+    - Note: You do NOT need to enter "id" in request body since we added `@Id` in `class Pokemon` which automatically generates `id` for us
+  - URL example: POST `http://localhost:8080/api/pokemon/create`
+
+```java
+// src/main/java/com/pokemonreview/api/controllers/PokemonController.java
+package com.pokemonreview.api.controllers;
+
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
+import com.pokemonreview.api.models.Pokemon; // <-- HERE
+import com.pokemonreview.api.service.PokemonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/")
+public class PokemonController {
+
+  @GetMapping("pokemon")
+  public ResponseEntity<List<Pokemon>> getPokemons() {
+    List<Pokemon> pokemons = new ArrayList<>();
+    pokemons.add(new Pokemon(1, "Squirtle", "Water"));
+    pokemons.add(new Pokemon(2, "Pikachu", "Electric"));
+    pokemons.add(new Pokemon(3, "Charmander", "Fire"));
+    return ResponseEntity.ok(pokemons);
+    // return new ResponseEntity<>(pokemons, HttpStatus.OK);
+  }
+
+  @GetMapping("pokemon/{id}")
+  public Pokemon pokemonDetail(@PathVariable int id) {
+    return new Pokemon(id, "Pikachu", "Electric");
+  }
+
+  @PostMapping("pokemon/create")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseEntity<Pokemon> createPokemon(@RequestBody Pokemon pokemon) {
+    System.out.println(pokemon.getName());
+    System.out.println(pokemon.getType());
+    return new ResponseEntity<>(pokemon, HttpStatus.CREATED);
+  }
+
+  @PutMapping("pokemon/{id}/update")
+  public ResponseEntity<Pokemon> updatePokemon(@RequestBody Pokemon pokemon, @PathVariable("id") int pokemonId) {
+    System.out.println(pokemon.getName());
+    System.out.println(pokemon.getType());
+    return ResponseEntity.ok(pokemon);
+    // return new ResponseEntity<>(pokemon, HttpStatus.OK);
+  }
+
+  @DeleteMapping("pokemon/{id}/delete")
+  public ResponseEntity<String> deletePokemon(@PathVariable("id") int pokemonId) {
+    System.out.println(pokemonId);
+    return ResponseEntity.ok("Pokemon deleted successfully");
+    // return new ResponseEntity<>(pokemon, HttpStatus.OK);
+  }
+}
+```
+
+## JpaRepository + N-Tier Architecture
+
+- Repository = For CRUD operations
+  - Will automatically create the following methods for you
+    - `findAll()`
+    - `findAllById()`
+    - `saveAll()`
+    - `flush()`
+    - `saveAndFlush()`
+    - `deleteInBatch()`
+    - `getOne()`
+    - `getById()`
+
+### Control Flow
+
+- Insert diagram here
+
+```
+Controllers -> Services -> Respository -> SQL
+```
+
+### Inheritance Flow
+
+- Insert diagram here
+
+```
+CrudRepository -> PagingAndSortingRepository -> JPARepository
+```
+
+- First value in `JpaRepository<>` = Name of entity for repository
+- Second value in `JpaRepository<>` = Wrapper class of `id` for entity
+
+```java
+// src/main/java/com/pokemonreview/api/repository/PokemonRepository.java
+package com.pokemonreview.api.repository;
+
+import com.pokemonreview.api.models.Pokemon;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.Optional;
+
+public interface PokemonRepository extends JpaRepository<Pokemon, Integer> {
+  Optional<Pokemon> findByType(String type);
+}
+```
+
+## Services & Autowired
+
+- We put the "repository" methods inside our "service" methods
+  - E.g. `findAll()` inside `getPokemon()`
+- We create a `pokemonService` interface and NOT class
+  - This allows us to take the "services" and bring it into the "controllers", in a way that does not depend on the other one (dependency injection)
+- Because the "repository" is also an interface we can put our "repository" into our "service"
+- Insert diagram here
+
+```java
+// src/main/java/com/pokemonreview/api/service/PokemonService.java
+package com.pokemonreview.api.service;
+
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
+
+import java.util.List;
+
+public interface PokemonService {
+  PokemonDto createPokemon(PokemonDto pokemonDto);
+}
+```
+
+- Create `impl` folder (implementation)
+- Note: Need to add decorator `@Service` so that spring will register your service
+- Right click inside `class PokemonServiceImpl` > Generate > Constructor
+- Bring/Inject `PokemonRepository` into `PokemonService` via interface
+- Only add decorate `@Autowired` above actual constructor
+
+```java
+// src/main/java/com/pokemonreview/api/service/impl/PokemonServiceImpl.java
+package com.pokemonreview.api.service.impl;
+
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
+import com.pokemonreview.api.exceptions.PokemonNotFoundException;
+import com.pokemonreview.api.models.Pokemon;
+import com.pokemonreview.api.repository.PokemonRepository;
+import com.pokemonreview.api.service.PokemonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class PokemonServiceImpl implements PokemonService {
+  private PokemonRepository pokemonRepository;
+
+  @Autowired
+  public PokemonServiceImpl(PokemonRepository pokemonRepository) {
+    this.pokemonRepository = pokemonRepository;
+  }
+
+  @Override
+  public PokemonDto createPokemon(PokemonDto pokemonDto) {
+    Pokemon pokemon = new Pokemon();
+    pokemon.setName(pokemonDto.getName());
+    pokemon.setType(pokemonDto.getType());
+
+    Pokemon newPokemon = pokemonRepository.save(pokemon);
+
+    PokemonDto pokemonResponse = new PokemonDto();
+    pokemonResponse.setId(newPokemon.getId());
+    pokemonResponse.setName(newPokemon.getName());
+    pokemonResponse.setType(newPokemon.getType());
+    return pokemonResponse;
+  }
+}
+```
+
+- Bring/Inject `PokemonService` into Controllers
+
+```java
+// src/main/java/com/pokemonreview/api/controllers/PokemonController.java
+package com.pokemonreview.api.controllers;
+
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
+import com.pokemonreview.api.models.Pokemon;
+import com.pokemonreview.api.service.PokemonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/")
+public class PokemonController {
+
+  private PokemonService pokemonService;
+
+  @Autowired
+  public PokemonController(PokemonService pokemonService) {
+    this.pokemonService = pokemonService;
+  }
+
+  @GetMapping("pokemon")
+  public ResponseEntity<List<Pokemon>> getPokemons() {
+    List<Pokemon> pokemons = new ArrayList<>();
+    pokemons.add(new Pokemon(1, "Squirtle", "Water"));
+    pokemons.add(new Pokemon(2, "Pikachu", "Electric"));
+    pokemons.add(new Pokemon(3, "Charmander", "Fire"));
+    return ResponseEntity.ok(pokemons);
+    // return new ResponseEntity<>(pokemons, HttpStatus.OK);
+  }
+
+  @GetMapping("pokemon/{id}")
+  public Pokemon pokemonDetail(@PathVariable int id) {
+    return new Pokemon(id, "Pikachu", "Electric");
+  }
+
+  @PostMapping("pokemon/create")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseEntity<PokemonDto> createPokemon(@RequestBody PokemonDto pokemonDto) {
+    return new ResponseEntity<>(pokemonService.createPokemon(pokemonDto), HttpStatus.CREATED);
+  }
+
+  @PutMapping("pokemon/{id}/update")
+  public ResponseEntity<Pokemon> updatePokemon(@RequestBody Pokemon pokemon, @PathVariable("id") int pokemonId) {
+    System.out.println(pokemon.getName());
+    System.out.println(pokemon.getType());
+    return ResponseEntity.ok(pokemon);
+    // return new ResponseEntity<>(pokemon, HttpStatus.OK);
+  }
+
+  @DeleteMapping("pokemon/{id}/delete")
+  public ResponseEntity<String> deletePokemon(@PathVariable("id") int pokemonId) {
+    System.out.println(pokemonId);
+    return ResponseEntity.ok("Pokemon deleted successfully");
+    // return new ResponseEntity<>(pokemon, HttpStatus.OK);
+  }
+}
+```
+
+- Testing with Postman
+  - URL example: POST `http://localhost:8080/api/pokemon/create`
+  - Request Body: JSON `{ "name": "piplup", "type": "water"}`
+
+### Data Transfer Object (DTO)
+
+- DTOs are commonly used to encapsulate data transferred between the controller and service layers, or between the service layer and the persistence layer
+- Need to create a `dto` folder
+- Whenever you send/return data, you do NOT always need to send all data fields back (e.g. do not want to send id/primary key/name of data back)
+- DTO = Model without all data values/fields to allow for data encapsulation and submitting data securely
+
+```java
+// src/main/java/com/pokemonreview/api/dto/PokemonDto.java
+package com.pokemonreview.api.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+public class PokemonDto {
+  private int id;
+  private String name;
+  private String type;
+}
+```
+
+## GetAll + Mapping
+
+- Insert diagram here (4:23)
+
+```java
+// src/main/java/com/pokemonreview/api/service/PokemonService.java
+package com.pokemonreview.api.service;
+
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
+
+import java.util.List;
+
+public interface PokemonService {
+  PokemonDto createPokemon(PokemonDto pokemonDto);
+
+  List<PokemonDto> getAllPokemon();
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/service/impl/PokemonServiceImpl.java
+package com.pokemonreview.api.service.impl;
+
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
+import com.pokemonreview.api.exceptions.PokemonNotFoundException;
+import com.pokemonreview.api.models.Pokemon;
+import com.pokemonreview.api.repository.PokemonRepository;
+import com.pokemonreview.api.service.PokemonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class PokemonServiceImpl implements PokemonService {
+  private PokemonRepository pokemonRepository;
+
+  @Autowired
+  public PokemonServiceImpl(PokemonRepository pokemonRepository) {
+    this.pokemonRepository = pokemonRepository;
+  }
+
+  @Override
+  public PokemonDto createPokemon(PokemonDto pokemonDto) {
+    Pokemon pokemon = new Pokemon();
+    pokemon.setName(pokemonDto.getName());
+    pokemon.setType(pokemonDto.getType());
+
+    Pokemon newPokemon = pokemonRepository.save(pokemon);
+
+    PokemonDto pokemonResponse = new PokemonDto();
+    pokemonResponse.setId(newPokemon.getId());
+    pokemonResponse.setName(newPokemon.getName());
+    pokemonResponse.setType(newPokemon.getType());
+    return pokemonResponse;
+  }
+
+  @Override
+  public List<PokemonDto> getAllPokemon() {
+    // Note: .map() maps over stream; .collect() turns stream into list
+    // Pokemon pTest = pokemonRepository.findById(543).orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be found"));
+    List<Pokemon> pokemon = pokemonRepository.findAll();
+    return pokemon.stream().map(p -> mapToDto(p)).collect(Collectors.toList());
+  }
+
+  private PokemonDto mapToDto(Pokemon pokemon) {
+    PokemonDto pokemonDto = new PokemonDto();
+    pokemonDto.setId(pokemon.getId());
+    pokemonDto.setName(pokemon.getName());
+    pokemonDto.setType(pokemon.getType());
+    return pokemonDto;
+  }
+
+  private Pokemon mapToEntity(PokemonDto pokemonDto) {
+    Pokemon pokemon = new Pokemon();
+    pokemon.setName(pokemonDto.getName());
+    pokemon.setType(pokemonDto.getType());
+    return pokemon;
+  }
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/controllers/PokemonController.java
+package com.pokemonreview.api.controllers;
+
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
+import com.pokemonreview.api.models.Pokemon;
+import com.pokemonreview.api.service.PokemonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/")
+public class PokemonController {
+
+  private PokemonService pokemonService;
+
+  @Autowired
+  public PokemonController(PokemonService pokemonService) {
+    this.pokemonService = pokemonService;
+  }
+
+  @GetMapping("pokemon")
+  public ResponseEntity<List<PokemonDto>> getPokemons() {
+    return new ResponseEntity<>(pokemonService.getAllPokemon(), HttpStatus.OK);
+  }
+
+  @GetMapping("pokemon/{id}")
+  public Pokemon pokemonDetail(@PathVariable int id) {
+    return new Pokemon(id, "Pikachu", "Electric");
+  }
+
+  @PostMapping("pokemon/create")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseEntity<PokemonDto> createPokemon(@RequestBody PokemonDto pokemonDto) {
+    return new ResponseEntity<>(pokemonService.createPokemon(pokemonDto), HttpStatus.CREATED);
+  }
+
+  @PutMapping("pokemon/{id}/update")
+  public ResponseEntity<Pokemon> updatePokemon(@RequestBody Pokemon pokemon, @PathVariable("id") int pokemonId) {
+    System.out.println(pokemon.getName());
+    System.out.println(pokemon.getType());
+    return ResponseEntity.ok(pokemon);
+    // return new ResponseEntity<>(pokemon, HttpStatus.OK);
+  }
+
+  @DeleteMapping("pokemon/{id}/delete")
+  public ResponseEntity<String> deletePokemon(@PathVariable("id") int pokemonId) {
+    System.out.println(pokemonId);
+    return ResponseEntity.ok("Pokemon deleted successfully");
+    // return new ResponseEntity<>(pokemon, HttpStatus.OK);
+  }
+}
+```
+
+## Exception Handling
+
+- Unhandled exceptions will throw a `500` error
+
+### Per Exception
+
+- NOT preferred method of exception handling
+
+```java
+@ReponseStatus(value=HttpStatus.NOT_FOUND)
+public class NotFoundException extends RuntimeException {
+  //...
+}
+
+@GetMapping()
+public String getAllPokemon() {
+  //...
+  if (pokemon == null) {
+    throw NotFoundException();
+  }
+}
+```
+
+### Per Controller
+
+- NOT preferred method of exception handling
+
+```java
+@RequestStatus(HttpStatus.OK)
+public String createPokemon() {
+  //...
+}
+```
+
+### Global Exception Handling
+
+- Preferred method of exception handling
+- Create "exception" folder in `src/main/java/com/pokemonreview/api` folder
+  - `src/main/java/com/pokemonreview/api/exception`
+- Test by hitting the `getAllPokemon()` method in `PokemonServiceImpl.java` which corresponds to `@GetMapping("pokemon")` in `PokemonController.java`
+  - URL example: GET `http://localhost:8080/api/pokemon`
+
+```java
+// src/main/java/com/pokemonreview/api/exceptions/PokemonNotFoundException.java
+package com.pokemonreview.api.exceptions;
+
+public class PokemonNotFoundException extends RuntimeException {
+  // RuntimeException uses "serialisation"
+  private static final long serialVersionUID = 1;
+
+  public PokemonNotFoundException(String message) {
+    super(message);
+  }
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/exceptions/ErrorObject.java
+package com.pokemonreview.api.exceptions;
+
+import lombok.Data;
+
+import java.util.Date;
+
+@Data
+public class ErrorObject {
+  private Integer statusCode;
+  private String message;
+  private Date timestamp;
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/exceptions/GlobalExceptionHandler.java
+package com.pokemonreview.api.exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+
+import java.util.Date;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+  @ExceptionHandler(PokemonNotFoundException.class)
+  public ResponseEntity<ErrorObject> handlePokemonNotFoundException(PokemonNotFoundException ex, WebRequest request) {
+    ErrorObject errorObject = new ErrorObject();
+    errorObject.setStatusCode(HttpStatus.NOT_FOUND.value());
+    errorObject.setMessage(ex.getMessage());
+    errorObject.setTimestamp(new Date());
+    return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.NOT_FOUND);
+  }
+}
+```
+
+## Detail + Update + Delete Pokemon Endpoints
+
+- "Detail" Endpoint == `getById()`
+- Test with Postman
+  - URL: POST `http://localhost:8080/api/pokemon/create`
+    - Request Body: JSON `{ "name": "Pikachu", "type": "Electric"}`
+    - Request Body: JSON `{ "name": "Charmander", "type": "Fire"}`
+    - Request Body: JSON `{ "name": "Squirtle", "type": "Water"}`
+    - Request Body: JSON `{ "name": "Bulbasaur", "type": "Grass"}`
+  - URL: PUT `http://localhost:8080/api/pokemon/1/update`
+    - Request Body: JSON `{ "name": "piplup", "type": "water"}`
+    - Remember that we do NOT put "id" property in request body
+    - Afterwards URL: GET `http://localhost:8080/api/pokemon/`
+  - URL: DELETE `http://localhost:8080/api/pokemon/1/delete`
+    - Afterwards URL: GET `http://localhost:8080/api/pokemon/`
+
+```java
+// src/main/java/com/pokemonreview/api/service/PokemonService.java
+package com.pokemonreview.api.service;
+
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
+
+import java.util.List;
+
+public interface PokemonService {
+  PokemonDto createPokemon(PokemonDto pokemonDto);
+
+  List<PokemonDto> getAllPokemon();
+
+  PokemonDto getPokemonById(int id);
+
+  PokemonDto updatePokemon(PokemonDto pokemonDto, int id);
+
+  void deletePokemonId(int id);
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/service/impl/PokemonServiceImpl.java
+package com.pokemonreview.api.service.impl;
+
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
+import com.pokemonreview.api.exceptions.PokemonNotFoundException;
+import com.pokemonreview.api.models.Pokemon;
+import com.pokemonreview.api.repository.PokemonRepository;
+import com.pokemonreview.api.service.PokemonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class PokemonServiceImpl implements PokemonService {
+  private PokemonRepository pokemonRepository;
+
+  @Autowired
+  public PokemonServiceImpl(PokemonRepository pokemonRepository) {
+    this.pokemonRepository = pokemonRepository;
+  }
+
+  @Override
+  public PokemonDto createPokemon(PokemonDto pokemonDto) {
+    Pokemon pokemon = new Pokemon();
+    pokemon.setName(pokemonDto.getName());
+    pokemon.setType(pokemonDto.getType());
+    Pokemon newPokemon = pokemonRepository.save(pokemon);
+    PokemonDto pokemonResponse = new PokemonDto();
+    pokemonResponse.setId(newPokemon.getId());
+    pokemonResponse.setName(newPokemon.getName());
+    pokemonResponse.setType(newPokemon.getType());
+    return pokemonResponse;
+  }
+
+  @Override
+  public List<PokemonDto> getAllPokemon() {
+    // Note: .map() maps over stream; .collect() turns stream into list
+    // Pokemon pTest = pokemonRepository.findById(543).orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be found"));
+    List<Pokemon> pokemon = pokemonRepository.findAll();
+    return pokemon.stream().map(p -> mapToDto(p)).collect(Collectors.toList());
+  }
+
+  @Override
+  public PokemonDto getPokemonById(int id) {
+    Pokemon pokemon = pokemonRepository.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be found"));
+    return mapToDto(pokemon);
+  }
+
+  @Override
+  public PokemonDto updatePokemon(PokemonDto pokemonDto, int id) {
+    Pokemon pokemon = pokemonRepository.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be updated"));
+    pokemon.setName(pokemonDto.getName());
+    pokemon.setType(pokemonDto.getType());
+    Pokemon updatedPokemon = pokemonRepository.save(pokemon);
+    return mapToDto(updatedPokemon);
+  }
+
+  @Override
+  public void deletePokemonId(int id) {
+    Pokemon pokemon = pokemonRepository.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be delete"));
+    pokemonRepository.delete(pokemon);
+  }
+
+  private PokemonDto mapToDto(Pokemon pokemon) {
+    PokemonDto pokemonDto = new PokemonDto();
+    pokemonDto.setId(pokemon.getId());
+    pokemonDto.setName(pokemon.getName());
+    pokemonDto.setType(pokemon.getType());
+    return pokemonDto;
+  }
+
+  private Pokemon mapToEntity(PokemonDto pokemonDto) {
+    Pokemon pokemon = new Pokemon();
+    pokemon.setName(pokemonDto.getName());
+    pokemon.setType(pokemonDto.getType());
+    return pokemon;
+  }
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/controllers/PokemonController.java
+package com.pokemonreview.api.controllers;
+
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
+import com.pokemonreview.api.models.Pokemon;
+import com.pokemonreview.api.service.PokemonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/")
+public class PokemonController {
+
+  private PokemonService pokemonService;
+
+  @Autowired
+  public PokemonController(PokemonService pokemonService) {
+    this.pokemonService = pokemonService;
+  }
+
+  @GetMapping("pokemon")
+  public ResponseEntity<List<PokemonDto>> getPokemons() {
+    return new ResponseEntity<>(pokemonService.getAllPokemon(), HttpStatus.OK);
+  }
+
+  @GetMapping("pokemon/{id}")
+  public ResponseEntity<PokemonDto> pokemonDetail(@PathVariable int id) {
+    return ResponseEntity.ok(pokemonService.getPokemonById(id));
+  }
+
+  @PostMapping("pokemon/create")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseEntity<PokemonDto> createPokemon(@RequestBody PokemonDto pokemonDto) {
+    return new ResponseEntity<>(pokemonService.createPokemon(pokemonDto), HttpStatus.CREATED);
+  }
+
+  @PutMapping("pokemon/{id}/update")
+  public ResponseEntity<PokemonDto> updatePokemon(@RequestBody PokemonDto pokemonDto, @PathVariable("id") int pokemonId) {
+    PokemonDto response = pokemonService.updatePokemon(pokemonDto, pokemonId);
+    return new ResponseEntity<>(response, HttpStatus.OK);
+  }
+
+  @DeleteMapping("pokemon/{id}/delete")
+  public ResponseEntity<String> deletePokemon(@PathVariable("id") int pokemonId) {
+    pokemonService.deletePokemonId(pokemonId);
+    return new ResponseEntity<>("Pokemon delete", HttpStatus.OK);
+  }
+}
+```
+
+## Pagination
+
+Add `pageNo` and `pageSize` to `getAllPokemon()`
+
+```java
+// src/main/java/com/pokemonreview/api/service/PokemonService.java
+package com.pokemonreview.api.service;
+
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
+
+import java.util.List;
+
+public interface PokemonService {
+  PokemonDto createPokemon(PokemonDto pokemonDto);
+
+  PokemonResponse getAllPokemon(int pageNo, int pageSize); // <-- HERE
+
+  PokemonDto getPokemonById(int id);
+
+  PokemonDto updatePokemon(PokemonDto pokemonDto, int id);
+
+  void deletePokemonId(int id);
+}
+```
+
+Use `Pageable` and `PageRequest` in `getAllPokemon()`
+
+```java
+// src/main/java/com/pokemonreview/api/service/impl/PokemonServiceImpl.java
+package com.pokemonreview.api.service.impl;
+
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
+import com.pokemonreview.api.exceptions.PokemonNotFoundException;
+import com.pokemonreview.api.models.Pokemon;
+import com.pokemonreview.api.repository.PokemonRepository;
+import com.pokemonreview.api.service.PokemonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class PokemonServiceImpl implements PokemonService {
+  private PokemonRepository pokemonRepository;
+
+  @Autowired
+  public PokemonServiceImpl(PokemonRepository pokemonRepository) {
+    this.pokemonRepository = pokemonRepository;
+  }
+
+  @Override
+  public PokemonDto createPokemon(PokemonDto pokemonDto) {
+    Pokemon pokemon = new Pokemon();
+    pokemon.setName(pokemonDto.getName());
+    pokemon.setType(pokemonDto.getType());
+    Pokemon newPokemon = pokemonRepository.save(pokemon);
+    PokemonDto pokemonResponse = new PokemonDto();
+    pokemonResponse.setId(newPokemon.getId());
+    pokemonResponse.setName(newPokemon.getName());
+    pokemonResponse.setType(newPokemon.getType());
+    return pokemonResponse;
+  }
+
+  @Override
+  public List<PokemonDto> getAllPokemon(int pageNo, int pageSize) {
+    Pageable pageable = PageRequest.of(pageNo, pageSize); // <-- HERE
+    Page<Pokemon> pokemons = pokemonRepository.findAll(pageable);
+    // List<Pokemon> listOfPokemon = pokemons.getContent();
+    // return listOfPokemon.stream().map(p -> mapToDto(p)).collect(Collectors.toList());
+    PokemonResponse pokemonResponse = new PokemonResponse();
+    pokemonResponse.setContent(content);
+    pokemonResponse.setPageNo(pokemons.getNumber());
+    pokemonResponse.setPageSize(pokemons.getSize());
+    pokemonResponse.setTotalElements(pokemons.getTotalElements());
+    pokemonResponse.setTotalPages(pokemons.getTotalPages());
+    pokemonResponse.setLast(pokemons.isLast());
+    return pokemonResponse;
+  }
+
+  @Override
+  public PokemonDto getPokemonById(int id) {
+    Pokemon pokemon = pokemonRepository.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be found"));
+    return mapToDto(pokemon);
+  }
+
+  @Override
+  public PokemonDto updatePokemon(PokemonDto pokemonDto, int id) {
+    Pokemon pokemon = pokemonRepository.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be updated"));
+    pokemon.setName(pokemonDto.getName());
+    pokemon.setType(pokemonDto.getType());
+    Pokemon updatedPokemon = pokemonRepository.save(pokemon);
+    return mapToDto(updatedPokemon);
+  }
+
+  @Override
+  public void deletePokemonId(int id) {
+    Pokemon pokemon = pokemonRepository.findById(id).orElseThrow(() -> new PokemonNotFoundException("Pokemon could not be delete"));
+    pokemonRepository.delete(pokemon);
+  }
+
+  private PokemonDto mapToDto(Pokemon pokemon) {
+    PokemonDto pokemonDto = new PokemonDto();
+    pokemonDto.setId(pokemon.getId());
+    pokemonDto.setName(pokemon.getName());
+    pokemonDto.setType(pokemon.getType());
+    return pokemonDto;
+  }
+
+  private Pokemon mapToEntity(PokemonDto pokemonDto) {
+    Pokemon pokemon = new Pokemon();
+    pokemon.setName(pokemonDto.getName());
+    pokemon.setType(pokemonDto.getType());
+    return pokemon;
+  }
+}
+```
+
+- Create `src/main/java/com/pokemonreview/api/dto/PokemonResponse.java`
+- Update `PokemonService.java, PokemonServiceImpl.java, PokemonController.java` correspondingly
+
+```java
+// src/main/java/com/pokemonreview/api/dto/PokemonResponse.java
+package com.pokemonreview.api.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.List;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class PokemonResponse {
+  private List<PokemonDto> content;
+  private int pageNo;
+  private int pageSize;
+  private long totalElements;
+  private int totalPages;
+  private boolean last;
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/controllers/PokemonController.java
+package com.pokemonreview.api.controllers;
+
+import com.pokemonreview.api.dto.PokemonDto;
+import com.pokemonreview.api.dto.PokemonResponse;
+import com.pokemonreview.api.models.Pokemon;
+import com.pokemonreview.api.service.PokemonService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/")
+public class PokemonController {
+
+  private PokemonService pokemonService;
+
+  @Autowired
+  public PokemonController(PokemonService pokemonService) {
+    this.pokemonService = pokemonService;
+  }
+
+  @GetMapping("pokemon")
+  public ResponseEntity<PokemonResponse> getPokemons(
+      @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
+      @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize) {
+    return new ResponseEntity<>(pokemonService.getAllPokemon(pageNo, pageSize), HttpStatus.OK);
+  }
+
+  @GetMapping("pokemon/{id}")
+  public ResponseEntity<PokemonDto> pokemonDetail(@PathVariable int id) {
+    return ResponseEntity.ok(pokemonService.getPokemonById(id));
+
+  }
+
+  @PostMapping("pokemon/create")
+  @ResponseStatus(HttpStatus.CREATED)
+  public ResponseEntity<PokemonDto> createPokemon(@RequestBody PokemonDto pokemonDto) {
+    return new ResponseEntity<>(pokemonService.createPokemon(pokemonDto), HttpStatus.CREATED);
+  }
+
+  @PutMapping("pokemon/{id}/update")
+  public ResponseEntity<PokemonDto> updatePokemon(@RequestBody PokemonDto pokemonDto, @PathVariable("id") int pokemonId) {
+    PokemonDto response = pokemonService.updatePokemon(pokemonDto, pokemonId);
+    return new ResponseEntity<>(response, HttpStatus.OK);
+  }
+
+  @DeleteMapping("pokemon/{id}/delete")
+  public ResponseEntity<String> deletePokemon(@PathVariable("id") int pokemonId) {
+    pokemonService.deletePokemonId(pokemonId);
+    return new ResponseEntity<>("Pokemon delete", HttpStatus.OK);
+  }
+}
+```
+
+Test with Postman
+
+- Make sure to insert dummy data into DB first
+- URL: GET `http://localhost:8080/api/pokemon?pageNo=0&pageSize=5`
+
+## One-To-Many Relationships
+
+- A "Parent" will have the "1/ONE" relationship `@OneToMany()`
+- A "Child" will have the "MANY" relationship `@ManyToOne()`
+- ONE Pokemon wil have MANY reviews
+- Pokemon
+  - id
+  - name
+  - type
+- Review
+  - id
+  - title
+  - content
+  - stars
+  - pokemon_id
+- "Eager loading" = Automatically load relationship (including entire object)
+- "Lazy loading" = Load relationship but not entire object
+
+```java
+// src/main/java/com/pokemonreview/api/models/Review.java
+package com.pokemonreview.api.models;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+public class Review {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
+  private String title;
+  private String content;
+  private int stars;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "pokemon_id") // Note: Convention == `entity_`
+  private Pokemon pokemon;
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/models/Pokemon.java
+package com.pokemonreview.api.models;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+public class Pokemon {
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
+  private String name;
+  private String type;
+
+  @OneToMany(mappedBy = "pokemon", cascade = CascadeType.ALL, orphanRemoval = true)
+  private List<Review> reviews = new ArrayList<Review>();
+}
+```
+
+## Query Methods
+
+- Abstract method such as `findByPokemonId()` is broken up into `subject` and `predicate` parts
+
+  - E.g.
+    - subject = findBy
+    - predicate = name
+
+- `findBy`
+- `readBy`
+- `getBy`
+- `queryBy`
+- `searchBy`
+- `streamBy`
+- `existsBy`
+- `countBy`
+- `and`
+- `or`
+- `after`
+- `before`
+- `containing`
+- `between`
+- `endingWith`
+- `exists`
+- `false`
+- `greaterThan`
+- `isIn`
+- `isEmpty`
+- `like `
+- `near`
+- `not`
+
+- `First`
+- `Top`
+- `Distinct`
+
+- `findByTitle`
+- `findByTitleIs`
+- `findByTitleStartingWith`
+- `findByTitleLike`
+- `findByTitleLessThan`
+- `findByTitleOrStars`
+
+[Spring Docs](https://docs.spring.io/spring-data/jpa/reference/jpa/query-methods.html)
+
+```java
+public interface UserRepository extends Repository<User, Long> {
+  List<User> findByEmailAddressAndLastname(String emailAddress, String lastname);
+}
+```
+
+| Keyword              | Sample                                                    | JPQL Snippet                                                      |
+| -------------------- | --------------------------------------------------------- | ----------------------------------------------------------------- |
+| `Distinct`           | `findDistinctByLastnameAndFirstname`                      | `select distinct …​ where x.lastname = ?1 and x.firstname = ?2`   |
+| `And`                | `findByLastnameAndFirstname`                              | `...where x.lastname = ?1 and x.firstname = ?2`                   |
+| `Or`                 | `findByLastnameOrFirstname`                               | `...where x.lastname = ?1 or x.firstname = ?2`                    |
+| `Is, Equals`         | `findByFirstname,findByFirstnameIs,findByFirstnameEquals` | `...where x.firstname = ?1`                                       |
+| `Between`            | `findByStartDateBetween`                                  | `...where x.startDate between ?1 and ?2`                          |
+| `LessThan`           | `findByAgeLessThan`                                       | `...where x.age < ?1`                                             |
+| `LessThanEqual`      | `findByAgeLessThanEqual`                                  | `...where x.age <= ?1`                                            |
+| `GreaterThan`        | `findByAgeGreaterThan`                                    | `...where x.age > ?1`                                             |
+| `GreaterThanEqual`   | `findByAgeGreaterThanEqual`                               | `...where x.age >= ?1`                                            |
+| `After`              | `findByStartDateAfter`                                    | `...where x.startDate > ?1`                                       |
+| `Before`             | `findByStartDateBefore`                                   | `...where x.startDate < ?1`                                       |
+| `IsNull, Null`       | `findByAge(Is)Null`                                       | `...where x.age is null`                                          |
+| `IsNotNull, NotNull` | `findByAge(Is)NotNull`                                    | `...where x.age not null`                                         |
+| `Like`               | `findByFirstnameLike`                                     | `...where x.firstname like ?1`                                    |
+| `NotLike`            | `findByFirstnameNotLike`                                  | `...where x.firstname not like ?1`                                |
+| `StartingWith`       | `findByFirstnameStartingWith`                             | `...where x.firstname like ?1 (parameter bound with appended %)`  |
+| `EndingWith`         | `findByFirstnameEndingWith`                               | `...where x.firstname like ?1 (parameter bound with prepended %)` |
+| `Containing`         | `findByFirstnameContaining`                               | `...where x.firstname like ?1 (parameter bound wrapped in %)`     |
+| `OrderBy`            | `findByAgeOrderByLastnameDesc`                            | `...where x.age = ?1 order by x.lastname desc`                    |
+| `Not`                | `findByLastnameNot`                                       | `...where x.lastname <> ?1`                                       |
+| `In`                 | `findByAgeIn(Collection<Age> ages)`                       | `...where x.age in ?1`                                            |
+| `NotIn`              | `findByAgeNotIn(Collection<Age> ages)`                    | `...where x.age not in ?1`                                        |
+| `TRUE`               | `findByActiveTrue()`                                      | `...where x.active = true`                                        |
+| `FALSE`              | `findByActiveFalse()`                                     | `...where x.active = false`                                       |
+| `IgnoreCase`         | `findByFirstnameIgnoreCase`                               | `...where UPPER(x.firstname) = UPPER(?1)`                         |
+
+### Insert Raw SQL
+
+```java
+@Query("SELECT r FROM Review r")
+List<Review> findAll();
+
+@Query("SELECT * FROM Review r WHERE r.title LIKE %?1%")
+List<Review> findBYTitleLike(String title);
+```
+
+### Pokemon Project Continued
+
+```java
+// src/main/java/com/pokemonreview/api/repository/ReviewRepository.java
+package com.pokemonreview.api.repository;
+
+import com.pokemonreview.api.models.Review;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import java.util.List;
+
+public interface ReviewRepository extends JpaRepository<Review, Integer> {
+  // Note: Can also add _ to tell Spring to search within specific entity (findByPokemon_Id)
+  List<Review> findByPokemonId(int pokemonId);
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/service/ReviewService.java
+package com.pokemonreview.api.service;
+
+import com.pokemonreview.api.dto.ReviewDto;
+
+import java.util.List;
+
+public interface ReviewService {
+  ReviewDto createReview(int pokemonId, ReviewDto reviewDto);
+
+  List<ReviewDto> getReviewsByPokemonId(int id);
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/service/impl/ReviewServiceImpl.java
+package com.pokemonreview.api.service.impl;
+
+import com.pokemonreview.api.dto.ReviewDto;
+import com.pokemonreview.api.exceptions.PokemonNotFoundException;
+import com.pokemonreview.api.exceptions.ReviewNotFoundException;
+import com.pokemonreview.api.models.Pokemon;
+import com.pokemonreview.api.models.Review;
+import com.pokemonreview.api.repository.PokemonRepository;
+import com.pokemonreview.api.repository.ReviewRepository;
+import com.pokemonreview.api.service.PokemonService;
+import com.pokemonreview.api.service.ReviewService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class ReviewServiceImpl implements ReviewService {
+  private ReviewRepository reviewRepository;
+  private PokemonRepository pokemonRepository;
+
+  @Autowired
+  public ReviewServiceImpl(ReviewRepository reviewRepository, PokemonRepository pokemonRepository) {
+    this.reviewRepository = reviewRepository;
+    this.pokemonRepository = pokemonRepository;
+  }
+
+  @Override
+  public ReviewDto createReview(int pokemonId, ReviewDto reviewDto) {
+    Review review = mapToEntity(reviewDto);
+    Pokemon pokemon = pokemonRepository.findById(pokemonId).orElseThrow(() -> new PokemonNotFoundException("Pokemon with associated review not found"));
+    review.setPokemon(pokemon);
+    Review newReview = reviewRepository.save(review);
+    return mapToDto(newReview);
+  }
+
+  @Override
+  public List<ReviewDto> getReviewsByPokemonId(int id) {
+    List<Review> reviews = reviewRepository.findByPokemonId(id);
+    return reviews.stream().map(review -> mapToDto(review)).collect(Collectors.toList());
+  }
+
+  private ReviewDto mapToDto(Review review) {
+    ReviewDto reviewDto = new ReviewDto();
+    reviewDto.setId(review.getId());
+    reviewDto.setTitle(review.getTitle());
+    reviewDto.setContent(review.getContent());
+    reviewDto.setStars(review.getStars());
+    return reviewDto;
+  }
+
+  private Review mapToEntity(ReviewDto reviewDto) {
+    Review review = new Review();
+    review.setId(reviewDto.getId());
+    review.setTitle(reviewDto.getTitle());
+    review.setContent(reviewDto.getContent());
+    review.setStars(reviewDto.getStars());
+    return review;
+  }
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/controllers/ReviewController.java
+package com.pokemonreview.api.controllers;
+
+import com.pokemonreview.api.dto.ReviewDto;
+import com.pokemonreview.api.service.ReviewService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/")
+public class ReviewController {
+
+  private ReviewService reviewService;
+
+  @Autowired
+  public ReviewController(ReviewService reviewService) {
+    this.reviewService = reviewService;
+  }
+
+  @PostMapping("/pokemon/{pokemonId}/reviews")
+  public ResponseEntity<ReviewDto> createReview(@PathVariable(value = "pokemonId") int pokemonId, @RequestBody ReviewDto reviewDto) {
+    return new ResponseEntity<>(reviewService.createReview(pokemonId, reviewDto), HttpStatus.CREATED);
+  }
+
+  @GetMapping("/pokemon/{pokemonId}/reviews")
+  public List<ReviewDto> getReviewsByPokemonId(@PathVariable(value = "pokemonId") int pokemonId) {
+    return reviewService.getReviewsByPokemonId(pokemonId);
+  }
+}
+```
+
+Test with Postman
+
+- URL: GET `http://localhost:8080/api/pokemon/1/reviews
+
+## Detail + Update + Delete Review Endpoints
+
+```java
+// src/main/java/com/pokemonreview/api/service/ReviewService.java
+package com.pokemonreview.api.service;
+
+import com.pokemonreview.api.dto.ReviewDto;
+
+import java.util.List;
+
+public interface ReviewService {
+  ReviewDto createReview(int pokemonId, ReviewDto reviewDto);
+
+  List<ReviewDto> getReviewsByPokemonId(int id);
+
+  ReviewDto getReviewById(int reviewId, int pokemonId);
+
+  ReviewDto updateReview(int pokemonId, int reviewId, ReviewDto reviewDto);
+
+  void deleteReview(int pokemonId, int reviewId);
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/service/impl/ReviewServiceImpl.java
+package com.pokemonreview.api.service.impl;
+
+import com.pokemonreview.api.dto.ReviewDto;
+import com.pokemonreview.api.exceptions.PokemonNotFoundException;
+import com.pokemonreview.api.exceptions.ReviewNotFoundException;
+import com.pokemonreview.api.models.Pokemon;
+import com.pokemonreview.api.models.Review;
+import com.pokemonreview.api.repository.PokemonRepository;
+import com.pokemonreview.api.repository.ReviewRepository;
+import com.pokemonreview.api.service.PokemonService;
+import com.pokemonreview.api.service.ReviewService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+@Service
+public class ReviewServiceImpl implements ReviewService {
+  private ReviewRepository reviewRepository;
+  private PokemonRepository pokemonRepository;
+
+  @Autowired
+  public ReviewServiceImpl(ReviewRepository reviewRepository, PokemonRepository pokemonRepository) {
+    this.reviewRepository = reviewRepository;
+    this.pokemonRepository = pokemonRepository;
+  }
+
+  @Override
+  public ReviewDto createReview(int pokemonId, ReviewDto reviewDto) {
+    Review review = mapToEntity(reviewDto);
+    Pokemon pokemon = pokemonRepository.findById(pokemonId).orElseThrow(() -> new PokemonNotFoundException("Pokemon with associated review not found"));
+    review.setPokemon(pokemon);
+    Review newReview = reviewRepository.save(review);
+    return mapToDto(newReview);
+  }
+
+  @Override
+  public List<ReviewDto> getReviewsByPokemonId(int id) {
+    List<Review> reviews = reviewRepository.findByPokemonId(id);
+    return reviews.stream().map(review -> mapToDto(review)).collect(Collectors.toList());
+  }
+
+  @Override
+  public ReviewDto getReviewById(int reviewId, int pokemonId) {
+    Pokemon pokemon = pokemonRepository.findById(pokemonId).orElseThrow(() -> new PokemonNotFoundException("Pokemon with associated review not found"));
+    Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Review with associated pokemon not found"));
+    if (review.getPokemon().getId() != pokemon.getId()) {
+      throw new ReviewNotFoundException("This review does not belong to a pokemon");
+    }
+    return mapToDto(review);
+  }
+
+  @Override
+  public ReviewDto updateReview(int pokemonId, int reviewId, ReviewDto reviewDto) {
+    Pokemon pokemon = pokemonRepository.findById(pokemonId).orElseThrow(() -> new PokemonNotFoundException("Pokemon with associated review not found"));
+    Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Review with associated pokemon not found"));
+    if (review.getPokemon().getId() != pokemon.getId()) {
+      throw new ReviewNotFoundException("This review does not belong to a pokemon");
+    }
+    review.setTitle(reviewDto.getTitle());
+    review.setContent(reviewDto.getContent());
+    review.setStars(reviewDto.getStars());
+    // Note: .save() will update review (if it exists) or will create and save a new review otherwise
+    Review updateReview = reviewRepository.save(review);
+    return mapToDto(updateReview);
+  }
+
+  @Override
+  public void deleteReview(int pokemonId, int reviewId) {
+    Pokemon pokemon = pokemonRepository.findById(pokemonId).orElseThrow(() -> new PokemonNotFoundException("Pokemon with associated review not found"));
+    Review review = reviewRepository.findById(reviewId).orElseThrow(() -> new ReviewNotFoundException("Review with associated pokemon not found"));
+    if (review.getPokemon().getId() != pokemon.getId()) {
+      throw new ReviewNotFoundException("This review does not belong to a pokemon");
+    }
+    reviewRepository.delete(review);
+  }
+
+  private ReviewDto mapToDto(Review review) {
+    ReviewDto reviewDto = new ReviewDto();
+    reviewDto.setId(review.getId());
+    reviewDto.setTitle(review.getTitle());
+    reviewDto.setContent(review.getContent());
+    reviewDto.setStars(review.getStars());
+    return reviewDto;
+  }
+
+  private Review mapToEntity(ReviewDto reviewDto) {
+    Review review = new Review();
+    review.setId(reviewDto.getId());
+    review.setTitle(reviewDto.getTitle());
+    review.setContent(reviewDto.getContent());
+    review.setStars(reviewDto.getStars());
+    return review;
+  }
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/controllers/ReviewController.java
+package com.pokemonreview.api.controllers;
+
+import com.pokemonreview.api.dto.ReviewDto;
+import com.pokemonreview.api.service.ReviewService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/")
+public class ReviewController {
+
+  private ReviewService reviewService;
+
+  @Autowired
+  public ReviewController(ReviewService reviewService) {
+    this.reviewService = reviewService;
+  }
+
+  @PostMapping("/pokemon/{pokemonId}/reviews")
+  public ResponseEntity<ReviewDto> createReview(@PathVariable(value = "pokemonId") int pokemonId, @RequestBody ReviewDto reviewDto) {
+    return new ResponseEntity<>(reviewService.createReview(pokemonId, reviewDto), HttpStatus.CREATED);
+  }
+
+  @GetMapping("/pokemon/{pokemonId}/reviews")
+  public List<ReviewDto> getReviewsByPokemonId(@PathVariable(value = "pokemonId") int pokemonId) {
+    return reviewService.getReviewsByPokemonId(pokemonId);
+  }
+
+  @GetMapping("/pokemon/{pokemonId}/reviews/{id}")
+  public ResponseEntity<ReviewDto> getReviewById(@PathVariable(value = "pokemonId") int pokemonId, @PathVariable(value = "id") int reviewId) {
+    ReviewDto reviewDto = reviewService.getReviewById(pokemonId, reviewId);
+    return new ResponseEntity<>(reviewDto, HttpStatus.OK);
+  }
+
+  @PutMapping("/pokemon/{pokemonId}/reviews/{id}")
+  public ResponseEntity<ReviewDto> updateReview(@PathVariable(value = "pokemonId") int pokemonId, @PathVariable(value = "id") int reviewId, @RequestBody ReviewDto reviewDto) {
+    ReviewDto updatedReview = reviewService.updateReview(pokemonId, reviewId, reviewDto);
+    return new ResponseEntity<>(updatedReview, HttpStatus.OK);
+  }
+
+  @DeleteMapping("/pokemon/{pokemonId}/reviews/{id}")
+  public ResponseEntity<String> deleteReview(@PathVariable(value = "pokemonId") int pokemonId, @PathVariable(value = "id") int reviewId) {
+    reviewService.deleteReview(pokemonId, reviewId);
+    return new ResponseEntity<>("Review deleted successfully", HttpStatus.OK);
+  }
+}
+```
+
+Test with Postman
+
+- URL: GET `http://localhost:8080/api/pokemon/1/reviews/1`
+
+- Test with Postman
+  - URL: PUT `http://localhost:8080/api/pokemon/1/reviews/1`
+    - Request Body: JSON `{ "title": "review 123", "content": "lorem ipsum 123", "stars": 5 }`
+    - Remember that we do NOT put "id" property in request body
+    - Afterwards URL: GET `http://localhost:8080/api/pokemon/1/reviews`
+  - URL: DELETE `http://localhost:8080/api/pokemon/1/reviews/1`
+    - Afterwards URL: GET `http://localhost:8080/api/pokemon/reviews/1`
+
+### Review Exception
+
+```java
+// src/main/java/com/pokemonreview/api/exceptions/ReviewNotFoundException.java
+package com.pokemonreview.api.exceptions;
+
+public class ReviewNotFoundException extends RuntimeException {
+  private static final long serialVersionUID = 2;
+
+  public ReviewNotFoundException(String message) {
+    super(message);
+  }
+}
+```
+
+```java
+// src/main/java/com/pokemonreview/api/exceptions/GlobalExceptionHandler.java
+package com.pokemonreview.api.exceptions;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.context.request.WebRequest;
+
+import java.util.Date;
+
+@ControllerAdvice
+public class GlobalExceptionHandler {
+
+  @ExceptionHandler(PokemonNotFoundException.class)
+  public ResponseEntity<ErrorObject> handlePokemonNotFoundException(PokemonNotFoundException ex, WebRequest request) {
+    ErrorObject errorObject = new ErrorObject();
+    errorObject.setStatusCode(HttpStatus.NOT_FOUND.value());
+    errorObject.setMessage(ex.getMessage());
+    errorObject.setTimestamp(new Date());
+    return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.NOT_FOUND);
+  }
+
+  @ExceptionHandler(ReviewNotFoundException.class)
+  public ResponseEntity<ErrorObject> handleReviewNotFoundException(ReviewNotFoundException ex, WebRequest request) {
+    ErrorObject errorObject = new ErrorObject();
+    errorObject.setStatusCode(HttpStatus.NOT_FOUND.value());
+    errorObject.setMessage(ex.getMessage());
+    errorObject.setTimestamp(new Date());
+    return new ResponseEntity<ErrorObject>(errorObject, HttpStatus.NOT_FOUND);
+  }
+}
+```

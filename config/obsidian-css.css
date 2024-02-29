@@ -1,0 +1,25 @@
+/* #f6cd74 */
+/* rgb(246, 205, 116) */
+
+code {
+  font-size: 101% !important;
+}
+
+.markdown-source-view.mod-cm6 .cm-line.HyperMD-codeblock {
+  font-size: 101% !important;
+}
+
+.cm-s-obsidian span.cm-inline-code {
+  font-size: 101% !important;
+}
+
+.nav-file-title-content,
+.nav-folder-title-content,
+.tree-item-inner {
+  color: #fff !important;
+}
+
+.cm-comment,
+.cm-meta {
+  color: #b7c4ff;
+}
