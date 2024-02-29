@@ -40,7 +40,8 @@
   "[python]": {
     "editor.codeActionsOnSave": {
       "source.organizeImports": "always"
-    }
+    },
+    "editor.defaultFormatter": "eeyore.yapf"
   },
   "[typescript]": {
     // "editor.defaultFormatter": "vscode.typescript-language-features"
@@ -119,6 +120,7 @@
   "accessibility.verbosity.notification": false,
   "accessibility.verbosity.panelChat": false,
   "accessibility.verbosity.terminal": false,
+  "autopep8.args": ["--indent-size=2", "--ignore=E302,E305,E402,E121", "--max-line-length", "120"],
   "better-comments.tags": [
     {
       "backgroundColor": "transparent",
@@ -148,6 +150,7 @@
       "underline": false
     }
   ],
+  "black-formatter.args": ["--line-length", "120"],
   "C_Cpp.clang_format_fallbackStyle": "{\"Language\":\"Cpp\",\"BasedOnStyle\":\"LLVM\",\"AccessModifierOffset\":-2,\"AlignAfterOpenBracket\":\"Align\",\"AlignArrayOfStructures\":\"None\",\"AlignConsecutiveAssignments\":{\"Enabled\":false,\"AcrossEmptyLines\":false,\"AcrossComments\":false,\"AlignCompound\":false,\"PadOperators\":true},\"AlignConsecutiveBitFields\":{\"Enabled\":false,\"AcrossEmptyLines\":false,\"AcrossComments\":false,\"AlignCompound\":false,\"PadOperators\":false},\"AlignConsecutiveDeclarations\":{\"Enabled\":false,\"AcrossEmptyLines\":false,\"AcrossComments\":false,\"AlignCompound\":false,\"PadOperators\":false},\"AlignConsecutiveMacros\":{\"Enabled\":false,\"AcrossEmptyLines\":false,\"AcrossComments\":false,\"AlignCompound\":false,\"PadOperators\":false},\"AlignEscapedNewlines\":\"Left\",\"AlignOperands\":\"Align\",\"AlignTrailingComments\":{\"Kind\":\"Always\",\"OverEmptyLines\":0},\"AllowAllArgumentsOnNextLine\":true,\"AllowAllParametersOfDeclarationOnNextLine\":true,\"AllowShortBlocksOnASingleLine\":\"Empty\",\"AllowShortCaseLabelsOnASingleLine\":false,\"AllowShortEnumsOnASingleLine\":false,\"AllowShortFunctionsOnASingleLine\":\"Empty\",\"AllowShortIfStatementsOnASingleLine\":\"Never\",\"AllowShortLambdasOnASingleLine\":\"Inline\",\"AllowShortLoopsOnASingleLine\":false,\"AlwaysBreakAfterDefinitionReturnType\":\"None\",\"AlwaysBreakAfterReturnType\":\"None\",\"AlwaysBreakBeforeMultilineStrings\":false,\"AlwaysBreakTemplateDeclarations\":true,\"AttributeMacros\":[\"__capability\"],\"BinPackArguments\":true,\"BinPackParameters\":true,\"BitFieldColonSpacing\":\"Both\",\"BraceWrapping\":{\"AfterCaseLabel\":false,\"AfterClass\":false,\"AfterControlStatement\":\"Never\",\"AfterEnum\":false,\"AfterExternBlock\":false,\"AfterFunction\":false,\"AfterNamespace\":false,\"AfterObjCDeclaration\":false,\"AfterStruct\":false,\"AfterUnion\":false,\"BeforeCatch\":false,\"BeforeElse\":false,\"BeforeLambdaBody\":false,\"BeforeWhile\":false,\"IndentBraces\":false,\"SplitEmptyFunction\":true,\"SplitEmptyRecord\":true,\"SplitEmptyNamespace\":true},\"BreakAfterAttributes\":\"Never\",\"BreakAfterJavaFieldAnnotations\":true,\"BreakArrays\":true,\"BreakBeforeBinaryOperators\":\"NonAssignment\",\"BreakBeforeBraces\":\"Attach\",\"BreakBeforeConceptDeclarations\":\"Always\",\"BreakBeforeInlineASMColon\":\"OnlyMultiline\",\"BreakBeforeTernaryOperators\":true,\"BreakConstructorInitializers\":\"BeforeComma\",\"BreakInheritanceList\":\"BeforeComma\",\"BreakStringLiterals\":true,\"ColumnLimit\":130,\"CommentPragmas\":\"^ IWYU pragma:\",\"CompactNamespaces\":false,\"ConstructorInitializerIndentWidth\":0,\"ContinuationIndentWidth\":2,\"Cpp11BracedListStyle\":true,\"DerivePointerAlignment\":false,\"DisableFormat\":false,\"EmptyLineAfterAccessModifier\":\"Never\",\"EmptyLineBeforeAccessModifier\":\"Always\",\"ExperimentalAutoDetectBinPacking\":false,\"FixNamespaceComments\":true,\"ForEachMacros\":[\"foreach\",\"Q_FOREACH\",\"BOOST_FOREACH\"],\"IfMacros\":[\"KJ_IF_MAYBE\"],\"IncludeBlocks\":\"Preserve\",\"IncludeCategories\":[{\"Regex\":\"^\\\"(llvm|llvm-c|clang|clang-c)/\",\"Priority\":2,\"SortPriority\":0,\"CaseSensitive\":false},{\"Regex\":\"^(<|\\\"(gtest|gmock|isl|json)/)\",\"Priority\":3,\"SortPriority\":0,\"CaseSensitive\":false},{\"Regex\":\".*\",\"Priority\":1,\"SortPriority\":0,\"CaseSensitive\":false}],\"IncludeIsMainRegex\":\"(Test)?$\",\"IncludeIsMainSourceRegex\":\"\",\"IndentAccessModifiers\":false,\"IndentCaseBlocks\":false,\"IndentCaseLabels\":true,\"IndentExternBlock\":\"Indent\",\"IndentGotoLabels\":true,\"IndentPPDirectives\":\"AfterHash\",\"IndentRequiresClause\":false,\"IndentWidth\":2,\"IndentWrappedFunctionNames\":false,\"InsertBraces\":true,\"InsertNewlineAtEOF\":true,\"InsertTrailingCommas\":\"None\",\"IntegerLiteralSeparator\":{\"Binary\":4,\"BinaryMinDigits\":5,\"Decimal\":3,\"DecimalMinDigits\":4,\"Hex\":4,\"HexMinDigits\":5},\"JavaScriptQuotes\":\"Double\",\"JavaScriptWrapImports\":true,\"KeepEmptyLinesAtTheStartOfBlocks\":false,\"LambdaBodyIndentation\":\"Signature\",\"LineEnding\":\"LF\",\"MacroBlockBegin\":\"\",\"MacroBlockEnd\":\"\",\"MaxEmptyLinesToKeep\":1,\"NamespaceIndentation\":\"All\",\"ObjCBinPackProtocolList\":\"Auto\",\"ObjCBlockIndentWidth\":2,\"ObjCBreakBeforeNestedBlockParam\":true,\"ObjCSpaceAfterProperty\":false,\"ObjCSpaceBeforeProtocolList\":true,\"PackConstructorInitializers\":\"Never\",\"PenaltyBreakAssignment\":2,\"PenaltyBreakBeforeFirstCallParameter\":19,\"PenaltyBreakComment\":300,\"PenaltyBreakFirstLessLess\":120,\"PenaltyBreakOpenParenthesis\":0,\"PenaltyBreakString\":1000,\"PenaltyBreakTemplateDeclaration\":10,\"PenaltyExcessCharacter\":1000000,\"PenaltyIndentedWhitespace\":0,\"PenaltyReturnTypeOnItsOwnLine\":60,\"PointerAlignment\":\"Right\",\"PPIndentWidth\":-1,\"QualifierAlignment\":\"Right\",\"ReferenceAlignment\":\"Right\",\"ReflowComments\":false,\"RemoveBracesLLVM\":false,\"RemoveSemicolon\":false,\"RequiresClausePosition\":\"OwnLine\",\"RequiresExpressionIndentation\":\"OuterScope\",\"SeparateDefinitionBlocks\":\"Always\",\"ShortNamespaceLines\":1,\"SortIncludes\":\"CaseInsensitive\",\"SortJavaStaticImport\":\"Before\",\"SortUsingDeclarations\":\"Lexicographic\",\"SpaceAfterCStyleCast\":true,\"SpaceAfterLogicalNot\":false,\"SpaceAfterTemplateKeyword\":false,\"SpaceAroundPointerQualifiers\":\"Default\",\"SpaceBeforeAssignmentOperators\":true,\"SpaceBeforeCaseColon\":false,\"SpaceBeforeCpp11BracedList\":false,\"SpaceBeforeCtorInitializerColon\":true,\"SpaceBeforeInheritanceColon\":true,\"SpaceBeforeParens\":\"ControlStatements\",\"SpaceBeforeParensOptions\":{\"AfterControlStatements\":true,\"AfterForeachMacros\":true,\"AfterFunctionDefinitionName\":false,\"AfterFunctionDeclarationName\":false,\"AfterIfMacros\":true,\"AfterOverloadedOperator\":false,\"AfterRequiresInClause\":false,\"AfterRequiresInExpression\":false,\"BeforeNonEmptyParentheses\":false},\"SpaceBeforeRangeBasedForLoopColon\":true,\"SpaceBeforeSquareBrackets\":false,\"SpaceInEmptyBlock\":false,\"SpaceInEmptyParentheses\":false,\"SpacesBeforeTrailingComments\":1,\"SpacesInAngles\":\"Never\",\"SpacesInConditionalStatement\":false,\"SpacesInContainerLiterals\":true,\"SpacesInCStyleCastParentheses\":false,\"SpacesInLineCommentPrefix\":{\"Minimum\":1,\"Maximum\":-1},\"SpacesInParentheses\":false,\"SpacesInSquareBrackets\":false,\"Standard\":\"Latest\",\"StatementAttributeLikeMacros\":[\"Q_EMIT\"],\"StatementMacros\":[\"Q_UNUSED\",\"QT_REQUIRE_VERSION\"],\"TabWidth\":2,\"UseTab\":\"Never\",\"WhitespaceSensitiveMacros\":[\"BOOST_PP_STRINGIZE\",\"CF_SWIFT_NAME\",\"NS_SWIFT_NAME\",\"PP_STRINGIZE\",\"STRINGIZE\"]}",
   "C_Cpp.clang_format_style": "{\"Language\":\"Cpp\",\"BasedOnStyle\":\"LLVM\",\"AccessModifierOffset\":-2,\"AlignAfterOpenBracket\":\"Align\",\"AlignArrayOfStructures\":\"None\",\"AlignConsecutiveAssignments\":{\"Enabled\":false,\"AcrossEmptyLines\":false,\"AcrossComments\":false,\"AlignCompound\":false,\"PadOperators\":true},\"AlignConsecutiveBitFields\":{\"Enabled\":false,\"AcrossEmptyLines\":false,\"AcrossComments\":false,\"AlignCompound\":false,\"PadOperators\":false},\"AlignConsecutiveDeclarations\":{\"Enabled\":false,\"AcrossEmptyLines\":false,\"AcrossComments\":false,\"AlignCompound\":false,\"PadOperators\":false},\"AlignConsecutiveMacros\":{\"Enabled\":false,\"AcrossEmptyLines\":false,\"AcrossComments\":false,\"AlignCompound\":false,\"PadOperators\":false},\"AlignEscapedNewlines\":\"Left\",\"AlignOperands\":\"Align\",\"AlignTrailingComments\":{\"Kind\":\"Always\",\"OverEmptyLines\":0},\"AllowAllArgumentsOnNextLine\":true,\"AllowAllParametersOfDeclarationOnNextLine\":true,\"AllowShortBlocksOnASingleLine\":\"Empty\",\"AllowShortCaseLabelsOnASingleLine\":false,\"AllowShortEnumsOnASingleLine\":false,\"AllowShortFunctionsOnASingleLine\":\"Empty\",\"AllowShortIfStatementsOnASingleLine\":\"Never\",\"AllowShortLambdasOnASingleLine\":\"Inline\",\"AllowShortLoopsOnASingleLine\":false,\"AlwaysBreakAfterDefinitionReturnType\":\"None\",\"AlwaysBreakAfterReturnType\":\"None\",\"AlwaysBreakBeforeMultilineStrings\":false,\"AlwaysBreakTemplateDeclarations\":true,\"AttributeMacros\":[\"__capability\"],\"BinPackArguments\":true,\"BinPackParameters\":true,\"BitFieldColonSpacing\":\"Both\",\"BraceWrapping\":{\"AfterCaseLabel\":false,\"AfterClass\":false,\"AfterControlStatement\":\"Never\",\"AfterEnum\":false,\"AfterExternBlock\":false,\"AfterFunction\":false,\"AfterNamespace\":false,\"AfterObjCDeclaration\":false,\"AfterStruct\":false,\"AfterUnion\":false,\"BeforeCatch\":false,\"BeforeElse\":false,\"BeforeLambdaBody\":false,\"BeforeWhile\":false,\"IndentBraces\":false,\"SplitEmptyFunction\":true,\"SplitEmptyRecord\":true,\"SplitEmptyNamespace\":true},\"BreakAfterAttributes\":\"Never\",\"BreakAfterJavaFieldAnnotations\":true,\"BreakArrays\":true,\"BreakBeforeBinaryOperators\":\"NonAssignment\",\"BreakBeforeBraces\":\"Attach\",\"BreakBeforeConceptDeclarations\":\"Always\",\"BreakBeforeInlineASMColon\":\"OnlyMultiline\",\"BreakBeforeTernaryOperators\":true,\"BreakConstructorInitializers\":\"BeforeComma\",\"BreakInheritanceList\":\"BeforeComma\",\"BreakStringLiterals\":true,\"ColumnLimit\":130,\"CommentPragmas\":\"^ IWYU pragma:\",\"CompactNamespaces\":false,\"ConstructorInitializerIndentWidth\":0,\"ContinuationIndentWidth\":2,\"Cpp11BracedListStyle\":true,\"DerivePointerAlignment\":false,\"DisableFormat\":false,\"EmptyLineAfterAccessModifier\":\"Never\",\"EmptyLineBeforeAccessModifier\":\"Always\",\"ExperimentalAutoDetectBinPacking\":false,\"FixNamespaceComments\":true,\"ForEachMacros\":[\"foreach\",\"Q_FOREACH\",\"BOOST_FOREACH\"],\"IfMacros\":[\"KJ_IF_MAYBE\"],\"IncludeBlocks\":\"Preserve\",\"IncludeCategories\":[{\"Regex\":\"^\\\"(llvm|llvm-c|clang|clang-c)/\",\"Priority\":2,\"SortPriority\":0,\"CaseSensitive\":false},{\"Regex\":\"^(<|\\\"(gtest|gmock|isl|json)/)\",\"Priority\":3,\"SortPriority\":0,\"CaseSensitive\":false},{\"Regex\":\".*\",\"Priority\":1,\"SortPriority\":0,\"CaseSensitive\":false}],\"IncludeIsMainRegex\":\"(Test)?$\",\"IncludeIsMainSourceRegex\":\"\",\"IndentAccessModifiers\":false,\"IndentCaseBlocks\":false,\"IndentCaseLabels\":true,\"IndentExternBlock\":\"Indent\",\"IndentGotoLabels\":true,\"IndentPPDirectives\":\"AfterHash\",\"IndentRequiresClause\":false,\"IndentWidth\":2,\"IndentWrappedFunctionNames\":false,\"InsertBraces\":true,\"InsertNewlineAtEOF\":true,\"InsertTrailingCommas\":\"None\",\"IntegerLiteralSeparator\":{\"Binary\":4,\"BinaryMinDigits\":5,\"Decimal\":3,\"DecimalMinDigits\":4,\"Hex\":4,\"HexMinDigits\":5},\"JavaScriptQuotes\":\"Double\",\"JavaScriptWrapImports\":true,\"KeepEmptyLinesAtTheStartOfBlocks\":false,\"LambdaBodyIndentation\":\"Signature\",\"LineEnding\":\"LF\",\"MacroBlockBegin\":\"\",\"MacroBlockEnd\":\"\",\"MaxEmptyLinesToKeep\":1,\"NamespaceIndentation\":\"All\",\"ObjCBinPackProtocolList\":\"Auto\",\"ObjCBlockIndentWidth\":2,\"ObjCBreakBeforeNestedBlockParam\":true,\"ObjCSpaceAfterProperty\":false,\"ObjCSpaceBeforeProtocolList\":true,\"PackConstructorInitializers\":\"Never\",\"PenaltyBreakAssignment\":2,\"PenaltyBreakBeforeFirstCallParameter\":19,\"PenaltyBreakComment\":300,\"PenaltyBreakFirstLessLess\":120,\"PenaltyBreakOpenParenthesis\":0,\"PenaltyBreakString\":1000,\"PenaltyBreakTemplateDeclaration\":10,\"PenaltyExcessCharacter\":1000000,\"PenaltyIndentedWhitespace\":0,\"PenaltyReturnTypeOnItsOwnLine\":60,\"PointerAlignment\":\"Right\",\"PPIndentWidth\":-1,\"QualifierAlignment\":\"Right\",\"ReferenceAlignment\":\"Right\",\"ReflowComments\":false,\"RemoveBracesLLVM\":false,\"RemoveSemicolon\":false,\"RequiresClausePosition\":\"OwnLine\",\"RequiresExpressionIndentation\":\"OuterScope\",\"SeparateDefinitionBlocks\":\"Always\",\"ShortNamespaceLines\":1,\"SortIncludes\":\"CaseInsensitive\",\"SortJavaStaticImport\":\"Before\",\"SortUsingDeclarations\":\"Lexicographic\",\"SpaceAfterCStyleCast\":true,\"SpaceAfterLogicalNot\":false,\"SpaceAfterTemplateKeyword\":false,\"SpaceAroundPointerQualifiers\":\"Default\",\"SpaceBeforeAssignmentOperators\":true,\"SpaceBeforeCaseColon\":false,\"SpaceBeforeCpp11BracedList\":false,\"SpaceBeforeCtorInitializerColon\":true,\"SpaceBeforeInheritanceColon\":true,\"SpaceBeforeParens\":\"ControlStatements\",\"SpaceBeforeParensOptions\":{\"AfterControlStatements\":true,\"AfterForeachMacros\":true,\"AfterFunctionDefinitionName\":false,\"AfterFunctionDeclarationName\":false,\"AfterIfMacros\":true,\"AfterOverloadedOperator\":false,\"AfterRequiresInClause\":false,\"AfterRequiresInExpression\":false,\"BeforeNonEmptyParentheses\":false},\"SpaceBeforeRangeBasedForLoopColon\":true,\"SpaceBeforeSquareBrackets\":false,\"SpaceInEmptyBlock\":false,\"SpaceInEmptyParentheses\":false,\"SpacesBeforeTrailingComments\":1,\"SpacesInAngles\":\"Never\",\"SpacesInConditionalStatement\":false,\"SpacesInContainerLiterals\":true,\"SpacesInCStyleCastParentheses\":false,\"SpacesInLineCommentPrefix\":{\"Minimum\":1,\"Maximum\":-1},\"SpacesInParentheses\":false,\"SpacesInSquareBrackets\":false,\"Standard\":\"Latest\",\"StatementAttributeLikeMacros\":[\"Q_EMIT\"],\"StatementMacros\":[\"Q_UNUSED\",\"QT_REQUIRE_VERSION\"],\"TabWidth\":2,\"UseTab\":\"Never\",\"WhitespaceSensitiveMacros\":[\"BOOST_PP_STRINGIZE\",\"CF_SWIFT_NAME\",\"NS_SWIFT_NAME\",\"PP_STRINGIZE\",\"STRINGIZE\"]}",
   "C_Cpp.codeAnalysis.clangTidy.checks.enabled": ["readability-braces-around-statements"],
@@ -158,6 +161,7 @@
   "C_Cpp.files.exclude": {
     "**/.vscode": true,
     "**/.vscode.*": true,
+    "**/.vscode*": true,
     "**/build.*": true,
     "**/cvmfs": true,
     "**/InstallArea": true,
@@ -180,6 +184,7 @@
   "cSpell.userWords": [
     "adoptium",
     "ageing",
+    "analysation",
     "analyse",
     "analysed",
     "analysing",
@@ -198,6 +203,7 @@
     "categorise",
     "categorised",
     "categorising",
+    "centralisation",
     "centralise",
     "centralised",
     "centralises",
@@ -207,6 +213,7 @@
     "characterising",
     "colour",
     "colourisation",
+    "colourise",
     "colours",
     "componentisation",
     "componentised",
@@ -218,7 +225,11 @@
     "decentralise",
     "decentralised",
     "decentralising",
-    "Eulerian",
+    "deserialisation",
+    "deserialise",
+    "deserialised",
+    "deserialising",
+    "eulerian",
     "favour",
     "favourable",
     "finalise",
@@ -234,7 +245,7 @@
     "honoured",
     "honouring",
     "initialisation",
-    "Initialisations",
+    "initialisations",
     "initialise",
     "initialised",
     "initialises",
@@ -263,8 +274,8 @@
     "monopolised",
     "monopolising",
     "neighbour",
-    "neighbours",
     "neighbouring",
+    "neighbours",
     "optimisation",
     "optimise",
     "optimised",
@@ -293,6 +304,10 @@
     "reorganisation",
     "reorganise",
     "reorganising",
+    "serialisation",
+    "serialise",
+    "serialised",
+    "serialising",
     "signalling",
     "socialise",
     "socialising",
@@ -467,7 +482,7 @@
     "node_modules",
     "**/node_modules",
     "**/node_modules/**",
-    ".vscode",
+    ".vscode*",
     ".git",
     "dist",
     ".chrome"
@@ -558,12 +573,7 @@
   "prettier.singleQuote": true,
   "prolog.linter.run": "never",
   "pros.useGoogleAnalytics": false,
-  "python.experiments.enabled": false,
-  "python.formatting.autopep8Args": ["--indent-size=2", "--ignore=E302,E305,E402,E121", "--max-line-length", "120"],
-  "python.formatting.blackArgs": ["--line-length", "120"],
-  "python.formatting.yapfArgs": ["--style={based_on_style: pep8, column_limit: 120, indent_width: 2}"],
-  "python.linting.enabled": true,
-  "python.linting.pylintArgs": [
+  "pylint.args": [
     "--indent-string='  '",
     "--disable=C0103",
     "--disable=C0114",
@@ -577,6 +587,7 @@
     "--disable=W0105",
     "--max-line-length=120"
   ],
+  "python.experiments.enabled": false,
   "python.testing.pytestEnabled": true,
   "redhat.telemetry.enabled": false,
   "search.exclude": {
@@ -616,6 +627,7 @@
     "**/.vscode-cpptools": true,
     "**/.vscode-remote-containers": true,
     "**/.vscode-server": true,
+    "**/.vscode*": true,
     "**/.yarn": true,
     "**/CVS": true,
     "**/node_modules": true,
@@ -784,5 +796,6 @@
   "workbench.enableExperiments": false,
   "workbench.iconTheme": "material-icon-theme",
   "workbench.startupEditor": "none",
-  "workbench.welcomePage.walkthroughs.openOnInstall": false
+  "workbench.welcomePage.walkthroughs.openOnInstall": false,
+  "yapf.args": ["--style={based_on_style: pep8, column_limit: 120, indent_width: 2}"]
 }
