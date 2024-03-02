@@ -179,3 +179,4 @@ killport() {
 export EDITOR="code --wait"
 export VISUAL="$EDITOR"
 export TZ="Australia/Sydney"
+export JAVA_HOME="/usr/lib/jvm/temurin-17-jdk-amd64"

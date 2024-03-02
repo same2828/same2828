@@ -184,3 +184,4 @@ killport() {
 export EDITOR="code --wait"
 export VISUAL="$EDITOR"
 export TZ="Australia/Sydney"
+export JAVA_HOME="/opt/homebrew/Caskroom/temurin21/21.0.2,13"
