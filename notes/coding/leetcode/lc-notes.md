@@ -15,6 +15,8 @@
   - [Common Pitfalls/Mistakes (Sources of Errors)](#common-pitfallsmistakes-sources-of-errors)
   - [Check If Number Is A Power Of 2](#check-if-number-is-a-power-of-2)
   - [Bit Manipulation](#bit-manipulation)
+    - [Multiply by 2](#multiply-by-2)
+    - [Divide by 2](#divide-by-2)
   - [Bitmask](#bitmask)
     - [Bitmask With All N Bits Set To 1](#bitmask-with-all-n-bits-set-to-1)
     - [Check if the i'th bit is set (to 1) in the binary form of the given number](#check-if-the-ith-bit-is-set-to-1-in-the-binary-form-of-the-given-number)
@@ -388,7 +390,26 @@ if (num & (num - 1) == 0) {
 
 ## Bit Manipulation
 
-- See 3007.maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k
+- Examples
+  - See 3007.maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k
+
+### Multiply by 2
+
+**`(num << 1)`**
+
+```java
+int a = 5;
+int b = (a << 1); // b = 10
+```
+
+### Divide by 2
+
+**`(num >> 1)`**
+
+```java
+int a = 10;
+int b = (a >> 1); // b = 5
+```
 
 ## Bitmask
 

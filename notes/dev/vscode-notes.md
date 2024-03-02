@@ -87,7 +87,7 @@ Extension List:
 
 - .NET Install Tool
 - Astro
-- autopep8
+- **autopep8**
 - **Babel JavaScript**
 - **Better C++ Syntax**
 - **Better Comments**
@@ -95,7 +95,7 @@ Extension List:
 - Better Go Syntax
 - Better Perl Syntax (DISABLED)
 - **Better Shell Syntax**
-- Black Formatter
+- **Black Formatter**
 - **C/C++**
 - C/C++ Extension Pack (DISABLED)
 - C# (DISABLED)
@@ -133,7 +133,7 @@ Extension List:
 - **IntelliCode**
 - IntelliCode API Usage Examples (DISABLED)
 - **IntelliCode Completions**
-- isort (DISABLED)
+- **isort**
 - **JavaScript (ES6) Code Snippets**
 - **json2ts (Gregor Biswanger)**
 - Jupyter (DISABLED)
@@ -159,6 +159,7 @@ Extension List:
 - **Prettier**
 - **Pretty TypeScript Errors**
 - **Pylance**
+- **Pylint**
 - **Python**
 - Python Indent
 - **quick-lint-js (quick-lint)**
@@ -167,6 +168,9 @@ Extension List:
 - **Remove Non ASCII Characters (Samuel Charpentier)**
 - **ShellCheck**
 - Simple React Snippets (DISABLED)
+- **Spring Boot Dashboard**
+- **Spring Boot Tools**
+- **Spring Initializr Java Support**
 - **SQLTools**
 - **SSH FS**
 - **Tabnine: AI Autocomplete**
@@ -175,6 +179,7 @@ Extension List:
 - **Turbo Console Log**
 - **WSL (Microsoft)**
 - **XML (Red Hat)**
+- **yapf**
 
 # Keyboard Shortcuts
 

@@ -302,6 +302,8 @@ For nested data structures that need to store additional info about graphs such 
   - I.e. CANNOT use `long i` to index into array
 
 ```java
+// Inline
+// int n, arr[][] = new int[n][n];
 int[][] arr = new int[n][n];
 for (int[] row : arr) {
   Arrays.fill(row, -1);
