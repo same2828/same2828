@@ -40,7 +40,8 @@
     "editor.codeActionsOnSave": {
       "source.organizeImports": "always"
     },
-    "editor.defaultFormatter": "eeyore.yapf"
+    // "editor.defaultFormatter": "eeyore.yapf"
+    "editor.defaultFormatter": "ms-python.autopep8"
   },
   "[typescript]": {
     // "editor.defaultFormatter": "vscode.typescript-language-features"
@@ -578,7 +579,6 @@
     "--disable=C0116",
     "--disable=C0200",
     "--disable=C0301",
-    "--disable=R0201",
     "--disable=R0903",
     "--disable=R1702",
     "--disable=W0105",
