@@ -1,7 +1,9 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [Docs](#docs)
+- [Resources](#resources)
+  - [Official Documentation (Docs)](#official-documentation-docs)
+  - [Tutorials](#tutorials)
 - [Online IDE Playground Boilerplate Code](#online-ide-playground-boilerplate-code)
 - [Compile Java File](#compile-java-file)
 - [Run Java Program (Compiled File)](#run-java-program-compiled-file)
@@ -105,7 +107,8 @@
   - [`HashMap` (Class)](#hashmap-class)
     - [Constructor](#constructor-11)
     - [Methods](#methods-20)
-    - [Initialise HashMap](#initialise-hashmap)
+      - [Initialise HashMap](#initialise-hashmap)
+      - [Get Value of HashMap](#get-value-of-hashmap)
     - [`LinkedHashMap` (Class)](#linkedhashmap-class)
       - [Constructor](#constructor-12)
       - [Methods](#methods-21)
@@ -123,15 +126,20 @@
   - [Methods](#methods-26)
 - [`Comparator` (Interface)](#comparator-interface)
   - [Methods](#methods-27)
+- [Generics](#generics)
+  - [Wildcards (`*`)](#wildcards-)
+    - [Upper Bounded Wildcards](#upper-bounded-wildcards)
+    - [Lower Bounded Wildcards](#lower-bounded-wildcards)
+    - [Unbounded Wildcards](#unbounded-wildcards)
 - [`Iterator` (Interface)](#iterator-interface)
   - [Methods](#methods-28)
-- [Method References `::`](#method-references-)
+- [Method Reference `::` Operator](#method-reference--operator)
   - [Static Method References](#static-method-references)
   - [Instance Method References of a Specific/Particular Object](#instance-method-references-of-a-specificparticular-object)
   - [Instance Method References of an Arbitrary Object of a Specific/Particular Type](#instance-method-references-of-an-arbitrary-object-of-a-specificparticular-type)
   - [Constructor References](#constructor-references)
 - [`Record` Class](#record-class)
-- [`Streams` Package](#streams-package)
+- [`Stream` Package](#stream-package)
   - [Map-Reduce Transformation](#map-reduce-transformation)
   - [Non-Interference](#non-interference)
   - [Reduction Operations](#reduction-operations)
@@ -151,6 +159,7 @@
     - [`OptionalLong` Class](#optionallong-class)
   - [`Stream<T>` Interface](#streamt-interface)
     - [Methods](#methods-34)
+    - [Examples](#examples)
 - [`System` (Class)](#system-class)
   - [Nested Classes](#nested-classes)
   - [Fields](#fields-2)
@@ -183,6 +192,7 @@
     - [Unweighted + Undirected](#unweighted--undirected)
     - [Weighted + Undirected](#weighted--undirected)
   - [HashMap](#hashmap)
+  - [Wildcard Imports](#wildcard-imports)
   - [Initialisation](#initialisation)
     - [`int[]`](#int)
     - [`int[][]`](#int-1)
@@ -213,19 +223,33 @@
   - [Sorting Using Lambda Expression (Custom Comparator)](#sorting-using-lambda-expression-custom-comparator)
     - [Return Type](#return-type)
     - [PriorityQueue](#priorityqueue)
-    - [Examples](#examples)
+    - [Examples](#examples-1)
     - [Sort `int[]` Array in Descending Order](#sort-int-array-in-descending-order)
   - [Streams for Competitive Coding](#streams-for-competitive-coding)
   - [Ternary Operators `(boolExp ? trueClause : falseClause)`](#ternary-operators-boolexp--trueclause--falseclause)
   - [`var` keyword](#var-keyword)
   - [visited hack](#visited-hack)
+- [Zipping Collections (`.zip()`)](#zipping-collections-zip)
 
-# Docs
+# Resources
+
+## Official Documentation (Docs)
 
 - [Java 8](https://docs.oracle.com/javase/8/docs/api/)
 - [Java 11](https://docs.oracle.com/en/java/javase/11/docs/api/index.html)
 - [Java 17](https://docs.oracle.com/en/java/javase/17/docs/api/index.html)
 - [Java 21](https://docs.oracle.com/en/java/javase/21/docs/api/index.html)
+
+## Tutorials
+
+- [Java Tutorial](https://docs.oracle.com/javase/tutorial/)
+  - [Getting Started](https://docs.oracle.com/javase/tutorial/getStarted/index.html)
+  - [Learning the Java Language](https://docs.oracle.com/javase/tutorial/java/index.html)
+  - [Essential Java Classes](https://docs.oracle.com/javase/tutorial/essential/index.html)
+  - [Collections](https://docs.oracle.com/javase/tutorial/collections/index.html)
+  - [Date-Time APIs](https://docs.oracle.com/javase/tutorial/datetime/index.html)
+  - [Deployment](https://docs.oracle.com/javase/tutorial/deployment/index.html)
+  - [Preparation for Java Programming Language Certification](https://docs.oracle.com/javase/tutorial/extra/certification/index.html)
 
 # Online IDE Playground Boilerplate Code
 
@@ -2662,7 +2686,7 @@ class Solution {
 - [Methods declared in interface java.util.Map](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Map.html)
   - `equals, forEach, getOrDefault, hashCode, putIfAbsent, remove, replace, replace, replaceAll`
 
-### Initialise HashMap
+#### Initialise HashMap
 
 - If you only need a single entry `Collections.singletonMap("key", "value")`
 - If you need an **IMMUTABLE** map
@@ -2690,6 +2714,22 @@ Map<String, Integer> map2 = Map.ofEntries(
 ```java
 Map<String, Integer> mutableMap1 = new HashMap<>(Map.of("a", 1, "b", 2, "c", 3));
 Map<String, Integer> mutableMap2 = new HashMap<>(Map.ofEntries(entry("a", 1),entry("b", 2), entry("c", 3)));
+```
+
+#### Get Value of HashMap
+
+```java
+class Solution {
+  void func(List<List<String>> pairs) {
+    Map<String, Set<String>> map = new HashMap<>();
+    for (List<String> pair : pairs) {
+      // Set<String> set = map.getOrDefault(pair.get(0), new HashSet<>());
+      // set.add(pair.get(1));
+      // map.put(pair.get(0), set);
+      map.computeIfAbsent(pair.get(0), f -> new HashSet<>()).add(pair.get(1));
+    }
+  }
+}
 ```
 
 ### `LinkedHashMap` (Class)
@@ -2843,14 +2883,29 @@ Map<String, Integer> mutableMap2 = new HashMap<>(Map.ofEntries(entry("a", 1),ent
 
 ```java
 import java.util.*;
-class mapEntryExample{
+class mapEntryExample {
   public static void main(String args[]) {
-    Map<Integer,String> map = new HashMap<Integer,String>();
-    map.put(100,"Sam");
-    map.put(200,"Seth");
+    Map<Integer, String> map = new HashMap<>();
+    map.put(100, "Bob");
+    map.put(200, "Alice");
     // Elements can traverse in any order
-    for(Map.Entry m : map.entrySet()) {
-      System.out.println(m.getKey() + " " + m.getValue());
+    for (Map.Entry<Integer, String> kvp : map.entrySet()) {
+      System.out.println(kvp.getKey() + " " + kvp.getValue());
+    }
+  }
+}
+```
+
+```java
+import java.util.*;
+class mapEntryExample {
+  public static void main(String args[]) {
+    Map<Integer, String> map = new HashMap<>();
+    map.put(100, "Bob");
+    map.put(200, "Alice");
+    // Elements can traverse in any order
+    for (Map.Entry e : map.entrySet()) {
+      System.out.println(e.getKey() + " " + e.getValue());
     }
   }
 }
@@ -2965,6 +3020,32 @@ class mapEntryExample{
 | `default Comparator<T>`                                    | `.thenComparingInt(ToIntFunction<? super T> keyExtractor)`                                                | Returns a lexicographic-order comparator with a function that extracts an int sort key                                                                 |
 | `default Comparator<T>`                                    | `.thenComparingLong(ToLongFunction<? super T> keyExtractor)`                                              | Returns a lexicographic-order comparator with a function that extracts a long sort key                                                                 |
 
+# Generics
+
+- [Generics Tutorial](https://docs.oracle.com/javase/tutorial/java/generics/index.html)
+
+## Wildcards (`*`)
+
+You can specify an upper bound or a lower bound for a wildcard but you **CANNOT specify both**
+
+### Upper Bounded Wildcards
+
+**`<? extends T>`**
+
+- `List<? extends Number>` specifies that the list can hold instances of `Number` or its SUBTYPES (i.e. `Integer`, `Double`, `Float`)
+
+### Lower Bounded Wildcards
+
+**`<? super T>`**
+
+- `List<? super Integer>` specifies that the list can hold instances of `Integer` or its SUPERTYPES (i.e. `Number`, `Object`)
+
+### Unbounded Wildcards
+
+**`<?>`**
+
+- `List<?>` specifies that the list can hold unknown instances of ANY type (mostly used for `Object` and `null` types)
+
 # `Iterator` (Interface)
 
 - [Read more](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Iterator.html)
@@ -3026,7 +3107,7 @@ class Solution {
 }
 ```
 
-# Method References `::`
+# Method Reference `::` Operator
 
 - [Read more](https://docs.oracle.com/javase/tutorial/java/javaOO/methodreferences.html)
 
@@ -3066,7 +3147,7 @@ System.out.println(absFunction.apply(-10));
 - You can refer to a method of a specific object
   - You can also refer to an instance method
   - The instance can be specific or arbitrary
-- The syntax for this is `instance::instanceMethodName`
+- The syntax for this is `objectReference::instanceMethodName`
 
 Example
 
@@ -3255,7 +3336,7 @@ public class RecordTest {
 // false
 ```
 
-# `Streams` Package
+# `Stream` Package
 
 - [Read more](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/stream/package-summary.html)
 
@@ -3322,13 +3403,13 @@ String concatenated = strings.reduce("", String::concat);
 Example 2
 
 ```java
-ArrayList<String> strings = new ArrayList<>();
+List<String> strings = new ArrayList<>();
 for (T element : stream) {
   strings.add(element.toString());
 }
 
 // Method 1
-ArrayList<String> strings = stream.collect(() -> new ArrayList<>(),
+List<String> strings = stream.collect(() -> new ArrayList<>(),
                                            (c, e) -> c.add(e.toString()),
                                            (c1, c2) -> c1.addAll(c2));
 // Method 2
@@ -3752,56 +3833,56 @@ Map<Boolean, List<Student>> passingFailing = students.stream()
 
 ### Methods
 
-| Return Type                    | `Stream<T>` Method                                                                             | Description                                                                                                                                                                                                                        |
-| ------------------------------ | ---------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| `boolean`                      | `allMatch(Predicate<? super T> predicate)`                                                     | Returns whether all elements of this stream match the provided predicate                                                                                                                                                           |
-| `boolean`                      | `anyMatch(Predicate<? super T> predicate)`                                                     | Returns whether any elements of this stream match the provided predicate                                                                                                                                                           |
-| `static <T> Stream.Builder<T>` | `Stream.builder()`                                                                             | Returns a builder for a Stream                                                                                                                                                                                                     |
-| `<R> R`                        | `collect(Supplier<R> supplier, BiConsumer<R,? super T> accumulator, BiConsumer<R,R> combiner)` | Performs a mutable reduction operation on the elements of this stream                                                                                                                                                              |
-| `<R,A> R`                      | `collect(Collector<? super T,A,R> collector)`                                                  | Performs a mutable reduction operation on the elements of this stream using a Collector                                                                                                                                            |
-| `static <T> Stream<T>`         | `Stream.concat(Stream<? extends T> a, Stream<? extends T> b)`                                  | Creates a lazily concatenated stream whose elements are all the elements of the first stream followed by all the elements of the second stream                                                                                     |
-| `long`                         | `count()`                                                                                      | Returns the count of elements in this stream                                                                                                                                                                                       |
-| `Stream<T>`                    | `distinct()`                                                                                   | Returns a stream consisting of the distinct elements (according to Object.equals(Object)) of this stream                                                                                                                           |
-| `default Stream<T>`            | `dropWhile(Predicate<? super T> predicate)`                                                    | Returns, if this stream is ordered, a stream consisting of the remaining elements of this stream after dropping the longest prefix of elements that match the given predicate                                                      |
-| `static <T> Stream<T>`         | `Stream.empty()`                                                                               | Returns an empty sequential Stream                                                                                                                                                                                                 |
-| `Stream<T>`                    | `filter(Predicate<? super T> predicate)`                                                       | Returns a stream consisting of the elements of this stream that match the given predicate                                                                                                                                          |
-| `Optional<T>`                  | `findAny()`                                                                                    | Returns an Optional describing some element of the stream, or an empty Optional if the stream is empty                                                                                                                             |
-| `Optional<T>`                  | `findFirst()`                                                                                  | Returns an Optional describing the first element of this stream, or an empty Optional if the stream is empty                                                                                                                       |
-| `<R> Stream<R>`                | `flatMap(Function<? super T,? extends Stream<? extends R>> mapper)`                            | Returns a stream consisting of the results of replacing each element of this stream with the contents of a mapped stream produced by applying the provided mapping function to each element                                        |
-| `DoubleStream`                 | `flatMapToDouble(Function<? super T,? extends DoubleStream> mapper)`                           | Returns an DoubleStream consisting of the results of replacing each element of this stream with the contents of a mapped stream produced by applying the provided mapping function to each element                                 |
-| `IntStream`                    | `flatMapToInt(Function<? super T,? extends IntStream> mapper)`                                 | Returns an IntStream consisting of the results of replacing each element of this stream with the contents of a mapped stream produced by applying the provided mapping function to each element                                    |
-| `LongStream`                   | `flatMapToLong(Function<? super T,? extends LongStream> mapper)`                               | Returns an LongStream consisting of the results of replacing each element of this stream with the contents of a mapped stream produced by applying the provided mapping function to each element                                   |
-| `void`                         | `forEach(Consumer<? super T> action)`                                                          | Performs an action for each element of this stream                                                                                                                                                                                 |
-| `void`                         | `forEachOrdered(Consumer<? super T> action)`                                                   | Performs an action for each element of this stream, in the encounter order of the stream if the stream has a defined encounter order                                                                                               |
-| `static <T> Stream<T>`         | `Stream.generate(Supplier<? extends T> s)`                                                     | Returns an infinite sequential unordered stream where each element is generated by the provided Supplier                                                                                                                           |
-| `static <T> Stream<T>`         | `Stream.iterate(T seed, Predicate<? super T> hasNext, UnaryOperator<T> next)`                  | Returns a sequential ordered Stream produced by iterative application of the given next function to an initial element, conditioned on satisfying the given hasNext predicate                                                      |
-| `static <T> Stream<T>`         | `Stream.iterate(T seed, UnaryOperator<T> f)`                                                   | Returns an infinite sequential ordered Stream produced by iterative application of a function f to an initial element seed, producing a Stream consisting of seed, f(seed), f(f(seed)), etc                                        |
-| `Stream<T>`                    | `limit(long maxSize)`                                                                          | Returns a stream consisting of the elements of this stream, truncated to be no longer than maxSize in length                                                                                                                       |
-| `<R> Stream<R>`                | `map(Function<? super T,? extends R> mapper)`                                                  | Returns a stream consisting of the results of applying the given function to the elements of this stream                                                                                                                           |
-| `default <R> Stream<R>`        | `mapMulti(BiConsumer<? super T,? super Consumer<R>> mapper)`                                   | Returns a stream consisting of the results of replacing each element of this stream with multiple elements, specifically zero or more elements                                                                                     |
-| `default DoubleStream`         | `mapMultiToDouble(BiConsumer<? super T,? super DoubleConsumer> mapper)`                        | Returns a DoubleStream consisting of the results of replacing each element of this stream with multiple elements, specifically zero or more elements                                                                               |
-| `default IntStream`            | `mapMultiToInt(BiConsumer<? super T,? super IntConsumer> mapper)`                              | Returns an IntStream consisting of the results of replacing each element of this stream with multiple elements, specifically zero or more elements                                                                                 |
-| `default LongStream`           | `mapMultiToLong(BiConsumer<? super T,? super LongConsumer> mapper)`                            | Returns a LongStream consisting of the results of replacing each element of this stream with multiple elements, specifically zero or more elements                                                                                 |
-| `DoubleStream`                 | `mapToDouble(ToDoubleFunction<? super T> mapper)`                                              | Returns a DoubleStream consisting of the results of applying the given function to the elements of this stream                                                                                                                     |
-| `IntStream`                    | `mapToInt(ToIntFunction<? super T> mapper)`                                                    | Returns an IntStream consisting of the results of applying the given function to the elements of this stream                                                                                                                       |
-| `LongStream`                   | `mapToLong(ToLongFunction<? super T> mapper)`                                                  | Returns a LongStream consisting of the results of applying the given function to the elements of this stream                                                                                                                       |
-| `Optional<T>`                  | `max(Comparator<? super T> comparator)`                                                        | Returns the maximum element of this stream according to the provided Comparator                                                                                                                                                    |
-| `Optional<T>`                  | `min(Comparator<? super T> comparator)`                                                        | Returns the minimum element of this stream according to the provided Comparator                                                                                                                                                    |
-| `boolean`                      | `noneMatch(Predicate<? super T> predicate)`                                                    | Returns whether no elements of this stream match the provided predicate                                                                                                                                                            |
-| `static <T> Stream<T>`         | `Stream.of(T t)`                                                                               | Returns a sequential Stream containing a single element                                                                                                                                                                            |
-| `static <T> Stream<T>`         | `Stream.of(T... values)`                                                                       | Returns a sequential ordered stream whose elements are the specified values                                                                                                                                                        |
-| `static <T> Stream<T>`         | `Stream.ofNullable(T t)`                                                                       | Returns a sequential Stream containing a single element, if non-null, otherwise returns an empty Stream                                                                                                                            |
-| `Stream<T>`                    | `peek(Consumer<? super T> action)`                                                             | Returns a stream consisting of the elements of this stream, additionally performing the provided action on each element as elements are consumed from the resulting stream                                                         |
-| `Optional<T>`                  | `reduce(BinaryOperator<T> accumulator)`                                                        | Performs a reduction on the elements of this stream, using an associative accumulation function, and returns an Optional describing the reduced value, if any                                                                      |
-| `T`                            | `reduce(T identity, BinaryOperator<T> accumulator)`                                            | Performs a reduction on the elements of this stream, using the provided identity value and an associative accumulation function, and returns the reduced value                                                                     |
-| `<U> U`                        | `reduce(U identity, BiFunction<U,? super T,U> accumulator, BinaryOperator<U> combiner)`        | Performs a reduction on the elements of this stream, using the provided identity, accumulation and combining functions                                                                                                             |
-| `Stream<T>`                    | `skip(long n)`                                                                                 | Returns a stream consisting of the remaining elements of this stream after discarding the first n elements of the stream                                                                                                           |
-| `Stream<T>`                    | `sorted()`                                                                                     | Returns a stream consisting of the elements of this stream, sorted according to natural order                                                                                                                                      |
-| `Stream<T>`                    | `sorted(Comparator<? super T> comparator)`                                                     | Returns a stream consisting of the elements of this stream, sorted according to the provided Comparator                                                                                                                            |
-| `default Stream<T>`            | `takeWhile(Predicate<? super T> predicate)`                                                    | Returns, if this stream is ordered, a stream consisting of the longest prefix of elements taken from this stream that match the given predicate                                                                                    |
-| `Object[]`                     | `toArray()`                                                                                    | Returns an array containing the elements of this stream                                                                                                                                                                            |
-| `<A> A[]`                      | `toArray(IntFunction<A[]> generator)`                                                          | Returns an array containing the elements of this stream, using the provided generator function to allocate the returned array, as well as any additional arrays that might be required for a partitioned execution or for resizing |
-| `default List<T>`              | `toList()`                                                                                     | Accumulates the elements of this stream into a List                                                                                                                                                                                |
+| Return Type                    | `Stream<T>` Method                                                                              | Description                                                                                                                                                                                                                        |
+| ------------------------------ | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| `boolean`                      | `.allMatch(Predicate<? super T> predicate)`                                                     | Returns whether all elements of this stream match the provided predicate                                                                                                                                                           |
+| `boolean`                      | `.anyMatch(Predicate<? super T> predicate)`                                                     | Returns whether any elements of this stream match the provided predicate                                                                                                                                                           |
+| `static <T> Stream.Builder<T>` | `Stream.builder()`                                                                              | Returns a builder for a Stream                                                                                                                                                                                                     |
+| `<R> R`                        | `.collect(Supplier<R> supplier, BiConsumer<R,? super T> accumulator, BiConsumer<R,R> combiner)` | Performs a mutable reduction operation on the elements of this stream                                                                                                                                                              |
+| `<R,A> R`                      | `.collect(Collector<? super T,A,R> collector)`                                                  | Performs a mutable reduction operation on the elements of this stream using a Collector                                                                                                                                            |
+| `static <T> Stream<T>`         | `Stream.concat(Stream<? extends T> a, Stream<? extends T> b)`                                   | Creates a lazily concatenated stream whose elements are all the elements of the first stream followed by all the elements of the second stream                                                                                     |
+| `long`                         | `.count()`                                                                                      | Returns the count of elements in this stream                                                                                                                                                                                       |
+| `Stream<T>`                    | `.distinct()`                                                                                   | Returns a stream consisting of the distinct elements (according to Object.equals(Object)) of this stream                                                                                                                           |
+| `default Stream<T>`            | `.dropWhile(Predicate<? super T> predicate)`                                                    | Returns, if this stream is ordered, a stream consisting of the remaining elements of this stream after dropping the longest prefix of elements that match the given predicate                                                      |
+| `static <T> Stream<T>`         | `Stream.empty()`                                                                                | Returns an empty sequential Stream                                                                                                                                                                                                 |
+| `Stream<T>`                    | `.filter(Predicate<? super T> predicate)`                                                       | Returns a stream consisting of the elements of this stream that match the given predicate                                                                                                                                          |
+| `Optional<T>`                  | `.findAny()`                                                                                    | Returns an Optional describing some element of the stream, or an empty Optional if the stream is empty                                                                                                                             |
+| `Optional<T>`                  | `.findFirst()`                                                                                  | Returns an Optional describing the first element of this stream, or an empty Optional if the stream is empty                                                                                                                       |
+| `<R> Stream<R>`                | `.flatMap(Function<? super T,? extends Stream<? extends R>> mapper)`                            | Returns a stream consisting of the results of replacing each element of this stream with the contents of a mapped stream produced by applying the provided mapping function to each element                                        |
+| `DoubleStream`                 | `.flatMapToDouble(Function<? super T,? extends DoubleStream> mapper)`                           | Returns an DoubleStream consisting of the results of replacing each element of this stream with the contents of a mapped stream produced by applying the provided mapping function to each element                                 |
+| `IntStream`                    | `.flatMapToInt(Function<? super T,? extends IntStream> mapper)`                                 | Returns an IntStream consisting of the results of replacing each element of this stream with the contents of a mapped stream produced by applying the provided mapping function to each element                                    |
+| `LongStream`                   | `.flatMapToLong(Function<? super T,? extends LongStream> mapper)`                               | Returns an LongStream consisting of the results of replacing each element of this stream with the contents of a mapped stream produced by applying the provided mapping function to each element                                   |
+| `void`                         | `.forEach(Consumer<? super T> action)`                                                          | Performs an action for each element of this stream                                                                                                                                                                                 |
+| `void`                         | `.forEachOrdered(Consumer<? super T> action)`                                                   | Performs an action for each element of this stream, in the encounter order of the stream if the stream has a defined encounter order                                                                                               |
+| `static <T> Stream<T>`         | `Stream.generate(Supplier<? extends T> s)`                                                      | Returns an infinite sequential unordered stream where each element is generated by the provided Supplier                                                                                                                           |
+| `static <T> Stream<T>`         | `Stream.iterate(T seed, Predicate<? super T> hasNext, UnaryOperator<T> next)`                   | Returns a sequential ordered Stream produced by iterative application of the given next function to an initial element, conditioned on satisfying the given hasNext predicate                                                      |
+| `static <T> Stream<T>`         | `Stream.iterate(T seed, UnaryOperator<T> f)`                                                    | Returns an infinite sequential ordered Stream produced by iterative application of a function f to an initial element seed, producing a Stream consisting of seed, f(seed), f(f(seed)), etc                                        |
+| `Stream<T>`                    | `.limit(long maxSize)`                                                                          | Returns a stream consisting of the elements of this stream, truncated to be no longer than maxSize in length                                                                                                                       |
+| `<R> Stream<R>`                | `.map(Function<? super T,? extends R> mapper)`                                                  | Returns a stream consisting of the results of applying the given function to the elements of this stream                                                                                                                           |
+| `default <R> Stream<R>`        | `.mapMulti(BiConsumer<? super T,? super Consumer<R>> mapper)`                                   | Returns a stream consisting of the results of replacing each element of this stream with multiple elements, specifically zero or more elements                                                                                     |
+| `default DoubleStream`         | `.mapMultiToDouble(BiConsumer<? super T,? super DoubleConsumer> mapper)`                        | Returns a DoubleStream consisting of the results of replacing each element of this stream with multiple elements, specifically zero or more elements                                                                               |
+| `default IntStream`            | `.mapMultiToInt(BiConsumer<? super T,? super IntConsumer> mapper)`                              | Returns an IntStream consisting of the results of replacing each element of this stream with multiple elements, specifically zero or more elements                                                                                 |
+| `default LongStream`           | `.mapMultiToLong(BiConsumer<? super T,? super LongConsumer> mapper)`                            | Returns a LongStream consisting of the results of replacing each element of this stream with multiple elements, specifically zero or more elements                                                                                 |
+| `DoubleStream`                 | `.mapToDouble(ToDoubleFunction<? super T> mapper)`                                              | Returns a DoubleStream consisting of the results of applying the given function to the elements of this stream                                                                                                                     |
+| `IntStream`                    | `.mapToInt(ToIntFunction<? super T> mapper)`                                                    | Returns an IntStream consisting of the results of applying the given function to the elements of this stream                                                                                                                       |
+| `LongStream`                   | `.mapToLong(ToLongFunction<? super T> mapper)`                                                  | Returns a LongStream consisting of the results of applying the given function to the elements of this stream                                                                                                                       |
+| `Optional<T>`                  | `.max(Comparator<? super T> comparator)`                                                        | Returns the maximum element of this stream according to the provided Comparator                                                                                                                                                    |
+| `Optional<T>`                  | `.min(Comparator<? super T> comparator)`                                                        | Returns the minimum element of this stream according to the provided Comparator                                                                                                                                                    |
+| `boolean`                      | `.noneMatch(Predicate<? super T> predicate)`                                                    | Returns whether no elements of this stream match the provided predicate                                                                                                                                                            |
+| `static <T> Stream<T>`         | `Stream.of(T t)`                                                                                | Returns a sequential Stream containing a single element                                                                                                                                                                            |
+| `static <T> Stream<T>`         | `Stream.of(T... values)`                                                                        | Returns a sequential ordered stream whose elements are the specified values                                                                                                                                                        |
+| `static <T> Stream<T>`         | `Stream.ofNullable(T t)`                                                                        | Returns a sequential Stream containing a single element, if non-null, otherwise returns an empty Stream                                                                                                                            |
+| `Stream<T>`                    | `.peek(Consumer<? super T> action)`                                                             | Returns a stream consisting of the elements of this stream, additionally performing the provided action on each element as elements are consumed from the resulting stream                                                         |
+| `Optional<T>`                  | `.reduce(BinaryOperator<T> accumulator)`                                                        | Performs a reduction on the elements of this stream, using an associative accumulation function, and returns an Optional describing the reduced value, if any                                                                      |
+| `T`                            | `.reduce(T identity, BinaryOperator<T> accumulator)`                                            | Performs a reduction on the elements of this stream, using the provided identity value and an associative accumulation function, and returns the reduced value                                                                     |
+| `<U> U`                        | `.reduce(U identity, BiFunction<U,? super T,U> accumulator, BinaryOperator<U> combiner)`        | Performs a reduction on the elements of this stream, using the provided identity, accumulation and combining functions                                                                                                             |
+| `Stream<T>`                    | `.skip(long n)`                                                                                 | Returns a stream consisting of the remaining elements of this stream after discarding the first n elements of the stream                                                                                                           |
+| `Stream<T>`                    | `.sorted()`                                                                                     | Returns a stream consisting of the elements of this stream, sorted according to natural order                                                                                                                                      |
+| `Stream<T>`                    | `.sorted(Comparator<? super T> comparator)`                                                     | Returns a stream consisting of the elements of this stream, sorted according to the provided Comparator                                                                                                                            |
+| `default Stream<T>`            | `.takeWhile(Predicate<? super T> predicate)`                                                    | Returns, if this stream is ordered, a stream consisting of the longest prefix of elements taken from this stream that match the given predicate                                                                                    |
+| `Object[]`                     | `.toArray()`                                                                                    | Returns an array containing the elements of this stream                                                                                                                                                                            |
+| `<A> A[]`                      | `.toArray(IntFunction<A[]> generator)`                                                          | Returns an array containing the elements of this stream, using the provided generator function to allocate the returned array, as well as any additional arrays that might be required for a partitioned execution or for resizing |
+| `default List<T>`              | `.toList()`                                                                                     | Accumulates the elements of this stream into a List                                                                                                                                                                                | .   |
 
 - Methods declared in interface `java.util.stream.BaseStream`
   - `.close()`
@@ -3812,6 +3893,174 @@ Map<Boolean, List<Student>> passingFailing = students.stream()
   - `.sequential()`
   - `.spliterator()`
   - `.unordered()`
+
+We can accumulate Stream elements into a List by calling the following methods on a stream:
+
+| Method                                      | Declaration/Signature Type | Guarantees Unmodifiability | Allows `null` | Since   |
+| ------------------------------------------- | -------------------------- | -------------------------- | ------------- | ------- |
+| `.collect(Collectors.toList())`             | `Collector<? super T ...>` | No                         | Yes           | Java 8  |
+| `.collect(Collectors.toUnmodifiableList())` | `Collector<? super T ...>` | Yes                        | No            | Java 10 |
+| `.toList()`                                 | `List<T>`                  | Yes                        | Yes           | Java 16 |
+
+Note: It is still preferred to use `.collect(Collectors.toList())` to avoid compilation/casting errors
+
+- Specifics
+  - `.collect()` returns type `Collector<? super T, A, R>` (important being `<? super T>`)
+  - `.toList()` returns type `Collector<T, ?, List<T>>` (important part by `<T>`)
+- TLDR
+  - CANNOT change `.collect(Collectors.toList())` to `.toList()`
+  - CAN change `.toList()` to `collect(Collectors.toList())`
+
+### Examples
+
+```java
+// Convert 2D list to 1D list
+public <T> List<T> flattenListOfListsStream(List<List<T>> nestedList) {
+  return nestedList.stream()
+    .flatMap(Collection::stream)
+    .collect(Collectors.toList());
+}
+```
+
+```java
+// Join two Collections
+@Test
+public void whenJoiningTwoCollections_thenJoined() {
+  List<String> list1 = Arrays.asList("Dog", "Cat", "Goat");
+  List<String> list2 = Arrays.asList("Cow", "Pig", "Horse");
+  List<String> combined = Stream.concat(list1.stream(), list2.stream()).collect(Collectors.toList());
+  assertTrue(combined.equals(Arrays.asList("Dog", "Cat", "Goat", "Cow", "Pig", "Horse")));
+}
+```
+
+```java
+// Join two Collections with Filter
+@Test
+public void whenJoiningTwoCollectionsWithFilter_thenJoined() {
+  List<String> list1 = Arrays.asList("Dog", "Cat", "Fox", "Giraffe", "Elephant");
+  List<String> list2 = Arrays.asList("Penguin", "Cow", "Horse", "Goat", "Tiger");
+  List<String> result = Stream.concat(list1.stream(), list2.stream())
+      .filter(e -> e.length() == 3)
+      .collect(Collectors.toList());
+  assertTrue(result.equals(Arrays.asList("Dog", "Cat", "Fox", "Cow")));
+}
+```
+
+```java
+// Join an Array into a String (Convert Array into String)
+@Test
+public void whenConvertArrayToString_thenConverted() {
+  String[] animalArr = new String[] { "Dog", "Cat", "Fox", "Cow", "Horse" };
+  String animalStr = Arrays.stream(animalArr).collect(Collectors.joining(", "));
+  assertEquals(animalStr, "Dog, Cat, Fox, Cow, Horse");
+}
+```
+
+```java
+// Join a Collection into a String (Convert List into String)
+@Test
+public void whenConvertCollectionToString_thenConverted() {
+  List<String> animalList = Arrays.asList("Dog", "Cat", "Horse", "Cow");
+  String animalStr = animalList.stream().collect(Collectors.joining(", "));
+  assertEquals(animalStr, "Dog, Cat, Horse, Cow");
+}
+```
+
+```java
+// Join a Map into a String (Convert Map into String)
+@Test
+public void whenConvertMapToString_thenConverted() {
+  Map<Integer, String> animalMap = new HashMap<>();
+  animalMap.put(1, "Dog");
+  animalMap.put(2, "Cat");
+  animalMap.put(3, "Cow");
+  animalMap.put(4, "Horse");
+  String animalStr = animalMap.entrySet()
+      .stream()
+      .map(entry -> entry.getKey() + " = " + entry.getValue())
+      .collect(Collectors.joining(", "));
+  assertEquals(animalStr, "1 = Dog, 2 = Cat, 3 = Cow, 4 = Horse");
+}
+```
+
+```java
+// Join 2D List into a String (Convert 2D List into String)
+@Test
+public void whenConvertNestedCollectionToString_thenConverted() {
+  List<List<String>> nestedList = new ArrayList<>();
+  nestedList.add(Arrays.asList("Dog", "Cat"));
+  nestedList.add(Arrays.asList("Cow", "Horse"));
+  nestedList.add(Arrays.asList("Fox", "Wolf"));
+  nestedList.add(Arrays.asList("Sheep", "Goat"));
+  String result = nestedList.stream()
+      .map(list -> list.stream()
+      .collect(Collectors.joining(",")))
+      .collect(Collectors.joining("|"));
+  assertEquals(result, "Dog,Cat|Cow,Horse|Fox,Wolf|Sheep,Goat");
+}
+```
+
+```java
+// Handle Null Values when Joining
+@Test
+public void whenConvertCollectionToStringAndSkipNull_thenConverted() {
+  List<String> animals = Arrays.asList("Dog", "Cat", null, "Horse", null, "Cow");
+  String result = animals.stream().filter(Objects::nonNull).collect(Collectors.joining(", "));
+  assertEquals(result, "Dog, Cat, Horse, Cow");
+}
+```
+
+```java
+// Split List into Two (split list in half)
+@Test
+public void whenSplitCollectionHalf_thenConverted() {
+  List<String> animals = Arrays.asList("Dog", "Cat", "Cow", "Horse", "Goat", "Pig");
+  List<String> result1 = new ArrayList<>();
+  List<String> result2 = new ArrayList<>();
+  AtomicInteger count = new AtomicInteger();
+  int mid = Math.round(animals.size() / 2);
+  animals.forEach(animal -> {
+    int index = count.getAndIncrement();
+    if (index < mid) {
+      result1.add(animal);
+    } else {
+      result2.add(animal);
+    }
+  });
+  assertTrue(result1.equals(Arrays.asList("Dog", "Cat", "Cow")));
+  assertTrue(result2.equals(Arrays.asList("Horse", "Goat", "Pig")));
+}
+```
+
+```java
+// Split String into Map (Convert String to Map)
+@Test
+public void whenConvertStringToMap_thenConverted() {
+  String animalStr = "1 = Dog, 2 = Cat, 3 = Horse";
+
+  Map<Integer, String> map = Arrays.stream(animalStr.split(", "))
+      .map(splitStr -> splitStr.split(" = "))
+      .collect(Collectors.toMap(entry -> Integer.parseInt(entry[0]), entry -> entry[1]));
+  assertEquals(map.get(1), "Dog");
+  assertEquals(map.get(2), "Cat");
+  assertEquals(map.get(3), "Horse");
+}
+```
+
+```java
+// Split String with Multiple Separators (Convert String to Map)
+@Test
+public void whenConvertCollectionToStringMultipleSeparators_thenConverted() {
+  String animals = "Dog. , Cat, . Horse. Cow, Pig., Goat., Sheep.Fox,Tiger";
+  List<String> result = Arrays.stream(animals.split("[,|.]"))
+      .map(String::trim)
+      .filter(e -> !e.isEmpty())
+      .collect(Collectors.toList());
+  System.out.println(result);
+  // [Dog, Cat, Horse, Cow, Pig, Goat, Sheep, Fox, Tiger]
+  // assertTrue(result.equals(Arrays.asList("Dog", "Cat", "Horse", "Cow", "Pig", "Goat", "Sheep", "Fox", "Tiger")));
+}
+```
 
 # `System` (Class)
 
@@ -4266,6 +4515,7 @@ while (currMask > 0) {
 
 - `import java.util.Date;`
 - [Read more](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/Date.html)
+- Use `import java.time.*;` instead
 
 ## Default Type Initialisation
 
@@ -4313,7 +4563,7 @@ while (currMask > 0) {
 - Solution 1
   - Omit diamond operators
 - Solution 2
-  - Delare `map` as `Map<String, List<String>> map = new HashMap<>();` instead of `Map<String, List> map = new HashMap<>();`
+  - Declare `map` as `Map<String, List<String>> map = new HashMap<>();` instead of `Map<String, List> map = new HashMap<>();`
 - Solution 3
 
   - `List<List<String>> result = new ArrayList<List<String>>(map.values());`
@@ -4527,6 +4777,18 @@ values.add(2);
 values.add(3)
 // map2 { 0: [1, 2, 3] }
 ```
+
+## Wildcard Imports
+
+A wildcard (`*`) import will only import the DIRECT classes within the package and will NOT import the classes in sub-packages inside it
+
+- Thus with an `import java.util.*`, we import classes like `ArrayList`, `HashMap`, `Random` etc
+- The `Stream` class actually resides in the sub-package `java.util.stream` and is NOT imported when you `import java.util.*;`
+- To import the `Stream` class, we can either do:
+  - `import java.util.stream.*;` (all classes within this package) or
+  - `import java.util.stream.Stream;`
+- [See all packages (direct + indirect) in java.util](https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/util/package-summary.html)
+- [Tutorial on Importing Packages](https://docs.oracle.com/javase/tutorial/java/package/usepkgs.html)
 
 ## Initialisation
 
@@ -5352,14 +5614,14 @@ while(i < word.length()){
   - Use initialise a `var` variable to `null`
 
 ```java
-Map<String, List<String>> companyToEmployees= new HashMap<>();
-  for (Map.Entry<String, List<String>> entry: companyToEmployees . entrySet()) {
-      List<String> employees= entry.getValue();
+Map<String, List<String>> companyToEmployees = new HashMap<>();
+for (Map.Entry<String, List<String>> entry: companyToEmployees.entrySet()) {
+  List<String> employees= entry.getValue();
 }
 
 // Equivalent
-var companyToEmployees= new HashMap<String, List<String>>();
-for (var entry: companyToEmployees. entrySet()) {
+var companyToEmployees = new HashMap<String, List<String>>();
+for (var entry: companyToEmployees.entrySet()) {
   var employees= entry.getValue();
 }
 ```
@@ -5379,5 +5641,31 @@ if (newRow >= 0 && newRow < grid.length && newCol >= 0 && newCol < grid[0].lengt
 // Efficient method
 if (newRow >= 0 && newRow < grid.length && newCol >= 0 && newCol < grid[0].length && visited.add(newRow + "," + newCol)) {
   pq.offer(new int[] { currDistance + 1, grid[newRow][newCol], newRow, newCol });
+}
+```
+
+# Zipping Collections (`.zip()`)
+
+```java
+import java.util.*;
+import java.util.stream.*;
+
+public class MyClass {
+  public static void main(String args[]) {
+    List<String> names = new ArrayList<>(Arrays.asList("Bob", "Alice", "Tom", "Mia"));
+    List<Integer> ages = new ArrayList<>(Arrays.asList(16, 17, 18, 19));
+    // Method 1
+    List<String> strList1 = IntStream.range(0, Math.min(names.size(), ages.size()))
+                                    .mapToObj(i -> names.get(i) + ":" + ages.get(i))
+                                    .toList();
+    // Method 2
+    List<String> strList2 = IntStream.range(0, Math.min(names.size(), ages.size()))
+                                    .mapToObj(i -> names.get(i) + ":" + ages.get(i))
+                                    .collect(Collectors.toList());
+    // Method 3
+    List<Map.Entry<String, Integer>> kvpList = IntStream.range(0, names.size())
+                                                        .mapToObj(i -> new AbstractMap.SimpleEntry<>(names.get(i), ages.get(i)))
+                                                        .collect(Collectors.toList());
+  }
 }
 ```
