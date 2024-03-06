@@ -164,6 +164,7 @@ alias cls="clear"
 # alias glo="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(magenta)%aN%Cgreen%d %Creset%s' --date=format:'%d/%m/%y - %I:%M:%S%P'"
 alias glo="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN%Cgreen%d %Creset%s' --date=format:'%d/%m/%y %I:%M%P'"
 alias gclean='git reset --hard && git clean -dfx'
+alias gstash='git stash --all'
 alias gcc="gcc-13"
 alias g++="g++-13"
 

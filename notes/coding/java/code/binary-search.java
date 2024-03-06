@@ -136,7 +136,7 @@ class Solution5 {
   public int binarySearchForMin(int[] arr, int target) {
     int n = arr.length;
     int left = 0;
-    int right = n; // int right = arr.length - 1;
+    int right = n; // int right = arr.length;
     while (left < right) {
       int mid = left + (right - left) / 2;
       if (arr[mid] < target) {
@@ -155,7 +155,7 @@ class Solution6 {
   public int binarySearchForMin(int[] arr, int target) {
     int n = arr.length;
     int left = 0;
-    int right = n - 1; // int right = arr.length;
+    int right = n - 1; // int right = arr.length - 1;
     while (left <= right) {
       int mid = left + (right - left) / 2;
       if (arr[mid] <= target) {
@@ -215,7 +215,7 @@ class Solution8 {
   public int binarySearchForMax(int[] arr) {
     int n = arr.length;
     int left = 0;
-    int right = n; // int right = arr.length - 1;
+    int right = n; // int right = arr.length;
     while (left < right) {
       int mid = left + (right - left) / 2;
       if (arr[mid] > target) {

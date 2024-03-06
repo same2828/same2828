@@ -23,12 +23,11 @@ struct TreeNode {
 };
 
 class TreeNode {
-private:
+public:
   int val;
   TreeNode *left;
   TreeNode *right;
 
-public:
   TreeNode()
   : val(0)
   , left(nullptr)

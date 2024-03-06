@@ -8,8 +8,33 @@
 - [Miscellaneous](#miscellaneous)
   - [Dependency Injection (DI)](#dependency-injection-di)
   - [Inversion of Control (IOC)](#inversion-of-control-ioc)
+- [Spring Boot - Devtiro](#spring-boot---devtiro)
+  - [QuickStart](#quickstart)
+    - [Spring Initializr](#spring-initializr)
+  - [Building the QuickStart App](#building-the-quickstart-app)
+  - [Quickstart App Explainer](#quickstart-app-explainer)
+  - [Apache Maven (build tool)](#apache-maven-build-tool)
+    - [Maven Concepts](#maven-concepts)
+      - [mvnw clean](#mvnw-clean)
+      - [mvnw default](#mvnw-default)
+      - [mvnw site](#mvnw-site)
+    - [Maven Project Structure](#maven-project-structure)
+    - [Maven Workflow](#maven-workflow)
+    - [Maven Spring Boot Plugin](#maven-spring-boot-plugin)
+  - [Spring Framework vs Spring Boot](#spring-framework-vs-spring-boot)
+    - [Spring App Layers](#spring-app-layers)
+      - [Persistence Layer](#persistence-layer)
+      - [Service Layer](#service-layer)
+      - [Presentation Layer](#presentation-layer)
+    - [Modularity](#modularity)
+  - [Inversion of Control + Dependency Injection](#inversion-of-control--dependency-injection)
+  - [Beans](#beans)
+    - [Method 1: Via Configuration File](#method-1-via-configuration-file)
+    - [Method 2: Via `@Component` Annotation/Decorator](#method-2-via-component-annotationdecorator)
+  - [Component Scanning](#component-scanning)
+  - [`@SpringBootApplication` Annotation/Decorator](#springbootapplication-annotationdecorator)
 - [Spring Boot 3 - Amigoscode](#spring-boot-3---amigoscode)
-  - [Spring Initializr](#spring-initializr)
+  - [Spring Initializr](#spring-initializr-1)
   - [Project Setup](#project-setup)
   - [pom.xml](#pomxml)
   - [Getting Started](#getting-started)
@@ -58,7 +83,7 @@
     - [Model Layer](#model-layer)
     - [View Layer](#view-layer)
     - [Dispatcher Servlet](#dispatcher-servlet)
-- [Spring - Teddy](#spring---teddy)
+- [Spring Boot - Teddy](#spring-boot---teddy)
   - [Intro](#intro)
   - [Spring Intialiser](#spring-intialiser)
   - [File Structure](#file-structure)
@@ -177,7 +202,7 @@ public class Main {
 - Remove the `new` keyword in all classes/code
 - Delegate/leave creation and management of objects to frameworks (Spring/Guice/Dagger)
 - Objects are created by default as a singleton (meaning if injected into multiple classes, the same instance will be reused and hence greatly benefits horizontal scaling)
-- [YouTube Explanation - Amigoscode](https://www.youtube.com/watch?v=oqYRl06DNHQ)
+- [YouTube Link - Amigoscode](https://www.youtube.com/watch?v=oqYRl06DNHQ)
 
 **BEFORE Dependency Injection**
 
@@ -360,7 +385,445 @@ public class Main {
 }
 ```
 
+# Spring Boot - Devtiro
+
+- [YouTube Link](https://www.youtube.com/watch?v=Nv2DERaMx-4)
+- [GitHub Repo](https://github.com/devtiro/course-spring-boot)
+
+## QuickStart
+
+### Spring Initializr
+
+- [Spring Initializr](https://start.spring.io/)
+  - Spring Initialiser allows you to configure and download a skeleton spring boot project
+- Note:
+
+  - Gradle is a build and dependency management tool
+  - Kotlin, Groovy are other programming languages
+
+- Config Options:
+  - Project = `Maven`
+  - Language = `Java`
+  - Spring Boot = `3.2.3` (do NOT choose SNAPSHOT)
+  - Project Metadata:
+  - Group: `com.demo`
+  - Artifact: `quickstart`
+  - Name: `quickstart`
+  - Description: `Demo project for Spring Boot`
+  - Package Name: `com.demo.quickstart`
+  - Packaging: `jar`
+  - Java: `17`
+  - Dependencies
+  - `Spring Web`
+
+## Building the QuickStart App
+
+- Create `src/main/java/com.demo.quickstart/HelloWorldController.java`
+- Paste in the following code below and go to `http://localhost:8080/hello`
+
+```java
+// src/main/java/com/devtiro/quickstart/HelloWorldController.java
+package com.devtiro.quickstart;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class HelloWorldController {
+
+  @GetMapping(path = "/hello")
+  public String helloWorld() {
+    return "Hello Devtiro!";
+  }
+}
+```
+
+```java
+// src/main/java/com/devtiro/quickstart/QuickstartApplication.java
+package com.devtiro.quickstart;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class QuickstartApplication {
+
+  public static void main(String[] args) {
+    SpringApplication.run(QuickstartApplication.class, args);
+  }
+}
+```
+
+## Quickstart App Explainer
+
+- `src/main/java/com/devtiro/quickstart/QuickstartApplication.java` = Entry point to application (can tell by the `main` method and the `@SpringBootApplication` annotation)
+- `src/main/resources/application.properties` or `src/main/resources/application.yml` = App configurations -`~/pom.xml` = Used by Maven
+
+## Apache Maven (build tool)
+
+- Apache Maven = A build tool that helps programmers manage their projects and all things they need to build their programs
+- Maven knows how to find, find and bundle all project dependencies (dependency management)
+- Maven builds and tests our projects as well as package it up
+- `./mvnw clean compile`
+
+### Maven Concepts
+
+- `mvnw` == Maven Wrapper
+- Maven has 3 phases (lifecycle) with 1 or more goals
+  - `clean`
+  - `default`
+  - `site`
+- `~/target` folder/directory is directory that Maven uses to store all processed code (built classes, reports, build artifacts (jar, war files))
+  - Remove with `./mvnw clean`
+
+#### mvnw clean
+
+- `clean` === Remove temporary directories and files
+  - `pre-clean` - Hook for before cleaning
+  - `clean` - Does the actual cleaning
+  - `post-clean` - Hook for after cleaning
+
+#### mvnw default
+
+- `default` - Where we build and test (where most useful goals live)
+  - `compile` - Compiles code into bytecode
+  - `test` - Runs unit tests
+  - `package` - Creates a jar/war file
+  - `verify` - Runs and checks integration tests
+- Note: These goals are run in the order that they are listed
+  - Example
+    - `./mvnw test` will run both `compile` and `test`
+    - `./mvnw package` will run `compile` > `test` > `package`
+
+#### mvnw site
+
+`site` == Where documentation is generated (i.e. javadoc)
+
+### Maven Project Structure
+
+- [Introduction to the Standard Directory Layout Docs](https://maven.apache.org/guides/introduction/introduction-to-the-standard-directory-layout.html)
+- `src/main/java` = All Java implementation code
+- `src/main/resources` = Folder for any static/configuration/load-in files
+  - Contains `application.yml`/`application.properties` file
+- `src/test/java` = All Java test code
+  - Mirror your `src/main/java` folder structure
+- ` src/main/test/resources`
+  - Place any TEST-SPECIFIC static/configuration/load-in files here (to overwrite configuration files)
+- `~/target` = Built project (compiled jar file) + Any files processed by Maven
+
+### Maven Workflow
+
+- `./mvnw clean compile`
+- `./mvnw clean test`
+- `./mvnw clean package`
+- `./mvnw clean verify`
+- Run jar file `java -jar pathToJarFile`
+  - `java -jar quickstart-0.0.1-SNAPSHOT.jar`
+
+### Maven Spring Boot Plugin
+
+- Run application
+  - `./mvn spring-boot:run`
+- Stop application
+  - `ctrl + c`
+
+## Spring Framework vs Spring Boot
+
+- Spring Boot is a framework for building Java applications
+  - A framework is a chunk of code written on top of a language's core library to solve common problems (i.e. connecting to db, exposing a REST API so different parts of system can communicate)
+- "Spring Boot" is built ON-TOP of "Spring Framework"
+
+```
+Your App
+|
+Spring Boot
+|
+Spring Framework
+|
+Java Language Core Library
+```
+
+### Spring App Layers
+
+```
+Presentation
+|
+Service
+|
+Persistence
+```
+
+#### Persistence Layer
+
+- Persistence Layer handles interactions with our database and expose via interfaces
+  - Entities == Java objects which represent our domain and often map to tables in a db
+- Use entities to interact with db with the following patterns:
+  - Repository Pattern
+  - Data Access Objects (DAO)
+- Type of functionality exposed by our repositories & dao's would typically be "CRUD"
+  - Create
+  - Read
+  - Update
+  - Delete
+
+#### Service Layer
+
+- Service Layer uses all the functionality exposed by the "Persistance Layer" to meet requirements of application
+  - This is achieved through a set of interfaces and their implementing classes (referred to as "services")
+- The Service Layer's functionality can be complicated or simply pass-through calls to the "Persistence Layer"
+
+#### Presentation Layer
+
+- Presentation Layer takes all the data (from using services in the "Service Layer") and expose them to the user through APIs such as:
+  - A REST API (using controllers and their implementations)
+  - GraphQL API
+  - Websockets API
+
+### Modularity
+
+- Essentially just utilise spring dependencies, put configuration inside proxies file (specifying how to connect to db) and get spring boot to automatically create beans for you
+
+```
+Spring Data JPA (Java Objects)
+|
+Spring JDBC (SQL)
+|
+Database Driver (e.g. PostgreSQL)
+```
+
+## Inversion of Control + Dependency Injection
+
+- Rely on "interfaces" rather than "classes", which makes it easier to swap out sub-classes that a main class depends on
+- Left to framework to create concrete classes and inject them where they are needed/declared
+- Ownership of objects/dependencies is left to higher classes (i.e. frameworks)
+- Hence we do NOT use the `new` keyword
+- Note: "Dependency Injection" sits INSIDE "Inversion of Control"
+
+## Beans
+
+- Beans == Concrete Classes that are injected by a framework
+  - **Bean dependencies are declared in the bean's constructor**
+- `@Configuration` annotation/decorator
+  - Labels a "Configuration Class"
+  - Tells Spring to look inside class for `@Bean` annotations/decorators
+- `@Bean` annotation declares component is a bean that will be managed by Spring context
+- Note: `CommandLineRunner` == Spring Boot CLI Application
+
+### Method 1: Via Configuration File
+
+- Note: Need to create `src/main/java/com/demo/config` folder
+
+```java
+// src/main/java/com/devtiro/maven/config/PrinterConfig.java
+package com.devtiro.maven.config;
+
+import com.devtiro.maven.services.BluePrinter;
+import com.devtiro.maven.services.ColourPrinter;
+import com.devtiro.maven.services.GreenPrinter;
+import com.devtiro.maven.services.RedPrinter;
+import com.devtiro.maven.services.impl.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class PrinterConfig {
+
+  @Bean
+  public BluePrinter bluePrinter() {
+    return new SpanishBluePrinter();
+  }
+
+  @Bean
+  public RedPrinter redPrinter() {
+    return new SpanishRedPrinter();
+  }
+
+  @Bean
+  public GreenPrinter greenPrinter() {
+    return new SpanishGreenPrinter();
+  }
+
+  @Bean
+  public ColourPrinter colourPrinter(BluePrinter bluePrinter, RedPrinter redPrinter, GreenPrinter greenPrinter) {
+    return new ColourPrinterImpl(redPrinter, bluePrinter, greenPrinter);
+  }
+}
+```
+
+```java
+// src/main/java/con/devtiro/maven/services/RedPrinter.java
+package com.devtiro.maven.services;
+
+public interface RedPrinter {
+  String print();
+}
+```
+
+```java
+// src/main/java/con/devtiro/maven/services/impl/EnglishRedPrinter.java
+package com.devtiro.maven.services.impl;
+
+import com.devtiro.maven.services.RedPrinter;
+
+public class EnglishRedPrinter implements RedPrinter {
+
+  @Override
+  public String print() {
+    return "red";
+  }
+}
+```
+
+```java
+// src/main/java/con/devtiro/maven/services/ColorPrinter.java
+package com.devtiro.maven.services;
+
+public interface ColourPrinter {
+  String print();
+}
+```
+
+```java
+// src/main/java/con/devtiro/maven/services/impl/ColorPrinterImpl.java
+package com.devtiro.maven.services.impl;
+
+import com.devtiro.maven.services.BluePrinter;
+import com.devtiro.maven.services.ColourPrinter;
+import com.devtiro.maven.services.GreenPrinter;
+import com.devtiro.maven.services.RedPrinter;
+
+public class ColourPrinterImpl implements ColourPrinter {
+  private RedPrinter redPrinter;
+  private BluePrinter bluePrinter;
+  private GreenPrinter greenPrinter;
+
+  public ColourPrinterImpl(RedPrinter redPrinter, BluePrinter bluePrinter, GreenPrinter greenPrinter) {
+    this.redPrinter = redPrinter;
+    this.bluePrinter = bluePrinter;
+    this.greenPrinter = greenPrinter;
+  }
+
+  @Override
+  public String print() {
+    return String.join(", ", redPrinter.print(), bluePrinter.print(), greenPrinter.print());
+  }
+}
+```
+
+```java
+// src/main/java/com/devtiro/maven/ColorsApplication.java
+package com.devtiro.maven;
+
+import com.devtiro.maven.services.ColourPrinter;
+import lombok.extern.java.Log;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+@Log
+public class ColoursApplication implements CommandLineRunner {
+
+  private ColourPrinter colourPrinter;
+
+  public ColoursApplication(ColourPrinter colourPrinter) {
+    this.colourPrinter = colourPrinter;
+  }
+
+  public static void main(String[] args) {
+    SpringApplication.run(ColoursApplication.class, args);
+  }
+
+  @Override
+  public void run(final String... args) {
+    log.info(colourPrinter.print());
+  }
+}
+```
+
+### Method 2: Via `@Component` Annotation/Decorator
+
+- `@Component` annotation/decorator
+  - Declares component is a bean that will be managed by Spring context
+  - Asks Spring to inject any dependencies the class requires in its constructor (or any other way of declaring dependencies)
+  - Add `@Component` on top of the implementing class instead of adding `@Bean` declaration inside a configuration class
+- Note:
+  - `RedPrinter.java`, `ColorPrinter.java`, `ColorsApplication.java` remains unchanged
+- To swap out `EnglishRedPrinter` with `SpanishRedPrinter` in `ColorPrinterImpl.java`
+  - All we need to do is REMOVE `@Component` from `EnglishRedPrinter.java` and ADD `@Component` into `SpanishRedPrinter.java`
+- The `@Service` annotation/decorator is a more specific version of the `@Component` annotation/decorator which specifies that the component is a "service" bean
+  - `@Component` and `@Service` are interchangeable
+
+```java
+// src/main/java/com/devtiro/maven/services/impl/EnglishRedPrinter.java
+package com.devtiro.maven.services.impl;
+
+import com.devtiro.maven.services.RedPrinter;
+import org.springframework.stereotype.Component;
+
+@Component
+public class EnglishRedPrinter implements RedPrinter {
+
+  @Override
+  public String print() {
+    return "red";
+  }
+}
+```
+
+```java
+// src/main/java/com/devtiro/maven/services/impl/ColorPrinterImpl.java
+package com.devtiro.maven.services.impl;
+
+import com.devtiro.maven.services.BluePrinter;
+import com.devtiro.maven.services.ColourPrinter;
+import com.devtiro.maven.services.GreenPrinter;
+import com.devtiro.maven.services.RedPrinter;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ColourPrinterImpl implements ColourPrinter {
+  private RedPrinter redPrinter;
+  private BluePrinter bluePrinter;
+  private GreenPrinter greenPrinter;
+
+  public ColourPrinterImpl(RedPrinter redPrinter, BluePrinter bluePrinter, GreenPrinter greenPrinter) {
+    this.redPrinter = redPrinter;
+    this.bluePrinter = bluePrinter;
+    this.greenPrinter = greenPrinter;
+  }
+
+  @Override
+  public String print() {
+    return String.join(", ", redPrinter.print(), bluePrinter.print(), greenPrinter.print());
+  }
+}
+```
+
+## Component Scanning
+
+- Component scanning is a process that starts whenever the application is run
+- Spring will look through your project for beans and where beans are needed
+  - No dependency example: `EnglishRedPrinter.java`
+    - `@Component` scan will create an instance of the class and place it as a bean into the "spring application context" (a global pool of beans that are available for use)
+  - Dependency example: `ColorPrinterImpl.java`
+    - Has dependencies of `RedPrinter`, `BluePrinter`, `GreenPrinter` as declared as arguments in its constructor
+    - "Autowiring" is another term for "Dependency Injection"
+- Component scanning starts at a particular point of project hierarchy and works its way down the tree
+  - Traditionally would use `@ComponentScan` annotation/decorator to tell Spring the starting point
+  - In Spring Boot we use the `@SpringBootApplication` annotation/decorator which implicitly contains the `@ComponentScan` annotation/decorator
+    - We will declare `@ComponentScan` at a point in our project and everywhere from that point downwards will be searched by Spring for beans and places where beans are needed/required
+
+## `@SpringBootApplication` Annotation/Decorator
+
+- `@SpringBootApplication` contains
+  - `@Configuration`: Identifies configuration class (somewhere that Spring should look for beans during component scanning phase)
+  - `@ComponentScan`: From this point in the project hierarchy down, look for beans and places where beans are needed/required
+  - `@EnableAutoConfiguration`: Load predefined defaults
+
 # Spring Boot 3 - Amigoscode
+
+- [YouTube Link](https://www.youtube.com/watch?v=-mwpoE0x0JQ)
 
 - Official Docs
   - [Spring Boot Docs](https://spring.io/projects/spring-boot)
@@ -423,7 +886,7 @@ Config Options
 - Create
   - `src/main/java/com.demo` package (right-click on "java" folder > New > Package)
   - `src/main/java/com.demo/Main.java` class (right-click on "com.demo" > New > Java Class)
-    - Shortcut = Enter "main" and press enter (to generate `main` method)
+    - Shortcut == Enter "main" and press enter (to generate `main` method)
 - Note: `com.demo` == `com/demo` (2 nested folders)
 - Add `@SpringBootApplication` annotation/decorator to indicate "Main" is a "Spring Boot Application" above `public class Main`
 - Add `SpringApplication.run()` inside `main` method
@@ -611,7 +1074,7 @@ public class Main {
   handling HTTP requests/responses
   - However, working directly with the servlets API can be clunky when working on large, enterprise grade applications
 - Spring MVC abstracts away a lot of the messy details you would have to understand and manage yourself if writing servlets manually
-  - Servlet = Process that handles HTTP requests
+  - Servlet == Process that handles HTTP requests
   - It exposes a custom set of annotations which we apply to our classes and methods to assign their responsibility within the MVC architecture
   - By using annotations to mark the responsibilities of our classes, Spring Web MVC cuts out a lot of boilerplate
   - Creating RESTful services becomes very easy
@@ -992,6 +1455,9 @@ volumes:
 
 # Spring MVC - Teddy
 
+- [YouTube Link](https://www.youtube.com/playlist?list=PL82C6-O4XrHejlASdecIsroNEbZFYo_X1)
+- [GitHub Repo](https://github.com/teddysmithdev/RunGroop-Java)
+
 - Spring MVC is a library within Spring framework that simplifies HTTP requests and responses
 - MVC = Model-View-Controller
   - MVC allows the separation of business, presentation, and navigation logic
@@ -1020,7 +1486,10 @@ volumes:
 Dispatcher Servlet -> Handler Mapping -> Controller -> View
 ```
 
-# Spring - Teddy
+# Spring Boot - Teddy
+
+- [YouTube Link](https://www.youtube.com/playlist?list=PL82C6-O4XrHfX-kHudgC4cPfMy6QPaF-H)
+- [GitHub Repo](https://github.com/teddysmithdev/pokemon-review-springboot)
 
 ## Intro
 

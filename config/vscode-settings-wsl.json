@@ -351,7 +351,7 @@
   "editor.fontFamily": "RobotoLGC Nerd Font Mono, Consolas, 'Courier New', monospace",
   "editor.fontLigatures": false,
   "editor.formatOnPaste": false,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "editor.guides.bracketPairs": "active",
   "editor.inlayHints.enabled": "off",
   "editor.inlineSuggest.enabled": false,

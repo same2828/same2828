@@ -348,9 +348,18 @@
 
 // using namespace std;
 
+class Solution {
+public:
+  void hello() {
+    std::cout << "Hello World" << "\n";
+  }
+}
+
 int main() {
-  std::cout << "Hello World!" << std::endl;
-  std::cout << "Bing Chilling!" << '\n';
+  Solution solution;
+  solution.hello();
+  std::cout << "Hello World" << std::endl;
+  return 0;
 }
 ```
 

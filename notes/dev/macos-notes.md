@@ -135,19 +135,28 @@ brew install gromgit/fuse/ntfs-3g-mac
 
 ### Keyboard Remap
 
-Use `System Settings > Keyboard > Keyboard > Change Modifier Keys` or Karabiner-Elements App
+Use `System Settings > Keyboard > Keyboard Shortcuts > Change Modifier Keys` or Karabiner-Elements App
 
-```txt
-Option (⌥) --> Command (⌘)
-Command (⌘) --> Option (⌥)
-Control (^) --> Control (^)
+**macOS Default**
+
+| Control (^) | Option (⌥) | Command (⌘) |
+| ----------- | ---------- | ----------- |
+
+**Windows Keyboard Default**
+
+| Control (^) | Command (⌘) | Option (⌥) |
+| ----------- | ----------- | ---------- |
+
+**Windows Keyboard Modified**
+
+| Command (⌘) | Control (^) | Option (⌥) |
+| ----------- | ----------- | ---------- |
+
+Hence
+
 ```
-
-Default
-
-```txt
-Win == Command (⌘)
-Alt == Option (⌥)
+Control -> Command
+Command -> Control
 ```
 
 ## System Settings

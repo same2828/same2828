@@ -182,6 +182,7 @@
   - [Convert `List<Integer>` to `int[]`](#convert-listinteger-to-int)
   - [Convert `List<Integer>` to `Integer[]`](#convert-listinteger-to-integer)
   - [Count the Number of Bits Set to 1](#count-the-number-of-bits-set-to-1)
+  - [Custom Exception](#custom-exception)
   - [Date Class (Deprecated)](#date-class-deprecated)
   - [Default Type Initialisation](#default-type-initialisation)
   - [Diamond Operator `<>`](#diamond-operator-)
@@ -229,7 +230,8 @@
   - [Ternary Operators `(boolExp ? trueClause : falseClause)`](#ternary-operators-boolexp--trueclause--falseclause)
   - [`var` keyword](#var-keyword)
   - [visited hack](#visited-hack)
-- [Zipping Collections (`.zip()`)](#zipping-collections-zip)
+  - [while() loop hack](#while-loop-hack)
+  - [Zipping Collections (`.zip()`)](#zipping-collections-zip)
 
 # Resources
 
@@ -272,9 +274,16 @@ import java.util.stream.*;
 // import static java.util.stream.Collectors.joining;
 // import static java.util.stream.Collectors.toList;
 
+class Solution {
+  public void hello() {
+    System.out.println("Hello World!");
+  }
+}
+
 public class MyClass {
   public static void main(String args[]) {
-    System.out.println("Hello World");
+    Solution solution = new Solution();
+    solution.hello();
   }
 }
 ```
@@ -4511,6 +4520,69 @@ while (currMask > 0) {
 }
 ```
 
+## Custom Exception
+
+```java
+public class InsufficientFundsException extends Exception {
+  private double amount;
+
+  public InsufficientFundsException(double amount) {
+    this.amount = amount;
+  }
+
+  public double getAmount() {
+    return amount;
+  }
+}
+
+public class DebitAccount {
+  private double balance;
+  private int number;
+
+  public DebitAccount(int number) {
+    this.number = number;
+  }
+
+  public void deposit(double amount) {
+    balance += amount;
+  }
+
+  public void withdraw(double amount) throws InsufficientFundsException {
+    if (amount <= balance) {
+      balance -= amount;
+    } else {
+      double needs = amount - balance;
+      throw new InsufficientFundsException(needs);
+    }
+  }
+
+  public double getBalance() {
+    return balance;
+  }
+
+  public int getNumber() {
+    return number;
+  }
+}
+
+public class BankDemo {
+  public static void main(String[] args) {
+    DebitAccount d = new DebitAccount(101);
+    System.out.println("Depositing $500");
+    d.deposit(500.00);
+    try {
+      System.out.println("Withdrawing $100...");
+      d.withdraw(100.00);
+      System.out.println("Withdrawing $600...");
+      d.withdraw(600.00);
+    } catch (InsufficientFundsException e) {
+      System.out.println("Invalid Withdrawal: You are missing $" + e.getAmount());
+      e.printStackTrace();
+    }
+  }
+}
+```
+
 ## Date Class (Deprecated)
 
 - `import java.util.Date;`
@@ -5644,7 +5716,24 @@ if (newRow >= 0 && newRow < grid.length && newCol >= 0 && newCol < grid[0].lengt
 }
 ```
 
-# Zipping Collections (`.zip()`)
+## while() loop hack
+
+- An "assignment operation" always returns the value that was assigned
+  - Can wrap the "assignment operation" in brackets and then compare the returned value against condition
+
+```java
+public int[] getIndexArray(String str, String subStr) {
+  int i = 0;
+  List<Integer> list = new ArrayList<>();
+  while ((i = str.indexOf(subStr, i)) != -1) { // <-- HERE
+    list.add(i);
+    i = i + subStr.length();
+  }
+  //...
+}
+```
+
+## Zipping Collections (`.zip()`)
 
 ```java
 import java.util.*;

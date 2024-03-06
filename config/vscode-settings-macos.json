@@ -354,7 +354,7 @@
   "editor.fontLigatures": false,
   "editor.fontSize": 13.5,
   "editor.formatOnPaste": false,
-  "editor.formatOnSave": true,
+  "editor.formatOnSave": false,
   "editor.guides.bracketPairs": "active",
   "editor.inlayHints.enabled": "off",
   "editor.inlineSuggest.enabled": false,
