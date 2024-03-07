@@ -112,7 +112,7 @@ source $ZSH/oh-my-zsh.sh
 # ctrl + j = toggle zsh-autosuggestions on/off
 bindkey '^j' autosuggest-toggle
 # Enforce < 81 character limit
-ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*gcmsg '*|(brew (install|uninstall|tap)|cat|cd|curl|echo|fetch|git (add|branch|checkout|clone|merge|rebase|remote)|ga|gc|gca|gcam|gcas|gcasm|gcl|gcmsg|gcs|gcsm|git commit -(am|m)|mkdir|mv|npm (install|uninstall|link|unlink)|npx|pnpm (add|remove|install|uninstall|link|unlink|up|update|upgrade)|sh|wget|yarn (add|remove|link|unlink|up)|youtube-dl) *)"
+ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*gcmsg '*|(brew (install|uninstall|tap)|cat|cd|curl|echo|fetch|git (add|branch|checkout|clone|merge|rebase|remote)|ga|gc|gca|gcam|gcas|gcasm|gcb|gcl|gcmsg|gcs|gcsm|git commit -(am|m)|mkdir|mv|npm (install|uninstall|link|unlink)|npx|pnpm (add|remove|install|uninstall|link|unlink|up|update|upgrade)|sh|wget|yarn (add|remove|link|unlink|up)|youtube-dl) *)"
 
 # Homebrew
 #---------
@@ -151,7 +151,7 @@ export PATH="$PATH:/home/linuxbrew/.linuxbrew/opt/node@20/bin"
 # Aliases
 #--------
 alias ls='ls --color=auto'
-alias ll='ls -alF --color=auto'
+alias ll='ls -AlF --color=auto'
 alias grep='grep --color=always'
 alias memhogs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10' # Show Top 10 Memory Hogs
 alias cpuhogs='ps wwaxr -o pid,stat,%cpu,%mem,time,command | head -10' # Show Top 10 CPU Hogs
@@ -181,3 +181,4 @@ export EDITOR="code --wait"
 export VISUAL="$EDITOR"
 export TZ="Australia/Sydney"
 export JAVA_HOME="/usr/lib/jvm/temurin-17-jdk-amd64"
+export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:" # Prevent highlighting of directories (green background)
