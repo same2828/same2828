@@ -9,7 +9,7 @@ PROMPT='%{$fg_bold[cyan]%}%~%{$reset_color%} $(git_prompt_info)
 RPROMPT='%{$fg_bold[white]%}%D{%-I:%M:%S%P - %d/%m}'
 # RPROMPT='%{$fg_bold[white]%}%D{%-I:%M:%S%p - %d/%m}' # macOS
 
-ZSH_THEME_GIT_PROMPT_PREFIX="on %{$fg_bold[blue]%}%{$fg[magenta]%}"
+ZSH_THEME_GIT_PROMPT_PREFIX="on %{$fg_bold[blue]%}%{$fg_bold[magenta]%}"
 ZSH_THEME_GIT_PROMPT_SUFFIX="%{$reset_color%} "
-ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg[blue]%} %{$fg[red]%}%1{[!]%}"
-ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg[blue]%}"
+ZSH_THEME_GIT_PROMPT_DIRTY="%{$fg_bold[blue]%} %{$fg_bold[red]%}%1{[!]%}"
+ZSH_THEME_GIT_PROMPT_CLEAN="%{$fg_bold[blue]%}"
