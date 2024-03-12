@@ -152,16 +152,20 @@ export PATH="$PATH:/home/linuxbrew/.linuxbrew/opt/node@20/bin"
 #--------
 alias ls='ls --color=auto'
 alias ll='ls -AlF --color=auto'
+# alias ll='ls -AoF --color=auto'
 alias grep='grep --color=always'
 alias memhogs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10' # Show Top 10 Memory Hogs
 alias cpuhogs='ps wwaxr -o pid,stat,%cpu,%mem,time,command | head -10' # Show Top 10 CPU Hogs
 alias cls="clear"
-# alias glo="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(magenta)%aN%Cgreen%d %Creset%s' --date=format:'%d/%m/%y - %I:%M:%S%P'"
+alias untar="tar -xvf"
+# alias glo="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(magenta)%aN%Cgreen%d %Creset%s' --date=format:'%d/%m/%y %I:%M:%S%P'"
 alias glo="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN%Cgreen%d %Creset%s' --date=format:'%d/%m/%y %I:%M%P'"
-alias gclean='git reset --hard && git clean -dfx'
+# alias gclean='git reset --hard && git clean -dfx'
+alias gclean='git fetch --all --prune && git reset --hard origin/master && git clean -dfx'
 alias gstash='git stash --all'
 # alias gcc="gcc-13"
 # alias g++="g++-13"
+# alias gcp='(){ ga . && gc -m $1 && gp;}'
 
 # Custom Functions
 # ----------------
@@ -173,6 +177,11 @@ mine() {
 # Kill a process that is using a port (usage: killport 3000)
 killport() {
   kill -9 $(lsof -t -i:$1)
+}
+# Create directory and cd into it (usage: mkcd dirName)
+mkcd() {
+  mkdir -p "$@"
+  cd "$@"
 }
 
 # Environment Variables ENV
