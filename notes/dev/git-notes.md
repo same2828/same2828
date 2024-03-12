@@ -25,7 +25,7 @@ git reset --hard origin/master
 ```
 
 ```sh
-cd github/lc-topics && gl && cd ../lc-all && gl && cd ../notes && gl && cd ../config && gl && cd ../interview-questions && gl && cd ../fe && gl && cd
+cd ~/github/lc-topics && gl && cd ../lc-all && gl && cd ../notes && gl && cd ../config && gl && cd ../lnt-topics && gl && cd ../lnt-all && gl && cd ../oa && gl && cd ../fe && gl && cd
 ```
 
 ```sh

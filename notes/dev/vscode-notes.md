@@ -1,7 +1,7 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [Setup](#setup)
+- [Config](#config)
 - [Notes](#notes)
   - [Scroll](#scroll)
   - [Search](#search)
@@ -21,20 +21,15 @@
   - [Open Markdown Preview](#open-markdown-preview)
   - [Search for Files (in opened folder workspace)](#search-for-files-in-opened-folder-workspace)
   - [Settings](#settings)
+  - [Show Visible Tabs](#show-visible-tabs)
   - [Split View](#split-view)
   - [Swap Lines](#swap-lines)
   - [Toggle Word Wrap](#toggle-word-wrap)
 
-# Setup
+# Config
 
-- `Ctrl + Shift + P`
-- `> Preferences: Open Settings (UI)`
-- Search for "unchost" (may need to change to Remote tab)
-- Add `wsl.localhost` to it
-
-```json
-"security.allowedUNCHosts" : [ "wsl.localhost" ]
-```
+- Make sure to **DISABLE** "Format On Save" BEFORE doing the "find and replace all" on files (bug with java formatter when opening multiple files with same name)
+  - Change `editor.formatOnSave: true` to `editor.formatOnSave: false`
 
 # Notes
 
@@ -285,6 +280,10 @@ Extension List:
 ## Settings
 
 - `Ctrl + ,`
+
+## Show Visible Tabs
+
+`Ctrl + Tab`
 
 ## Split View
 

@@ -33,6 +33,24 @@
     - [Method 2: Via `@Component` Annotation/Decorator](#method-2-via-component-annotationdecorator)
   - [Component Scanning](#component-scanning)
   - [`@SpringBootApplication` Annotation/Decorator](#springbootapplication-annotationdecorator)
+  - [`@AutoConfiguration` Annotation/Decorators](#autoconfiguration-annotationdecorators)
+  - [Config Files](#config-files)
+  - [Environment Variables](#environment-variables)
+  - [Configuration Properties](#configuration-properties)
+    - [`@ConfigurationProperties` Annotation/Decorator](#configurationproperties-annotationdecorator)
+    - [`@Configuration` Annotation/Decorator](#configuration-annotationdecorator)
+  - [Database Layers](#database-layers)
+  - [Connect to H2 Database (In-Memory DB)](#connect-to-h2-database-in-memory-db)
+  - [Connect to PostgreSQL](#connect-to-postgresql)
+    - [Starting PostgreSQL Container](#starting-postgresql-container)
+    - [Initialise DB Schema](#initialise-db-schema)
+  - [JDBCTemplate Setup](#jdbctemplate-setup)
+  - [Data Access Objects (DAO)](#data-access-objects-dao)
+    - [Setup DAO](#setup-dao)
+      - [Integration Test DAO with H2 In-Memory DB](#integration-test-dao-with-h2-in-memory-db)
+    - [Creating DAOs](#creating-daos)
+      - [Author](#author)
+      - [Book](#book)
 - [Spring Boot 3 - Amigoscode](#spring-boot-3---amigoscode)
   - [Spring Initializr](#spring-initializr-1)
   - [Project Setup](#project-setup)
@@ -820,6 +838,854 @@ public class ColourPrinterImpl implements ColourPrinter {
   - `@Configuration`: Identifies configuration class (somewhere that Spring should look for beans during component scanning phase)
   - `@ComponentScan`: From this point in the project hierarchy down, look for beans and places where beans are needed/required
   - `@EnableAutoConfiguration`: Load predefined defaults
+
+## `@AutoConfiguration` Annotation/Decorators
+
+- `@AutoConfiguration` is the process that Spring Boot uses when it starts up to provide the predefined defaults and create all those dependencies
+- Spring boot starters are a collection of those dependencies which are there to solve a particular problem
+  - One such start is the "Spring Web" dependency
+- After creating a demo project with "Spring Initializr" and adding the "Spring Web" dependency
+  - Open project and look at the `pom.xml` file
+    - Can see `<artifactId>spring-boot-starter-web</artifactId>`
+    - `sprint-boot-starter-web` is a collection of dependencies that we need inorder to implement a web project including Spring MVC and the embedded Tomcat = web server application container needed to run the web project
+- To find `@AutoConfiguration` go to "External Libraries" in Intellij
+  - `External Libaries > Maven: org.springframework.boot:spring-boot-autoconfigure:3.1.1 > spring-boot-autoconfigure-3.1.1.jar > org.springframework.boot.autoconfigure > web`
+    - The classes inside this folder will:
+      - Look at all the dependencies available in our project (such as ones provided by the spring-boot starters)
+      - Create objects with predefined defaults
+      - Place resultant beans into the spring application context to be used throughout our application
+    - `External Libaries > Maven: org.springframework.boot:spring-boot-autoconfigure:3.1.1 > spring-boot-autoconfigure-3.1.1.jar > org.springframework.boot.autoconfigure > web > servlet > DispatcherServletAutoConfiguration.java`
+      - `@ConditionalOnClass` annotation/decorator
+        - `@ConditionalOnClass({DispatcherServlet.class})` == When this class (`DispatcherServlet.class`) is available on your class path, the following class (`DispatcherServletAutoConfiguration`) should be instantiated and run
+        ```java
+        @ConditionalOnClass({DispatcherServlet.class})
+        public class DispatcherServletAutoConfiguration {
+          //...
+        }
+        ```
+      - `@ConditionalOnBean` == When this bean (`DispatcherServlet.class`) is available, then this particular part of the configuration should be run
+        - Note: The inverse is possible as well (`@ConditonalOnMissingBean`)
+        ```java
+        @ConditionalOnBean(value = {DispatcherServlet.class},name = {"dispatcherServlet"})
+        public DispatcherServletRegistrationBean dispatcherServletRegistration(DispatcherServlet dispatcherServlet, WebMvcProperties webMvcProperties, ObjectProvider<MultipartConfigElement> multipartConfig) {herServletRegistrationBean dispatcherServletRegistration(DispatcherServlet dispatcherServlet, WebMvcProperties webMvcProperties, ObjectProvider<MultipartConfigElement> multipartConfig) {
+          //...
+        }
+        ```
+
+## Config Files
+
+- Use config files to change predefined defaults
+- Change these defaults with the `src/main/resources/application.properties` file
+  - Using a `src/main/resources/application.ymnl` file also works
+- Note: You can also change config for your `src/test` folder by creating an `application.properties` or `application.yml` file
+  - E.g. Is to use an in-memory db for tests (done by placing the db in `src/test/resources`)
+- Note:
+  - `.properties` files use `key=value`
+  - `.yaml/.yml` files use indentations
+- [Docs Link](https://docs.spring.io/spring-boot/docs/current/reference/html/application-properties.html)
+
+Example of changing server port
+
+```conf
+# src/main/resources/application.properties
+server.port=8181
+```
+
+```yaml
+# src/main/resources/application.yml
+server:
+  port: 8181
+```
+
+## Environment Variables
+
+- Spring Boot can load configuration from config files, command line arguments (cli) and from environment variables
+- Convert key value pair (`key=value`) to environment variable
+  - Make key UPPERCASE
+  - Replace delimiters (`.`, `-`) with hyphen (`_`)
+
+```conf
+server.port=8181
+SERVER_PORT=8181
+```
+
+**Method 1 (Intellij)**
+
+- `In top toolbar > Quickstart Application > "Edit Configurations..." > Environment variables`
+  - Add `SERVER_PORT=8181`
+
+**Method 2 (CLI)**
+
+- Method 2.1: `SERVER_PORT=8282 ./mvnw spring-boot:run`
+- Method 2.2: `export SERVER_PORT=8383` && `./mvnw spring-boot:run`
+
+- Note: Both these methods works when run via jar file
+
+```conf
+# Package up application
+./mvnw package
+cd target
+java -jar quickstart-0.0.1-SNAPSHOT.jar
+```
+
+## Configuration Properties
+
+- Custom configuration for custom code but loaded in same way as other configuration
+- Lombok
+  - `@Data` annotation/decorator = Makes it a data class (getters, setters, equals, hashcode generated automatically)
+
+BEFORE Dependency Injection
+
+```java
+// src/main/java/com/devtiro/configuration/PizzaApplication.java
+package com.devtiro.configuration;
+
+import com.devtiro.configuration.config.PizzaConfig;
+import lombok.extern.java.Log;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+@Log
+public class PizzaApplication implements CommandLineRunner {
+
+  public static void main(String[] args) {
+    SpringApplication.run(PizzaApplication.class, args);
+  }
+
+  @Override
+  public void run(final String... args) {
+    final PizzaConfig pizzaConfig = new PizzaConfig("tomato", "mozzarella", "thin");
+
+    log.info(String.format("I want a %s crust pizza, with %s and %s sauce", pizzaConfig.getCrust(), pizzaConfig.getTopping(), pizzaConfig.getSauce()));
+  }
+}
+```
+
+AFTER Dependency Injection
+
+```java
+// src/main/java/com/devtiro/configuration/PizzaApplication.java
+package com.devtiro.configuration;
+
+import com.devtiro.configuration.config.PizzaConfig;
+import lombok.Builder;
+import lombok.extern.java.Log;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+@Log
+public class PizzaApplication implements CommandLineRunner {
+  private PizzaConfig pizzaConfig; // <-- Injecting Dependency HERE
+
+  public PizzaApplication(PizzaConfig pizzaConfig) { // <-- Constructor Dependency Injection HERE
+    this.pizzaConfig = pizzaConfig;
+  }
+
+  public static void main(String[] args) {
+    SpringApplication.run(PizzaApplication.class, args);
+  }
+
+  @Override
+  public void run(final String... args) {
+    log.info(String.format("I want a %s crust pizza, with %s and %s sauce", pizzaConfig.getCrust(), pizzaConfig.getTopping(), pizzaConfig.getSauce()));
+  }
+}
+```
+
+### `@ConfigurationProperties` Annotation/Decorator
+
+- `@ConfigurationProperties` annotation/decorator declares class as ConfigurationProperties class
+- `@ConfigurationProperties` annotation/decorator has a very important argument: `prefix`
+  - This `prefix` is the prefix of the key that spring will look for inside of your configuration properties/yaml file and environment variables
+
+### `@Configuration` Annotation/Decorator
+
+- `@Configuration` annotation/decorator tells Spring to look inside this class for beans
+
+```java
+// src/main/java/com/devtiro/configuration/config/PizzaConfig.java
+package com.devtiro.configuration.config;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration // <-- HERE
+@ConfigurationProperties(prefix = "pizza") // <-- HERE
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class PizzaConfig {
+  private String sauce;
+  private String topping;
+  private String crust;
+}
+```
+
+Note:
+
+- `pizza` matches the prefix we provided in `PizzaConfig.java`
+- `sauce`, `topping`, `crust` matches the instance variable names inside `PizzaConfig.java`
+
+```conf
+# src/main/resources/application.properties
+pizza.sauce=bbq
+pizza.topping=chicken
+pizza.crust=stuffed
+```
+
+- Note: Can also mix and match different methods of configurating properties
+  - E.g. Can remove `pizza.sauce=bbq` and add environment variable of `PIZZA_SAUCE=bbq`
+
+## Database Layers
+
+- Lowest layer = Database Driver
+  - Allows you to interact with db from Java code
+- Next layer = JDBC == Java Database Connectivity
+  - Low level API == Allows you to connect to DB and interact with DB via SQL queries
+  - Need to manually handle all the mapping to and from Java objects yourself
+- Spring JDBC builds ontop of JDBC
+  - Provides functionalities such as JDBC template (allows for db interaction via SQL even easier)
+- Next layer = JPA = Java Persistence API
+  - Allows you to interact with db using Java objects (query using Java objects)
+  - JPA handles all the generation of SQL, the mapping to and from Java objects
+  - Note: JPA is built ontop of JPBC (so its considered a high-level API)
+  - Technically JPA is a specification
+  - The actual implementation used by the Spring ecosystem = Hibernate
+    - Note: Hibernate may be referred to as an ORM = Object Relational Mapper
+      - Maps from SQL to Java Objects and vice versa
+- Spring Data JPA builds ontop of JPA
+
+```
+Spring Data JPA <-  JPA
+                     ^
+                     |
+Spring JDBC     <-  JDBC
+                     ^
+                     |
+                Database Driver
+```
+
+## Connect to H2 Database (In-Memory DB)
+
+- Create demo project/repo using Spring Initializr
+  - Project: Maven
+  - Language: Java
+  - Spring Boot: Latest version (that is NOT SNAPSHOT)
+  - Project Metadata
+    - Group: com.devtiro
+    - Artifact: database
+    - Name: database
+    - Description: Demo project for connecting to a database
+    - Package name: com.devtiro.database
+  - Packaging: Jar
+  - Java: 17
+  - Depedencies: Lombok, H2 Database, JDBC API
+
+Note:
+
+- We get the `log` instance from `@Log` (from Lombok)
+- There are auto configures which if they find the H2 in-memory database on the class path, they will automatically create the beans needed in order to connect to the DB
+  - We do NOT need to specify the username or password
+
+```java
+// src/main/java/com/devtiro/database/DatabaseApplication.java
+package com.devtiro.database;
+
+import lombok.extern.java.Log;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import javax.sql.DataSource;
+
+@SpringBootApplication
+@Log
+public class DatabaseApplication implements CommandLineRunner {
+  private final DataSource dataSource; // <-- Injecting Dependency HERE
+
+  public DatabaseApplication(final DataSource dataSource) { // <-- Constructor Dependency Injection HERE
+    this.dataSource = dataSource;
+  }
+
+  public static void main(String[] args) {
+    SpringApplication.run(DatabaseApplication.class, args);
+  }
+
+  @Override
+  public void run(final String... args) {
+    log.info("Datasource: " + dataSource.toString());
+    final JdbcTemplate restTemplate = new JdbcTemplate(dataSource);
+    restTemplate.execute("select 1");
+  }
+}
+```
+
+```conf
+# src/main/resources/application.properties
+spring.datasource.url=jdbc:h2:mem:testdb # "mem" == "in-memory"
+spring.datasource.driverClassName=org.h2.Driver
+spring.datasource.username=sa
+spring.datasource.password=password
+```
+
+## Connect to PostgreSQL
+
+- Create demo project/repo using Spring Initializr
+  - Project: Maven
+  - Language: Java
+  - Spring Boot: Latest version (that is NOT SNAPSHOT)
+  - Project Metadata
+    - Group: com.devtiro
+    - Artifact: database
+    - Name: database
+    - Description: Demo project for connecting to a database
+    - Package name: com.devtiro.database
+  - Packaging: Jar
+  - Java: 17
+  - Depedencies: Lombok, PostgreSQL Driver, JDBC API
+
+Note:
+
+- We get the `log` instance from `@Log` (from Lombok)
+- There are auto configures which if they find the H2 in-memory database on the class path, they will automatically create the beans needed in order to connect to the DB
+  - We do NOT need to specify the username or password
+
+```java
+// src/main/java/com/devtiro/database/DatabaseApplication.java
+package com.devtiro.database;
+
+import lombok.extern.java.Log;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import javax.sql.DataSource;
+
+@SpringBootApplication
+@Log
+public class DatabaseApplication implements CommandLineRunner {
+  private final DataSource dataSource; // <-- Injecting Dependency HERE
+
+  public DatabaseApplication(final DataSource dataSource) { // <-- Constructor Dependency Injection HERE
+    this.dataSource = dataSource;
+  }
+
+  public static void main(String[] args) {
+    SpringApplication.run(DatabaseApplication.class, args);
+  }
+
+  @Override
+  public void run(final String... args) {
+    log.info("Datasource: " + dataSource.toString());
+    final JdbcTemplate restTemplate = new JdbcTemplate(dataSource); // Note: restTemplate == method to interact with DB
+    restTemplate.execute("select 1");
+  }
+}
+```
+
+```yml
+# src/docker-compose.yml
+version: '3.1'
+
+services:
+  db:
+    image: postgres
+    ports:
+      - '5432:5432'
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: pwd
+```
+
+```conf
+# src/main/resources/application.properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+spring.datasource.username=postgres
+spring.datasource.password=pwd
+spring.datasource.driver-class-name=org.postgresql.Driver
+```
+
+### Starting PostgreSQL Container
+
+```
+docker-compose up
+```
+
+### Initialise DB Schema
+
+- `schema.sql` = Set up the schema (run after connection to db is established)
+- `data.sql` = Populating the tables created in `schema.sql`
+
+```sql
+-- src/main/resources/schema.sql
+DROP TABLE IF EXISTS "widgets";
+DROP SEQUENCE IF EXISTS widgets_id_seq;
+CREATE SEQUENCE widgets_id_seq INCREMENT 1 MINVALUE 1 MAXVALUE 9223372036854775807 CACHE 1;
+CREATE TABLE "widgets" (
+  "id" bigint DEFAULT nextval('widgets_id_seq') NOT NULL,
+  "name" text,
+  "purpose" text,
+  CONSTRAINT "widgets_pkey" PRIMARY KEY ("id")
+);
+```
+
+```sql
+-- src/main/resources/data.sql
+INSERT INTO widgets (id, name, purpose)
+VALUES (1, 'Widget A', 'Used for testing purposes.'),
+  (2, 'Widget B', 'Designed for entertainment.'),
+  (3, 'Widget C', 'Enhances productivity.'),
+  (4, 'Widget D', 'Perfect for outdoor activities.'),
+  (5, 'Widget E', 'Improves overall well-being.');
+```
+
+- `spring.sql.initl.mode=always` == Always RUN `schema.sql` and `data.sql` (use in non-prod only)
+
+```conf
+# src/main/resources/application.properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+spring.datasource.username=postgres
+spring.datasource.password=pwd
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.sql.init.mode=always # <-- HERE
+```
+
+- Devtiro uses [DBeaver](https://dbeaver.io/) to view DB
+  - Top left hand corner (establish connection to DB)
+
+## JDBCTemplate Setup
+
+- Note:
+  - `schema.sql` and `data.sql` have been removed
+  - `spring.sql.init.mode=always` has been removed from `src/main/applcation.properties`
+  - `DatabaseApplication` does NOT implement `CommandLineRunner`
+- Get `JDBCTemplate` via configuration class approach/method/way
+  - Create `src/main/java/com/devtiro/database/config` folder
+  - Create `src/main/java/com/devtiro/database/config/DatabaseConfig.java`
+    - Add `@Configuration` annotation/decorator to specify this is a configuration class
+
+```java
+// src/main/java/com/devtiro/database/DatabaseApplication.java
+package com.devtiro.database;
+
+import lombok.extern.java.Log;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+@Log
+public class DatabaseApplication {
+
+  public static void main(String[] args) {
+    SpringApplication.run(DatabaseApplication.class, args);
+  }
+}
+```
+
+```java
+// src/main/java/com/devtiro/database/config/DatabaseConfig.java
+package com.devtiro.database.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import javax.sql.DataSource;
+
+@Configuration
+public class DatabaseConfig {
+
+  @Bean
+  public JdbcTemplate jdbcTemplate(final DataSource dataSource) {
+    return new JdbcTemplate(dataSource);
+  }
+}
+```
+
+## Data Access Objects (DAO)
+
+- Consider domain:
+  - Author can write many books
+  - Books can only have 1 author
+
+![](images/pic5.jpg)
+
+- Say for example that there are 3 services in service layer that needed to interact with the DB
+  - If we are using JDBC, each of these services would need to know:
+    - The structure of the DB
+    - How to query it using SQL
+    - Deal with conversion to and from Java Object and SQL
+  - This results in a lot of duplicate code
+
+![](images/pic6.jpg)
+
+- Say for example we took duplicate code and put it into a class corresponding to an entity (i.e. book DAO and author DAO)
+  - It would be the responsibility of these DAO classes to know the structure of the database in relation to their specific entity and to handle all the mappings to and from Java Objects and SQL
+  - Then each of the services could inject the relevant DAO (could be more than 1 in some cases) and make use of their behaviours via an interface
+- DAO allows for separation between service layer and persistence layer and allows for extra modularity for developing + maintaining + testing application
+
+![](images/pic7.jpg)
+
+### Setup DAO
+
+- Create `src/main/resources/schema.sql`
+
+```sql
+-- src/main/resources/schema.sql
+DROP TABLE IF EXISTS "books";
+DROP TABLE IF EXISTS "authors";
+CREATE TABLE "authors" (
+  "id" bigint DEFAULT nextval('authors_id_seq') NOT NULL,
+  "name" text,
+  "age" integer,
+  CONSTRAINT "authors_pkey" PRIMARY KEY ("id")
+);
+CREATE TABLE "books" (
+  "isbn" text NOT NULL,
+  "title" text,
+  "author_id" bigint,
+  CONSTRAINT "books_pkey" PRIMARY KEY ("isbn"),
+  CONSTRAINT "fk_author" FOREIGN KEY(author_id) REFERENCES authors(id)
+);
+```
+
+- Add `spring.sql.init.mode=always` to `src/main/resources/application.properties`
+
+```conf
+# src/main/resources/application.properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+spring.datasource.username=postgres
+spring.datasource.password=pwd
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.sql.init.mode=always # <-- HERE
+```
+
+- Create `src/main/java/com/devtiro/database/domain` folder
+  - `@Data` (Lombok) generates `.equals()`, `.hashCode()`, `.toString()` methods, getters + setters
+  - `@Builder` (Lombok) allows us to use builder pattern
+    - E.g. `Widget w1 = Widget.builder().name("foo").id(1).build();` (where `name` and `id` are instances inside class `Widget`)
+
+```java
+// src/main/java/com/devtiro/database/domain/Author.java
+package com.devtiro.database.domain;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Author {
+  private Long id;
+  private String name;
+  private Integer age;
+}
+```
+
+```java
+// src/main/java/com/devtiro/database/domain/Book.java
+package com.devtiro.database.domain;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Book {
+  private String isbn;
+  private String title;
+  private Long authorId;
+}
+```
+
+- Create `src/main/java/com.devtiro.database/dao` folder (note `.` == nested folder)
+
+```java
+// src/main/java/com/devtiro/database/dao/AuthorDao.java
+package com.devtiro.database.dao;
+
+public interface AuthorDao {}
+```
+
+```java
+// src/main/java/com/devtiro/database/dao/BookDao.java
+package com.devtiro.database.dao;
+
+public interface BookDao {}
+```
+
+- Create `src/main/java/com.devtiro.database/impl` folder (note `.` == nested folder)
+
+```java
+// src/main/java/com/devtiro/database/dao/impl/AuthorDaoImpl.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.dao.AuthorDao;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+public class AuthorDaoImpl implements AuthorDao {
+
+  private final JdbcTemplate jdbcTemplate;
+
+  public AuthorDaoImpl(final JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
+}
+```
+
+```java
+// src/main/java/com/devtiro/database/dao/impl/BookDaoImpl.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.dao.BookDao;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+public class BookDaoImpl implements BookDao {
+
+  private final JdbcTemplate jdbcTemplate;
+
+  public BookDaoImpl(final JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
+}
+```
+
+#### Integration Test DAO with H2 In-Memory DB
+
+- Add the following to `~/pom.xml` and make sure `<scope>` is set to `test`
+  - Note: Make sure to click the reload the maven project (right hand sidebar > Maven > Click Reload Circle Icon) to refresh Intellij with updated `pom.xml` file
+
+```xml
+<dependency>
+  <groupId>com.h2database</groupId>
+  <artifactId>h2</artifactId>
+  <scope>test</scope>
+</dependency>
+```
+
+- Create `src/test/resources` and `src/test/resources/application.properties`
+  - Note: H2 database has a `MODE` property that allows it to emulate/simulate certain dbs such as PostgreSQL
+
+```conf
+# src/test/resources/application.properties
+spring.datasource.url=jdbc:h2:mem:testdb;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DEFAULT_NULL_ORDERING=HIGH
+spring.datasource.username=usr
+spring.datasource.password=pwd
+spring.datasource.driver-class-name=org.h2.Driver
+spring.sql.init.mode=always
+```
+
+- Test if simple blank test can run to ensure the H2 database is setup/configured properly
+  - Note: The `@SpringBootTest` annotation/decorator
+
+```java
+// src/test/java/com/devtiro/database/DatabaseApplicationTests.java
+package com.devtiro.database;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class DatabaseApplicationTests {
+
+  @Test
+  void contextLoads() {}
+}
+```
+
+### Creating DAOs
+
+- Create
+  - `src/test/java/com.devtiro.database/dao` folder
+  - `src/test/java/com/devtiro/database/dao/AuthorDaoImplTests.java` for unit tests
+  - `src/test/java/com/devtiro/database/dao/BookDaoImplTests.java` for unit tests
+- Note:
+  - Use `mockito` to mock data
+  - By using the Mockito Extension and putting `@InjectMocks` annotation/decorator above the `AuthorDaoImpl` variable and putting `@Mock` on the `JdbcTemplate` variable: before each test is run a new instance of the `AuthorDaoImpl` is created for us and then a mock of the dependencies/collaborators (i.e. the `JdbcTemplate` in this case) is created and then injected into the `AuthorDaoImpl` class
+  - `verify()` is Mockito's implementation of `assert()` (i.e. `verify() == assert()`)
+    - We want to verify that a certain method is called on the `JdbcTemplate` with a particular set of arguments
+    - The method in this case is `update`
+    - Quirk of Mockito is that we need to use matches (i.e. `eq()`) instead of the raw values
+
+#### Author
+
+```java
+// src/main/java/com/devtiro/database/dao/AuthorDao.java
+package com.devtiro.database.dao;
+
+import com.devtiro.database.domain.Author;
+
+public interface AuthorDao {
+  void create(Author author);
+}
+```
+
+```java
+// src/main/java/com/devtiro/database/dao/impl/AuthorDaoImpl.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.dao.AuthorDao;
+import com.devtiro.database.domain.Author;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+public class AuthorDaoImpl implements AuthorDao {
+
+  private final JdbcTemplate jdbcTemplate;
+
+  public AuthorDaoImpl(final JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
+
+  @Override
+  public void create(Author author) {
+    jdbcTemplate.update(
+        "INSERT INTO authors (id, name, age) VALUES (?, ?, ?)",
+        author.getId(), author.getName(), author.getAge());
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/AuthorDaoImplTests.java
+package com.devtiro.database.dao;
+
+import com.devtiro.database.dao.impl.AuthorDaoImpl;
+import com.devtiro.database.domain.Author;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
+public class AuthorDaoImplTests {
+
+  @Mock
+  private JdbcTemplate jdbcTemplate;
+
+  @InjectMocks
+  private AuthorDaoImpl underTest;
+
+  @Test
+  public void testThatCreateAuthorGeneratesCorrectSql() {
+    Author author = Author.builder()
+        .id(1L)
+        .name("Steve Jobs")
+        .age(56)
+        .build();
+
+    underTest.create(author);
+
+    verify(jdbcTemplate).update(
+        eq("INSERT INTO authors (id, name, age) VALUES (?, ?, ?)"),
+        eq(1L), eq("Steve Jobs"), eq(56));
+  }
+}
+```
+
+#### Book
+
+```java
+// src/main/java/com/devtiro/database/dao/BookDao.java
+package com.devtiro.database.dao;
+
+import com.devtiro.database.domain.Book;
+
+public interface BookDao {
+  void create(Book book);
+}
+```
+
+```java
+// src/main/java/com/devtiro/database/dao/impl/BookDaoImpl.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.dao.BookDao;
+import com.devtiro.database.domain.Book;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+public class BookDaoImpl implements BookDao {
+
+  private final JdbcTemplate jdbcTemplate;
+
+  public BookDaoImpl(final JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
+
+  @Override
+  public void create(Book book) {
+    jdbcTemplate.update(
+        "INSERT INTO books (isbn, title, author_id) VALUES (?, ?, ?)",
+        book.getIsbn(),
+        book.getTitle(),
+        book.getAuthorId());
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/BookDaoImplTests.java
+package com.devtiro.database.dao;
+
+import com.devtiro.database.dao.impl.BookDaoImpl;
+import com.devtiro.database.domain.Book;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
+public class BookDaoImplTests {
+
+  @Mock
+  private JdbcTemplate jdbcTemplate;
+
+  @InjectMocks
+  private BookDaoImpl underTest;
+
+  @Test
+  public void testThatCreateBookGeneratesCorrectSql() {
+    Book book = Book.builder()
+        .isbn("9780140449266")
+        .title("The Count of Monte Cristo")
+        .authorId(1L)
+        .build();
+
+    underTest.create(book);
+
+    verify(jdbcTemplate).update(
+        eq("INSERT INTO books (isbn, title, author_id) VALUES (?, ?, ?)"),
+        eq("9780140449266"),
+        eq("The Count of Monte Cristo"),
+        eq(1L));
+  }
+}
+```
 
 # Spring Boot 3 - Amigoscode
 

@@ -3,6 +3,7 @@
 - [Table of Contents](#table-of-contents)
 - [Dev Setup](#dev-setup)
   - [Apps](#apps)
+    - [iTerm2](#iterm2)
     - [Mounty](#mounty)
   - [External Display/Monitor](#external-displaymonitor)
   - [Finder](#finder)
@@ -14,6 +15,7 @@
     - [Keyboard Remap](#keyboard-remap)
   - [System Settings](#system-settings)
     - [Hot Corners](#hot-corners)
+    - [Mouse](#mouse)
   - [Terminal Commands](#terminal-commands)
     - [System Settings](#system-settings-1)
     - [Dev Environment](#dev-environment)
@@ -54,6 +56,13 @@
 - Radio Silence
 - SoundSource
 - TextSniper
+
+### iTerm2
+
+- Settings > General > Appearance > Theme > Minimal
+- Settings > Profiles > Keys > Key Mappings > Presets... > Select Natural Text Editing > Remove existing keymaps
+- Settings > Profiles > General > Working Directory > Select Reuse previous session's directory
+- Import colors profile from `github/config/iterm2.json`
 
 ### Mounty
 
@@ -133,6 +142,15 @@ brew install gromgit/fuse/ntfs-3g-mac
 
 `System Settings > Keyboard > Input Sources > All Input Sources` > Turn OFF `Show input menu in menu bar`
 
+`System Settings > Keyboard > Keyboard Shortcuts`
+
+- `Mission Control > Quick Note` > Turn OFF
+- `Input Sources` > Turn OFF ALL
+- `Services > Files and Folders` > Turn OFF (for apps such as Keka)
+- `Services > Text` > Turn OFF (for apps such as Keka)
+- `Accessibility` > Turn OFF ALL
+- `App Shortcuts` > Turn OFF ALL
+
 ### Keyboard Remap
 
 Use `System Settings > Keyboard > Keyboard Shortcuts > Change Modifier Keys` or Karabiner-Elements App
@@ -175,6 +193,10 @@ Command -> Control
 
 - Trigger only with modifier key = HOLD down key of choice when clicking corner option
   - `Shift + Mission Control` for `Bottom-Right` corner
+
+### Mouse
+
+`System Settings > Accessibility > Display > Pointer > Shake mouse pointer to locate` > Turn OFF
 
 ## Terminal Commands
 
@@ -289,10 +311,6 @@ mkdir ~/.ssh && code ~/.zshrc
 mkdir -p ~/.config && touch ~/.config/starship.toml && code ~/.config/starship.toml
 # Copy paste github/config/starship-macos.toml
 
-# Other brew installs
-brew install clang-format && brew install cmake && brew install coreutils && brew install jq && brew install tldr && brew install tree
-brew install llvm
-
 # GCC
 brew install gcc
 # Set Homebrew GCC as default GCC instead of macOS GCC
@@ -306,6 +324,10 @@ sudo ln -sf $(which gcc-13) /usr/local/bin/gcc
 sudo ln -sf $(which g++-13) /usr/local/bin/g++
 sudo ln -sf $(which c++-13) /usr/local/bin/c++
 sudo ln -sf $(which cpp-13) /usr/local/bin/cpp
+
+# Other brew installs
+brew install clang-format && brew install cmake && brew install coreutils && brew install jq && brew install tldr && brew install tree && brew install python
+brew install llvm
 
 # Adoptium OpenJDK (Eclipse Temurin) > https://adoptium.net/installation/
 brew tap homebrew/cask-versions

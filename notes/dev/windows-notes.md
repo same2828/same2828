@@ -49,6 +49,7 @@
     - [Restart WSL](#restart-wsl)
     - [Troubleshoot WSL](#troubleshoot-wsl)
   - [Terminal Commands for Dev Environment](#terminal-commands-for-dev-environment)
+    - [OhMyZSH](#ohmyzsh)
   - [Git](#git)
     - [SSH Keys](#ssh-keys)
     - [Update Git for Windows](#update-git-for-windows)
@@ -547,10 +548,6 @@ mkdir ~/.ssh && code ~/.zshrc
 mkdir -p ~/.config && touch ~/.config/starship.toml && code ~/.config/starship.toml
 # Copy paste github/config/starship-wsl.toml
 
-# Other brew installs
-brew install clang-format && brew install cmake && brew install coreutils && brew install jq && brew install tldr && brew install tree
-brew install llvm
-
 # GCC
 brew install gcc
 # Set Homebrew GCC as default GCC instead of macOS GCC
@@ -565,6 +562,10 @@ sudo ln -sf $(which g++-13) /usr/local/bin/g++
 sudo ln -sf $(which c++-13) /usr/local/bin/c++
 sudo ln -sf $(which cpp-13) /usr/local/bin/cpp
 
+# Other brew installs
+brew install clang-format && brew install cmake && brew install coreutils && brew install jq && brew install tldr && brew install tree && brew install python
+brew install llvm
+
 # Install Adoptium OpenJDK (Eclipse Temurin) > https://adoptium.net/installation/linux/ > https://askubuntu.com/questions/1157417/install-adoptopenjdk-adoptium-onto-ubuntu
 sudo apt install -y wget apt-transport-https gpg
 sudo wget -qO - https://packages.adoptium.net/artifactory/api/gpg/key/public | sudo gpg --dearmor | sudo tee /etc/apt/trusted.gpg.d/adoptium.gpg > /dev/null
@@ -573,6 +574,17 @@ sudo apt update && sudo apt upgrade
 sudo apt install temurin-17-jdk
 java --version
 ```
+
+### OhMyZSH
+
+```sh
+# Install & paste github/config/.zshrc
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# Custom theme
+cp $ZSH/themes/robbyrussell.zsh-theme $ZSH_CUSTOM/themes/
+code ZSH_CUSTOM/themes/robbyrussell.zsh-theme
+```
+
 
 ## Git
 
