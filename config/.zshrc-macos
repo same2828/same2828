@@ -162,10 +162,12 @@ alias g++="g++-13"
 alias gcc="gcc-13"
 alias gclean='git reset --hard && git clean -dfx'
 alias gcleano='git fetch --all --prune && git reset --hard origin/master && git clean -dfx'
+alias gcmsg!='git commit --amend -m'
 alias glo="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN%Cgreen%d %Creset%s' --date=format:'%d/%m/%y %I:%M%P'"
 # alias glo="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(magenta)%aN%Cgreen%d %Creset%s' --date=format:'%d/%m/%y %I:%M:%S%P'"
 alias grep='grep --color=always'
 alias gstash='git stash --all'
+alias gundo='git reset HEAD~1 --mixed'
 alias ll='ls -AlF --color=auto'
 # alias ll='ls -AoF --color=auto'
 alias ls='ls --color=auto'
