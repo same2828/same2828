@@ -155,8 +155,8 @@ export PATH="$PATH:/home/linuxbrew/.linuxbrew/opt/node@20/bin"
 # alias gcp='(){ ga . && gc -m $1 && gp;}'
 alias cls="clear"
 alias cpuhogs='ps wwaxr -o pid,stat,%cpu,%mem,time,command | head -10' # Show Top 10 CPU Hogs
-alias gclean='git fetch --all --prune && git reset --hard origin/master && git clean -dfx'
-# alias gclean='git reset --hard && git clean -dfx'
+alias gclean='git reset --hard && git clean -dfx'
+alias gcleano='git fetch --all --prune && git reset --hard origin/master && git clean -dfx'
 alias glo="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN%Cgreen%d %Creset%s' --date=format:'%d/%m/%y %I:%M%P'"
 # alias glo="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(magenta)%aN%Cgreen%d %Creset%s' --date=format:'%d/%m/%y %I:%M:%S%P'"
 alias grep='grep --color=always'
