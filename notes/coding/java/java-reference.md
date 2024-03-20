@@ -4592,7 +4592,7 @@ public class BankDemo {
 ## Default Type Initialisation
 
 - `char[]` has default values initialised to `'\0'`
-- `int[]` has default values initiailsed to `0`
+- `int[]` has default values initialised to `0`
 - `boolean[]` has default values initialised to `false`
 - All other types (including custom classes) are initialised to `null`
   - `Integer[]` has default values initialised to `null`
@@ -5013,7 +5013,7 @@ for (int i = 0; i < 10; i++) {
 | `f` or `F` | `float`       |
 | `d` or `D` | `double`      |
 
-- Ways to express/declare `double` litearl in Java
+- Ways to express/declare `double` literal in Java
   - `1.0`, `1d`, `1D`, `1.0d`, `1.0D`, `1.`, `1.d`, `1.D`
   - `(double) 1`
 
@@ -5063,7 +5063,7 @@ long d = 1L << 40;
 ```java
 class Solution {
   private void formGraph(List<List<Integer>> connections) {
-    // Bidrectional
+    // Bidirectional
     Map<Integer, List<Integer>> graph = new HashMap<>();
     // Directional (singular)
     Map<Map.Entry<Integer, Integer>, Boolean> connDict = new HashMap<>();
@@ -5386,7 +5386,7 @@ class Solution {
 
 ```cpp
 auto it = set.lower_bound(num);
-set.erase(it++); // Increment iteartor "it" BUT return/pass original value to .erase()
+set.erase(it++); // Increment iterator "it" BUT return/pass original value to .erase()
 ```
 
 ### Pre-Decrement (`--i`)
@@ -5682,7 +5682,7 @@ while(i < word.length()){
 - `var` can be used in a local variable declaration instead of the variable's type
 - Type inference is used in `var` keyword in which it detects automatically the datatype of a variable based on the surrounding context
 - Note you **CANNOT**
-  - Use `var` in lamda expressions
+  - Use `var` in lambda expressions
   - Use initialise a `var` variable to `null`
 
 ```java

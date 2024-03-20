@@ -48,9 +48,17 @@
   - [Data Access Objects (DAO)](#data-access-objects-dao)
     - [Setup DAO](#setup-dao)
       - [Integration Test DAO with H2 In-Memory DB](#integration-test-dao-with-h2-in-memory-db)
-    - [Creating DAOs](#creating-daos)
+    - [Creating DAOs (Create/Insert Method)](#creating-daos-createinsert-method)
       - [Author](#author)
       - [Book](#book)
+    - [Reading DAOs (Read/Find Method)](#reading-daos-readfind-method)
+    - [Read/Find One](#readfind-one)
+      - [Author](#author-1)
+      - [Book](#book-1)
+  - [Integration Test](#integration-test)
+  - [Find Many Methods](#find-many-methods)
+    - [Author](#author-2)
+    - [Book](#book-2)
 - [Spring Boot 3 - Amigoscode](#spring-boot-3---amigoscode)
   - [Spring Initializr](#spring-initializr-1)
   - [Project Setup](#project-setup)
@@ -103,7 +111,7 @@
     - [Dispatcher Servlet](#dispatcher-servlet)
 - [Spring Boot - Teddy](#spring-boot---teddy)
   - [Intro](#intro)
-  - [Spring Intialiser](#spring-intialiser)
+  - [Spring Initialiser](#spring-initialiser)
   - [File Structure](#file-structure)
   - [Architecture Overview](#architecture-overview)
     - [Spring Core](#spring-core)
@@ -849,12 +857,12 @@ public class ColourPrinterImpl implements ColourPrinter {
     - Can see `<artifactId>spring-boot-starter-web</artifactId>`
     - `sprint-boot-starter-web` is a collection of dependencies that we need inorder to implement a web project including Spring MVC and the embedded Tomcat = web server application container needed to run the web project
 - To find `@AutoConfiguration` go to "External Libraries" in Intellij
-  - `External Libaries > Maven: org.springframework.boot:spring-boot-autoconfigure:3.1.1 > spring-boot-autoconfigure-3.1.1.jar > org.springframework.boot.autoconfigure > web`
+  - `External Libraries > Maven: org.springframework.boot:spring-boot-autoconfigure:3.1.1 > spring-boot-autoconfigure-3.1.1.jar > org.springframework.boot.autoconfigure > web`
     - The classes inside this folder will:
       - Look at all the dependencies available in our project (such as ones provided by the spring-boot starters)
       - Create objects with predefined defaults
       - Place resultant beans into the spring application context to be used throughout our application
-    - `External Libaries > Maven: org.springframework.boot:spring-boot-autoconfigure:3.1.1 > spring-boot-autoconfigure-3.1.1.jar > org.springframework.boot.autoconfigure > web > servlet > DispatcherServletAutoConfiguration.java`
+    - `External Libraries > Maven: org.springframework.boot:spring-boot-autoconfigure:3.1.1 > spring-boot-autoconfigure-3.1.1.jar > org.springframework.boot.autoconfigure > web > servlet > DispatcherServletAutoConfiguration.java`
       - `@ConditionalOnClass` annotation/decorator
         - `@ConditionalOnClass({DispatcherServlet.class})` == When this class (`DispatcherServlet.class`) is available on your class path, the following class (`DispatcherServletAutoConfiguration`) should be instantiated and run
         ```java
@@ -864,7 +872,7 @@ public class ColourPrinterImpl implements ColourPrinter {
         }
         ```
       - `@ConditionalOnBean` == When this bean (`DispatcherServlet.class`) is available, then this particular part of the configuration should be run
-        - Note: The inverse is possible as well (`@ConditonalOnMissingBean`)
+        - Note: The inverse is possible as well (`@ConditionalOnMissingBean`)
         ```java
         @ConditionalOnBean(value = {DispatcherServlet.class},name = {"dispatcherServlet"})
         public DispatcherServletRegistrationBean dispatcherServletRegistration(DispatcherServlet dispatcherServlet, WebMvcProperties webMvcProperties, ObjectProvider<MultipartConfigElement> multipartConfig) {herServletRegistrationBean dispatcherServletRegistration(DispatcherServlet dispatcherServlet, WebMvcProperties webMvcProperties, ObjectProvider<MultipartConfigElement> multipartConfig) {
@@ -876,7 +884,7 @@ public class ColourPrinterImpl implements ColourPrinter {
 
 - Use config files to change predefined defaults
 - Change these defaults with the `src/main/resources/application.properties` file
-  - Using a `src/main/resources/application.ymnl` file also works
+  - Using a `src/main/resources/application.yml` file also works
 - Note: You can also change config for your `src/test` folder by creating an `application.properties` or `application.yml` file
   - E.g. Is to use an in-memory db for tests (done by placing the db in `src/test/resources`)
 - Note:
@@ -1086,7 +1094,7 @@ Spring JDBC     <-  JDBC
     - Package name: com.devtiro.database
   - Packaging: Jar
   - Java: 17
-  - Depedencies: Lombok, H2 Database, JDBC API
+  - Dependencies: Lombok, H2 Database, JDBC API
 
 Note:
 
@@ -1150,7 +1158,7 @@ spring.datasource.password=password
     - Package name: com.devtiro.database
   - Packaging: Jar
   - Java: 17
-  - Depedencies: Lombok, PostgreSQL Driver, JDBC API
+  - Dependencies: Lombok, PostgreSQL Driver, JDBC API
 
 Note:
 
@@ -1248,7 +1256,7 @@ VALUES (1, 'Widget A', 'Used for testing purposes.'),
   (5, 'Widget E', 'Improves overall well-being.');
 ```
 
-- `spring.sql.initl.mode=always` == Always RUN `schema.sql` and `data.sql` (use in non-prod only)
+- `spring.sql.init.mode=always` == Always RUN `schema.sql` and `data.sql` (use in non-prod only)
 
 ```conf
 # src/main/resources/application.properties
@@ -1266,7 +1274,7 @@ spring.sql.init.mode=always # <-- HERE
 
 - Note:
   - `schema.sql` and `data.sql` have been removed
-  - `spring.sql.init.mode=always` has been removed from `src/main/applcation.properties`
+  - `spring.sql.init.mode=always` has been removed from `src/main/application.properties`
   - `DatabaseApplication` does NOT implement `CommandLineRunner`
 - Get `JDBCTemplate` via configuration class approach/method/way
   - Create `src/main/java/com/devtiro/database/config` folder
@@ -1509,18 +1517,17 @@ class DatabaseApplicationTests {
 }
 ```
 
-### Creating DAOs
+### Creating DAOs (Create/Insert Method)
 
 - Create
-  - `src/test/java/com.devtiro.database/dao` folder
-  - `src/test/java/com/devtiro/database/dao/AuthorDaoImplTests.java` for unit tests
-  - `src/test/java/com/devtiro/database/dao/BookDaoImplTests.java` for unit tests
+  - `src/test/java/com.devtiro.database/dao/impl` folder
+  - `src/test/java/com/devtiro/database/dao/impl/AuthorDaoImplTests.java` for unit tests
+  - `src/test/java/com/devtiro/database/dao/impl/BookDaoImplTests.java` for unit tests
 - Note:
   - Use `mockito` to mock data
   - By using the Mockito Extension and putting `@InjectMocks` annotation/decorator above the `AuthorDaoImpl` variable and putting `@Mock` on the `JdbcTemplate` variable: before each test is run a new instance of the `AuthorDaoImpl` is created for us and then a mock of the dependencies/collaborators (i.e. the `JdbcTemplate` in this case) is created and then injected into the `AuthorDaoImpl` class
   - `verify()` is Mockito's implementation of `assert()` (i.e. `verify() == assert()`)
-    - We want to verify that a certain method is called on the `JdbcTemplate` with a particular set of arguments
-    - The method in this case is `update`
+    - We want to verify that a certain method (i.e. `update` in this case) is called on the `JdbcTemplate` with a particular set of arguments
     - Quirk of Mockito is that we need to use matches (i.e. `eq()`) instead of the raw values
 
 #### Author
@@ -1562,7 +1569,7 @@ public class AuthorDaoImpl implements AuthorDao {
 ```
 
 ```java
-// src/test/java/com/devtiro/database/dao/AuthorDaoImplTests.java
+// src/test/java/com/devtiro/database/dao/impl/AuthorDaoImplTests.java
 package com.devtiro.database.dao;
 
 import com.devtiro.database.dao.impl.AuthorDaoImpl;
@@ -1644,7 +1651,7 @@ public class BookDaoImpl implements BookDao {
 ```
 
 ```java
-// src/test/java/com/devtiro/database/dao/BookDaoImplTests.java
+// src/test/java/com/devtiro/database/dao/impl/BookDaoImplTests.java
 package com.devtiro.database.dao;
 
 import com.devtiro.database.dao.impl.BookDaoImpl;
@@ -1684,6 +1691,876 @@ public class BookDaoImplTests {
         eq("The Count of Monte Cristo"),
         eq(1L));
   }
+}
+```
+
+### Reading DAOs (Read/Find Method)
+
+- Typically READ methods are broken up into `readOne` and `readyMany` methods
+  - readOne(id) returns SINGLE object or `null`
+  - readMany() returns list of all entities or empty list
+
+### Read/Find One
+
+- Note: We wrap our return values in `Optional` for extra type safety
+  - If value does NOT exist in db then return value will be `Optional.empty`
+- Note: Because we are using JDBC and DAO pattern, we need to handle the conversion to and from SQL and Java Objects ourselves
+  - Several methods: row mappers, result extractors, row callback handlers
+  - We will use a "row mapper"
+- The row mapper is used to convert from a result set (what is returned when we query the db) to a Java object
+
+#### Author
+
+```java
+// src/main/java/com/devtiro/database/dao/AuthorDao.java
+package com.devtiro.database.dao;
+
+import com.devtiro.database.domain.Author;
+
+import java.util.Optional;
+
+public interface AuthorDao {
+  void create(Author author);
+  Optional<Author> findOne(long l);
+}
+```
+
+```java
+// src/main/java/com/devtiro/database/dao/impl/AuthorDaoImpl.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.dao.AuthorDao;
+import com.devtiro.database.domain.Author;
+import com.devtiro.database.domain.Book;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+
+public class AuthorDaoImpl implements AuthorDao {
+
+  private final JdbcTemplate jdbcTemplate;
+
+  public AuthorDaoImpl(final JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
+
+  @Override
+  public void create(Author author) {
+    jdbcTemplate.update(
+        "INSERT INTO authors (id, name, age) VALUES (?, ?, ?)",
+        author.getId(), author.getName(), author.getAge());
+  }
+
+  @Override
+  public Optional<Author> findOne(long authorId) {
+    List<Author> results = jdbcTemplate.query(
+        "SELECT id, name, age FROM authors WHERE id = ? LIMIT 1",
+        new AuthorRowMapper(), authorId);
+
+    return results.stream().findFirst();
+  }
+
+  public static class AuthorRowMapper implements RowMapper<Author> {
+    @Override
+    public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
+      return Author.builder()
+          .id(rs.getLong("id"))
+          .name(rs.getString("name"))
+          .age(rs.getInt("age"))
+          .build();
+    }
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/AuthorDaoImplTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.dao.impl.AuthorDaoImpl;
+import com.devtiro.database.domain.Author;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+
+import static org.hamcrest.Matchers.any;
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
+public class AuthorDaoImplTests {
+
+  @Mock
+  private JdbcTemplate jdbcTemplate;
+
+  @InjectMocks
+  private AuthorDaoImpl underTest;
+
+  @Test
+  public void testThatCreateAuthorGeneratesCorrectSql() {
+    Author author = Author.builder()
+        .id(1L)
+        .name("Steve Jobs")
+        .age(56)
+        .build();
+
+    underTest.create(author);
+
+    verify(jdbcTemplate).update(
+        eq("INSERT INTO authors (id, name, age) VALUES (?, ?, ?)"),
+        eq(1L), eq("Steve Jobs"), eq(56));
+  }
+
+  @Test
+  public void testThatFindOneGeneratesTheCorrectSql() {
+    underTest.findOne(1L);
+    verify(jdbcTemplate).query(
+        eq("SELECT id, name, age FROM authors WHERE id = ? LIMIT 1"),
+        ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any(),
+        eq(1L));
+  }
+}
+```
+
+#### Book
+
+```java
+// src/main/java/com/devtiro/database/dao/BookDao.java
+package com.devtiro.database.dao;
+
+import com.devtiro.database.domain.Book;
+
+import java.util.Optional;
+
+public interface BookDao {
+  void create(Book book);
+  Optional<Book> find(String isbn);
+}
+```
+
+```java
+// src/main/java/com/devtiro/database/dao/impl/BookDaoImpl.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.dao.BookDao;
+import com.devtiro.database.domain.Book;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+
+public class BookDaoImpl implements BookDao {
+
+  private final JdbcTemplate jdbcTemplate;
+
+  public BookDaoImpl(final JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
+
+  @Override
+  public void create(Book book) {
+    jdbcTemplate.update(
+        "INSERT INTO books (isbn, title, author_id) VALUES (?, ?, ?)",
+        book.getIsbn(),
+        book.getTitle(),
+        book.getAuthorId());
+  }
+
+  @Override
+  public Optional<Book> find(String isbn) {
+    List<Book> results = jdbcTemplate.query(
+        "SELECT isbn, title, author_id from books WHERE isbn = ? LIMIT 1",
+        new BookRowMapper(),
+        isbn);
+    return results.stream().findFirst();
+  }
+
+  public static class BookRowMapper implements RowMapper<Book> {
+
+    @Override
+    public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
+      return Book.builder()
+          .isbn(rs.getString("isbn"))
+          .title(rs.getString("title"))
+          .authorId(rs.getLong("author_id"))
+          .build();
+    }
+
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/BookDaoImplTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.dao.impl.BookDaoImpl;
+import com.devtiro.database.domain.Book;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
+public class BookDaoImplTests {
+
+  @Mock
+  private JdbcTemplate jdbcTemplate;
+
+  @InjectMocks
+  private BookDaoImpl underTest;
+
+  @Test
+  public void testThatCreateBookGeneratesCorrectSql() {
+    Book book = Book.builder()
+        .isbn("9780140449266")
+        .title("The Count of Monte Cristo")
+        .authorId(1L)
+        .build();
+
+    underTest.create(book);
+
+    verify(jdbcTemplate).update(
+        eq("INSERT INTO books (isbn, title, author_id) VALUES (?, ?, ?)"),
+        eq("9780140449266"),
+        eq("The Count of Monte Cristo"),
+        eq(1L));
+  }
+
+  @Test
+  public void testThatFindOneBookGeneratesCorrectSql() {
+    underTest.find("9780140449266");
+    verify(jdbcTemplate).query(
+        eq("SELECT isbn, title, author_id from books WHERE isbn = ? LIMIT 1"),
+        ArgumentMatchers.<BookDaoImpl.BookRowMapper>any(),
+        eq("9780140449266"));
+  }
+
+}
+```
+
+## Integration Test
+
+- We will create integration test that runs SQL code against in-memory H2 database in PostgreSQL mode
+- Create `src/test/java/com/devtiro/database/dao/impl/AuthorDaoImplIntegrationTests.java` and `src/test/java/com/devtiro/database/dao/impl/BookDaoImplIntegrationTests.java`
+- Note: Do NOT have the suffix `IT` when naming your tests because its a convention used by the Maven Failsafe Plugin (integration test which once configured will run in the verify step)
+- Note: We use the suffix `IntegrationTests` which will be picked up by the Maven Surefire Plugin (which runs unit tests)
+- Create `src/test/java/com/devtiro/database/TestDataUtil.java`
+  - Note: A utility class generally follows pattern of being `final`
+  - Note: Do NOT want to expose constructor since we will utilise
+- Add `@Autowired` annotation/decorator which tells Spring to inject dependencies as declared in the constructor
+  - Normally when utilising constructor injection in production code, we can omit `@Autowired` if we only have a single explicit constructor
+  - However because this is a test, we need to add `@Autowired`
+- Make sure to add `@Component` annotation/decorator ontop of the `AuthorDaoImpl` and `BookDaoImpl` class to declare it as a bean
+- Note: The `.isEqualTo()` will use the `.equals()` method of the class
+
+```java
+// src/test/java/com/devtiro/database/TestDataUtil.java
+package com.devtiro.database;
+
+import com.devtiro.database.domain.Author;
+import com.devtiro.database.domain.Book;
+
+public final class TestDataUtil {
+  private TestDataUtil() {}
+
+  public static Author createTestAuthor() {
+    return Author.builder()
+        .id(1L)
+        .name("Steve Jobs")
+        .age(56)
+        .build();
+  }
+
+  public static Book createTestBook() {
+    return Book.builder()
+        .isbn("9780140449266")
+        .title("The Count of Monte Cristo")
+        .authorId(1L)
+        .build();
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/AuthorDaoImplIntegrationTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.TestDataUtil;
+import com.devtiro.database.domain.Author;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+public class AuthorDaoImplIntegrationTests {
+
+  private AuthorDaoImpl underTest;
+
+  @Autowired
+  public AuthorDaoImplIntegrationTests(AuthorDaoImpl underTest) {
+    this.underTest = underTest;
+  }
+
+  @Test
+  public void testThatAuthorCanBeCreatedAndRecalled() {
+    Author author = TestDataUtil.createTestAuthor();
+    underTest.create(author);
+    Optional<Author> result = underTest.findOne(author.getId());
+    assertThat(result).isPresent();
+    assertThat(result.get()).isEqualTo(author);
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/BookDaoImplIntegrationTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.TestDataUtil;
+import com.devtiro.database.dao.AuthorDao;
+import com.devtiro.database.domain.Author;
+import com.devtiro.database.domain.Book;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+public class BookDaoImplIntegrationTests {
+
+  private AuthorDao authorDao;
+  private BookDaoImpl underTest;
+
+  @Autowired
+  public BookDaoImplIntegrationTests(BookDaoImpl underTest, AuthorDao authorDao) {
+    this.underTest = underTest;
+    this.authorDao = authorDao;
+  }
+
+  @Test
+  public void testThatBookCanBeCreatedAndRecalled() {
+    // Note: We need to add author because of foreign key constraint (where book has a foreign key to an author)
+    Author author = TestDataUtil.createTestAuthor();
+    authorDao.create(author);
+    Book book = TestDataUtil.createTestBook();
+    book.setAuthorId(author.getId());
+    underTest.create(book);
+    Optional<Book> result = underTest.find(book.getIsbn());
+    assertThat(result).isPresent();
+    assertThat(result.get()).isEqualTo(book);
+  }
+}
+```
+
+## Find Many Methods
+
+- Update interface + implemenatation
+- Update test helper method
+- Create unit test
+- Create integration test
+- The `@DirtiesContext()` annotation/decorator ensures a fresh database for each test (will clean down any changes to the context based on the classmode arguments supplied)
+  - `@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)`
+
+### Author
+
+```java
+// src/main/java/com/devtiro/database/dao/AuthorDao.java
+package com.devtiro.database.dao;
+
+import com.devtiro.database.domain.Author;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface AuthorDao {
+  void create(Author author);
+
+  Optional<Author> findOne(long l);
+
+  List<Author> find();
+}
+```
+
+```java
+// src/main/java/com/devtiro/database/dao/impl/AuthorDaoImpl.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.dao.AuthorDao;
+import com.devtiro.database.domain.Author;
+import com.devtiro.database.domain.Book;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+
+@Component
+public class AuthorDaoImpl implements AuthorDao {
+
+  private final JdbcTemplate jdbcTemplate;
+
+  public AuthorDaoImpl(final JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
+
+  @Override
+  public void create(Author author) {
+    jdbcTemplate.update(
+        "INSERT INTO authors (id, name, age) VALUES (?, ?, ?)",
+        author.getId(), author.getName(), author.getAge());
+  }
+
+  @Override
+  public Optional<Author> findOne(long authorId) {
+    List<Author> results = jdbcTemplate.query(
+        "SELECT id, name, age FROM authors WHERE id = ? LIMIT 1",
+        new AuthorRowMapper(), authorId);
+
+    return results.stream().findFirst();
+  }
+
+  public static class AuthorRowMapper implements RowMapper<Author> {
+
+    @Override
+    public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
+      return Author.builder()
+          .id(rs.getLong("id"))
+          .name(rs.getString("name"))
+          .age(rs.getInt("age"))
+          .build();
+    }
+  }
+
+  @Override
+  public List<Author> find() {
+    return jdbcTemplate.query(
+        "SELECT id, name, age FROM authors",
+        new AuthorRowMapper());
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/AuthorDaoImplTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.TestDataUtil;
+import com.devtiro.database.domain.Author;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
+public class AuthorDaoImplTests {
+
+  @Mock
+  private JdbcTemplate jdbcTemplate;
+
+  @InjectMocks
+  private AuthorDaoImpl underTest;
+
+  @Test
+  public void testThatCreateAuthorGeneratesCorrectSql() {
+    Author author = TestDataUtil.createTestAuthorA();
+
+    underTest.create(author);
+
+    verify(jdbcTemplate).update(
+        eq("INSERT INTO authors (id, name, age) VALUES (?, ?, ?)"),
+        eq(1L), eq("Steve Jobs"), eq(56));
+  }
+
+  @Test
+  public void testThatFindOneGeneratesTheCorrectSql() {
+    underTest.findOne(1L);
+    verify(jdbcTemplate).query(
+        eq("SELECT id, name, age FROM authors WHERE id = ? LIMIT 1"),
+        ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any(),
+        eq(1L));
+  }
+
+  @Test
+  public void testThatFindManyGeneratesCorrectSql() {
+    underTest.find();
+    verify(jdbcTemplate).query(
+        eq("SELECT id, name, age FROM authors"),
+        ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any());
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/TestDataUtil.java
+package com.devtiro.database;
+
+import com.devtiro.database.domain.Author;
+import com.devtiro.database.domain.Book;
+
+public final class TestDataUtil {
+  private TestDataUtil() {}
+
+  public static Author createTestAuthorA() {
+    return Author.builder()
+        .id(1L)
+        .name("Steve Jobs")
+        .age(56)
+        .build();
+  }
+
+  public static Author createTestAuthorB() {
+    return Author.builder()
+        .id(2L)
+        .name("Thomas Cronin")
+        .age(44)
+        .build();
+  }
+
+  public static Author createTestAuthorC() {
+    return Author.builder()
+        .id(3L)
+        .name("Jesse A Casey")
+        .age(24)
+        .build();
+  }
+
+  public static Book createTestBookA() {
+    return Book.builder()
+        .isbn("9780140449266")
+        .title("The Count of Monte Cristo")
+        .authorId(1L)
+        .build();
+  }
+
+  public static Book createTestBookB() {
+    return Book.builder()
+        .isbn("978-1-2345-6789-1")
+        .title("Beyond the Horizon")
+        .authorId(1L)
+        .build();
+  }
+
+  public static Book createTestBookC() {
+    return Book.builder()
+        .isbn("978-1-2345-6789-2")
+        .title("The Last Ember")
+        .authorId(1L)
+        .build();
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/AuthorDaoImplIntegrationTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.TestDataUtil;
+import com.devtiro.database.domain.Author;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+public class AuthorDaoImplIntegrationTests {
+
+  private AuthorDaoImpl underTest;
+
+  @Autowired
+  public AuthorDaoImplIntegrationTests(AuthorDaoImpl underTest) {
+    this.underTest = underTest;
+  }
+
+  @Test
+  public void testThatAuthorCanBeCreatedAndRecalled() {
+    Author author = TestDataUtil.createTestAuthorA();
+    underTest.create(author);
+    Optional<Author> result = underTest.findOne(author.getId());
+    assertThat(result).isPresent();
+    assertThat(result.get()).isEqualTo(author);
+  }
+
+  @Test
+  public void testThatMultipleAuthorsCanBeCreatedAndRecalled() {
+    Author authorA = TestDataUtil.createTestAuthorA();
+    underTest.create(authorA);
+    Author authorB = TestDataUtil.createTestAuthorB();
+    underTest.create(authorB);
+    Author authorC = TestDataUtil.createTestAuthorC();
+    underTest.create(authorC);
+
+    List<Author> result = underTest.find();
+    // assertThat(result).hasSize(3);
+    // assertThat(result).containsExactly(authorA, authorB, authorC);
+    assertThat(result).hasSize(3).containsExactly(authorA, authorB, authorC);
+  }
+}
+```
+
+### Book
+
+```java
+// src/main/java/com/devtiro/database/dao/BookDao.java
+package com.devtiro.database.dao;
+
+import com.devtiro.database.domain.Book;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface BookDao {
+  void create(Book book);
+
+  Optional<Book> findOne(String isbn);
+
+  List<Book> find();
+}
+```
+
+```java
+// src/main/java/com/devtiro/database/dao/BookDaoImpl.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.dao.BookDao;
+import com.devtiro.database.domain.Book;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+
+@Component
+public class BookDaoImpl implements BookDao {
+
+  private final JdbcTemplate jdbcTemplate;
+
+  public BookDaoImpl(final JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
+
+  @Override
+  public void create(Book book) {
+    jdbcTemplate.update(
+        "INSERT INTO books (isbn, title, author_id) VALUES (?, ?, ?)",
+        book.getIsbn(),
+        book.getTitle(),
+        book.getAuthorId());
+  }
+
+  @Override
+  public Optional<Book> findOne(String isbn) {
+    List<Book> results = jdbcTemplate.query(
+        "SELECT isbn, title, author_id from books WHERE isbn = ? LIMIT 1",
+        new BookRowMapper(),
+        isbn);
+    return results.stream().findFirst();
+  }
+
+  public static class BookRowMapper implements RowMapper<Book> {
+
+    @Override
+    public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
+      return Book.builder()
+          .isbn(rs.getString("isbn"))
+          .title(rs.getString("title"))
+          .authorId(rs.getLong("author_id"))
+          .build();
+    }
+
+  }
+
+  @Override
+  public List<Book> find() {
+    return jdbcTemplate.query(
+        "SELECT isbn, title, author_id from books",
+        new BookRowMapper());
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/BookDaoImplTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.TestDataUtil;
+import com.devtiro.database.domain.Book;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
+public class BookDaoImplTests {
+
+  @Mock
+  private JdbcTemplate jdbcTemplate;
+
+  @InjectMocks
+  private BookDaoImpl underTest;
+
+  @Test
+  public void testThatCreateBookGeneratesCorrectSql() {
+    Book book = TestDataUtil.createTestBookA();
+
+    underTest.create(book);
+
+    verify(jdbcTemplate).update(
+        eq("INSERT INTO books (isbn, title, author_id) VALUES (?, ?, ?)"),
+        eq("9780140449266"),
+        eq("The Count of Monte Cristo"),
+        eq(1L));
+  }
+
+  @Test
+  public void testThatFindOneBookGeneratesCorrectSql() {
+    underTest.findOne("9780140449266");
+    verify(jdbcTemplate).query(
+        eq("SELECT isbn, title, author_id from books WHERE isbn = ? LIMIT 1"),
+        ArgumentMatchers.<BookDaoImpl.BookRowMapper>any(),
+        eq("9780140449266"));
+  }
+
+  @Test
+  public void testThatFindGeneratesCorrectSql() {
+    underTest.find();
+    verify(jdbcTemplate).query(
+        eq("SELECT isbn, title, author_id from books"),
+        ArgumentMatchers.<BookDaoImpl.BookRowMapper>any());
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/BookDaoImplIntegrationTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.TestDataUtil;
+import com.devtiro.database.dao.AuthorDao;
+import com.devtiro.database.domain.Author;
+import com.devtiro.database.domain.Book;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+public class BookDaoImplIntegrationTests {
+
+    private AuthorDao authorDao;
+    private BookDaoImpl underTest;
+
+    @Autowired
+    public BookDaoImplIntegrationTests(BookDaoImpl underTest, AuthorDao authorDao) {
+        this.underTest = underTest;
+        this.authorDao = authorDao;
+    }
+
+    @Test
+    public void testThatBookCanBeCreatedAndRecalled() {
+        Author author = TestDataUtil.createTestAuthorA();
+        authorDao.create(author);
+        Book book = TestDataUtil.createTestBookA();
+        book.setAuthorId(author.getId());
+        underTest.create(book);
+        Optional<Book> result = underTest.findOne(book.getIsbn());
+        assertThat(result).isPresent();
+        assertThat(result.get()).isEqualTo(book);
+    }
+
+    @Test
+    public void testThatMultipleBooksCanBeCreatedAndRecalled() {
+        Author author = TestDataUtil.createTestAuthorA();
+        authorDao.create(author);
+
+        Book bookA = TestDataUtil.createTestBookA();
+        bookA.setAuthorId(author.getId());
+        underTest.create(bookA);
+
+        Book bookB = TestDataUtil.createTestBookB();
+        bookB.setAuthorId(author.getId());
+        underTest.create(bookB);
+
+        Book bookC = TestDataUtil.createTestBookC();
+        bookC.setAuthorId(author.getId());
+        underTest.create(bookC);
+
+        List<Book> result = underTest.find();
+        assertThat(result)
+                .hasSize(3)
+                .containsExactly(bookA, bookB, bookC);
+    }
 }
 ```
 
@@ -1936,7 +2813,7 @@ public class Main {
 - `@RestController`, `@GetMapping` are annotations that are part of the "Spring Web MVC"
 
 - The Spring Web MVC (model-view-controller) framework provides a very easy way of implementing MVC architecture in our web applications
-- The Java language has a low level API called the Servelets API, which allows us to write servlets which are special Java classes for
+- The Java language has a low level API called the Servlets API, which allows us to write servlets which are special Java classes for
   handling HTTP requests/responses
   - However, working directly with the servlets API can be clunky when working on large, enterprise grade applications
 - Spring MVC abstracts away a lot of the messy details you would have to understand and manage yourself if writing servlets manually
@@ -2255,7 +3132,7 @@ public class Customer {
 
 ![](images/pic4.png)
 
-- JPA = Jakarta Persistence is a Jakarta EE API specificiation that describes the management of relational data in enterprise Java applications
+- JPA = Jakarta Persistence is a Jakarta EE API specification that describes the management of relational data in enterprise Java applications
   - TLDR = Take Java classes and map into a database table and interact with the database without needing to write SQL
   - [Link 1](https://spring.io/projects/spring-data-jpa)
   - [Link 2](https://en.wikipedia.org/wiki/Jakarta_Persistence)
@@ -2368,7 +3245,7 @@ Dispatcher Servlet -> Handler Mapping -> Controller -> View
 - Spring focuses on the "plumbing" of enterprise applications so that teams can focus on application-level business logic, without unnecessary ties to specific deployment environments
 - Maven = How to manage dependencies in your project (`pom.xml`) (how to get jar files into local pc from centralised cloud repository)
 
-## Spring Intialiser
+## Spring Initialiser
 
 [Spring Initializr](https://start.spring.io/)
 
@@ -2385,7 +3262,7 @@ Project Options:
   - Package name = `com.pokemonreview.api`
   - Packaging = `Jar`
 - Java = `17`
-- Depedencies
+- Dependencies
   - `Spring Web`
   - `Lombok`
   - `Spring Data JPA`
@@ -2516,7 +3393,7 @@ public class Pokemon {
 ```
 
 ```java
-// src/main/java/com/pokemonreview/api/Reivew.java
+// src/main/java/com/pokemonreview/api/Review.java
 package.com.pokemonreview.api.models;
 
 public class Review {
@@ -2600,7 +3477,7 @@ public class Review {
 - Create DB in Intellij (`shift + shift > Database > Add (+) > Data Source > PostgreSQL`)
 - Right click on DB (New > Database)
   - Name = `pokemonapicourse` (leave everything else blank and click OK)
-  - Make sure all schemas are shown by right clicking and making sure all shemass are displayed
+  - Make sure all schemas are shown by right clicking and making sure all schemas are displayed
 
 ### Spring Data JPA
 
@@ -2688,8 +3565,8 @@ spring.jpa.show-sql=true
   - DELETE
   - CRUD = Create Read Update Delete
 - 2 main APIs for this project
-  - `www.pokmeonapi.com/pokemon`
-  - `www.pokmeonapi.com/review`
+  - `www.pokemonapi.com/pokemon`
+  - `www.pokemonapi.com/review`
 - Add
   - **`@RestController`**
   - **`@RequestMapping("/api/")`**
@@ -2826,7 +3703,7 @@ public class PokemonController {
 - Insert diagram here
 
 ```
-Controllers -> Services -> Respository -> SQL
+Controllers -> Services -> Repository -> SQL
 ```
 
 ### Inheritance Flow
@@ -3181,7 +4058,7 @@ public class PokemonController {
 - NOT preferred method of exception handling
 
 ```java
-@ReponseStatus(value=HttpStatus.NOT_FOUND)
+@ResponseStatus(value=HttpStatus.NOT_FOUND)
 public class NotFoundException extends RuntimeException {
   //...
 }

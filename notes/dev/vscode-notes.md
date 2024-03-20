@@ -105,6 +105,7 @@ Extension List:
 - Cody (AI) (DISABLED)
 - **Color Highlight**
 - **Color Info (Matt Bierner)**
+- **Console Ninja**
 - CSS Peek (DISABLED)
 - **CSS Navigation (pucelle)**
 - **Dev Containers (Microsoft)**
@@ -121,6 +122,8 @@ Extension List:
 - Flake8
 - **Format All Files in Workspace (Alex Ross)**
 - Frontend Essentials Extension Pack (FPack) (SeyyedKhandon)
+- **Git Graph**
+- **Git History**
 - GitHub Theme (DISABLED)
 - **GitLens**
 - **HTML CSS Support (ecmel)**
@@ -145,8 +148,10 @@ Extension List:
 - **Material Icon Theme**
 - MDX (unified)
 - Monorepo Workspace (Folke Lemaitre)
+- **Multiple Cursor Case Preserve**
 - Native Debug (WebFreak)
 - npm Intellisense (Christian Kohler)
+- Open All Files with Globs (xuld)
 - **Partial Diff (Ryuichi Inagaki)**
 - **Path Intellisense (Christian Kohler)**
 - pgFormatter (Brady Holt)

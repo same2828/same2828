@@ -62,7 +62,7 @@
         - [`.substr[i, j]`](#substri-j-1)
     - [Constants](#constants)
     - [Non-Member Functions](#non-member-functions-3)
-    - [Input/Ouput](#inputouput)
+    - [Input/Output](#inputoutput)
     - [Numeric Conversions](#numeric-conversions)
       - [`std::to_string()`](#stdto_string)
     - [Literals](#literals)
@@ -446,7 +446,7 @@ int main() {
 | `void`                                     | **`std::shuffle()`**                                          | `(RandomIt first`, `RandomIt last)`                                                                              | Randomly rearrange elements in range using generator (function template)                                                                                                                                                                                         |
 | `Iterator`                                 | **`std::swap_ranges()`**                                      | `(ForwardIt1 first1`, `ForwardIt1 last1`, `ForwardIt2 first2)`                                                   | Exchange values of two ranges (function template)                                                                                                                                                                                                                |
 | `void`                                     | **`std::swap()`**                                             | `(T& a`, `T& b)`                                                                                                 | Exchange values of two objects (function template)                                                                                                                                                                                                               |
-| `Iterator`                                 | **`std::transform()`**                                        | `(InputIt1 firt1`, `InputIt1 last1`, `InputIt2 first2`, `OutputIt d_first`, `BinaryOperation binary_op)`         | Transform range (function template) <br> Returns an Output Iterator pointing to the element that follows the last element transformed (written in the result sequence)                                                                                           |
+| `Iterator`                                 | **`std::transform()`**                                        | `(InputIt1 first1`, `InputIt1 last1`, `InputIt2 first2`, `OutputIt d_first`, `BinaryOperation binary_op)`        | Transform range (function template) <br> Returns an Output Iterator pointing to the element that follows the last element transformed (written in the result sequence)                                                                                           |
 | `Iterator`                                 | **`std::unique()`**                                           | `(ForwardIt first`, `ForwardIt last)`                                                                            | Remove consecutive duplicates in range (function template)                                                                                                                                                                                                       |
 | `Iterator`                                 | **`std::unique_copy()`**                                      | `(InputIt first`, `InputIt last`, `OutputIt d_first)`                                                            | Copy range removing duplicates (function template)                                                                                                                                                                                                               |
 |                                            | **Partitioning Operations**                                   |                                                                                                                  |                                                                                                                                                                                                                                                                  |
@@ -643,6 +643,22 @@ ForwardIterator min_element(ForwardIterator first, ForwardIterator last, Compare
     - By default elements are compared using `operator<`
     - Otherwise elements are compared using the given binary comparison function `comp` **which can be a lambda expression**
 
+**Usage on Primitive Arrays `int[]`**
+
+Explanation of why we do NOT need `.begin()` and `.end()` when passing primitive arrays into functions epxecting iterators
+
+- In C++, when you pass a primitive array (int[], char[], etc.) to a function expecting iterators, the array decays into a pointer to its first element
+- Therefore, when you pass `arr` to `std::min_element`, it's as if you're passing a pointer to the first element of the array, and `std::min_element` can treat it as if it were receiving pointers to the beginning and end of a range
+- The signature of `std::min_element` is defined as follows:
+
+```cpp
+template<class ForwardIterator>
+ForwardIterator min_element(ForwardIterator first, ForwardIterator last);
+```
+
+- Since `arr` decays into a pointer to its first element, `arr + size` is a pointer that points to one past the end of the array
+- This makes it equivalent to providing iterators that define the range `[arr, arr + size)`, which is exactly what `std::min_element `expects
+
 **Example**
 
 ```cpp
@@ -703,7 +719,7 @@ template <class InputIterator1, class InputIterator2, class OutputIterator, clas
 ```
 
 - [CPlusPlus](https://cplusplus.com/reference/algorithm/transform/)
-  - Tranform Range
+  - Transform Range
   - Applies an operation sequentially to the elements of one (1) or two (2) ranges and stores the result in the range that begins at `dest_first`
   - (1) Unary Operation
     - Applies `unary_op` to each of the elements in the range `[first1,last1)` and stores the value returned by each operation in the range that begins at `dest_first`
@@ -922,7 +938,7 @@ auto value3 = iter->field;
 ## Integer Literal
 
 - [CPlusPlus](https://cplusplus.com/doc/tutorial/constants/)
-- [CPPReferece](https://en.cppreference.com/w/cpp/language/integer_literal)
+- [CPPReference](https://en.cppreference.com/w/cpp/language/integer_literal)
 
 | Suffix       | Type Modifier |
 | ------------ | ------------- |
@@ -1132,10 +1148,10 @@ int main() {
   }
 }
 // hash("Meet the new boss...") =
-// 	 10656026664466977650
+// 10656026664466977650
 // hash("Eric", "Cartman") =
-// 	 10660922971897499836 (using MyHash) or
-// 	 10660922971897499836 (using injected std::hash<Person> specialization)
+// 10660922971897499836 (using MyHash) or
+// 10660922971897499836 (using injected std::hash<Person> specialization)
 // "Kenny" "McCormick"
 // "Stan" "Marsh"
 // "Eric" "Cartman"
@@ -1800,7 +1816,7 @@ int main() {
 | `std::swap(std::basic_string)`                                                                                                                                                                                                 | Specializes the `std::swap` algorithm (function template)            |
 | `std::erase(std::basic_string)` <br> `std::erase_if(std::basic_string)` (C++20)                                                                                                                                                | Erases all elements satisfying specific criteria (function template) |
 
-### Input/Ouput
+### Input/Output
 
 | Method                         | Definition                                                      |
 | ------------------------------ | --------------------------------------------------------------- |
@@ -7102,12 +7118,12 @@ std::queue<int> q({1, 2, 3, 4, 5});
 **Implicit**
 
 ```cpp
-// Default Comparator uses std::less<T> which becomes reveresed to become std::greater<T> hence MAX heap
+// Default Comparator uses std::less<T> which becomes reversed to become std::greater<T> hence MAX heap
 std::priority_queue<std::vector<int>> pq;
 ```
 
 ```cpp
-// Default Comparator = Max heap based on the first element of pair (pair.first)
+// Default Comparator = MAX heap based on the first element of pair (pair.first) [default comparator uses std::less<T> is reversed to become std::greater<T>]
 std::priority_queue<std::pair<int, int>> pq;
 ```
 
@@ -7118,7 +7134,6 @@ auto cmp = [](const std::vector<int>& a, const std::vector<int>& b) {
   return a[0] == b[0] ? a[1] < b[1] : a[0] < b[0];
 };
 std::priority_queue<std::vector<int>, std::vector<std::vector<int>>, decltype(cmp)> pq(cmp);
-
 ```
 
 ```cpp
@@ -9015,8 +9030,8 @@ int main() {
 
 #### Signed vs Unsigned
 
-- Signed Integer = Postive + 0 + Negative
-- Unsigned Integer = Postive + 0
+- Signed Integer = Positive + 0 + Negative
+- Unsigned Integer = Positive + 0
 
 - **Signed Integers**:
 

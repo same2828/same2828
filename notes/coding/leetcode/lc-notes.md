@@ -25,6 +25,10 @@
     - [Unset i'th bit](#unset-ith-bit)
     - [Flip i'th bit](#flip-ith-bit)
     - [XOR (`^`)](#xor-)
+- [BFS](#bfs)
+  - [Find Nodes in Cycle](#find-nodes-in-cycle)
+  - [Giving Unique ID to Each Subtree (Finding Duplicate Subtrees)](#giving-unique-id-to-each-subtree-finding-duplicate-subtrees)
+- [Binary Search](#binary-search)
 - [Binary Search Tree (BST)](#binary-search-tree-bst)
   - [Info](#info)
   - [Code](#code)
@@ -34,9 +38,6 @@
       - [Pre-Processing](#pre-processing)
       - [Query Resolution](#query-resolution)
     - [Implementation](#implementation)
-- [BFS](#bfs)
-  - [Find Nodes in Cycle](#find-nodes-in-cycle)
-  - [Giving Unique ID to Each Subtree (Finding Duplicate Subtrees)](#giving-unique-id-to-each-subtree-finding-duplicate-subtrees)
 - [Common Errors/Pitfalls](#common-errorspitfalls)
 - [Cumulative Sum (Line Sweep)](#cumulative-sum-line-sweep)
 - [Data Types](#data-types)
@@ -76,6 +77,7 @@
   - [Array Wrap Around](#array-wrap-around)
   - [Flatten 2D Matrix into Stateful String and Check Neighbours of currCell](#flatten-2d-matrix-into-stateful-string-and-check-neighbours-of-currcell)
   - [Index Shifting When Deleting an Element](#index-shifting-when-deleting-an-element)
+  - [Index Matching for Modulo Pair Groups](#index-matching-for-modulo-pair-groups)
   - [Uses of 3D array `int[][][]`](#uses-of-3d-array-int)
 - [Heap Priority Queue](#heap-priority-queue-1)
   - [K'th Largest](#kth-largest)
@@ -554,6 +556,113 @@ int newMask = mask - (1 << i);
 int newMask = mask ^ (1 << j);
 ```
 
+# BFS
+
+- Use **`queue`**
+- 2 Methods
+  - Store numIterations in global variable
+  - Store numIterations inside queue element
+
+```java
+// Set up "graph" + "visitedSet"
+Queue<int[]> q = new LinkedList<>();
+// Offer initial state onto queue { x, y, cost, numSteps }
+q.offer(new int[0, 0, 0, 0]);
+// BFS (expand all elements in queue)
+int numSteps = 0;
+while (!q.isEmpty()) {
+  int[] curr = q.poll();
+  int x = curr[0];
+  int y = curr[1];
+  int currCost = curr[2];
+  int numSteps = curr[3];
+  // Expand to neighbours
+  for (int[] nei : graph.getOrDefault(curr[0], Collections.emptyList())) {
+    if (!visited) {
+      q.offer(new int[] { nei[0], nei[1], currCost + nei[2], numSteps++ });
+    }
+  }
+}
+```
+
+```java
+// Set up "graph" + "visitedSet"
+Queue<int[]> q = new LinkedList<>();
+// Offer initial state onto queue { x, y, cost }
+q.offer(new int[0, 0, 0]);
+// BFS (expand all elements in queue)
+int numSteps = 0;
+while (!q.isEmpty()) {
+  int qSize = q.size();
+  for (int i = 0; i < qSize; i++) {
+    int[] curr = q.poll();
+    // Expand to neighbours
+    for (int[] nei : graph.getOrDefault(curr[0], Collections.emptyList())) {
+      if (!visited) {
+        q.offer(new int[] { nei[0], nei[1], numSteps });
+      }
+    }
+  }
+  numSteps++;
+}
+```
+
+## Find Nodes in Cycle
+
+- Continuously trim leaf nodes(nodes with indegree == 1) until you can't
+  - Push leaf nodes (nodes with indegree == 1) onto queue
+  - Poll from queue and decrease indegree of neighbours and offer onto queue if neighbour indegree == 1
+  - Repeat above
+- Questions
+  - 2204
+
+## Giving Unique ID to Each Subtree (Finding Duplicate Subtrees)
+
+- Use `String` to create triplet of `dfs(left) + "," + currNode.val + dfs(right)` (returning `0` when `currNode == null`)
+- Use 2 `HashMaps`
+  - "tripletToID" which maps above string representation to a `tripletToID.size()` number (id). Note: The trick is to use the size of the hashmap as the ID (size of hashmap == id)
+  - "cnt" which maps the **id** to an occurence count
+- See 652.find-duplicate-subtrees
+
+```java
+class Solution {
+  List<TreeNode> result;
+  Map<Integer, Integer> cnt;
+  Map<String, Integer> tripletToID;
+
+  public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+    this.result = new ArrayList<>();
+    this.cnt = new HashMap<>();
+    this.tripletToID = new HashMap<>();
+    dfs(root);
+    return result;
+  }
+
+  public int dfs(TreeNode currNode) {
+    if (currNode == null) {
+      return 0;
+    }
+    String triplet = dfs(currNode.left) + "," + currNode.val + "," + dfs(currNode.right);
+    if (!tripletToID.containsKey(triplet)) {
+      tripletToID.put(triplet, tripletToID.size() + 1);
+    }
+    int id = tripletToID.get(triplet);
+    cnt.put(id, cnt.getOrDefault(id, 0) + 1);
+    if (cnt.get(id) == 2) {
+      result.add(currNode);
+    }
+    return id;
+  }
+}
+```
+
+# Binary Search
+
+- See `binary-search.java`
+- Interesting application to find "exact" number
+  - `lnt-all/848.minimize-max-distance-to-gas-station`
+  - `lnt-all/617.maximum-average-subarray-ii`
+
 # Binary Search Tree (BST)
 
 ## Info
@@ -889,106 +998,6 @@ public:
 - 2836.maximize-value-of-function-in-a-ball-passing-game
   - Note: Interesting implementation of "successors" INSTEAD OF "ancestors"
 
-# BFS
-
-- Use **`queue`**
-- 2 Methods
-  - Store numIterations in global variable
-  - Store numIterations inside queue element
-
-```java
-// Set up "graph" + "visitedSet"
-Queue<int[]> q = new LinkedList<>();
-// Offer initial state onto queue { x, y, cost, numSteps }
-q.offer(new int[0, 0, 0, 0]);
-// BFS (expand all elements in queue)
-int numSteps = 0;
-while (!q.isEmpty()) {
-  int[] curr = q.poll();
-  int x = curr[0];
-  int y = curr[1];
-  int currCost = curr[2];
-  int numSteps = curr[3];
-  // Expand to neighbours
-  for (int[] nei : graph.getOrDefault(curr[0], Collections.emptyList())) {
-    if (!visited) {
-      q.offer(new int[] { nei[0], nei[1], currCost + nei[2], numSteps++ });
-    }
-  }
-}
-```
-
-```java
-// Set up "graph" + "visitedSet"
-Queue<int[]> q = new LinkedList<>();
-// Offer initial state onto queue { x, y, cost }
-q.offer(new int[0, 0, 0]);
-// BFS (expand all elements in queue)
-int numSteps = 0;
-while (!q.isEmpty()) {
-  int qSize = q.size();
-  for (int i = 0; i < qSize; i++) {
-    int[] curr = q.poll();
-    // Expand to neighbours
-    for (int[] nei : graph.getOrDefault(curr[0], Collections.emptyList())) {
-      if (!visited) {
-        q.offer(new int[] { nei[0], nei[1], numSteps });
-      }
-    }
-  }
-  numSteps++;
-}
-```
-
-## Find Nodes in Cycle
-
-- Continuously trim leaf nodes(nodes with indegree == 1) until you can't
-  - Push leaf nodes (nodes with indegree == 1) onto queue
-  - Poll from queue and decrease indegree of neighbours and offer onto queue if neighbour indegree == 1
-  - Repeat above
-- Questions
-  - 2204
-
-## Giving Unique ID to Each Subtree (Finding Duplicate Subtrees)
-
-- Use `String` to create triplet of `dfs(left) + "," + currNode.val + dfs(right)` (returning `0` when `currNode == null`)
-- Use 2 `HashMaps`
-  - "tripletToID" which maps above string representation to a `tripletToID.size()` number (id). Note: The trick is to use the size of the hashmap as the ID (size of hashmap == id)
-  - "cnt" which maps the **id** to an occurence count
-- See 652.find-duplicate-subtrees
-
-```java
-class Solution {
-  List<TreeNode> result;
-  Map<Integer, Integer> cnt;
-  Map<String, Integer> tripletToID;
-
-  public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
-    this.result = new ArrayList<>();
-    this.cnt = new HashMap<>();
-    this.tripletToID = new HashMap<>();
-    dfs(root);
-    return result;
-  }
-
-  public int dfs(TreeNode currNode) {
-    if (currNode == null) {
-      return 0;
-    }
-    String triplet = dfs(currNode.left) + "," + currNode.val + "," + dfs(currNode.right);
-    if (!tripletToID.containsKey(triplet)) {
-      tripletToID.put(triplet, tripletToID.size() + 1);
-    }
-    int id = tripletToID.get(triplet);
-    cnt.put(id, cnt.getOrDefault(id, 0) + 1);
-    if (cnt.get(id) == 2) {
-      result.add(currNode);
-    }
-    return id;
-  }
-}
-```
-
 # Common Errors/Pitfalls
 
 - Always check that indexes/indices are valid BEFORE using them
@@ -1062,10 +1071,21 @@ Why floating point numbers can support/represent larger ranges than `long`:
 ```java
 double sum = 0.0;
 for (int i = 0; i < 3000; i++) {
-  sum += (10.0/3.0);
+  sum += (10.0 / 3.0);
 }
 // Expected sum == 10000 however actual output == 10000.000000000031
 System.out.println(sum);
+```
+
+```java
+double lo = *(std::min_element(array, array + arraySize));
+double hi = *(std::max_element(array, array + arraySize));
+double epsilon = 1e-6 // 1e-5; also works
+// Binary Search
+while (lo + epsilon < hi) { // while (lo + 1e-6 < hi) {
+  //...
+}
+
 ```
 
 # Dynamic Programming
@@ -1702,6 +1722,34 @@ L = LEFT neighbour
   - Therefore, on its RIGHT side, the oddIndexSum becomes evenIndexSum and evenIndexSum becomes oddIndexSum
 - Therefore `if (evenIndexSum == oddIndexSum)` becomes `if (evenSumBefore + oddSumAfter == oddSumBefore + evenSumAfter)`
 - See 1664.ways-to-make-a-fair-array
+
+## Index Matching for Modulo Pair Groups
+
+- See 2911.minimum-changes-to-make-k-semi-palindromes
+- `if (s.charAt(l + (i * factor) + j) != s.charAt(l + ((subLength - i - 1) * factor) + j)) {}`
+
+```java
+public int numChangesForSemiPalindrome(int l, int r) {
+  int n = r - l + 1;
+  int minNumChanges = Integer.MAX_VALUE;
+  for (int factor : factors.get(n)) {
+    int subLength = n / factor;
+    int numChanges = 0;
+    // i brings us to start of each modulo pair group [(0, n-1), (1, n-2), (2, n-3))] of length subLength
+    // Note: `i < len / 2` prevents checking the middle letter in odd length palindrome (since no pair will exist)
+    for (int i = 0; i < subLength / 2; i++) {
+      // j iterates through offsets/indices within each modulo group
+      for (int j = 0; j < factor; j++) {
+        if (s.charAt(l + (i * factor) + j) != s.charAt(l + ((subLength - i - 1) * factor) + j)) { // <-- HERE
+          numChanges += 1;
+        }
+      }
+    }
+    minNumChanges = Math.min(minNumChanges, numChanges);
+  }
+  return minNumChanges;
+}
+```
 
 ## Uses of 3D array `int[][][]`
 
