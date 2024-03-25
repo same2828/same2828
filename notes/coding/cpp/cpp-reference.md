@@ -187,6 +187,7 @@
       - [Version 1](#version-1)
       - [Version 2](#version-2)
       - [Version 3](#version-3)
+      - [Version 4](#version-4)
     - [Example](#example-16)
 - [Miscellaneous](#miscellaneous)
   - [Compiling C++](#compiling-c)
@@ -1406,12 +1407,34 @@ class tuple;
 - [Read more](https://en.cppreference.com/w/cpp/utility/tuple/deduction_guides)
 
 ```cpp
-#include <tuple>
+#include <iostream> // std::cout
+#include <tuple>    // std::tuple, std::get, std::tie, std::ignore
 
 int main() {
-  int a[2], b[3], c[4];
-  std::tuple t1{a, b, c}; // explicit deduction guide is used in this case
+  std::tuple<int, char> foo(10, 'x');
+  auto bar = std::make_tuple("test", 3.1, 14, 'y');
+
+  std::get<2>(bar) = 100; // access element
+
+  int myint;
+  char mychar;
+
+  std::tie(myint, mychar) = foo;                           // unpack elements
+  std::tie(std::ignore, std::ignore, myint, mychar) = bar; // unpack (with ignore)
+
+  mychar = std::get<3>(bar);
+
+  std::get<0>(foo) = std::get<2>(bar);
+  std::get<1>(foo) = mychar;
+
+  std::cout << "foo contains: ";
+  std::cout << std::get<0>(foo) << ' ';
+  std::cout << std::get<1>(foo) << '\n';
+
+  return 0;
 }
+
+// foo contains: 100 y
 ```
 
 ### Example
@@ -5640,6 +5663,24 @@ std::priority_queue<Person, std::vector<Person>, MyComparator> pq;
 ```
 
 #### Version 3
+
+```cpp
+struct Person {
+  std::string name;
+  int age;
+};
+
+class MyCmp {
+public:
+  bool operator()(auto const &a, auto const &b) const {
+    return a.age < b.age;
+  }
+};
+
+std::priority_queue<Person, std::vector<Person>, MyCmp> pq;
+```
+
+#### Version 4
 
 C++20 Only (requires `-std=c++20` compile option)
 

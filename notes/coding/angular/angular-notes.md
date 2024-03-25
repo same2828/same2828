@@ -1,6 +1,6 @@
-# T
+# Table of Contents
 
-- [T](#t)
+- [Table of Contents](#table-of-contents)
 - [Resource](#resource)
   - [Angular Course Info README.md](#angular-course-info-readmemd)
     - [MyApp](#myapp)

@@ -59,6 +59,15 @@
   - [Find Many Methods](#find-many-methods)
     - [Author](#author-2)
     - [Book](#book-2)
+  - [Update (Full)](#update-full)
+    - [Author](#author-3)
+    - [Book](#book-3)
+  - [Delete](#delete)
+    - [Author](#author-4)
+    - [Book](#book-4)
+  - [Spring Data JPA Setup](#spring-data-jpa-setup)
+  - [Create Entities (change domain objects to entities)](#create-entities-change-domain-objects-to-entities)
+  - [Hibernate Auto DDL](#hibernate-auto-ddl)
 - [Spring Boot 3 - Amigoscode](#spring-boot-3---amigoscode)
   - [Spring Initializr](#spring-initializr-1)
   - [Project Setup](#project-setup)
@@ -627,7 +636,7 @@ Database Driver (e.g. PostgreSQL)
 
 ## Beans
 
-- Beans == Concrete Classes that are injected by a framework
+- Bean == Beans == Concrete Classes that are injected by a framework
   - **Bean dependencies are declared in the bean's constructor**
 - `@Configuration` annotation/decorator
   - Labels a "Configuration Class"
@@ -2090,12 +2099,13 @@ public class BookDaoImplIntegrationTests {
 
 ## Find Many Methods
 
-- Update interface + implemenatation
+- Update interface + implementation
 - Update test helper method
 - Create unit test
 - Create integration test
 - The `@DirtiesContext()` annotation/decorator ensures a fresh database for each test (will clean down any changes to the context based on the classmode arguments supplied)
   - `@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)`
+  - Need to add `@DirtiesContext()` annotation/decorator ontop of EACH integration test
 
 ### Author
 
@@ -2256,7 +2266,7 @@ public final class TestDataUtil {
   public static Author createTestAuthorB() {
     return Author.builder()
         .id(2L)
-        .name("Thomas Cronin")
+        .name("Thomas Edison")
         .age(44)
         .build();
   }
@@ -2264,7 +2274,7 @@ public final class TestDataUtil {
   public static Author createTestAuthorC() {
     return Author.builder()
         .id(3L)
-        .name("Jesse A Casey")
+        .name("Casey Smith")
         .age(24)
         .build();
   }
@@ -2563,6 +2573,1127 @@ public class BookDaoImplIntegrationTests {
     }
 }
 ```
+
+## Update (Full)
+
+- Covering full update instead of partial update first
+
+### Author
+
+```java
+// src/main/java/com/devtiro/database/dao/AuthorDao.java
+package com.devtiro.database.dao;
+
+import com.devtiro.database.domain.Author;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface AuthorDao {
+  void create(Author author);
+
+  Optional<Author> findOne(long l);
+
+  List<Author> find();
+
+  void update(long id, Author author);
+}
+```
+
+```java
+// src/main/java/com/devtiro/database/dao/impl/AuthorDaoImpl.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.dao.AuthorDao;
+import com.devtiro.database.domain.Author;
+import com.devtiro.database.domain.Book;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+
+@Component
+public class AuthorDaoImpl implements AuthorDao {
+
+  private final JdbcTemplate jdbcTemplate;
+
+  public AuthorDaoImpl(final JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
+
+  @Override
+  public void create(Author author) {
+    jdbcTemplate.update(
+        "INSERT INTO authors (id, name, age) VALUES (?, ?, ?)",
+        author.getId(), author.getName(), author.getAge());
+  }
+
+  @Override
+  public Optional<Author> findOne(long authorId) {
+    List<Author> results = jdbcTemplate.query(
+        "SELECT id, name, age FROM authors WHERE id = ? LIMIT 1",
+        new AuthorRowMapper(), authorId);
+
+    return results.stream().findFirst();
+  }
+
+  public static class AuthorRowMapper implements RowMapper<Author> {
+
+    @Override
+    public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
+      return Author.builder()
+          .id(rs.getLong("id"))
+          .name(rs.getString("name"))
+          .age(rs.getInt("age"))
+          .build();
+    }
+  }
+
+  @Override
+  public List<Author> find() {
+    return jdbcTemplate.query(
+        "SELECT id, name, age FROM authors",
+        new AuthorRowMapper());
+  }
+
+  @Override
+  public void update(long id, Author author) {
+    jdbcTemplate.update(
+        "UPDATE authors SET id = ?, name = ?, age = ? WHERE id = ?",
+        id, author.getName(), author.getAge(), author.getId());
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/AuthorDaoImplTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.TestDataUtil;
+import com.devtiro.database.domain.Author;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
+public class AuthorDaoImplTests {
+
+  @Mock
+  private JdbcTemplate jdbcTemplate;
+
+  @InjectMocks
+  private AuthorDaoImpl underTest;
+
+  @Test
+  public void testThatCreateAuthorGeneratesCorrectSql() {
+    Author author = TestDataUtil.createTestAuthorA();
+
+    underTest.create(author);
+
+    verify(jdbcTemplate).update(
+        eq("INSERT INTO authors (id, name, age) VALUES (?, ?, ?)"),
+        eq(1L), eq("Steve Jobs"), eq(56));
+  }
+
+  @Test
+  public void testThatFindOneGeneratesTheCorrectSql() {
+    underTest.findOne(1L);
+    verify(jdbcTemplate).query(
+        eq("SELECT id, name, age FROM authors WHERE id = ? LIMIT 1"),
+        ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any(),
+        eq(1L));
+  }
+
+  @Test
+  public void testThatFindManyGeneratesCorrectSql() {
+    underTest.find();
+    verify(jdbcTemplate).query(
+        eq("SELECT id, name, age FROM authors"),
+        ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any());
+  }
+
+  @Test
+  public void testThatUpdateGeneratesCorrectSql() {
+    Author author = TestDataUtil.createTestAuthorA();
+    underTest.update(3L, author);
+
+    verify(jdbcTemplate).update(
+        "UPDATE authors SET id = ?, name = ?, age = ? WHERE id = ?",
+        1L, "Steve Jobs", 80, 3L);
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/AuthorDaoImplIntegrationTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.TestDataUtil;
+import com.devtiro.database.domain.Author;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+public class AuthorDaoImplIntegrationTests {
+
+  private AuthorDaoImpl underTest;
+
+  @Autowired
+  public AuthorDaoImplIntegrationTests(AuthorDaoImpl underTest) {
+    this.underTest = underTest;
+  }
+
+  @Test
+  public void testThatAuthorCanBeCreatedAndRecalled() {
+    Author author = TestDataUtil.createTestAuthorA();
+    underTest.create(author);
+    Optional<Author> result = underTest.findOne(author.getId());
+    assertThat(result).isPresent();
+    assertThat(result.get()).isEqualTo(author);
+  }
+
+  @Test
+  public void testThatMultipleAuthorsCanBeCreatedAndRecalled() {
+    Author authorA = TestDataUtil.createTestAuthorA();
+    underTest.create(authorA);
+    Author authorB = TestDataUtil.createTestAuthorB();
+    underTest.create(authorB);
+    Author authorC = TestDataUtil.createTestAuthorC();
+    underTest.create(authorC);
+
+    List<Author> result = underTest.find();
+    assertThat(result)
+        .hasSize(3).containsExactly(authorA, authorB, authorC);
+  }
+
+  @Test
+  public void testThatAuthorCanBeUpdated() {
+    Author authorA = TestDataUtil.createTestAuthorA();
+    underTest.create(authorA);
+    authorA.setName("UPDATED");
+    underTest.update(authorA.getId(), authorA);
+    Optional<Author> result = underTest.findOne(authorA.getId());
+    assertThat(result).isPresent();
+    assertThat(result.get()).isEqualTo(authorA);
+  }
+}
+```
+
+### Book
+
+```java
+// src/main/java/com/devtiro/database/dao/BookDao.java
+package com.devtiro.database.dao;
+
+import com.devtiro.database.domain.Book;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface BookDao {
+  void create(Book book);
+
+  Optional<Book> findOne(String isbn);
+
+  List<Book> find();
+
+  void update(String isbn, Book book);
+}
+```
+
+```java
+// src/main/java/com/devtiro/database/dao/impl/BookDaoImpl.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.dao.BookDao;
+import com.devtiro.database.domain.Book;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+
+@Component
+public class BookDaoImpl implements BookDao {
+
+  private final JdbcTemplate jdbcTemplate;
+
+  public BookDaoImpl(final JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
+
+  @Override
+  public void create(Book book) {
+    jdbcTemplate.update(
+        "INSERT INTO books (isbn, title, author_id) VALUES (?, ?, ?)",
+        book.getIsbn(),
+        book.getTitle(),
+        book.getAuthorId());
+  }
+
+  @Override
+  public Optional<Book> findOne(String isbn) {
+    List<Book> results = jdbcTemplate.query(
+        "SELECT isbn, title, author_id from books WHERE isbn = ? LIMIT 1",
+        new BookRowMapper(),
+        isbn);
+    return results.stream().findFirst();
+  }
+
+  public static class BookRowMapper implements RowMapper<Book> {
+
+    @Override
+    public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
+      return Book.builder()
+          .isbn(rs.getString("isbn"))
+          .title(rs.getString("title"))
+          .authorId(rs.getLong("author_id"))
+          .build();
+    }
+
+  }
+
+  @Override
+  public List<Book> find() {
+    return jdbcTemplate.query(
+        "SELECT isbn, title, author_id from books",
+        new BookRowMapper());
+  }
+
+  @Override
+  public void update(String isbn, Book book) {
+    jdbcTemplate.update(
+        "UPDATE books SET isbn = ?, title = ?, author_id = ? WHERE isbn = ?",
+        book.getIsbn(), book.getTitle(), book.getAuthorId(), isbn);
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/BookDaoImplTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.TestDataUtil;
+import com.devtiro.database.domain.Book;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
+public class BookDaoImplTests {
+
+  @Mock
+  private JdbcTemplate jdbcTemplate;
+
+  @InjectMocks
+  private BookDaoImpl underTest;
+
+  @Test
+  public void testThatCreateBookGeneratesCorrectSql() {
+    Book book = TestDataUtil.createTestBookA();
+
+    underTest.create(book);
+
+    verify(jdbcTemplate).update(
+        eq("INSERT INTO books (isbn, title, author_id) VALUES (?, ?, ?)"),
+        eq("978-1-2345-6789-0"),
+        eq("The Shadow in the Attic"),
+        eq(1L));
+  }
+
+  @Test
+  public void testThatFindOneBookGeneratesCorrectSql() {
+    underTest.findOne("978-1-2345-6789-0");
+    verify(jdbcTemplate).query(
+        eq("SELECT isbn, title, author_id from books WHERE isbn = ? LIMIT 1"),
+        ArgumentMatchers.<BookDaoImpl.BookRowMapper>any(),
+        eq("978-1-2345-6789-0"));
+  }
+
+  @Test
+  public void testThatFindGeneratesCorrectSql() {
+    underTest.find();
+    verify(jdbcTemplate).query(
+        eq("SELECT isbn, title, author_id from books"),
+        ArgumentMatchers.<BookDaoImpl.BookRowMapper>any());
+  }
+
+  @Test
+  public void testThatUpdateGeneratesCorrectSql() {
+    Book book = TestDataUtil.createTestBookA();
+    underTest.update("978-1-2345-6789-0", book);
+    verify(jdbcTemplate).update(
+        "UPDATE books SET isbn = ?, title = ?, author_id = ? WHERE isbn = ?",
+        "978-1-2345-6789-0", "The Shadow in the Attic", 1L, "978-1-2345-6789-0");
+  }
+
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/BookDaoImplIntegrationTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.TestDataUtil;
+import com.devtiro.database.dao.AuthorDao;
+import com.devtiro.database.domain.Author;
+import com.devtiro.database.domain.Book;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+public class BookDaoImplIntegrationTests {
+
+  private AuthorDao authorDao;
+  private BookDaoImpl underTest;
+
+  @Autowired
+  public BookDaoImplIntegrationTests(BookDaoImpl underTest, AuthorDao authorDao) {
+    this.underTest = underTest;
+    this.authorDao = authorDao;
+  }
+
+  @Test
+  public void testThatBookCanBeCreatedAndRecalled() {
+    Author author = TestDataUtil.createTestAuthorA();
+    authorDao.create(author);
+    Book book = TestDataUtil.createTestBookA();
+    book.setAuthorId(author.getId());
+    underTest.create(book);
+    Optional<Book> result = underTest.findOne(book.getIsbn());
+    assertThat(result).isPresent();
+    assertThat(result.get()).isEqualTo(book);
+  }
+
+  @Test
+  public void testThatMultipleBooksCanBeCreatedAndRecalled() {
+    Author author = TestDataUtil.createTestAuthorA();
+    authorDao.create(author);
+
+    Book bookA = TestDataUtil.createTestBookA();
+    bookA.setAuthorId(author.getId());
+    underTest.create(bookA);
+
+    Book bookB = TestDataUtil.createTestBookB();
+    bookB.setAuthorId(author.getId());
+    underTest.create(bookB);
+
+    Book bookC = TestDataUtil.createTestBookC();
+    bookC.setAuthorId(author.getId());
+    underTest.create(bookC);
+
+    List<Book> result = underTest.find();
+    assertThat(result)
+        .hasSize(3)
+        .containsExactly(bookA, bookB, bookC);
+  }
+
+  @Test
+  public void testThatBookCanBeUpdated() {
+    Author author = TestDataUtil.createTestAuthorA();
+    authorDao.create(author);
+
+    Book bookA = TestDataUtil.createTestBookA();
+    bookA.setAuthorId(author.getId());
+    underTest.create(bookA);
+
+    bookA.setTitle("UPDATED");
+    underTest.update(bookA.getIsbn(), bookA);
+
+    Optional<Book> result = underTest.findOne(bookA.getIsbn());
+    assertThat(result).isPresent();
+    assertThat(result.get()).isEqualTo(bookA);
+  }
+}
+```
+
+## Delete
+
+### Author
+
+- We have now implemented DAOs with CRUD behaviour for authors and books
+
+```java
+// src/main/java/com/devtiro/database/dao/AuthorDao.java
+package com.devtiro.database.dao;
+
+import com.devtiro.database.domain.Author;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface AuthorDao {
+  void create(Author author);
+
+  Optional<Author> findOne(long l);
+
+  List<Author> find();
+
+  void update(long id, Author author);
+
+  void delete(long id);
+}
+```
+
+```java
+// src/main/java/com/devtiro/database/dao/impl/AuthorDaoImpl.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.dao.AuthorDao;
+import com.devtiro.database.domain.Author;
+import com.devtiro.database.domain.Book;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+
+@Component
+public class AuthorDaoImpl implements AuthorDao {
+
+  private final JdbcTemplate jdbcTemplate;
+
+  public AuthorDaoImpl(final JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
+
+  @Override
+  public void create(Author author) {
+    jdbcTemplate.update(
+        "INSERT INTO authors (id, name, age) VALUES (?, ?, ?)",
+        author.getId(), author.getName(), author.getAge());
+  }
+
+  @Override
+  public Optional<Author> findOne(long authorId) {
+    List<Author> results = jdbcTemplate.query(
+        "SELECT id, name, age FROM authors WHERE id = ? LIMIT 1",
+        new AuthorRowMapper(), authorId);
+
+    return results.stream().findFirst();
+  }
+
+  public static class AuthorRowMapper implements RowMapper<Author> {
+
+    @Override
+    public Author mapRow(ResultSet rs, int rowNum) throws SQLException {
+      return Author.builder()
+          .id(rs.getLong("id"))
+          .name(rs.getString("name"))
+          .age(rs.getInt("age"))
+          .build();
+    }
+  }
+
+  @Override
+  public List<Author> find() {
+    return jdbcTemplate.query(
+        "SELECT id, name, age FROM authors",
+        new AuthorRowMapper());
+  }
+
+  @Override
+  public void update(long id, Author author) {
+    jdbcTemplate.update(
+        "UPDATE authors SET id = ?, name = ?, age = ? WHERE id = ?",
+        author.getId(), author.getName(), author.getAge(), id);
+  }
+
+  @Override
+  public void delete(long id) {
+    jdbcTemplate.update(
+        "DELETE FROM authors where id = ?",
+        id);
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/AuthorDaoImplTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.TestDataUtil;
+import com.devtiro.database.domain.Author;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
+public class AuthorDaoImplTests {
+
+  @Mock
+  private JdbcTemplate jdbcTemplate;
+
+  @InjectMocks
+  private AuthorDaoImpl underTest;
+
+  @Test
+  public void testThatCreateAuthorGeneratesCorrectSql() {
+    Author author = TestDataUtil.createTestAuthorA();
+
+    underTest.create(author);
+
+    verify(jdbcTemplate).update(
+        eq("INSERT INTO authors (id, name, age) VALUES (?, ?, ?)"),
+        eq(1L), eq("Steve Jobs"), eq(56));
+  }
+
+  @Test
+  public void testThatFindOneGeneratesTheCorrectSql() {
+    underTest.findOne(1L);
+    verify(jdbcTemplate).query(
+        eq("SELECT id, name, age FROM authors WHERE id = ? LIMIT 1"),
+        ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any(),
+        eq(1L));
+  }
+
+  @Test
+  public void testThatFindManyGeneratesCorrectSql() {
+    underTest.find();
+    verify(jdbcTemplate).query(
+        eq("SELECT id, name, age FROM authors"),
+        ArgumentMatchers.<AuthorDaoImpl.AuthorRowMapper>any());
+  }
+
+  @Test
+  public void testThatUpdateGeneratesCorrectSql() {
+    Author author = TestDataUtil.createTestAuthorA();
+    underTest.update(3L, author);
+
+    verify(jdbcTemplate).update(
+        "UPDATE authors SET id = ?, name = ?, age = ? WHERE id = ?",
+        1L, "Steve Jobs", 80, 3L);
+  }
+
+  @Test
+  public void testThatDeleteGeneratesTheCorrectSql() {
+    underTest.delete(1L);
+    verify(jdbcTemplate).update(
+        "DELETE FROM authors where id = ?",
+        1L);
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/AuthorDaoImplIntegrationTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.TestDataUtil;
+import com.devtiro.database.domain.Author;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+public class AuthorDaoImplIntegrationTests {
+
+  private AuthorDaoImpl underTest;
+
+  @Autowired
+  public AuthorDaoImplIntegrationTests(AuthorDaoImpl underTest) {
+    this.underTest = underTest;
+  }
+
+  @Test
+  public void testThatAuthorCanBeCreatedAndRecalled() {
+    Author author = TestDataUtil.createTestAuthorA();
+    underTest.create(author);
+    Optional<Author> result = underTest.findOne(author.getId());
+    assertThat(result).isPresent();
+    assertThat(result.get()).isEqualTo(author);
+  }
+
+  @Test
+  public void testThatMultipleAuthorsCanBeCreatedAndRecalled() {
+    Author authorA = TestDataUtil.createTestAuthorA();
+    underTest.create(authorA);
+    Author authorB = TestDataUtil.createTestAuthorB();
+    underTest.create(authorB);
+    Author authorC = TestDataUtil.createTestAuthorC();
+    underTest.create(authorC);
+
+    List<Author> result = underTest.find();
+    assertThat(result)
+        .hasSize(3).containsExactly(authorA, authorB, authorC);
+  }
+
+  @Test
+  public void testThatAuthorCanBeUpdated() {
+    Author authorA = TestDataUtil.createTestAuthorA();
+    underTest.create(authorA);
+    authorA.setName("UPDATED");
+    underTest.update(authorA.getId(), authorA);
+    Optional<Author> result = underTest.findOne(authorA.getId());
+    assertThat(result).isPresent();
+    assertThat(result.get()).isEqualTo(authorA);
+  }
+
+  @Test
+  public void testThatAuthorCanBeDeleted() {
+    Author authorA = TestDataUtil.createTestAuthorA();
+    underTest.create(authorA);
+    underTest.delete(authorA.getId());
+    Optional<Author> result = underTest.findOne(authorA.getId());
+    assertThat(result).isEmpty();
+  }
+}
+```
+
+### Book
+
+```java
+// src/main/java/com/devtiro/database/dao/BookDao.java
+package com.devtiro.database.dao;
+
+import com.devtiro.database.domain.Book;
+
+import java.util.List;
+import java.util.Optional;
+
+public interface BookDao {
+  void create(Book book);
+
+  Optional<Book> findOne(String isbn);
+
+  List<Book> find();
+
+  void update(String isbn, Book book);
+
+  void delete(String isbn);
+}
+```
+
+```java
+// src/main/java/com/devtiro/database/dao/BookDaoImpl.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.dao.BookDao;
+import com.devtiro.database.domain.Book;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
+import org.springframework.stereotype.Component;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.Optional;
+
+@Component
+public class BookDaoImpl implements BookDao {
+
+  private final JdbcTemplate jdbcTemplate;
+
+  public BookDaoImpl(final JdbcTemplate jdbcTemplate) {
+    this.jdbcTemplate = jdbcTemplate;
+  }
+
+  @Override
+  public void create(Book book) {
+    jdbcTemplate.update(
+        "INSERT INTO books (isbn, title, author_id) VALUES (?, ?, ?)",
+        book.getIsbn(),
+        book.getTitle(),
+        book.getAuthorId());
+  }
+
+  @Override
+  public Optional<Book> findOne(String isbn) {
+    List<Book> results = jdbcTemplate.query(
+        "SELECT isbn, title, author_id from books WHERE isbn = ? LIMIT 1",
+        new BookRowMapper(),
+        isbn);
+    return results.stream().findFirst();
+  }
+
+  public static class BookRowMapper implements RowMapper<Book> {
+
+    @Override
+    public Book mapRow(ResultSet rs, int rowNum) throws SQLException {
+      return Book.builder()
+          .isbn(rs.getString("isbn"))
+          .title(rs.getString("title"))
+          .authorId(rs.getLong("author_id"))
+          .build();
+    }
+
+  }
+
+  @Override
+  public List<Book> find() {
+    return jdbcTemplate.query(
+        "SELECT isbn, title, author_id from books",
+        new BookRowMapper());
+  }
+
+  @Override
+  public void update(String isbn, Book book) {
+    jdbcTemplate.update(
+        "UPDATE books SET isbn = ?, title = ?, author_id = ? WHERE isbn = ?",
+        book.getIsbn(), book.getTitle(), book.getAuthorId(), isbn);
+  }
+
+  @Override
+  public void delete(String isbn) {
+    jdbcTemplate.update(
+        "DELETE FROM books where isbn = ?",
+        isbn);
+  }
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/BookDaoImplTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.TestDataUtil;
+import com.devtiro.database.domain.Book;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.jdbc.core.JdbcTemplate;
+
+import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.verify;
+
+@ExtendWith(MockitoExtension.class)
+public class BookDaoImplTests {
+
+  @Mock
+  private JdbcTemplate jdbcTemplate;
+
+  @InjectMocks
+  private BookDaoImpl underTest;
+
+  @Test
+  public void testThatCreateBookGeneratesCorrectSql() {
+    Book book = TestDataUtil.createTestBookA();
+
+    underTest.create(book);
+
+    verify(jdbcTemplate).update(
+        eq("INSERT INTO books (isbn, title, author_id) VALUES (?, ?, ?)"),
+        eq("978-1-2345-6789-0"),
+        eq("The Shadow in the Attic"),
+        eq(1L));
+  }
+
+  @Test
+  public void testThatFindOneBookGeneratesCorrectSql() {
+    underTest.findOne("978-1-2345-6789-0");
+    verify(jdbcTemplate).query(
+        eq("SELECT isbn, title, author_id from books WHERE isbn = ? LIMIT 1"),
+        ArgumentMatchers.<BookDaoImpl.BookRowMapper>any(),
+        eq("978-1-2345-6789-0"));
+  }
+
+  @Test
+  public void testThatFindGeneratesCorrectSql() {
+    underTest.find();
+    verify(jdbcTemplate).query(
+        eq("SELECT isbn, title, author_id from books"),
+        ArgumentMatchers.<BookDaoImpl.BookRowMapper>any());
+  }
+
+  @Test
+  public void testThatUpdateGeneratesCorrectSql() {
+    Book book = TestDataUtil.createTestBookA();
+    underTest.update("978-1-2345-6789-0", book);
+    verify(jdbcTemplate).update(
+        "UPDATE books SET isbn = ?, title = ?, author_id = ? WHERE isbn = ?",
+        "978-1-2345-6789-0", "The Shadow in the Attic", 1L, "978-1-2345-6789-0");
+  }
+
+  @Test
+  public void testThatDeleteGeneratesCorrectSql() {
+    underTest.delete("978-1-2345-6789-0");
+    verify(jdbcTemplate).update(
+        "DELETE FROM books where isbn = ?",
+        "978-1-2345-6789-0");
+  }
+
+}
+```
+
+```java
+// src/test/java/com/devtiro/database/dao/impl/BookDaoImplIntegrationTests.java
+package com.devtiro.database.dao.impl;
+
+import com.devtiro.database.TestDataUtil;
+import com.devtiro.database.dao.AuthorDao;
+import com.devtiro.database.domain.Author;
+import com.devtiro.database.domain.Book;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+
+import java.util.List;
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest
+@ExtendWith(SpringExtension.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+public class BookDaoImplIntegrationTests {
+
+  private AuthorDao authorDao;
+  private BookDaoImpl underTest;
+
+  @Autowired
+  public BookDaoImplIntegrationTests(BookDaoImpl underTest, AuthorDao authorDao) {
+    this.underTest = underTest;
+    this.authorDao = authorDao;
+  }
+
+  @Test
+  public void testThatBookCanBeCreatedAndRecalled() {
+    Author author = TestDataUtil.createTestAuthorA();
+    authorDao.create(author);
+    Book book = TestDataUtil.createTestBookA();
+    book.setAuthorId(author.getId());
+    underTest.create(book);
+    Optional<Book> result = underTest.findOne(book.getIsbn());
+    assertThat(result).isPresent();
+    assertThat(result.get()).isEqualTo(book);
+  }
+
+  @Test
+  public void testThatMultipleBooksCanBeCreatedAndRecalled() {
+    Author author = TestDataUtil.createTestAuthorA();
+    authorDao.create(author);
+
+    Book bookA = TestDataUtil.createTestBookA();
+    bookA.setAuthorId(author.getId());
+    underTest.create(bookA);
+
+    Book bookB = TestDataUtil.createTestBookB();
+    bookB.setAuthorId(author.getId());
+    underTest.create(bookB);
+
+    Book bookC = TestDataUtil.createTestBookC();
+    bookC.setAuthorId(author.getId());
+    underTest.create(bookC);
+
+    List<Book> result = underTest.find();
+    assertThat(result)
+        .hasSize(3)
+        .containsExactly(bookA, bookB, bookC);
+  }
+
+  @Test
+  public void testThatBookCanBeUpdated() {
+    Author author = TestDataUtil.createTestAuthorA();
+    authorDao.create(author);
+
+    Book bookA = TestDataUtil.createTestBookA();
+    bookA.setAuthorId(author.getId());
+    underTest.create(bookA);
+
+    bookA.setTitle("UPDATED");
+    underTest.update(bookA.getIsbn(), bookA);
+
+    Optional<Book> result = underTest.findOne(bookA.getIsbn());
+    assertThat(result).isPresent();
+    assertThat(result.get()).isEqualTo(bookA);
+  }
+
+  @Test
+  public void testThatBookCanBeDeleted() {
+    Author author = TestDataUtil.createTestAuthorA();
+    authorDao.create(author);
+
+    Book bookA = TestDataUtil.createTestBookA();
+    bookA.setAuthorId(author.getId());
+    underTest.create(bookA);
+
+    underTest.delete(bookA.getIsbn());
+
+    Optional<Book> result = underTest.findOne(bookA.getIsbn());
+    assertThat(result).isEmpty();
+  }
+}
+```
+
+## Spring Data JPA Setup
+
+- Using now "Spring Data JPA" and "Hibernate"
+- Higher level API compared to plain JDBC template approach
+- Delete `src/main/resources/schema.sql` file
+- Delete `src/main/java/com/devtiro/database/dao` folder
+- Delete `src/main/java/com/devtiro/database/config` folder
+- Delete `src/test/java/com/devtiro/database/dao` folder
+- Create `src/test/java/com/devtiro/database/repositories` folder and move integration tests into that folder
+  - Also comment out contents of the integration tests
+
+In `pom.xml` change
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-jdbc</artifactId>
+</dependency>
+```
+
+to
+
+```xml
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-data-jpa</artifactId>
+</dependency>
+```
+
+and make sure to click `refresh` in the "Maven" tab in Intellij
+
+- Create `src/main/java/com/devtiro/data/repositories` folder
+- Create 2 interfaces
+  - `src/main/java/com/devtiro/data/repositories/AuthorRepository.java`
+  - `src/main/java/com/devtiro/data/repositories/BookRepository.java`
+
+## Create Entities (change domain objects to entities)
+
+- The `@Entity` annotation/decorator labels an object as an entity that can be used with Spring Data JPA
+- The `@Table` annotation/decorator labels which table the entity maps to in the database
+- The `@Id` annotation/decorator labels which field is going to be our UID (unique identifier)
+- The `@GeneratedValue()` annotation/decorator gets the database to automatically create IDs for us based on sequence strategy
+- Note: We made design decision to supply/provide ISBN of book upon instantiation/creation and do NOT use an automatic sequence to generate it
+- Note: The `Long authorId` field can be replaced with `Author author` object
+  - We add annotations `@ManyToOne(cascade = CascadeType.ALL)`
+    - `CascadeType.ALL` = If we get a book back we also retrieve the Author and if we made changes to the book's author, the changes would also be saved to the DB
+- The `@JoinColumn()` annotation/decorator specifies the column to join with
+
+```java
+// src/main/java/com/devtiro/database/domain/Author.java
+package com.devtiro.database.domain;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+@Table(name = "authors")
+public class Author {
+
+  @Id
+  @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "author_id_seq")
+  private Long id;
+
+  private String name;
+
+  private Integer age;
+
+}
+```
+
+```java
+// src/main/java/com/devtiro/database/domain/Book.java
+package com.devtiro.database.domain;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+@Table(name = "books")
+public class Book {
+
+  @Id
+  private String isbn;
+
+  private String title;
+
+  @ManyToOne(cascade = CascadeType.ALL)
+  @JoinColumn(name = "author_id")
+  private Author author;
+
+}
+```
+
+## Hibernate Auto DDL
+
+3:14:00
 
 # Spring Boot 3 - Amigoscode
 

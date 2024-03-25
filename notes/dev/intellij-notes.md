@@ -1,6 +1,6 @@
-# T
+# Table of Contents
 
-- [T](#t)
+- [Table of Contents](#table-of-contents)
 - [Shortcuts](#shortcuts)
 
 # Shortcuts

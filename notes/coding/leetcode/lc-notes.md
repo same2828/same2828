@@ -75,6 +75,7 @@
   - [Topological Sort](#topological-sort)
 - [Hacks/Tricks](#hackstricks)
   - [Array Wrap Around](#array-wrap-around)
+  - [Constants](#constants)
   - [Flatten 2D Matrix into Stateful String and Check Neighbours of currCell](#flatten-2d-matrix-into-stateful-string-and-check-neighbours-of-currcell)
   - [Index Shifting When Deleting an Element](#index-shifting-when-deleting-an-element)
   - [Index Matching for Modulo Pair Groups](#index-matching-for-modulo-pair-groups)
@@ -148,6 +149,7 @@
 - [Sliding Window](#sliding-window-1)
   - [Array Indexing for Single Pass Forwards + Backwards](#array-indexing-for-single-pass-forwards--backwards)
   - [Longest Palindromic Substring / Longest Common Subsequence](#longest-palindromic-substring--longest-common-subsequence)
+- [Terminology](#terminology)
 - [Time Complexity](#time-complexity)
   - [Dynamic Programming Time Complexity](#dynamic-programming-time-complexity)
 - [TreeMap](#treemap)
@@ -1696,6 +1698,21 @@ for (int i = 0; i < n; i++) {
 
 - See 3542.non-negative-prefix-sum
 
+## Constants
+
+- Random constants
+
+```java
+// double epsilon = 1e-5;
+double epsilon = 1e-6
+```
+
+```java
+this.memo = std::vector<std::vector<std::vector<long long>>>(nums.size(), std::vector<std::vector<long long>>(k + 1, std::vector<long long>(2, -1e16)));
+// Initialise to large negative value
+long long result = -1e15;
+```
+
 ## Flatten 2D Matrix into Stateful String and Check Neighbours of currCell
 
 - See 1659.maximize-grid-happiness
@@ -2864,6 +2881,11 @@ public int[][] getLongestPalindromicSubseqDP(String s) {
   return dp;
 }
 ```
+
+# Terminology
+
+- Subarray = A contiguous sequence in an array and maintains relative ordering of elements
+- Subsequence = Need not to be contiguous, but maintains order
 
 # Time Complexity
 
