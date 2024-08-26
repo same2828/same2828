@@ -89,78 +89,92 @@ Notes:
 
 Extension List:
 
-- ~~.NET Install Tool~~
 - Apc Customize UI++ (drcika)
-- Astro
-- **Auto Rename Tag (Jun Han)**
+- Astro (Astro)
+- Auto Rename Tag (Jun Han)
 - **autopep8 (Microsoft)**
 - **Babel JavaScript (Michael McDermott)**
+- **base64-image-preview (NateScarlet)**
 - **Better C++ Syntax (Jeff Hykin)**
 - **Better Comments (Aaron Bond)**
-- Better Dockerfile Syntax (Jeff Hykin)
-- Better Go Syntax (Jeff Hykin)
-- ~~Better Perl Syntax (DISABLED)~~
+- Better Dockerfile Syntax (Jeff Hykin) (note: NOT updated since 2020)
+- Better Go Syntax (Jeff Hykin) (note: NOT updated since 2020)
+- Better Perl Syntax (Jeff Hykin)
 - **Better Shell Syntax (Jeff Hykin)**
 - **Black Formatter (Microsoft)**
+- Binocular (jpcrs) (note: requires other dependencies)
 - **Bookmarks (Alessandro Fragnani)**
 - **C/C++ (Microsoft)**
-- ~~C# (DISABLED)~~
 - **change-case (wmaurer)**
-- Clang-Format (Xaver Hellauer) (DISABLED)
-- clangd (LLVM) (DISABLED) (If want to use need to disable C/C++ extension from Microsoft in `settings.json`)
+- ~~Clang-Format (Xaver Hellauer) (DISABLED)~~
+- ~~clangd (LLVM) (DISABLED) (If want to use need to disable C/C++ extension from Microsoft in `settings.json`)~~
 - Cloak (John Papa)
 - ~~CMake (DISABLED)~~
 - ~~CMakeTools (DISABLED)~~
 - **Code Spell Checker (Street Side Software)**
-- Codeium: AI (Codeium) (DISABLED) (Alternative to GitHub Copilot)
-- CodeSnap (adpyke) (Code Screenshot)
+- Codeium: AI (Codeium) (DISABLED) (note: Alternative to GitHub Copilot)
+- CodeSnap (adpyke) (note: Code Screenshot)
 - ~~CodeLLDB (DISABLED)~~
 - **Color Highlight (Sergii N)**
 - **Color Info (Matt Bierner)**
 - **colorize (kamikillerto)**
-- **Console Ninja (Wallby.js)**
+- **Comment Anchors (Starlane Studios)**
+- **Console Ninja (Wallaby.js)**
+- **Conventional Commits (vivaxy)**
+- **copy-json-path (nidu)**
+- **Copy Word in Cursor (Alessandro Fragnani)**
 - ~~CSS Peek (Pranay Prakash) (DISABLED)~~
 - **CSS Navigation (pucelle)**
+- **Debugger for Firefox (Firefox DevTools)**
 - **Dev Containers (Microsoft)**
 - **Docker (Microsoft)**
-- DotENV (mikestead)
-- ~~Doxygen Documentation Generator (DISABLED)~~
-- **Dracula Official (Dracula Theme)**
+- **DotENV (mikestead)**
+- **Dracula (s3same)**
 - **Draw.io Integration (Henning Dieterichs)**
+- Duplicate Action (mrmlnc) (note: File Utils does same thing)
 - **Error Lens (Alexander)**
-- **ES7+ React/Redux/GraphQL/React-Native snippets (dsznajder)**
+- ES7+ React/Redux/GraphQL/React-Native snippets (dsznajder) (note: NOT updated since 2022)
 - **ESLint (Microsoft)**
 - **Even Better TOML (tamasfe)**
 - **Excel Viewer (MESCIUS)**
 - **Extension Pack for Java**
 - **Fast Compare (David Kolar)**
+- **Fetch Client (Ganesan Chandran)**
 - **File Utils (Steffen Leistner)**
 - **Firebase (toba)**
 - Flake8 (Microsoft)
 - **Format All Files in Workspace (Alex Ross)**
+- **Format In Context Menus (lacroixdavid1)**
+- **Formatting Toggle (tombonnike)**
 - Frontend Essentials Extension Pack (FPack) (SeyyedKhandon)
 - **Git Graph (mhutchie)**
 - **Git History (Don Jayamanne)**
 - GitHub Copilot (GitHub)
 - GitHub Copilot Chat (GitHub)
-- ~~GitHub Theme (DISABLED)~~
-- **GitLens (GitKraken)**
+- **GitLess (maattdd)**
+- **Gremlins Tracker (Nicolas Hoizey)**
+- **Go (Go Team at Google)**
 - **HTML CSS Support (ecmel)**
+- **HTML End Tag Labels (Ante Primorac)**
+- HTTP Client (Marcel J. Kloubert)
 - **Hungry Delete (jasonlhy)**
-- Image Preview (Kiss Tamas)
+- **Image Preview (Kiss Tamas)**
+- Image To Base64 (FEZIRO)
 - **indent-rainbow (oderwat)**
 - **IntelliCode (Microsoft)**
 - ~~IntelliCode API Usage Examples (Microsoft) (DISABLED)~~
 - **IntelliCode Completions (Microsoft)**
 - **isort (Microsoft)**
 - **JavaScript (ES6) Code Snippets (charalampos karypidis)**
-- **json2ts (Gregor Biswanger)**
+- json2ts (Gregor Biswanger)
 - **JSON Crack (Aykut Sarac)**
-- ~~Jupyter (Microsoft) (DISABLED)~~
-- ~~Jupyter Cell Tags (Microsoft) (DISABLED)~~
-- ~~Jupyter Keymap (Microsoft) (DISABLED)~~
-- ~~Jupyter Notebook Renderers (Microsoft) (DISABLED)~~
-- ~~Jupyter Slide Show (Microsoft) (DISABLED)~~
+- **JSON Escaper (Joshua Poehls)**
+- **JSON Formatter (Clemens Peters)**
+- **JSON Path Status Bar (richie5um2)**
+- **JSON to TS (MariusAlchimavicius)** (Newer version of json2ts)
+- **Jumpy2 (David L. Goldberg)**
+- **Just Blame (Artem Sapegin)**
+- **Kubernetes (Microsoft)**
 - LaTeX Workshop (James Yu) (DISABLED)
 - Live Server (Ritwick Dey) (DISABLED)
 - **Markdown All in One (Yu Zhang)**
@@ -168,108 +182,157 @@ Extension List:
 - ~~Markdown Lint (David Anson) (DISABLED)~~
 - Markdown Preview Enhanced (Yiyi Wang) (DISABLED)
 - **Material Icon Theme (Philipp Kief)**
-- MDX (unified)
+- **MetaGo (metaseed)** (alternative to Jumpy2)
+- Microsoft Edge Tools for VS Code (Microsoft)
 - Monorepo Workspace (Folke Lemaitre)
 - **Multiple Cursor Case Preserve (Cardinal90)**
 - Native Debug (WebFreak)
+- Notes (Dion Munk)
 - npm Intellisense (Christian Kohler)
 - Open All Files with Globs (xuld)
 - **OpenAPI (Swagger) Editor (42Crunch)**
-- Output Colorizer (IBM)
+- **Open Folder Context Menus (Chris Dias)**
+- **Output Colorizer (IBM)**
 - **Partial Diff (Ryuichi Inagaki)**
-- Paste JSON as Code (quicktype)
+- **Paste Image Anywhere (dzylikecode)**
+- **Paste JSON as Code (quicktype)**
 - **Path Intellisense (Christian Kohler)**
-- **Permute Lines (earshinov)**
+- **Periscorpe (Josh Mu)**
+- Permute Lines (earshinov)
 - pgFormatter (Brady Holt)
-- **PostCSS Sorting (mrmlnc)** (Ctrl+Shift+P -> PostCSS Sorting: Run)
+- **PostCSS Sorting (mrmlnc)** (usage: `Ctrl+Shift+P` -> `PostCSS Sorting: Run`)
 - **Prettier (Prettier)**
 - **Pretty TypeScript Errors (yoavbls)**
+- **Print Divider (XuangeAha)**
+- **Project Manager (Alessandro Fragnani)**
 - **Pylance (Microsoft)**
 - **Pylint (Microsoft)**
 - **Python (Microsoft)**
 - Python Indent (Kevin Rose)
+- px to rem & rpx & vw (cssrem) (cipchk)
 - **quick-lint-js (quick-lint)**
-- Quokka.js (Wallaby.js)
-- ~~Remote - SSH (DISABLED)~~
-- **Random Everything (helixquar)** (Random Data Generator)
+- **Quick Opener (mogelbrod)**
+- **Quokka.js (Wallaby.js)**
+- **Rainbow CSV (mechatroner)**
+- Random Everything (helixquar) (Random Data Generator) (note: OLD, use `vscode-faker` instead)
 - **Remove Non ASCII Characters (Samuel Charpentier)**
 - **Replace Curly Quotes (jinhyuk)**
+- **REST Client (Huachao Mao)** (ntoe: `ThunderClient` is now paywalled)
+- **Rewrap (stkb)**
 - Ruff (Astral Software)
 - **shell-format (foxundermoon)**
 - **ShellCheck (Timon Wong)**
 - Simple React Snippets (Burke Holland) (DISABLED)
 - **Sort JSON objects (richie5um2)**
+- **Sort Lines (Daniel Imms)**
+- **Sorting HTML and Jade attributes (mrmlnc)**
 - **Spring Boot Dashboard (Microsoft)**
 - **Spring Boot Tools (VMware)**
 - **Spring Initializr Java Support (Microsoft)**
 - **SQLTools (Matheus Teixeira)**
-- SQLite Viewer (Florian Klampfer)
+- **SQLite Viewer (Florian Klampfer)**
 - **SSH FS (Kelvin Schoofs)**
-- ~~Tabnine: AI Autocomplete (DISABLED)~~
 - **Tailwind CSS IntelliSense (Tailwind Labs)**
 - **Text Pastry (jkjustjoshing)**
 - **Text Power Tools (Daniel Tar)**
-- **REST Client (Huachao Mao)** (ThunderClient is now paywalled)
 - Todo Highlight (Wayou Liu)
-- Todo Tree (Gruntfuggly)
+- **Todo Tree (Gruntfuggly)**
 - **Toggle Quotes (BriteSnow)**
-- **Turbo Console Log (Anas Chakroun)**
-- VSCode Essentials Pack (jabacchetta)
+- Turbo Console Log (Anas Chakroun)
+- **vscode-faker (Budi Irawan)** (note: newer version of `Random Everything`)
+- VSCode Essentials (jabacchetta)
+- VSCode Essentials (Andres Gutierrez)
 - wireit (Google)
+- **Wrap Log Simple (mrpineapples)**
 - Wrap Console Log Simple (WooodHead)
 - **WSL (Microsoft)**
 - **XML (Red Hat)**
 - **YAML (Red Hat)**
+- **YAML Sort (Pascal Reitermann)**
+- **YAML to JSON (ahebrank)**
 - **yapf (EeyoreLee)**
 
 ## macOS
 
-```
-- Babel JavaScript
-- Better C++ Syntax
-- Better Comments
-- C/C++
-- change-case (wmaurer)
-- Code Spell Checker
-- Color Highlight
-- Color Info
-- CSS Navigation
-- Dev Containers
-- Docker
-- Dracula
-- ESLint
-- Even Better TOML
-- Fast Compare
+- autopep8 (Microsoft)
+- Babel JavaScript (Michael McDermott)
+- Better C++ Syntax (Jeff Hykin)
+- Better Shell Syntax (Jeff Hykin)
+- Better Comments (Aaron Bond)
+- Bookmarks (Alessandro Fragnani)
+- C/C++ (Microsoft)
+- Code Spell Checker (Street Side Software)
+- Color Highlight (Sergii N)
+- Color Info (Matt Bierner)
+- copy-json-path (nidu)
+- Copy Word in Cursor (Alessandro Fragnani)
+- CSS Navigation (pucelle)
+- Debugger for Firefox (Firefox DevTools)
+- Dev Containers (Microsoft)
+- Docker (Microsoft)
+- DotENV (mikestead)
+- Dracula (s3same)
+- Draw.io Integration (Henning Dieterichs)
+- Error Lens (Alexander)
+- ESLint (Microsoft)
+- Even Better TOML (tamasfe)
+- Excel Viewer (MESCIUS)
+- Fast Compare (David Kolar)
+- Fetch Client (Ganesan Chandran)
 - File Utils (Steffen Leistner)
 - Format All Files in Workspace (Alex Ross)
-- Git Graph
-- GitHub Copilot
-- GitHub Copilot Chat
-- GitLens
+- Formatting Toggle (tombonnike)
+- Git Graph (mhutchie)
+- GitHub Copilot (GitHub)
+- GitHub Copilot Chat (GitHub)
+- GitLess (maattdd)
 - HTML CSS Support (ecmel)
+- Hungry Delete (jasonlhy)
 - indent-rainbow (oderwat)
-- Intellicode
-- JavaScript (ES6) code snippets
-- Java Extension Pack
+- Intellicode (Microsoft)
+- Java Extension Pack (Red Hat)
+- JavaScript (ES6) Code Snippets (charalampos karypidis)
+- JSON Crack (Aykut Sarac)
+- JSON Formatter (Clemens Peters)
+- JSON Path Status Bar (richie5um2)
+- JSON to TS (MariusAlchimavicius) (Newer version of json2ts)
+- Jumpy2 (David L. Goldberg)
+- Just Blame (Artem Sapegin)
 - Markdown All in One (Yu Zhang)
-- Material Icon Theme
-- Multiple cursor case preserve (Cardinal90)
-- Partial Diff
-- Permute Lines (earshinov)
+- Material Icon Theme (Philipp Kief)
+- Microsoft Edge Tools for VS Code (Microsoft)
+- Multiple Cursor Case Preserve (Cardinal90)
+- Open Folder Context Menus (Chris Dias)
+- OpenAPI (Swagger) Editor (42Crunch)
+- Partial Diff (Ryuichi Inagaki)
+- Path Intellisense (Christian Kohler)
 - PostCSS Sorting (mrmlnc)
-- Prettier
-- Pretty TypeScript Errors
-- quick-lint-js
-- Remove Non ASCII Chars (Samuel Charpentier)
-- Sort JSON Objects
-- Spring Boot Extension Pack
-- SSH FS
-- Tailwind
+- Prettier (Prettier)
+- Pretty TypeScript Errors (yoavbls)
+- Project Manager (Alessandro Fragnani)
+- Pylance (Microsoft)
+- Pylint (Microsoft)
+- Python (Microsoft)
+- quick-lint-js (quick-lint)
+- Rainbow CSV (mechatroner)
+- Remove Non ASCII Characters (Samuel Charpentier)
+- Replace Curly Quotes (jinhyuk)
+- REST Client (Huachao Mao)
+- shell-format (foxundermoon)
+- ShellCheck (Timon Wong)
+- Sort JSON Objects (richie5um2)
+- Sort Lines (Daniel Imms)
+- Sorting HTML and Jade attributes (mrmlnc)
+- Spring Boot Extension Pack (VMware)
+- SSH FS (Kelvin Schoofs)
+- Tailwind CSS IntelliSense (Tailwind Labs)
 - Text Pastry (jkjustjoshing)
-- Turbo Console Log
-- XML
-- YAML
-```
+- Text Power Tools (Daniel Tar)
+- Todo Tree (Gruntfuggly)
+- vscode-faker (Budi Irawan) (note: newer version of `Random Everything`)
+- Wrap Log Simple (mrpineapples)
+- XML (Red Hat)
+- YAML (Red Hat)
 
 # Keyboard Shortcuts
 
@@ -402,7 +465,7 @@ Extension List:
 
 - `Ctrl + P` > `Search Editor: New Search Editor`
 - `Ctrl + P` > `Workspaces: Duplicate As Workspace in New Window`
-- Show all repositories in Source Control
+- Show All Repositories in Source Control
   - `Ctrl + P` > `Source Control: Focus on Source Control Repositories view`
   - `Click` on the FIRST repository in the list
   - `Shift + Click` on the LAST repository in the list`

@@ -2,6 +2,7 @@
 
 - [Table of Contents](#table-of-contents)
 - [Official Docs](#official-docs)
+  - [Maven](#maven)
   - [Spring Framework](#spring-framework)
   - [Spring Boot](#spring-boot)
   - [Spring HTTP Package (under Spring Framework)](#spring-http-package-under-spring-framework)
@@ -9,6 +10,8 @@
   - [Spring Test](#spring-test)
   - [Spring Security](#spring-security)
   - [SpringDoc](#springdoc)
+  - [Jackson](#jackson)
+  - [Lombok](#lombok)
   - [JUnit5](#junit5)
   - [Mockito](#mockito)
   - [MockWebServer](#mockwebserver)
@@ -19,6 +22,16 @@
 - [OAuth2 - Dan Vega](#oauth2---dan-vega)
 
 # Official Docs
+
+## Maven
+
+- [Maven - Guide Index](https://maven.apache.org/guides/index.html)
+- [Maven - User Index](https://maven.apache.org/users/index.html)
+- [Maven - `Pom` Reference](https://maven.apache.org/pom.html)
+- [Maven - `Settings` Reference](https://maven.apache.org/settings.html)
+- [Maven - `Plugins` Reference](https://maven.apache.org/plugins/index.html)
+- [Maven - Glossary](https://maven.apache.org/glossary.html)
+- [GitHub CLI - Maven](https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-java-with-maven)
 
 ## Spring Framework
 
@@ -55,20 +68,36 @@
 
 - [`SpringDoc` - javadoc.io](https://javadoc.io/doc/org.springdoc)
 
+## Jackson
+
+- [`jackson-core` - JavaDocs](http://fasterxml.github.io/jackson-core/javadoc/2.5/)
+- [`jackson-core` - javadoc.io](https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-core)
+- [`jackson-annotations` - JavaDocs](http://fasterxml.github.io/jackson-databind/javadoc/2.5/)
+- [`jackson-annotations` - javadoc.io](https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations)
+- [`jackson-databind` - JavaDocs](http://fasterxml.github.io/jackson-annotations/javadoc/2.5/)
+- [`jackson-databind` - javadoc.io](https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind)
+
+## Lombok
+
+- [`Lombok` - ProjectLombok](https://projectlombok.org/features/)
+- [`Lombok` - javadoc.io](https://javadoc.io/doc/org.projectlombok/lombok)
+
 ## JUnit5
 
 - [`JUnit5` - Reference](https://junit.org/junit5/docs/current/user-guide/)
 - [`JUnit5` - JavaDocs](https://junit.org/junit5/docs/current/api/)
+- [`JUnit5` - javadoc.io](https://javadoc.io/doc/org.junit.jupiter/junit-jupiter-api/latest/index.html)
 
 ## Mockito
 
 - [`Mockito` - JavaDocs](https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html)
 - [`MockitoAnnotations` - JavaDocs](https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/MockitoAnnotations.html)
+- [Mockito User Guide - GoogleDocs](https://docs.google.com/document/d/15mJ2Qrldx-J14ubTEnBj7nYN2FB8ap7xOn8GRAi24_A/edit)
 
 ## MockWebServer
 
-- [MockWebServer - JavaDocs](https://square.github.io/okhttp/3.x/mockwebserver/index.html?okhttp3/mockwebserver/MockWebServer.html)
-- [MockWebServer - javadoc.io](https://www.javadoc.io/doc/com.squareup.okhttp3/mockwebserver/3.14.9/overview-summary.html)
+- [`MockWebServer` - JavaDocs](https://square.github.io/okhttp/3.x/mockwebserver/index.html?okhttp3/mockwebserver/MockWebServer.html)
+- [`MockWebServer` - javadoc.io](https://www.javadoc.io/doc/com.squareup.okhttp3/mockwebserver/3.14.9/overview-summary.html)
 
 ## Reactive Streams
 
@@ -97,10 +126,10 @@
 
 ## Netty
 
-Netty 5.X is abandoned
+Note: Netty 5.X is abandoned
 
-- [Netty 4 - User Guide](https://netty.io/wiki/user-guide-for-4.x.html)
-- [Netty 4.1 - JavaDocs](https://netty.io/4.1/api/index.html)
+- [`Netty 4` - User Guide](https://netty.io/wiki/user-guide-for-4.x.html)
+- [`Netty 4.1` - JavaDocs](https://netty.io/4.1/api/index.html)
 
 # Spring Boot Security JWT - Amigoscodes
 

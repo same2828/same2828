@@ -38,8 +38,12 @@ kubectl get pods -n sit
 # View pod logs
 k logs -n ${namespace} -f ${podName}
 k logs -n dev -f webscraper_v1-a1b2c3d4
+k logs -f ${podName}
+k logs -f webscraper_v1-a1b2c3d4
 kubectl logs -n ${namespace} -f ${podName}
 kubectl logs -n dev -f webscraper_v1-a1b2c3d4
+kubectl logs -f ${podName}
+kubectl logs -f webscraper_v1-a1b2c3d4
 
 # View config map
 k get cm -n ${namespace}
@@ -52,6 +56,8 @@ k get cm -n ${namespace} ${microserviceName} -oyaml
 k get cm -n dev webscraper_v1 -oyaml
 kubectl get cm -n ${namespace} ${microserviceName} -oyaml
 kubectl get cm -n dev webscraper_v1 -oyaml
+
+k -n ${namespace} get pod ${podName} -oyaml
 
 # View specific pod's config values i.e. ${VAULT}
 k describe po ${podName} -n ${namespace}
@@ -75,6 +81,10 @@ k port-forward -n ${namespace} svc/${microserviceName} 8087:8080
 k port-forward -n dev svc/webscraper_v1 8087:8080
 kubectl port-forward -n ${namespace} svc/${microserviceName} 8087:8080
 kubectl port-forward -n dev svc/webscraper_v1 8087:8080
+
+# View GCloud Auth Token Credentials
+cd ~/.config/gcloud && cat application_default_credentials.json | grep client_id
+gcloud auth print-access-token
 ```
 
 Workflow
@@ -134,4 +144,3 @@ k describe po webscraper_v1-a1b2c3d4 -n dev
     - Install `fzf`
   - Troubleshooting
     - `unset http_proxy https_proxy HTTP_PROXY HTTPS_PROXY`
-    -

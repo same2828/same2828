@@ -659,6 +659,27 @@ Note: When choosing `Transform > Scale` > Do NOT tick "Transform Width" + "Round
 
 `File > Generate Fonts > TrueType (.tff)` > Choose a name for your font (this is NOT the name you will enter into VSCode)
 
+To create "Regular" and "Bold" versions of font, make sure `Element > Font Info > Family Name` are the SAME
+
+- Also create a Bold version using a pre-existing Bold version as base
+
+RobotoLGC
+
+- Base = `RobotoMono`
+- Copied characters over from `InconsolataLGC`
+  - Characters copied over in regex notation: `["#$%&'-/0=?@\_|]`
+    - Note: The ` character is specilly made using Windows PowerToy's Screen Ruler to make top and bottom lengths equal
+- Modification Process
+  - Need to open `InconsolataLGC` using `File > Open` to enable Copy Paste Functionality
+  - Right click on character in `RobotoMono` > `Clear`
+  - Copy and Paste character from `InconsolataLGC`
+  - Right click on character in `RobotoMono` > `Transform > Origin: Glyph Origin > Scale Uniformly`
+    - Choose all options except for "Round to Int" (tbh not sure what this does)
+    - Keep experimenting with values until you get one that scales character's width to be SAME WIDTH as existing characters
+    - Always run this after transformations `Right Click > Center in Width`
+    - Note: For Bold we Scale Uniformly by `200.6%` (include all options except for "Round to Int")
+    - Note: You can also manually set width by `Right Click > Set Width...`
+
 Naming Scheme
 
 - "S" = Square Brackets [] (copied from Inconsolata LGC)
@@ -669,11 +690,9 @@ Naming Scheme
 
 ```
 @ (for RobotoLGC)
-# Version 1
-Scale: 150% x, 125% y (Transform Width)
-Move: -300 y
-# Version 2
-Move: 100 y (copied from Roboto)
+Scale: 105% x, 120% y (Transform Width)
+For Bold: Scale: 100% x 120% y
+Move: -325 y
 
 @ (for InconsolataLGC)
 Scale: 105x, 110y
@@ -688,19 +707,25 @@ Scale: 110% x, 100% y
 
 =
 Scale: 118% x, 100% y (copied from Inconsolata LGC)
+For Bold:
+- Transform width using `Set Width...` and scale by 200.6%
+- Scale: 121.5% x, 100% y (do NOT select "Transform Width Too")
 Move: -75y (for RobotoLGC)
 Move: -25y (for InconsolataLGC)
 
 "#$%'/0\_|
 Scale Uniformly: 200.49% (Origin = Glyph Origin) (Transform Width) (copied from Inconsolata LGC)
 
+_
+For Bold: Scale: 97.5% or 98% x (after scaling uniformly up to match width of 1229)
+
 `
 Scale: 175% x, 100y
 Move: 75 y
 Used PowerToy's Screen Ruler to make top and bottom lengths equal
 
-<>
-Scale Uniformly: 200.49% (Origin = Glyph Origin) (Transform Width) (copied from Inconsolata LGC)
+<> 
+Scale Uniformly: 200.49% (Origin = Glyph Origin) (Transform Width) (copied from Inconsolata LGC) (think we ended up using RobotoMono's)
 ```
 
 ## Web Browser Extensions

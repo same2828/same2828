@@ -1,5 +1,6 @@
 - [Table of Contents](#table-of-contents)
 - [Resources](#resources)
+- [Templates](#templates)
 - [Edge Cases](#edge-cases)
   - [Array/List](#arraylist)
   - [Integers](#integers)
@@ -191,6 +192,66 @@
 - [USACO](https://usaco.guide/dashboard)
 - [CP-Algorithms](https://cp-algorithms.com/)
 - [TopCoder](https://www.topcoder.com/thrive/)
+
+# Templates
+
+**Java**
+
+```java
+import java.io.*;
+import java.math.*;
+import java.security.*;
+import java.text.*;
+import java.util.*;
+import java.util.concurrent.*;
+import java.util.function.*;
+import java.util.regex.*;
+import java.util.stream.*;
+
+class Solution {
+  public int myMethod(List<Integer> nums) {
+    return 0;
+  }
+
+  // public static void main(String[] args) {
+  //   Solution s = new Solution();
+  //   List<Integer> l = Arrays.asList(1, 2, 3);
+  //   int result = s.myMethod(l);
+  //   System.out.println("Result: " + result);
+  // }
+}
+
+public class MyClass {
+  public static void main(String[] args) {
+    Solution s = new Solution();
+    List<Integer> l = Arrays.asList(1, 2, 3);
+    int result = s.myMethod(l);
+    System.out.println("Result: " + result);
+  }
+}
+```
+
+**CPP/C++**
+
+```cpp
+#include <iostream>
+#include <bits/stdc++.h>
+
+// using namespace std;
+
+class Solution {
+public:
+  int myMethod() {
+    return 0;
+  }
+}
+
+int main() {
+  Solution s;
+  std::cout << "result = " << s.myMethod() << "\n";
+  return 0;
+}
+```
 
 # Edge Cases
 

@@ -2,6 +2,7 @@
 
 - [Table of Contents](#table-of-contents)
 - [Official Docs](#official-docs)
+  - [Maven](#maven)
   - [Spring Framework](#spring-framework)
   - [Spring Boot](#spring-boot)
   - [Spring HTTP Package (under Spring Framework)](#spring-http-package-under-spring-framework)
@@ -9,6 +10,8 @@
   - [Spring Test](#spring-test)
   - [Spring Security](#spring-security)
   - [SpringDoc](#springdoc)
+  - [Jackson](#jackson)
+  - [Lombok](#lombok)
   - [JUnit5](#junit5)
   - [Mockito](#mockito)
   - [MockWebServer](#mockwebserver)
@@ -103,19 +106,19 @@
       - [Using `@Import`](#using-import)
     - [Using Static Nested `@TestConfiguration` Class](#using-static-nested-testconfiguration-class)
   - [Spring Boot 3 + JUnit 5 - HowToDoInJava](#spring-boot-3--junit-5---howtodoinjava)
-    - [Maven](#maven)
+    - [Maven](#maven-1)
     - [Writing JUnit 5 Tests](#writing-junit-5-tests)
     - [Running The Tests](#running-the-tests)
     - [JUnit5 Example Tests](#junit5-example-tests)
   - [Spring Boot 3 + JUnit5 + Mockito Example - HowToDoInJava](#spring-boot-3--junit5--mockito-example---howtodoinjava)
-    - [Maven](#maven-1)
+    - [Maven](#maven-2)
     - [Initializing Mocks](#initializing-mocks)
       - [`@Mock` vs `@InjectMocks`](#mock-vs-injectmocks-1)
       - [Initialization with `MockitoExtension`](#initialization-with-mockitoextension)
       - [Initialization with `MockitoAnnotations.openMocks()`](#initialization-with-mockitoannotationsopenmocks)
     - [Unit Tests Example](#unit-tests-example)
   - [MockMVC + `WebMvcTest` Annotation - HowToDoInJava](#mockmvc--webmvctest-annotation---howtodoinjava)
-    - [Maven](#maven-2)
+    - [Maven](#maven-3)
     - [Unit Test Structure](#unit-test-structure)
     - [MockMvc Example](#mockmvc-example)
       - [HTTP GET API](#http-get-api)
@@ -127,7 +130,7 @@
     - [HTTP POST API](#http-post-api-1)
     - [Spring `TestRestTemplate`](#spring-testresttemplate)
   - [Testing Controller, Service and Dao Layers - HowToDoInJava](#testing-controller-service-and-dao-layers---howtodoinjava)
-    - [Maven](#maven-3)
+    - [Maven](#maven-4)
     - [Testing if Application Bootstraps Correctly](#testing-if-application-bootstraps-correctly)
     - [Unit Testing the REST `@Controller` Layer](#unit-testing-the-rest-controller-layer)
     - [Unit Testing the `@Service` Layer](#unit-testing-the-service-layer)
@@ -154,7 +157,7 @@
     - [Demo/Example](#demoexample)
   - [How to Write Unit Tests - HowToDoInJava](#how-to-write-unit-tests---howtodoinjava)
     - [Unit Test vs Integration Test](#unit-test-vs-integration-test)
-    - [Maven](#maven-4)
+    - [Maven](#maven-5)
     - [Initializing the Tests](#initializing-the-tests)
     - [JUnit4 - `@RunWith(SpringRunner.class)`](#junit4---runwithspringrunnerclass)
     - [JUnit4 with Mockito - `@RunWith(MockitoJUnitRunner.class)`](#junit4-with-mockito---runwithmockitojunitrunnerclass)
@@ -178,7 +181,7 @@
   - [How to Write Integration Tests - HowToDoInJava](#how-to-write-integration-tests---howtodoinjava)
     - [What to Test in Integration Testing?](#what-to-test-in-integration-testing)
     - [Writing the Integration Tests](#writing-the-integration-tests)
-      - [Maven](#maven-5)
+      - [Maven](#maven-6)
       - [REST Controller to Test](#rest-controller-to-test)
       - [Integration Tests Example](#integration-tests-example)
   - [Mocking APIs with `WireMock` - HowToDoInJava](#mocking-apis-with-wiremock---howtodoinjava)
@@ -196,7 +199,7 @@
       - [Testing Bad Responses](#testing-bad-responses)
       - [Verifying API Hits](#verifying-api-hits)
   - [`@WebFluxTest` + `WebTestClient` + JUnit 5](#webfluxtest--webtestclient--junit-5)
-    - [Maven](#maven-6)
+    - [Maven](#maven-7)
     - [`@WebFluxTest`](#webfluxtest-1)
     - [WebTestClient](#webtestclient)
     - [Testing Async Controller](#testing-async-controller)
@@ -204,6 +207,16 @@
       - [JUnit Tests](#junit-tests)
 
 # Official Docs
+
+## Maven
+
+- [Maven - Guide Index](https://maven.apache.org/guides/index.html)
+- [Maven - User Index](https://maven.apache.org/users/index.html)
+- [Maven - `Pom` Reference](https://maven.apache.org/pom.html)
+- [Maven - `Settings` Reference](https://maven.apache.org/settings.html)
+- [Maven - `Plugins` Reference](https://maven.apache.org/plugins/index.html)
+- [Maven - Glossary](https://maven.apache.org/glossary.html)
+- [GitHub CLI - Maven](https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-java-with-maven)
 
 ## Spring Framework
 
@@ -240,20 +253,36 @@
 
 - [`SpringDoc` - javadoc.io](https://javadoc.io/doc/org.springdoc)
 
+## Jackson
+
+- [`jackson-core` - JavaDocs](http://fasterxml.github.io/jackson-core/javadoc/2.5/)
+- [`jackson-core` - javadoc.io](https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-core)
+- [`jackson-annotations` - JavaDocs](http://fasterxml.github.io/jackson-databind/javadoc/2.5/)
+- [`jackson-annotations` - javadoc.io](https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations)
+- [`jackson-databind` - JavaDocs](http://fasterxml.github.io/jackson-annotations/javadoc/2.5/)
+- [`jackson-databind` - javadoc.io](https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind)
+
+## Lombok
+
+- [`Lombok` - ProjectLombok](https://projectlombok.org/features/)
+- [`Lombok` - javadoc.io](https://javadoc.io/doc/org.projectlombok/lombok)
+
 ## JUnit5
 
 - [`JUnit5` - Reference](https://junit.org/junit5/docs/current/user-guide/)
 - [`JUnit5` - JavaDocs](https://junit.org/junit5/docs/current/api/)
+- [`JUnit5` - javadoc.io](https://javadoc.io/doc/org.junit.jupiter/junit-jupiter-api/latest/index.html)
 
 ## Mockito
 
 - [`Mockito` - JavaDocs](https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/Mockito.html)
 - [`MockitoAnnotations` - JavaDocs](https://javadoc.io/doc/org.mockito/mockito-core/latest/org/mockito/MockitoAnnotations.html)
+- [Mockito User Guide - GoogleDocs](https://docs.google.com/document/d/15mJ2Qrldx-J14ubTEnBj7nYN2FB8ap7xOn8GRAi24_A/edit)
 
 ## MockWebServer
 
-- [MockWebServer - JavaDocs](https://square.github.io/okhttp/3.x/mockwebserver/index.html?okhttp3/mockwebserver/MockWebServer.html)
-- [MockWebServer - javadoc.io](https://www.javadoc.io/doc/com.squareup.okhttp3/mockwebserver/3.14.9/overview-summary.html)
+- [`MockWebServer` - JavaDocs](https://square.github.io/okhttp/3.x/mockwebserver/index.html?okhttp3/mockwebserver/MockWebServer.html)
+- [`MockWebServer` - javadoc.io](https://www.javadoc.io/doc/com.squareup.okhttp3/mockwebserver/3.14.9/overview-summary.html)
 
 ## Reactive Streams
 
@@ -282,10 +311,10 @@
 
 ## Netty
 
-Netty 5.X is abandoned
+Note: Netty 5.X is abandoned
 
-- [Netty 4 - User Guide](https://netty.io/wiki/user-guide-for-4.x.html)
-- [Netty 4.1 - JavaDocs](https://netty.io/4.1/api/index.html)
+- [`Netty 4` - User Guide](https://netty.io/wiki/user-guide-for-4.x.html)
+- [`Netty 4.1` - JavaDocs](https://netty.io/4.1/api/index.html)
 
 # JUnit5
 

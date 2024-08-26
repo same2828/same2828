@@ -5,6 +5,7 @@
   - [Apps](#apps)
     - [iTerm2](#iterm2)
     - [Karabiner Elements](#karabiner-elements)
+    - [Librewolf](#librewolf)
       - [Simple modifications](#simple-modifications)
     - [Mounty](#mounty)
     - [Rectangle](#rectangle)
@@ -50,13 +51,14 @@
 - [BetterDisplay](https://github.com/waydabber/BetterDisplay/releases)
 - [Flux](https://justgetflux.com/) Note: `Menu Bar > Options` > Turn ON "Expanded daytime settings" > 2200K
 - [IINA](https://github.com/iina/iina/releases)
-- [Karabiner-Elements](https://karabiner-elements.pqrs.org/)
-- [Keka](https://www.keka.io/en/)
+- [Karabiner-Elements](https://github.com/pqrs-org/Karabiner-Elements/releases)
+- [Keka](hhttps://github.com/aonez/Keka/releases)
 - [LinearMouse](https://github.com/linearmouse/linearmouse/releases)
 - [MiddleClick](https://github.com/artginzburg/MiddleClick-Sonoma)
 - [Mounty](https://mounty.app/)
 - [OpenMTP](https://github.com/ganeshrvel/openmtp/releases)
 - [Rectangle](https://rectangleapp.com/)
+- [Stats](https://github.com/exelban/stats/releases)
 
 - Alfred
 - App Cleaner & Uninstaller
@@ -74,12 +76,22 @@
 - Settings > Profiles > ${customProfileName} > General > Working Directory > Select Reuse previous session's directory
 - Import colors profile from `github/config/iterm2.json`
 - Settings > Profiles > ${customProfileName} > Terminal > Turn OFF "Show mark indicators"
+- Allow `Alt+C` option for `fzf`
+  - Settings > Profiles > ${customProfileName} > Keys > General > Esc+
 
 ### Karabiner Elements
 
 - Note: After each macOS update, you may need to UNINSTALL and REINSTALL Karabiner Elements again
   - Uninstall using `Karabiner Elements > Settings > Uninstall` (do NOT use App Cleaner)
   - [Docs](https://karabiner-elements.pqrs.org/docs/help/troubleshooting/stopped-working-after-macos-update/)
+
+### Librewolf
+
+```sh
+brew install librewolf --no-quarantine
+xattr -d com.apple.quarantine /Applications/LibreWolf.app
+# brew reinstall librewolf --no-quarantine
+```
 
 #### Simple modifications
 
@@ -362,17 +374,23 @@ sudo chsh -s $(which zsh)
 brew install curl && brew install fetch && brew install wget && brew install git
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
-# OhMyZsh Plugins
-cd ~/.oh-my-zsh/custom/plugins
-git pull
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
-git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-git clone https://github.com/zsh-users/zsh-history-substring-search ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-history-substring-search
-cd
+# Update OhMyZsh
+omz update
+
+# Add OhMyZsh Plugins
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting && git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting && git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
+# cd ~/.oh-my-zsh/custom/plugins
+# git pull
+# git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
+# git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
+# git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+# git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
+# cd
 
 # Starship + .zshrc
 brew install starship && brew install node@20
 brew link node@20 --overwrite
+brew install fzf && brew install ripgrep && brew install fd
 mkdir ~/.ssh && code ~/.zshrc
 # Copy paste github/config/.zshrc-macos (make sure all "/home/linuxbrew/.linuxbrew/" is changed to "/opt/homebrew/" in .zshrc)
 
@@ -401,7 +419,6 @@ brew install autoconf bash binutils coreutils diffutils findutils gawk gnu-inden
 # Other Brew Installs
 brew install clang-format && brew install cmake &&  brew install jq && brew install tldr && brew install tree && brew install python && brew install go
 brew install llvm
-brew install --cask librewolf --no-quarantine
 
 # Adoptium OpenJDK (Eclipse Temurin) > https://adoptium.net/installation/
 brew tap homebrew/cask-versions

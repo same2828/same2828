@@ -11,8 +11,8 @@
     - [Consumer](#consumer)
 - [API](#api)
   - [URL](#url)
-    - [Path Parameters](#path-parameters)
-    - [Query Parameters](#query-parameters)
+    - [Path Parameters `:id`](#path-parameters-id)
+    - [Search/Query Parameters `?key1=value1&key2=value2`](#searchquery-parameters-key1value1key2value2)
   - [Spaces](#spaces)
     - [Adding Spaces in URL Paths:](#adding-spaces-in-url-paths)
     - [Adding Spaces in URL Query Parameters:](#adding-spaces-in-url-query-parameters)
@@ -289,20 +289,22 @@ When an event occurs the producer creates a new record/event/message
 
 ## URL
 
-### Path Parameters
+### Path Parameters `:id`
 
-Path parameters are used to identify a specific resource or resources
-Referenced using placeholders preceded by `:`
+> Path parameters are used to identify a specific resource or resources
+> Referenced using placeholders preceded by `:`
+
 Example
 
 ```
 /cars/view/:id
 ```
 
-### Query Parameters
+### Search/Query Parameters `?key1=value1&key2=value2`
 
-Query parameters are used to sort/filter resources identified by path parameters
-`key=value` pairs separated by `&` that come AFTER the `?`
+> Query parameters are used to sort/filter resources identified by path parameters
+> `key=value` pairs separated by `&` that come AFTER the `?`
+
 Example
 
 ```
