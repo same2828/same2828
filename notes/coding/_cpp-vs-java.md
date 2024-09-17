@@ -356,6 +356,11 @@ for (int[] e : edges) {
   graph.computeIfAbsent(e[0], f -> new ArrayList<>()).add(new int[] {e[1], e[2]});
   graph.computeIfAbsent(e[1], f -> new ArrayList<>()).add(new int[] {e[0], e[2]});
 }
+
+// Access with
+// for (int[] neiInfo : graph.getOrDefault(curr, Collections.emptyList())) {
+//   //...
+// }
 ```
 
 ```java
@@ -380,6 +385,15 @@ for (int[] e : edges) {
   graph.get(e[0]).add(new int[] {e[1], e[2]});
   graph.get(e[1]).add(new int[] {e[0], e[2]});
 }
+
+// Access with
+// graph.get(i).get(j)[0];
+// graph.get(i).get(j)[1];
+// for (List<int[]> neiInfoList : graph.get(curr)) {
+//   for (int[] neiInfo : neiInfoList) {
+//     //...
+//   }
+// }
 ```
 
 ```java
@@ -405,9 +419,12 @@ for (int[] e : edges) {
   graph[e[1]].add(new int[] {e[0], e[2]});
 }
 
-for (int[] neiInfo : graph[curr]) {
-  //...
-}
+// Access with
+// graph[i].get(j)[0];
+// graph[i].get(j)[1];
+// for (int[] neiInfo : graph[curr]) {
+//   //...
+// }
 ```
 
 **CPP/C++**

@@ -5800,6 +5800,91 @@ List<Integer> descendingList = Arrays.stream(array).boxed().collect(Collectors.t
 Collections.sort(descendingList, Collections.reverseOrder());
 ```
 
+```java
+// Sorting 2D int[][] primitive array
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class Solution {
+  public void sort2DArrayInDesc(int[][] grid) {
+    // Step 1: Sort each row in descending order
+    for (int[] row : grid) {
+      Arrays.sort(row);
+      reverse(row);
+    }
+    // Step 2: Sort the entire 2D array based on the first column in descending order
+    Arrays.sort(grid, (a, b) -> Integer.compare(b[0], a[0]));
+    // Arrays.sort(grid, new Comparator<int[]>() {
+    //   @Override
+    //   public int compare(int[] a, int[] b) {
+    //     return Integer.compare(b[0], a[0]);
+    //   }
+    // });
+  }
+
+  private void reverse(int[] array) {
+    int left = 0;
+    int right = array.length - 1;
+    while (left < right) {
+      int temp = array[left];
+      array[left] = array[right];
+      array[right] = temp;
+      left++;
+      right--;
+    }
+  }
+}
+```
+
+```java
+// Sorting 2D int[][] primitive array
+import java.util.Arrays;
+import java.util.Comparator;
+
+public class Solution {
+  public static void sort2DArray(int[][] grid) {
+    // Step 1: Sort each row in descending order
+    for (int[] row : grid) {
+      Arrays.sort(row);
+      reverse(row);
+    }
+    // Step 2: Sort the entire 2D array based on the first column in descending order
+    Arrays.sort(grid, (a, b) -> Integer.compare(b[0], a[0]));
+    // Arrays.sort(grid, new Comparator<int[]>() {
+    //   @Override
+    //   public int compare(int[] a, int[] b) {
+    //     return Integer.compare(b[0], a[0]);
+    //   }
+    // });
+  }
+
+  private static void reverse(int[] array) {
+    int left = 0;
+    int right = array.length - 1;
+    while (left < right) {
+      int temp = array[left];
+      array[left] = array[right];
+      array[right] = temp;
+      left++;
+      right--;
+    }
+  }
+
+  public static void main(String[] args) {
+    int[][] board = {
+      {3, 1, 2},
+      {9, 5, 6},
+      {4, 8, 7}
+    };
+    sort2DArray(board);
+    // Print the sorted 2D array
+    for (int[] row : board) {
+      System.out.println(Arrays.toString(row));
+    }
+  }
+}
+```
+
 ## Streams for Competitive Coding
 
 - Somehow Java Streams cost a lot of overhead and usually using a simple for loop results in faster times for competitive programming

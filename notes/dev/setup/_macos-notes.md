@@ -4,6 +4,7 @@
 - [Dev Setup](#dev-setup)
   - [Apps](#apps)
     - [iTerm2](#iterm2)
+    - [Terminal](#terminal)
     - [Karabiner Elements](#karabiner-elements)
     - [Librewolf](#librewolf)
       - [Simple modifications](#simple-modifications)
@@ -59,6 +60,7 @@
 - [OpenMTP](https://github.com/ganeshrvel/openmtp/releases)
 - [Rectangle](https://rectangleapp.com/)
 - [Stats](https://github.com/exelban/stats/releases)
+- [System Color Picker](https://sindresorhus.com/system-color-picker)
 
 - Alfred
 - App Cleaner & Uninstaller
@@ -78,6 +80,47 @@
 - Settings > Profiles > ${customProfileName} > Terminal > Turn OFF "Show mark indicators"
 - Allow `Alt+C` option for `fzf`
   - Settings > Profiles > ${customProfileName} > Keys > General > Esc+
+
+### Terminal
+
+Settings > Profiles > MyProfile > Keyboard > Turn ON "Use Option as Meta Key" (Option + Backspace == Delete Whole Line)
+
+| Command              | Description                                                                                                  |
+| -------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `Option + Backspace` | Delete Word                                                                                                  |
+| `Option + Delete`    | Delete Word Reverse                                                                                          |
+| Command Editing      |                                                                                                              |
+| `Ctrl + A`           | Go to the START of the command line                                                                          |
+| `Ctrl + E`           | Go to the END of the command line                                                                            |
+| `Ctrl + K`           | Delete from cursor to the END of the command line                                                            |
+| `Ctrl + U`           | Delete from cursor to the START of the command line                                                          |
+| `Ctrl + W`           | Delete from cursor to START of word (i.e. delete backwards one word)                                         |
+| `Ctrl + Y`           | Paste word or text that was cut using one of the deletion shortcuts (such as the one above) after the cursor |
+| `Ctrl + XX`          | Move between START of command line and current cursor position (and back again)                              |
+| `Alt + B`            | Move backward one word (or go to START of word the cursor is currently on)                                   |
+| `Alt + F`            | Move forward one word (or go to END of word the cursor is currently on)                                      |
+| `Alt + D`            | Delete to END of word starting at cursor (whole word if cursor is at the beginning of word)                  |
+| `Alt + C`            | Capitalize to END of word starting at cursor (whole word if cursor is at the beginning of word)              |
+| `Alt + U`            | Make uppercase from cursor to END of word                                                                    |
+| `Alt + L`            | Make lowercase from cursor to END of word                                                                    |
+| `Alt + T`            | Swap current word with previous                                                                              |
+| `Ctrl + F`           | Move forward one character                                                                                   |
+| `Ctrl + B`           | Move backward one character                                                                                  |
+| `Ctrl + D`           | Delete character under the cursor                                                                            |
+| `Ctrl + H`           | Delete character before the cursor                                                                           |
+| `Ctrl + T`           | Swap character under cursor with the previous one                                                            |
+| Command Recall       |                                                                                                              |
+| `Ctrl + R`           | Search the history backwards                                                                                 |
+| `Ctrl + G`           | Escape from history searching mode                                                                           |
+| `Ctrl + P`           | Previous command in history (i.e. walk back through the command history)                                     |
+| `Ctrl + N`           | Next command in history (i.e. walk forward through the command history)                                      |
+| `Alt + .`            | Use the last word of the previous command                                                                    |
+| Command Control      |                                                                                                              |
+| `Ctrl + L`           | Clear the screen                                                                                             |
+| `Ctrl + S`           | Stops the output to the screen (for long running verbose command)                                            |
+| `Ctrl + Q`           | Allow output to the screen (if previously stopped using command above)                                       |
+| `Ctrl + C`           | Terminate the command                                                                                        |
+| `Ctrl + Z`           | Suspend/stop the command                                                                                     |
 
 ### Karabiner Elements
 
@@ -247,6 +290,21 @@ Control -> Command
 Command -> Control
 ```
 
+```sh
+# Settings > Simple Modifications > For all devices
+application -> right_command
+f4 -> illumination_down
+f5 -> illumination_up
+pause -> play_or_pause
+print_screen -> volume_decrement
+scroll_lock -> volume_increment
+
+# Settings > Simple Modifications > For Ducky Keyboard
+left_command -> left_control
+left_control -> left_command
+keypad_enter -> return_or_enter
+```
+
 ## System Settings
 
 `System Settings > Privacy & Security > Full Disk Access` > iTerm2 + Visual Studio Code
@@ -259,8 +317,7 @@ Command -> Control
 
 ### Accessibility
 
-Fix MenuBar Color:
-`System Settings > Display > Reduce Transparency` > Turn ON
+Fix MenuBar Color: `System Settings > Accessibility > Display > Reduce Transparency` > Turn ON
 
 `System Settings > Display > Pointer > Shake mouse pointer to locate` > Turn OFF
 
@@ -383,8 +440,9 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 # git pull
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
-# git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
 # git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
+# git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
+# fast-theme -t <pathToCustomTheme>
 # cd
 
 # Starship + .zshrc

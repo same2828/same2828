@@ -6082,7 +6082,7 @@ int main() {
 
 ```cpp
 int main() {
-  // Descending order by default (due to reversal of comparator a < b
+  // Descending order by default (due to reversal of comparator a < b)
   // i.e. the FRONT of the queue contains the LAST element according to the weak ordering imposed by Compare
   // Create a priority queue of doubles with a custom comparator
   // Note: comparators are REVERSED for std::priority_queue
@@ -8052,7 +8052,6 @@ class Solution {
 public:
   int main() {
     std::vector<int> nums = {10, 3, 5, 8, 11, 1, 7};
-
     // Sort the vector in descending order using a lambda expression
     // std::sort(nums.rbegin(), nums.rend()); // Hacky way
     std::sort(nums.begin(), nums.end(), [](int a, int b) {

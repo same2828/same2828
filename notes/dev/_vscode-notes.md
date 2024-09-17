@@ -27,6 +27,7 @@
   - [Split View](#split-view)
   - [Swap Lines](#swap-lines)
   - [Toggle Word Wrap](#toggle-word-wrap)
+  - [Remove Unused Imports](#remove-unused-imports)
 - [Tips/Tricks](#tipstricks)
 - [Create Custom Theme](#create-custom-theme)
 
@@ -460,6 +461,11 @@ Extension List:
 ## Toggle Word Wrap
 
 - `Alt + Z`
+
+## Remove Unused Imports
+
+- `Alt + Shift + O`
+- `Option + Shift + O`
 
 # Tips/Tricks
 

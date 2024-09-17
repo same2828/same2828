@@ -2,6 +2,7 @@
 
 - [Table of Contents](#table-of-contents)
 - [Leagues](#leagues)
+- [Backhand](#backhand)
 - [Pulling](#pulling)
   - [4 step method](#4-step-method)
   - [5 step method](#5-step-method)
@@ -18,6 +19,29 @@ https://innerwestultimate.com
 https://duff.org.au/
 
 https://manlyfrisbee.com/
+
+# Backhand
+
+Power Grip = All fingers on the inside
+
+Frisbee into palm and fingers wrap around disc (like shaking hand)
+
+- Kurt Gibson = Put all fingers on inside at deepest groove
+- Rowan McDonnell = All fingers on the rim (not exactly at deepest groove)
+- Brodie Smith = Do NOT have all fingers tightened on edge or all spread out in middle
+  - Index finger on rim
+  - Middle finger pushing on middle of disk
+  - Ring & Pinky finger tight against rim
+  - Only to throw far/huck do we move all fingers closer in (and tighten up)
+- Frisbee Rob
+  - Does NOT use/like the power grip (all fingers on inside)
+  - Index finger on the rim for push pass/short pass/floater
+- Ryan Lowe
+  - First knuckle of index finger on edge of disk
+  - Change angle of disc so that it is completely inside your palm (no gaps)
+
+Note: Use your left hand to balance frisbee when pulling it back
+Note: Can also use fan grip for short pass (to prevent airbounce)
 
 # Pulling
 
