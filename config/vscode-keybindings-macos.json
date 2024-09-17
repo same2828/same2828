@@ -120,5 +120,10 @@
     "key": "alt+c",
     "command": "-markdown.extension.checkTaskList",
     "when": "false"
+  },
+  {
+    "key": "shift+enter",
+    "command": "-markdown.extension.onShiftEnterKey",
+    "when": "editorTextFocus && !editorHasMultipleSelections && !editorReadonly && !markdown.extension.editor.cursor.inFencedCodeBlock && !markdown.extension.editor.cursor.inMathEnv && !suggestWidgetVisible && editorLangId =~ /^markdown$|^rmd$|^quarto$/ || editorTextFocus && !editorHasMultipleSelections && !editorReadonly && !markdown.extension.editor.cursor.inFencedCodeBlock && !markdown.extension.editor.cursor.inMathEnv && config.editor.acceptSuggestionOnEnter == 'off' && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
   }
 ]

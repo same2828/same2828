@@ -161,6 +161,7 @@ export PATH="/opt/homebrew/opt/node@20/bin:$PATH"
 # alias gcp='(){ ga . && gc -m $1 && gp;}'
 # alias code="codium"
 # alias vscode="code"
+alias cude="codium"
 alias cls="clear"
 alias cpuhogs='ps wwaxr -o pid,stat,%cpu,%mem,time,command | head -10' # Show Top 10 CPU Hogs
 alias g++="g++-13"
