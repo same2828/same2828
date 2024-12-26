@@ -1,0 +1,35 @@
+# https://manpages.ubuntu.com/manpages/focal/en/man5/ssh_config.5.html
+# https://gist.github.com/oanhnn/80a89405ab9023894df7
+# https://gist.github.com/jexchan/2351996?permalink_comment_id=4535652#gistcomment-4535652
+# https://gist.github.com/yinzara/bbedc35798df0495a4fdd27857bca2c1
+
+# s3same
+# Host github.com
+Host github.com-s3same
+  HostName github.com
+  IdentityFile ~/.ssh/github-s3same
+  AddKeysToAgent yes
+  IdentitiesOnly yes
+
+# s3samedev
+# Host githubs3.com
+Host github.com-s3samedev
+  HostName github.com
+  IdentityFile ~/.ssh/github-s3samedev
+  AddKeysToAgent yes
+  IdentitiesOnly yes
+
+# same2828
+# Host github28.com
+Host github.com-same2828
+  HostName github.com
+  IdentityFile ~/.ssh/github-same2828
+  AddKeysToAgent yes
+  IdentitiesOnly yes
+
+# CSE
+# Host gitlab.cse.unsw.edu.au
+#   HostName gitlab.cse.unsw.edu.au
+#   IdentityFile ~/.ssh/gitlab-cse
+#   AddKeysToAgent yes
+#   IdentitiesOnly yes

@@ -1,33 +1,83 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Format](#format)
 - [Maven](#maven)
+- [Application Configuration](#application-configuration)
 - [Troubleshooting](#troubleshooting)
 - [Debugging](#debugging)
 - [Shortcuts](#shortcuts)
 
+# Format
+
+| Description      | Shortcut               |
+| ---------------- | ---------------------- |
+| Format Code      | `Command + Option + L` |
+| Optimise Imports | `Control + Option + O` |
+
 # Maven
+
+```sh
+mvn clean compile -U
+
+mvn clean install -U
+
+mvn clean install -Dmaven.test.skip=true -U
+```
 
 - `Shift + Shift > Reload All Maven Projects`
 - After changing `pom.xml` > Open Maven tab on RHS > Click the "circle" icon (to reload)
+
+# Application Configuration
+
+```sh
+mvn spring-boot:run -Dspring-boot.run.profiles=local
+```
+
+```sh
+# Main Application
+com.example.demo.framework.main.MainApplication
+
+# Program Arguments
+-Dbypass.header=true -Dspring.profiles.active=local # Assuming application-local.yml
+-Dbypass.header=true --spring.config.location=/Users/same/dev/${USE_REPO_NAME_HERE}/src/main/resources/application-local.yml
+
+# Environment Variables
+ENV1=VALUE1;ENV2=VALUE2;ENV3=VALUE3
+```
 
 # Troubleshooting
 
 - Project missing Java JDK: `File > Project Structure > Add JDK`
 
-- Removing cache + Reloading Maven:
-  - `Shift + Shift > Reload All Maven Projects`
-  - `Shift + Shift > Invalid Caches...`
-    - `File > Invalidate Caches`
-  - `Right Click on Repo > Reload from Disk`
-  - `Shift + Shift > Reload Configuration`
-  - `rm -rf .idea`
-  - Note: It also helps to `Ctrl + P > Java: Clean Java Language Server Workspace` in VSCode
+- `Shift + Shift > Actions > Reload from Disk`
+- `Shift + Shift > Actions > Reload all Maven Projects`
+- `Shift + Shift > Actions > Add Maven Projects`
+- `Shift + Shift > Actions > Reload Configuration`
+- `Shift + Shift > Actions > Invalid Caches... (Select All)` **(troubleshoot 4)**
+
+- `File > Reload All from Disk (Command + Option + Y)`
+- `File > Invalidate Caches... (Select All)`
+- `File > Project Structure > Add JDK`
+
+- `Right Click on Repo > Reload from Disk`
+
+- `rm -rf .idea` **(troubleshoot 3)**
+- `rm -rf .vscode` **(troubleshoot 2)**
+
+- `VSCode > Ctrl + P > Java: Clean Java Language Server Workspace` in VSCode **(troubleshoot 1)**
 
 # Debugging
 
-- Place break point on line in code
-- Choose to "DEBUG" instead of "run" for the test case/file
+- Place break point on line in code (red dot in sidebar)
+  - Note: Sometimes may need to place multiple breakpoints (just add a few on the lines below of target)
+- Choose to "Debug" instead of "Run" for the test case/file
+- If breakpoint is hit BEFORE the Postman collection is ran, then press "Resume Program"
+- Run Postman collection
+- Wait for breakpoint to be hit and program to be paused
+- Examine variables and their values
+- "Step Over" is used more commonly then "Step Into"
+  - Note: Variable values will sometimes only be shown once the line has passed, hence the reason we place multiple breakpoints on subsequent lines
 
 # Shortcuts
 

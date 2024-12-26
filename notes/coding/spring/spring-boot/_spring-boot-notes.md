@@ -1505,14 +1505,17 @@ public class ApplicationConfig {
 #### Profile Activation - Programmatically
 
 ```java
-public static void main(String[] args) {
-  AnnotationConfigApplicationContext applicationContext;
-  applicationContext = new ApplicationConfigApplicationContext();
-  applicationContext.getEnvironment().setActiveProfiles("cloud");
-  applicationContext.scan("com.bouali.sample");
-  applicationContext.refresh();
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
-  PaymentService paymentService = applicationContext.getBean(PaymentService.class);
+public class Main {
+  public static void main(String[] args) {
+    AnnotationConfigApplicationContext applicationContext;
+    applicationContext = new ApplicationConfigApplicationContext();
+    applicationContext.getEnvironment().setActiveProfiles("cloud");
+    applicationContext.scan("com.bouali.sample");
+    applicationContext.refresh();
+    PaymentService paymentService = applicationContext.getBean(PaymentService.class);
+  }
 }
 ```
 

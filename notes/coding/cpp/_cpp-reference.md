@@ -1870,6 +1870,8 @@ template<class StringViewLike>
 int compare(size_type pos1, size_type count1, StringViewLike const &t, size_type pos2, size_type count2 = std::string::npos) const;
 ```
 
+- See `2707.extra-characters-in-a-string` for more examples
+
 #### `.substr()`
 
 - C++/CPP
@@ -1884,6 +1886,8 @@ int compare(size_type pos1, size_type count1, StringViewLike const &t, size_type
 
 ##### `.substr(i)`
 
+**Java**
+
 ```java
 // Exclusive of index 'j'
 int main() {
@@ -1893,6 +1897,8 @@ int main() {
   // subStr == "World_Hello"
 }
 ```
+
+**CPP/C++**
 
 ```cpp
 // Exclusive of index 'j'
@@ -1907,6 +1913,8 @@ int main() {
 
 ##### `.substr[i, j)`
 
+**Java**
+
 ```java
 // Exclusive of index 'j'
 int main() {
@@ -1917,6 +1925,8 @@ int main() {
   // sub == "World"
 }
 ```
+
+**CPP/C++**
 
 ```cpp
 // Exclusive of index 'j'
@@ -1932,6 +1942,8 @@ int main() {
 
 ##### `.substr[i, j]`
 
+**Java**
+
 ```java
 // Inclusive of index 'j'
 int main() {
@@ -1942,6 +1954,8 @@ String sub = s.substring(i, j + 1); // String sub = s.substring(6, 11)
 // sub == "World"
 }
 ```
+
+**CPP/C++**
 
 ```cpp
 // Inclusive of index 'j'

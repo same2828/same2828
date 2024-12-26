@@ -17,6 +17,7 @@
   - [Set](#set)
   - [TreeMap](#treemap)
 - [Data Types](#data-types-1)
+- [Digit Separators](#digit-separators)
 - [Equality Comparison (`==`)](#equality-comparison-)
 - [for() Loops](#for-loops)
 - [Imports](#imports)
@@ -830,6 +831,16 @@ public:
     return memo[i][j].value();
   }
 };
+```
+
+# Digit Separators
+
+```cpp
+int mod = 1'000'000'007;
+```
+
+```java
+int mod = 1_000_000_007;
 ```
 
 # Equality Comparison (`==`)

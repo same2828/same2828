@@ -66,38 +66,61 @@
     "key": "ctrl+pageup"
   },
   {
-    "key": "alt+a",
     "command": "editor.action.formatDocument",
+    "key": "alt+a",
     "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
   },
   {
-    "key": "shift+alt+f",
     "command": "-editor.action.formatDocument",
+    "key": "shift+alt+f",
     "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
   },
   {
-    "key": "shift+alt+s",
     "command": "markdown.extension.editing.toggleStrikethrough",
+    "key": "shift+alt+s",
     "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
   },
   {
-    "key": "alt+s",
     "command": "-markdown.extension.editing.toggleStrikethrough",
+    "key": "alt+s",
     "when": "false"
   },
   {
-    "key": "alt+c",
     "command": "markdown.extension.checkTaskList",
+    "key": "alt+c",
     "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
   },
   {
-    "key": "alt+c",
     "command": "-markdown.extension.checkTaskList",
+    "key": "alt+c",
     "when": "false"
   },
   {
-    "key": "shift+enter",
     "command": "-markdown.extension.onShiftEnterKey",
+    "key": "shift+enter",
     "when": "editorTextFocus && !editorHasMultipleSelections && !editorReadonly && !markdown.extension.editor.cursor.inFencedCodeBlock && !markdown.extension.editor.cursor.inMathEnv && !suggestWidgetVisible && editorLangId =~ /^markdown$|^rmd$|^quarto$/ || editorTextFocus && !editorHasMultipleSelections && !editorReadonly && !markdown.extension.editor.cursor.inFencedCodeBlock && !markdown.extension.editor.cursor.inMathEnv && config.editor.acceptSuggestionOnEnter == 'off' && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
+  },
+  {
+    "command": "-workbench.action.chat.openEditSession",
+    "key": "shift+cmd+i",
+    "when": "chatEditingParticipantRegistered && chatIsEnabled && view != 'workbench.panel.chat.view.edits'"
+  },
+  {
+    "command": "-workbench.action.chat.open",
+    "key": "ctrl+cmd+i",
+    "when": "chatPanelParticipantRegistered"
+  },
+  {
+    "command": "workbench.action.chat.open",
+    "key": "shift+cmd+i"
+  },
+  {
+    "command": "bookmarks.toggleLabeled",
+    "key": "alt+cmd+i",
+    "when": "editorTextFocus"
+  },
+  {
+    "command": "workbench.action.quickOpen",
+    "key": "shift shift"
   }
 ]

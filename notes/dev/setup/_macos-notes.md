@@ -7,10 +7,10 @@
     - [Terminal](#terminal)
     - [Karabiner Elements](#karabiner-elements)
     - [Librewolf](#librewolf)
-      - [Simple modifications](#simple-modifications)
     - [Mounty](#mounty)
     - [Rectangle](#rectangle)
     - [Spotify](#spotify)
+    - [VSCodium](#vscodium)
   - [External Display/Monitor](#external-displaymonitor)
   - [Finder](#finder)
     - [General + Toolbar](#general--toolbar)
@@ -43,6 +43,8 @@
 - [Random](#random)
   - [Custom Icons (ICNS)](#custom-icons-icns)
   - [Apps to Check Out](#apps-to-check-out)
+  - [Force Reload Chrome Tab](#force-reload-chrome-tab)
+- [Clean Install](#clean-install)
 
 # Dev Setup
 
@@ -128,6 +130,21 @@ Settings > Profiles > MyProfile > Keyboard > Turn ON "Use Option as Meta Key" (O
   - Uninstall using `Karabiner Elements > Settings > Uninstall` (do NOT use App Cleaner)
   - [Docs](https://karabiner-elements.pqrs.org/docs/help/troubleshooting/stopped-working-after-macos-update/)
 
+```sh
+# Settings > Simple Modifications > For all devices
+application -> right_command
+f4 -> illumination_down
+f5 -> illumination_up
+pause -> play_or_pause
+print_screen -> volume_decrement
+scroll_lock -> volume_increment
+
+# Settings > Simple Modifications > For Ducky Keyboard
+left_command -> left_control
+left_control -> left_command
+keypad_enter -> return_or_enter
+```
+
 ### Librewolf
 
 ```sh
@@ -135,20 +152,6 @@ brew install librewolf --no-quarantine
 xattr -d com.apple.quarantine /Applications/LibreWolf.app
 # brew reinstall librewolf --no-quarantine
 ```
-
-#### Simple modifications
-
-- Apple Internal
-  - `left_control` -> `left_command`
-  - `left_command` -> `left_control`
-  - `right_command` -> `fn`
-- Global
-  - `f4` -> `illumuination_down`
-  - `f5` -> `illumunation_up`
-  - `pause` -> `play_or_pause`
-  - `print_screen` -> `volume_decrement`
-  - `scroll_lock` -> `volume_increment`
-  - `application` -> `right_command`
 
 ### Mounty
 
@@ -195,7 +198,17 @@ brew install gromgit/fuse/ntfs-3g-mac
 
 SpotX > BlockTheSpot
 
-- Use SpotX-Bash for macOS
+[SpotX - Windows](https://github.com/SpotX-Official/SpotX)
+
+[SpotX - macOS](https://github.com/SpotX-Official/SpotX-Bash)
+
+### VSCodium
+
+[VSCodium](https://vscodium.com/#install)
+
+```sh
+brew install --cask vscodium
+```
 
 ## External Display/Monitor
 
@@ -413,6 +426,9 @@ touch ~/.hushlogin
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Follow the "Next Steps" Info > Enter Commands Listed
+# echo >> /Users/same/.zprofile
+# echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> /Users/same/.zprofile
+# eval "$(/opt/homebrew/bin/brew shellenv)"
 (echo; echo 'eval "$(/opt/homebrew/bin/brew shellenv)"') >> /Users/same/.zprofile
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
@@ -479,9 +495,8 @@ brew install clang-format && brew install cmake &&  brew install jq && brew inst
 brew install llvm
 
 # Adoptium OpenJDK (Eclipse Temurin) > https://adoptium.net/installation/
-brew tap homebrew/cask-versions
-brew install --cask temurin
-# brew install --cask temurin21
+brew tap homebrew/homebrew-core
+brew install --cask temurin@21
 ```
 
 #### Git
@@ -685,3 +700,22 @@ Note: This does NOT work if you have MiddleClick enabled
 
 - [Menu Bar Tint](https://manytricks.com/menubartint/)
 - [TopNotch](https://topnotch.app/)
+
+## Force Reload Chrome Tab
+
+- Windows/Linux: `Ctrl + F5` or `Shift + F5`
+- Mac: `Command + Shift + R`
+
+# Clean Install
+
+- [Create a bootable installer for macOS](https://support.apple.com/en-au/101578)
+- [Use Disk Utility to erase a Mac with Apple silicon](https://support.apple.com/en-us/102506)
+- [How to Clean Install macOS Sequoia - YouTube](https://www.youtube.com/watch?v=GM1j0ISNh14)
+
+```
+softwareupdate --list-full-installers
+
+softwareupdate --fetch-full-installer --full-installer-version 15.1.1
+
+sudo /Applications/Install\ macOS\ Sequoia.app/Contents/Resources/createinstallmedia --volume /Volumes/Sandisk\ 32GB\ Dual
+```

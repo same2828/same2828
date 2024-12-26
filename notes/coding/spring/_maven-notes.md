@@ -5,11 +5,21 @@
 
 # Maven Commands
 
+[Maven CLI Options Reference](https://maven.apache.org/ref/3-LATEST/maven-embedder/cli.html)
+
 ```sh
+# Compile
 mvn clean compile
+# Compile + Run Tests
 mvn clean install
+# Troubleshooting: Forces a check for missing releases and updated snapshots on remote repositories
+mvn clean compile -U
+mvn clean install -U
+mvn clean install -U -Dmaven.test.skip=true
 mvn spring-boot:run
 mvn spring-boot:run -Dspring-boot.run.arguments=--debug
+mvn spring-boot:run -Dspring-boot.run.profiles=local
+mvn spring-boot:run -Dspring-boot.run.arguments=--debug -Dspring-boot.run.profiles=local
 mvn dependency:tree | grep pkgOfInterest
 mvn dependency:tree > maven-dependencies.txt
 ```

@@ -97,6 +97,7 @@
   - [Index Shifting When Deleting an Element](#index-shifting-when-deleting-an-element)
   - [Index Ranges](#index-ranges)
   - [K'th Largest \& K'th Smallest](#kth-largest--kth-smallest)
+  - [Use 0 instead of -1 if TLE](#use-0-instead-of--1-if-tle)
   - [Uses of 3D array `int[][][]`](#uses-of-3d-array-int)
 - [Heap Priority Queue](#heap-priority-queue-1)
   - [K'th Largest](#kth-largest)
@@ -140,6 +141,8 @@
   - [`Math.ceil(a/b)` / `std::ceil(a/b)`](#mathceilab--stdceilab)
   - [Modulus (%)](#modulus-)
     - [Get Digits of Number (Individually)](#get-digits-of-number-individually)
+  - [Number Theory](#number-theory)
+    - [Operations on Even/Odd Numbers](#operations-on-evenodd-numbers)
   - [Parity (Odd/Even)](#parity-oddeven)
     - [Check if number is ODD](#check-if-number-is-odd)
   - [Probability](#probability)
@@ -457,14 +460,14 @@ for (int i = n - 1; i >= 0; i--) {
 
 # Bitwise Operators
 
-| Bitwise Operation  | Code         | Definition                                                                                                                                     |
-| ------------------ | ------------ | ---------------------------------------------------------------------------------------------------------------------------------------------- | --- |
-| AND                | **`x & y`**  | If both bits in the compared position of the bit patterns are 1, the bit in the resulting bit pattern is 1, otherwise 0                        |
-| OR                 | **`x \| y`** | If both bits in the compared position of the bit patterns are 0, the bit in the resulting bit pattern is 0, otherwise 1                        |
-| NOT/NEG            | **`~ x`**    | Flips the bits of the number i.e. if the ith bit is 0, it will change it to 1 and vice versa                                                   |
-| Exclusive-Or (XOR) | **`x ^ y`**  | If BOTH bits in the compared position of the bit patterns are 0 or 1, the bit in the resulting bit pattern is 0, otherwise 1                   |
-| Left Shift         | **`x << n`** | Multiples the number `x` by `2^n` <br> Moves/Shifts each bit `n` positions to the LEFT <br> Left-end bit vanishes; right-end bit replaced by 0 |
-| Right Shift        | **`x >> n`** | Divides the number `x` by `2^n` <br> Moves/Shifts each bit `n` positions to the RIGHT <br> Right-end bit vanishes; left-end bit replaced by 0  |     |
+| Bitwise Operation  | Code         | Definition                                                                                                                                                            |
+| ------------------ | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
+| AND                | **`x & y`**  | If both bits in the compared position of the bit patterns are 1, the bit in the resulting bit pattern is 1, otherwise 0                                               |
+| OR                 | **`x \| y`** | If both bits in the compared position of the bit patterns are 0, the bit in the resulting bit pattern is 0, otherwise 1                                               |
+| NOT/NEG            | **`~ x`**    | Flips the bits of the number i.e. if the ith bit is 0, it will change it to 1 and vice versa                                                                          |
+| Exclusive-Or (XOR) | **`x ^ y`**  | If BOTH bits in the compared position of the bit patterns are 0 or 1, the bit in the resulting bit pattern is 0, otherwise 1                                          |
+| Left Shift         | **`x << n`** | MULTIPLIES the number `x` by `2^n` (`x << n == x * 2^n`) <br> Moves/Shifts each bit `n` positions to the LEFT <br> Left-end bit vanishes; right-end bit replaced by 0 |
+| Right Shift        | **`x >> n`** | DIVIDES the number `x` by `2^n` (`x >> n == x / 2^n`) <br> Moves/Shifts each bit `n` positions to the RIGHT <br> Right-end bit vanishes; left-end bit replaced by 0   |     |
 
 | AND (`&`) | 0   | 1   |
 | --------- | --- | --- |
@@ -2169,6 +2172,58 @@ public int numChangesForSemiPalindrome(int l, int r) {
 - `k'th` largest = `(n - k)'th` smallest
 - `k'th` smallest = `(n - k)'th` largest
 
+## Use 0 instead of -1 if TLE
+
+> Initialise `dp[][][]` as 0's and use `dp[i][j][k] = result + 1` and `return dp[i][j][k] - 1`
+>
+> Also use `int[][][]` instead of `vector<vector<vector<int>>>`
+
+```java
+class Solution {
+public:
+  int memo[1001][2001][4] = {};
+  // vector<vector<vector<int>>> memo;
+  int fire = 0;
+  int earth = 1;
+  int water = 2;
+  int mod = 1e9 + 7;
+
+  int dp(int i, int bal, int prevB, string const &aliceStr) {
+    if (i == aliceStr.size()) {
+      return bal > 1000;
+    }
+    if (memo[i][bal][prevB] != -1) {
+      return memo[i][bal][prevB];
+    }
+    int a = aliceStr[i] == 'F' ? fire : aliceStr[i] == 'E' ? earth : water;
+    int result = 0;
+    for (int b = 0; b < 3; ++b) {
+      if (b != prevB) {
+        // F > E, E > W, W > F
+        // int point = a == b ? 0 : a == water && b == fire ? -1 : b == water && a == fire ? 1 : a < b ? -1 : 1;
+        int point = a == b                     ? 0
+                    : a == fire && b == earth  ? -1
+                    : a == earth && b == fire  ? 1
+                    : a == water && b == fire  ? -1
+                    : a == fire && b == water  ? 1
+                    : a == earth && b == water ? -1
+                    : a == water && b == earth ? 1
+                                               : 0;
+        result = (result + dp(i + 1, bal + point, b, aliceStr)) % mod;
+      }
+    }
+    return memo[i][bal][prevB] = result;
+    // memo[i][bal][prevB] = result + 1;
+    // return memo[i][bal][prevB] - 1;
+  }
+
+  int countWinningSequences(string const &aliceStr) {
+    memset(memo, -1, sizeof(memo)); // Can comment out if want to initialise to 0s
+    return dp(0, 1000, 3, aliceStr);
+  }
+};
+```
+
 ## Uses of 3D array `int[][][]`
 
 - If you want to have a `std::vector<std::vector<std::pair<int, int>>>` in Java, instead of using `List<List<Map.Entry<int, int>>>` you can instead of `int[][][]` with the size of the last array being `2`
@@ -2961,6 +3016,70 @@ class Solution {
   }
 }
 ```
+
+## Number Theory
+
+### Operations on Even/Odd Numbers
+
+| Operation                                | Result                               |
+| ---------------------------------------- | ------------------------------------ |
+| **Addition**                             |                                      |
+| `Even + Even`                            | `Even`                               |
+| `Odd + Odd`                              | `Even`                               |
+| `Even + Odd`                             | `Odd`                                |
+| `Odd + Even`                             | `Odd`                                |
+| **Subtraction**                          |                                      |
+| `Even - Even`                            | `Even`                               |
+| `Odd - Odd`                              | `Even`                               |
+| `Even - Odd`                             | `Odd`                                |
+| `Odd - Even`                             | `Odd`                                |
+| **Multiplication**                       |                                      |
+| `Even * Even`                            | `Even`                               |
+| `Odd * Odd`                              | `Odd`                                |
+| `Even * Odd`                             | `Even`                               |
+| **Division** (assuming integer division) |                                      |
+| `Even / Even`                            | `Even` (if the result is an integer) |
+| `Odd / Odd`                              | `Odd` (if the result is an integer)  |
+| `Even / Odd`                             | `Even` (if the result is an integer) |
+| `Odd / Even`                             | `Not an Integer` (in most cases)     |
+| **Exponentiation**                       |                                      |
+| `Even^Even`                              | `Even`                               |
+| `Even^Odd`                               | `Even`                               |
+| `Odd^Even`                               | `Odd`                                |
+| `Odd^Odd`                                | `Odd`                                |
+
+Addition:
+
+- `Even + Even = Even`
+- `Odd + Odd = Even`
+- `Even + Odd = Odd`
+
+Subtraction:
+
+- `Even - Even = Even`
+- `Odd - Odd = Even`
+- `Even - Odd = Odd`
+- `Odd - Even = Odd`
+
+Multiplication:
+
+- `Even * Even = Even`
+- `Odd * Odd = Odd`
+- `Even * Odd = Even`
+
+Division (assuming integer division):
+
+- `Even / Even = Even` (if the result is an integer)
+- `Odd / Odd = Odd` (if the result is an integer)
+- `Even / Odd = Even` (if the result is an integer)
+- `Odd / Even = Not an integer` (in most cases)
+
+Exponentiation:
+
+- `Even^Even = Even`
+- `Even^Odd = Even`
+- `Odd^Even = Odd`
+- `Odd^Odd = Odd`
 
 ## Parity (Odd/Even)
 

@@ -23,12 +23,15 @@
   - [Open Markdown Preview](#open-markdown-preview)
   - [Search for Files (in opened folder workspace)](#search-for-files-in-opened-folder-workspace)
   - [Settings](#settings)
+  - [Show Inlay Hints (Java)](#show-inlay-hints-java)
   - [Show Visible Tabs](#show-visible-tabs)
   - [Split View](#split-view)
   - [Swap Lines](#swap-lines)
   - [Toggle Word Wrap](#toggle-word-wrap)
   - [Remove Unused Imports](#remove-unused-imports)
 - [Tips/Tricks](#tipstricks)
+- [KeySnippets](#keysnippets)
+  - [Forward Space](#forward-space)
 - [Create Custom Theme](#create-custom-theme)
 
 # Config
@@ -106,7 +109,7 @@ Extension List:
 - Binocular (jpcrs) (note: requires other dependencies)
 - **Bookmarks (Alessandro Fragnani)**
 - **C/C++ (Microsoft)**
-- **change-case (wmaurer)**
+- change-case (wmaurer)
 - ~~Clang-Format (Xaver Hellauer) (DISABLED)~~
 - ~~clangd (LLVM) (DISABLED) (If want to use need to disable C/C++ extension from Microsoft in `settings.json`)~~
 - Cloak (John Papa)
@@ -118,7 +121,7 @@ Extension List:
 - ~~CodeLLDB (DISABLED)~~
 - **Color Highlight (Sergii N)**
 - **Color Info (Matt Bierner)**
-- **colorize (kamikillerto)**
+- colorize (kamikillerto)
 - **Comment Anchors (Starlane Studios)**
 - **Console Ninja (Wallaby.js)**
 - **Conventional Commits (vivaxy)**
@@ -183,7 +186,7 @@ Extension List:
 - ~~Markdown Lint (David Anson) (DISABLED)~~
 - Markdown Preview Enhanced (Yiyi Wang) (DISABLED)
 - **Material Icon Theme (Philipp Kief)**
-- **MetaGo (metaseed)** (alternative to Jumpy2)
+- MetaGo (metaseed) (alternative to Jumpy2)
 - Microsoft Edge Tools for VS Code (Microsoft)
 - Monorepo Workspace (Folke Lemaitre)
 - **Multiple Cursor Case Preserve (Cardinal90)**
@@ -204,7 +207,7 @@ Extension List:
 - **PostCSS Sorting (mrmlnc)** (usage: `Ctrl+Shift+P` -> `PostCSS Sorting: Run`)
 - **Prettier (Prettier)**
 - **Pretty TypeScript Errors (yoavbls)**
-- **Print Divider (XuangeAha)**
+- Print Divider (XuangeAha)
 - **Project Manager (Alessandro Fragnani)**
 - **Pylance (Microsoft)**
 - **Pylint (Microsoft)**
@@ -212,18 +215,19 @@ Extension List:
 - Python Indent (Kevin Rose)
 - px to rem & rpx & vw (cssrem) (cipchk)
 - **quick-lint-js (quick-lint)**
-- **Quick Opener (mogelbrod)**
+- Quick Opener (mogelbrod) (note: performance issues)
 - **Quokka.js (Wallaby.js)**
 - **Rainbow CSV (mechatroner)**
 - Random Everything (helixquar) (Random Data Generator) (note: OLD, use `vscode-faker` instead)
 - **Remove Non ASCII Characters (Samuel Charpentier)**
 - **Replace Curly Quotes (jinhyuk)**
-- **REST Client (Huachao Mao)** (ntoe: `ThunderClient` is now paywalled)
-- **Rewrap (stkb)**
+- REST Client (Huachao Mao) (note: `ThunderClient` is now paywalled)
+- Rewrap (stkb)
 - Ruff (Astral Software)
 - **shell-format (foxundermoon)**
 - **ShellCheck (Timon Wong)**
 - Simple React Snippets (Burke Holland) (DISABLED)
+- **Sort Everything (Benny Neugebauer)**
 - **Sort JSON objects (richie5um2)**
 - **Sort Lines (Daniel Imms)**
 - **Sorting HTML and Jade attributes (mrmlnc)**
@@ -238,7 +242,7 @@ Extension List:
 - **Text Power Tools (Daniel Tar)**
 - Todo Highlight (Wayou Liu)
 - **Todo Tree (Gruntfuggly)**
-- **Toggle Quotes (BriteSnow)**
+- Toggle Quotes (BriteSnow)
 - Turbo Console Log (Anas Chakroun)
 - **vscode-faker (Budi Irawan)** (note: newer version of `Random Everything`)
 - VSCode Essentials (jabacchetta)
@@ -251,7 +255,7 @@ Extension List:
 - **YAML (Red Hat)**
 - **YAML Sort (Pascal Reitermann)**
 - **YAML to JSON (ahebrank)**
-- **yapf (EeyoreLee)**
+- yapf (EeyoreLee)
 
 ## macOS
 
@@ -321,6 +325,7 @@ Extension List:
 - REST Client (Huachao Mao)
 - shell-format (foxundermoon)
 - ShellCheck (Timon Wong)
+- Sort Everything (Benny Neugebauer)
 - Sort JSON Objects (richie5um2)
 - Sort Lines (Daniel Imms)
 - Sorting HTML and Jade attributes (mrmlnc)
@@ -363,10 +368,12 @@ Extension List:
 ## Copy Line
 
 - Copy Line Down
-  - `Shift + Alt + (down arrow)`
+  - `Shift + Alt + DownArrow`
+  - `Shift + Option + DownArrow`
 - Copy Line Up
-  - `Shift + Alt + (up arrow)`
-- Note this also works with current selection (whatever you have highlighted)
+  - `Shift + Alt + UpArrow`
+  - `Shift + Option + UpArrow`
+- Note: This also works with current selection (whatever you have highlighted)
 
 ## Cycle Tabs
 
@@ -375,12 +382,12 @@ Extension List:
 
 ## Find Code in Files
 
-- `Ctrl + Shift + F`
+`Ctrl + Shift + F`
 
-  ```
-  github/lc-all/**/*.py
-  github/lc-all/**/*.java, *.py
-  ```
+```
+github/lc-all/**/*.py
+github/lc-all/**/*.java, *.py
+```
 
 ## Find/Replace
 
@@ -398,12 +405,13 @@ Extension List:
 
 ## Go to Specific Line
 
-- `Ctrl + G`
+`Ctrl + G`
 
 ## Move Editor Into Next Group
 
-- `Ctrl + Alt + Right Arrow` (Windows)
-- `Command + Ctrl + Right Arrow` (macOS)
+`Ctrl + Alt + Right Arrow` (Windows)
+
+`Command + Ctrl + Right Arrow` (macOS)
 
 ## Multiple Cursors
 
@@ -429,21 +437,29 @@ Extension List:
 
 ## Open File in File Explorer
 
-- `Alt + Shift + R`
-  - Note file has to be open in code editor
+`Alt + Shift + R`
+
+- Note: File has to be open in code editor
 
 ## Open Markdown Preview
 
-- `Ctrl + K` then `V`
+`Ctrl + K` then `V`
 
 ## Search for Files (in opened folder workspace)
 
-- `Ctrl+P`
-  - [Read more](https://code.visualstudio.com/docs/editor/codebasics#_advanced-search-options)
+`Ctrl+P`
+
+- [Read more](https://code.visualstudio.com/docs/editor/codebasics#_advanced-search-options)
 
 ## Settings
 
-- `Ctrl + ,`
+`Ctrl + ,`
+
+## Show Inlay Hints (Java)
+
+Hold `Ctrl + Option` (macOS)
+
+Hold `Ctrl + Alt` (Windows)
 
 ## Show Visible Tabs
 
@@ -451,21 +467,21 @@ Extension List:
 
 ## Split View
 
-- `Ctrl + \`
+`Ctrl + \`
 
 ## Swap Lines
 
-- `Alt + Up`
-- `Alt + Down`
+`Alt + Up`
+`Alt + Down`
 
 ## Toggle Word Wrap
 
-- `Alt + Z`
+`Alt + Z`
 
 ## Remove Unused Imports
 
-- `Alt + Shift + O`
-- `Option + Shift + O`
+`Alt + Shift + O`
+`Option + Shift + O`
 
 # Tips/Tricks
 
@@ -480,6 +496,30 @@ Extension List:
   - `Ctrl + P` > `File: Clear Recently Opened... `
   - `Ctrl + P` > `Chat: Clear Input History`
   - `Ctrl + P` > `Chat: Clear All Workspace Chats`
+
+# KeySnippets
+
+## Forward Space
+
+```json
+// Snippets: Configure Snippets > Add Entry Below
+{
+  "Forward Space": {
+    "body": "$0 "
+  }
+}
+```
+
+```json
+{
+  "key": "shift+space",
+  "command": "editor.action.insertSnippet",
+  "args": {
+    "name": "Forward Space"
+  },
+  "when": "editorTextFocus"
+}
+```
 
 # Create Custom Theme
 

@@ -22,6 +22,7 @@
   - [Adding Files to Previous Commit](#adding-files-to-previous-commit)
   - [Change Most Recent Git Commit Message](#change-most-recent-git-commit-message)
   - [Git Ignore Check](#git-ignore-check)
+  - [Git Worktree](#git-worktree)
 - [Setup](#setup)
   - [Git Config](#git-config)
 - [SSH Keys](#ssh-keys)
@@ -29,6 +30,7 @@
   - [SSH Keys Not Saving](#ssh-keys-not-saving)
   - [SSH Keys for Multiple GitHub Accounts](#ssh-keys-for-multiple-github-accounts)
 - [Miscellaneous](#miscellaneous)
+  - [Force Git to Pickup Change in Case](#force-git-to-pickup-change-in-case)
 - [OhMyZsh Git Shortcuts](#ohmyzsh-git-shortcuts)
 
 # Update My Repositories
@@ -561,6 +563,26 @@ cd notes
 git check-ignore -v notes/scripts/clone.sh
 ```
 
+## Git Worktree
+
+> Rule: Keep EACH Worktree in a SEPARATE PARENT directory (i.e. do NOT nest them inside the `master` directory)
+
+```sh
+cd myProject
+git worktree add ../targetBranchDir targetBranch
+gwta ../targetBranchDir targetBranch
+```
+
+```sh
+cd targetBrachDir
+git worktree remove .
+gwtr .
+# OR
+cd myProject
+git worktree remove ../targetBranchDir
+gwtr ../targetBranchDir
+```
+
 # Setup
 
 ## Git Config
@@ -720,6 +742,16 @@ git config user.name "newName"
   - `HEAD^` == `HEAD~1`
   - `HEAD^^` == `HEAD~2`
   - `HEAD^^^` == `HEAD~3`
+
+## Force Git to Pickup Change in Case
+
+```sh
+git mv oldFileName newFileName
+```
+
+```conf
+git config core.ignorecase false
+```
 
 # OhMyZsh Git Shortcuts
 

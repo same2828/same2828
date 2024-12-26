@@ -344,7 +344,13 @@ cd "D:\Chrome Download"
 
 Change Zoom Levels
 
-- `URL Bar > about:config > zoom > toolkit.zoomManager.zoomValues > .3,.5,.67,.8,.9,1,1.1,1.25,1.33,1.5,1.75,2,2.25,2.5,2.75,3.4,3,4,5`
+- `URL Bar > about:config > zoom > toolkit.zoomManager.zoomValues > .25,.33,.5,.67,0.75,.8,.9,1,1.1,1.25,1.33,1.5,1.75,2,2.25,2.5,2.75,3,3.25,3.5,3.75,4,5`
+
+Disable Hover Preview
+
+`about:config > browser.tabs.hoverPreview.enabled = FALSE`
+
+`about:config > browser.tabs.hoverPreview.showThumbnails = FALSE`
 
 Enable Performance Mode
 
@@ -390,11 +396,15 @@ Theme
 
 `Settings > General` > Untick: "Auto download files if an update is available"
 
+`Settings > Playback > Default Windows Size` > Do Not Use
+
 ### Spotify
 
 SpotX > BlockTheSpot
 
-- Use SpotX-Bash for macOS
+[SpotX (Windows)](https://github.com/SpotX-Official/SpotX)
+
+[SpotX-Bash (macOS)](https://github.com/SpotX-Official/SpotX-Bash)
 
 ### Task Manager
 
@@ -724,7 +734,7 @@ Scale: 175% x, 100y
 Move: 75 y
 Used PowerToy's Screen Ruler to make top and bottom lengths equal
 
-<> 
+<>
 Scale Uniformly: 200.49% (Origin = Glyph Origin) (Transform Width) (copied from Inconsolata LGC) (think we ended up using RobotoMono's)
 ```
 

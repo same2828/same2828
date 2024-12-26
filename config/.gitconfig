@@ -1,0 +1,94 @@
+#-------------------------------------------------------------------------------
+#                               Git Config Global
+#-------------------------------------------------------------------------------
+# https://git-scm.com/docs/git-config#Documentation/git-config.txt
+[alias]
+  # https://git-scm.com/docs/git-config#Documentation/git-config.txt-alias
+  # Print the name of the current branch (useful for scripting)
+  # currbranch = "!git branch --contains HEAD | grep '*' | tr -s ' ' | cut -d ' ' -f2"
+  # Associates a new commit with an existing commit hash (usage: git fix <prevCommitHashToAssociate>)
+  fix = commit --fixup
+  # fixup = "commit --fixup=HEAD"
+  # Edit last commit message (usage: git reword "new commit msg")
+  reword = commit --amend -m
+  # Undo last commit but keep changed files in staged area (usage: git uncommit)
+  uncommit = reset --soft HEAD~1
+[branch]
+  # https://git-scm.com/docs/git-config#Documentation/git-config.txt-branchsort
+  # https://git-scm.com/docs/git-branch#_configuration
+  sort = -committerdate
+[core]
+  # https://git-scm.com/docs/git-config#Documentation/git-config.txt-corefileMode
+  autocrlf = false
+  editor = code --wait
+  pager = less -F -X
+  ignorecase = false
+[diff]
+  # https://git-scm.com/docs/git-diff#_configuration
+  # Use descriptive initials (c = commit, i = index, w = working tree) instead of a/b
+  mnemonicPrefix = true
+  # Show renames/moves
+  renames = true
+  # Use vscode as the default difftool
+  tool = vscode
+  # When using --word-diff, assume --word-diff-regex=.
+  wordRegex = .
+[difftool "vscode"]
+  # https://git-scm.com/docs/git-difftool#_configuration
+  cmd = code --wait --diff $LOCAL $REMOTE
+[fetch]
+  # https://git-scm.com/docs/git-fetch#_configuration
+  prune = true
+  prunetags = true
+[grep]
+  # https://git-scm.com/docs/git-grep#_configuration
+  break = true
+  heading = true
+  lineNumber = true
+  extendedRegexp = true
+[init]
+  # https://git-scm.com/docs/git-init#_configuration
+  defaultBranch = master
+[log]
+  # https://git-scm.com/docs/git-log#_configuration
+  date = local
+[merge]
+  # https://git-scm.com/docs/git-merge#_configuration
+  conflictstyle = zdiff3
+  tool = vscode
+[mergetool "vscode"]
+  # https://git-scm.com/docs/git-mergetool#_configuration
+  cmd = code --wait $MERGED
+[pull]
+  # https://git-scm.com/docs/git-config#Documentation/git-config.txt-pullrebase
+  rebase = true
+[push]
+  # https://git-scm.com/docs/git-push#_configuration
+  autoSetupRemote = true
+  default = simple
+[rebase]
+  # https://git-scm.com/docs/git-rebase#_configuration
+  autosquash = true
+  autostash = true
+[remote "origin"]
+  # https://git-scm.com/docs/git-config#Documentation/git-config.txt-remoteltnamegtprune
+  prune = true
+[user]
+  # https://git-scm.com/docs/git-config#Documentation/git-config.txt-username
+  name = s3same
+  email = s3samedev@gmail.com
+
+#-------------------------------------------------------------------------------
+#                 User Specific Configurations based on Profile
+#-------------------------------------------------------------------------------
+# https://gist.github.com/jexchan/2351996?permalink_comment_id=4535652#gistcomment-4535652
+# https://gist.github.com/yinzara/bbedc35798df0495a4fdd27857bca2c1
+[includeIf "gitdir:~/**/github/"]
+  # path = ~/.dotfiles/s3same-gh.gitconfig
+  path = ~/dev/github/config/s3same.gitconfig
+[includeIf "gitdir:~/**/github28/"]
+  # path = ~/.dotfiles/same2828-gh.gitconfig
+  path = ~/dev/github/config/same2828.gitconfig
+[includeIf "gitdir:~/**/githubs3/"]
+  # path = ~/.dotfiles/s3same-gh.gitconfig
+  path = ~/dev/github/config/s3samedev.gitconfig
