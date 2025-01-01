@@ -173,19 +173,19 @@ If your code has access to the Singleton class, then it's able to call the Singl
 
 ```java
 public class LazySingleton {
-	// initialize the instance as null.
-	private static LazySingleton instance = null;
+  // initialize the instance as null.
+  private static LazySingleton instance = null;
 
-	// private constructor, so it cannot be instantiated outside this class.
-	private LazySingleton() {  }
+  // private constructor, so it cannot be instantiated outside this class.
+  private LazySingleton() {  }
 
-	// check if the instance is null, and if so, create the object.
-	public static LazySingleton getInstance() {
-		if (instance == null) {
-			instance = new LazySingleton();
-		}
-		return instance;
-	}
+  // check if the instance is null, and if so, create the object.
+  public static LazySingleton getInstance() {
+    if (instance == null) {
+      instance = new LazySingleton();
+    }
+    return instance;
+  }
 }
 ```
 
@@ -199,9 +199,9 @@ Provides an interface for creating objects with the same superclass.
 
 ```java
 public class Company {
-	public Car getRental() {
-		return new Car();
-	}
+  public Car getRental() {
+    return new Car();
+  }
 }
 ```
 
@@ -209,13 +209,13 @@ Now demand is rising for you to offer motorcycles as well.
 
 ```java
 public class Company {
-	public Car getRental(String type) {
-		if (type.equals("motorcycle")) {
-			return new Motorcycle(); // INVALID
-		} else {
-			return new Car();
-		}
-	}
+  public Car getRental(String type) {
+    if (type.equals("motorcycle")) {
+      return new Motorcycle(); // INVALID
+    } else {
+      return new Car();
+    }
+  }
 }
 ```
 
@@ -223,7 +223,7 @@ We can't extend the functionality of the getRental() method as above since the m
 
 ```java
 public interface Vehicle {
-	void drive();
+  void drive();
 }
 
 public class Car implements Vehicle {
@@ -239,15 +239,15 @@ public class Motorcycle implements Vehicle {
 }
 
 public class Company {
-	public Vehicle getRental(String type) {
-		if (request.equals("motorcycle")) {
-			Motorcyle rentalMotorcycle = new Motorcycle();
-			return rentalMotorcycle;
-		} else {
-			Car rentalCar = new Car();
-			return rentalCar;
-		}
-	}
+  public Vehicle getRental(String type) {
+    if (request.equals("motorcycle")) {
+      Motorcyle rentalMotorcycle = new Motorcycle();
+      return rentalMotorcycle;
+    } else {
+      Car rentalCar = new Car();
+      return rentalCar;
+    }
+  }
 }
 ```
 

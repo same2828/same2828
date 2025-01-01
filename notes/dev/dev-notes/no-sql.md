@@ -43,18 +43,18 @@ Meanwhile for NoSQL we can just start incorporating the new requirements straigh
 
 ```json
 {
-	id: 1,
-	name: "Aaron",
-	lastname: "A",
-	email: "Aaron@email.com"
+  id: 1,
+  name: "Aaron",
+  lastname: "A",
+  email: "Aaron@email.com"
 },
 {
-	id: 2,
-	name: "Bill",
-	middleName: "Will",
-	lastname: "Mill",
-	email: "bill@email.com",
-	DOB: "01/02/1999"
+  id: 2,
+  name: "Bill",
+  middleName: "Will",
+  lastname: "Mill",
+  email: "bill@email.com",
+  DOB: "01/02/1999"
 }
 ```
 

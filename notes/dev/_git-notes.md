@@ -429,7 +429,7 @@ improved syntax                       # <-- DELETE
 # You are currently rebasing branch 'master' on '040643d'.
 #
 # Changes to be committed:
-#	modified:   .gitignore
+# modified:   .gitignore
 #
 ```
 
@@ -458,7 +458,7 @@ added tests and improved syntax
 # You are currently rebasing branch 'master' on '040643d'.
 #
 # Changes to be committed:
-#	modified:   .gitignore
+# modified:   .gitignore
 #
 ```
 

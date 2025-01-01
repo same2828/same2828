@@ -243,6 +243,7 @@ pnpm update
 pnpm exec cmd
 # If you HAVE NOT RAN `pnpm add <pkg>`
 pnpm dlx cmd
+pnpx cmd
 ```
 
 The are 2 key uses of `npx`
@@ -250,7 +251,7 @@ The are 2 key uses of `npx`
 - (1) Running executables inside your downloaded packages/dependencies (runs package already in `node_modules/bin`)
   - E.g. `npx jest == pnpm exec jest`
 - (2) Running executable commands in packages you want to download transiently (when you want to run a one-off script or command from a package WITHOUT needing to install the package itself)
-  - E.g. `npx create-react-app my-app == pnpm dlx create-react-app my-app`
+  - E.g. `npx create-react-app my-app == pnpm dlx create-react-app my-app == pnpx create-react-app my-app`
 
 [pnpm Docs](https://pnpm.io/pnpm-cli)
 

@@ -3926,9 +3926,9 @@ If you are using the `@SpringBootTest` annotation, a `TestRestTemplate` is autom
 
 ```xml
 <dependency>
-	<groupId>org.springframework.boot</groupId>
-	<artifactId>spring-boot-starter-test</artifactId>
-	<scope>test</scope>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-test</artifactId>
+  <scope>test</scope>
 </dependency>
 ```
 

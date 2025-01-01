@@ -604,7 +604,8 @@ java --version
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 # Custom theme
 cp $ZSH/themes/robbyrussell.zsh-theme $ZSH_CUSTOM/themes/
-code ZSH_CUSTOM/themes/robbyrussell.zsh-theme
+code $ZSH_CUSTOM/themes/robbyrussell.zsh-theme
+# Copy paste config/robbyrussell.zsh-theme
 ```
 
 ## Git

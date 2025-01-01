@@ -1,6 +1,7 @@
 - [Table of Contents](#table-of-contents)
 - [Resources](#resources)
 - [Templates](#templates)
+- [Definitions](#definitions)
 - [Edge Cases](#edge-cases)
   - [Array/List](#arraylist)
   - [Integers](#integers)
@@ -92,6 +93,8 @@
   - [Array Wrap Around](#array-wrap-around)
   - [Bitwise OR `|` for True/False](#bitwise-or--for-truefalse)
   - [Constants](#constants)
+  - [Division](#division)
+    - [Ceil Division](#ceil-division)
   - [Flatten 2D Matrix into Stateful String and Check Neighbours of currCell](#flatten-2d-matrix-into-stateful-string-and-check-neighbours-of-currcell)
   - [Index Matching for Modulo Pair Groups](#index-matching-for-modulo-pair-groups)
   - [Index Shifting When Deleting an Element](#index-shifting-when-deleting-an-element)
@@ -128,7 +131,7 @@
         - [Recursive nCr()/nCk()](#recursive-ncrnck)
       - [Number of Unique Combinations/Subsets Possible](#number-of-unique-combinationssubsets-possible)
   - [Digits (Create Number Recursively)](#digits-create-number-recursively)
-  - [Division](#division)
+  - [Division](#division-1)
   - [Exponent](#exponent)
     - [Rules](#rules)
   - [Factor](#factor)
@@ -175,6 +178,7 @@
   - [Strings/Substrings](#stringssubstrings)
   - [Array Indexing for Single Pass Forwards + Backwards](#array-indexing-for-single-pass-forwards--backwards)
   - [Longest Palindromic Substring / Longest Common Subsequence](#longest-palindromic-substring--longest-common-subsequence)
+- [String Hashing](#string-hashing)
 - [Subsequence](#subsequence)
 - [Terminology](#terminology)
 - [Time Complexity](#time-complexity)
@@ -255,6 +259,18 @@ int main() {
   return 0;
 }
 ```
+
+# Definitions
+
+- Palindromic = String/Integer that reads the same forward and backward
+- Subarray = A contiguous non-empty sequence of elements within an array
+- Subsequence = An array that can be derived from another array by deleting some or no elements WITHOUT changing the order of the remaining elements
+- Subset = A selection of elements (possibly none) of the array
+- Substring = A contiguous non-empty sequence of characters within a string
+
+- **Subarray = A contiguous/continuous sequence of elements (part of an array) whose relative ordering IS kept (contiguous subsequence)**
+- **Subsequence = A sequence of elements (part of an array) NOT necessarily contiguous/continuous but whose relative ordering IS kept**
+- **Subset = Any possible combination of elements (part of an array) NOT necessarily contiguous, whose relative ordering does NOT have to be kept and contains the empty set `{}`**
 
 # Edge Cases
 
@@ -606,7 +622,7 @@ if (num & (num - 1) == 0) {
 ## Bit Manipulation
 
 - Examples
-  - See 3007.maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k
+  - See `3007.maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k`
 
 ### Multiply by 2
 
@@ -729,7 +745,7 @@ if (nums[i] ^ nums[j]) == if (nums[i] != nums[j])
   - 0 == "even" number of times a character has occurred
   - 1 == "odd" number of times a character has occurred
   - We switch between 0 and 1 with the XOR operation ((0 ^ 1) == 1 && (1 ^ 1) == 0)
-  - See 2791.count-paths-that-can-form-a-palindrome-in-a-tree
+  - See `2791.count-paths-that-can-form-a-palindrome-in-a-tree`
 
 - Unique Element Detection
 
@@ -771,7 +787,7 @@ int newMask = mask ^ (1 << j);
 
 #### Toggling Parity
 
-See 3201.find-the-maximum-length-of-valid-subsequence-i
+See `3201.find-the-maximum-length-of-valid-subsequence-i`
 
 ```java
 // V1
@@ -848,7 +864,7 @@ while (!q.isEmpty()) {
 - Use 2 `HashMaps`
   - "tripletToID" which maps above string representation to a `tripletToID.size()` number (id). Note: The trick is to use the size of the hashmap as the ID (size of hashmap == id)
   - "cnt" which maps the **id** to an occurence count
-- See 652.find-duplicate-subtrees
+- See `652.find-duplicate-subtrees`
 
 ```java
 class Solution {
@@ -1402,7 +1418,7 @@ Why floating point numbers can support/represent larger ranges than `long`:
 - Always be careful when performing operations using floating point types such as `double` due to rounding errors
 - If calling `Math.ceil()` on the result of floating point calculation, then we need to **subtract** an epsilon value **BEFORE** calling `Math.ceil()`
   - This is because if `1/3 + 2/3 == 1.000000000001`, then `Math.ceil()` will give `2` instead of `1`
-- See 1883.minimum-skips-to-arrive-at-meeting-on-time
+- See `1883.minimum-skips-to-arrive-at-meeting-on-time`
 
 ```java
 double sum = 0.0;
@@ -1473,7 +1489,7 @@ for (int i = n - 2; i >= 0; i--) {
 
 - 1-Indexed Array means that `index 0 == 1st element == (i is 1)` in terms of counting
 - Will need to use `i+1` when checking for boundaries instead of `i` because everything is shifted forward by 1
-- See 2969.minimum-number-of-coins-for-fruits-ii
+- See `2969.minimum-number-of-coins-for-fruits-ii`
 
 ## Boolean to Integer Hack
 
@@ -1512,7 +1528,7 @@ int dp(int i, int isCurrDigitBound) {
 ## Handling Edge Cases for Memoisation
 
 - Sometimes the initial value (e.g. `-1` CANNOT be used since when we want to store it in dp/memo, it gives an invalid array index)
-  - See 3176.find-the-maximum-length-of-a-good-subsequence-i where we use `[prev+1]`
+  - See `3176.find-the-maximum-length-of-a-good-subsequence-i` where we use `[prev+1]`
 - The fix is to add a check to the `if()` condition to SKIP the first/initial value given
 
 ```java
@@ -1544,7 +1560,7 @@ int dp(int currCol, int prevVal) {
 - However we want use the returned value for addition/subtraction
 - Problem: Integer overflow/underflow with `Integer.MIN_VALUE`
 - Solution: Use `Math.max(dp(nextState), 0)`
-- See 1458.max-dot-product-of-two-subsequences
+- See `1458.max-dot-product-of-two-subsequences`
 
 ```java
 class Solution {
@@ -1633,7 +1649,7 @@ int myExp2(int x) {
   - `n = grid[0].length`
   - We need to use **`n`** (i.e. number of columns) to ensure formula works with non-square matrix/grids (where `grid.length != grid[0].length`)
 - Examples
-  - See 3605.shift-2d-grid
+  - See `3605.shift-2d-grid`
 
 ```java
 int cellToIndex(int i, int j) {
@@ -1647,7 +1663,7 @@ int cellToIndex(int x, int y) {
 
 ## Binary Search on 2D Matrix Using Single Index 'mid'
 
-- See 74.search-a-2d-matrix
+- See `74.search-a-2d-matrix`
   - `m = matrix.length`
   - `n = matrix[0].length`
   - `mid = (left + right) / 2`
@@ -2062,7 +2078,7 @@ class Solution {
 ## Manhattan Distance
 
 - Trick to calculate Manhattan distance is to bfs from target cell to all other cells (since the eventual traversal/path to reach each cell will be the manhattan distance)
-  - See 2812.find-the-safest-path-in-a-grid
+  - See `2812.find-the-safest-path-in-a-grid`
 
 ```java
 int manhattanDistance = Math.abs(x1 - x2) + Math.abs(y1 - y2)
@@ -2085,11 +2101,11 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
-- See 3542.non-negative-prefix-sum
+- See `3542.non-negative-prefix-sum`
 
 ## Bitwise OR `|` for True/False
 
-- See 3098.find-the-sum-of-subsequence-powers
+- See `3098.find-the-sum-of-subsequence-powers`
 
 ## Constants
 
@@ -2106,9 +2122,18 @@ this.memo = std::vector<std::vector<std::vector<long long>>>(nums.size(), std::v
 long long result = -1e15;
 ```
 
+## Division
+
+### Ceil Division
+
+> Add (divisor-1) to dividend
+> `(a + (b-1)) / b`
+> a == Dividend
+> b == Divisor
+
 ## Flatten 2D Matrix into Stateful String and Check Neighbours of currCell
 
-- See 1659.maximize-grid-happiness
+- See `1659.maximize-grid-happiness`
 - `M = matrix.length`
 - `N = matrix[0].length`
 - TOP neighbour = `currIndex - N`
@@ -2125,7 +2150,7 @@ L = LEFT neighbour
 
 ## Index Matching for Modulo Pair Groups
 
-- See 2911.minimum-changes-to-make-k-semi-palindromes
+- See `2911.minimum-changes-to-make-k-semi-palindromes`
 - `if (s.charAt(l + (i * factor) + j) != s.charAt(l + ((subLength - i - 1) * factor) + j)) {}`
 
 ```java
@@ -2159,7 +2184,7 @@ public int numChangesForSemiPalindrome(int l, int r) {
   - Odd indices become even indices and even indices will become odd indices
   - Therefore, on its RIGHT side, the oddIndexSum becomes evenIndexSum and evenIndexSum becomes oddIndexSum
 - Therefore `if (evenIndexSum == oddIndexSum)` becomes `if (evenSumBefore + oddSumAfter == oddSumBefore + evenSumAfter)`
-- See 1664.ways-to-make-a-fair-array
+- See `1664.ways-to-make-a-fair-array`
 
 ## Index Ranges
 
@@ -2236,7 +2261,7 @@ public:
 
 - `k'th` largest = `(n - k)'th` smallest
 - `k'th` smallest = `(n - k)'th` largest
-- See interview-questions/2023/atlassian/q4.java
+- See `interview-questions/2023/atlassian/q4.java`
 
 ## K'th Largest
 
@@ -2457,7 +2482,7 @@ public:
   - Think of tree example, if a there are 3 leaves and each leaf branches off into 2 children, then total combinations is `3\*2`
 - No permutation/combination formula is needed
 - Examples
-  - See 2147.number-of-ways-to-divide-a-long-corridor
+  - `See 2147.number-of-ways-to-divide-a-long-corridor`
 
 ## Brackets
 
@@ -2743,7 +2768,7 @@ class Solution {
 
 ## Division
 
-- When you divide by an amount you are finding per UNIT of the denominator (see 857.minimum-cost-to-hire-k-workers)
+- When you divide by an amount you are finding per UNIT of the denominator (see `857.minimum-cost-to-hire-k-workers`)
   ```java
   // wage[i]/quality[i] = the EXPECTED PAYMENT PER UNIT QUALITY for each worker
   double[] wageToQualityRatio;
@@ -3435,7 +3460,7 @@ std::partial_sum(std::begin(nums), std::end(nums), std::begin(prefixSum) + 1);
 
 ## Comparisons
 
-- If there are `n` comparisons, then there will be `n+1` elements involved (see 978.longest-turbulent-subarray)
+- If there are `n` comparisons, then there will be `n+1` elements involved (see `978.longest-turbulent-subarray`)
 
 # Ranges
 
@@ -3622,6 +3647,12 @@ public int[][] getLongestPalindromicSubseqDP(String s) {
 }
 ```
 
+# String Hashing
+
+> https://cp-algorithms.com/string/string-hashing.html
+
+See `3388.count-beautiful-splits-in-an-array`
+
 # Subsequence
 
 - **Subsequence = A sequence of elements (part of an array) NOT necessarily contiguous/continuous but whose relative ordering IS kept**
@@ -3664,7 +3695,7 @@ public int[][] getLongestPalindromicSubseqDP(String s) {
     - In each recursive `dp(i, k)` call / each dp state, if we need to iterate over ALL of nums which costs `O(N)`
       - `for(int j = i; j < nums.length; j++)`
     - Then time complexity is actually `O(N * K * N)` = `O(N^2 * K)`
-    - See 1959.minimum-total-space-wasted-with-k-resizing-operations
+    - See `1959.minimum-total-space-wasted-with-k-resizing-operations`
 
 # TreeMap
 
@@ -3679,7 +3710,7 @@ public int[][] getLongestPalindromicSubseqDP(String s) {
   - `treeMap.higherEntry(key)`
   - `treeMap.lowerEntry(key)`
 
-- See 2008.maximum-earnings-from-taxi
+- See `2008.maximum-earnings-from-taxi`
 
 # TreeSet
 
@@ -3705,7 +3736,7 @@ public int[][] getLongestPalindromicSubseqDP(String s) {
 - Only in the first run of find will you traverse the whole structure
 - The next time you'll get a direct hit since you set the node's parent to its ultimate root
 - Do NOT use Path Compression if you want to analyse the parent chain of each child to ensure that a certain condition is met
-  - See 1724.checking-existence-of-edge-length-limited-paths-ii
+  - See `1724.checking-existence-of-edge-length-limited-paths-ii`
 
 ## Union by Rank
 

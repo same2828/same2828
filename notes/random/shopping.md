@@ -19,6 +19,7 @@
   - [David Jones](#david-jones)
   - [Myer](#myer)
   - [Glue Store](#glue-store)
+- [Shorts](#shorts)
 - [Shoes](#shoes-1)
   - [Chelsea Boots](#chelsea-boots)
     - [Hush Puppies](#hush-puppies)
@@ -266,6 +267,13 @@ https://www.gluestore.com.au/collections/mens-hoodies?sort=price-ascending&pf_op
 **Sweatshirts**
 
 https://www.gluestore.com.au/collections/mens-sweaters?sort=price-ascending&pf_opt_size=M
+
+# Shorts
+
+5" shorts are a little too short
+6"/7" seems to be sweet spot
+
+Adidas AeroReady Shorts are 41cm length
 
 # Shoes
 

@@ -276,9 +276,16 @@ Map<Integer, List<int[]>> graph = new HashMap<>();
   - I.e. `std::map<int, std::vector<int>> map;`
 
 ```cpp
+// Method 1
 std::vector<std::vector> memo(m, std::vector<int>(n, -1));
+
+// Method 2
 // std::vector<std::vector> memo;
 // this->memo.resize(m, std::vector<int>(n, -1));
+
+// Method 3
+// std::vector<std::vector> memo;
+// this->memo = std::vector<std::vector<int>>(m, std::vector<int>(n, -1)); 
 
 std::unordered_map<int, std::vector<int>> map;
 std::unordered_map<int, std::vector<std::pair<int, int>>> graph;
@@ -332,9 +339,16 @@ for (int[] row : arr) {
 // Size MUST be given when declaring/initialising
 int arr[5][5];
 
-std::vector<std::vector<int>> vec(n, std::vector<int>(n, -1));
-// std::vector<std::vector<int>> vec;
-// vec.resize(n, std::vector<int>(n, -1));
+// Method 1
+std::vector<std::vector<int>> vec(m, std::vector<int>(n, -1));
+
+// Method 2
+// std::vector<std::vector> vec;
+// this->vec.resize(m, std::vector<int>(n, -1));
+
+// Method 3
+// std::vector<std::vector> vec;
+// this->vec = std::vector<std::vector<int>>(m, std::vector<int>(n, -1)); 
 ```
 
 ## Graph

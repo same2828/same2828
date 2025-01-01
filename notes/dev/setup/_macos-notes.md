@@ -6,6 +6,7 @@
     - [iTerm2](#iterm2)
     - [Terminal](#terminal)
     - [Karabiner Elements](#karabiner-elements)
+    - [LibreOffice](#libreoffice)
     - [Librewolf](#librewolf)
     - [Mounty](#mounty)
     - [Rectangle](#rectangle)
@@ -26,6 +27,7 @@
   - [Terminal Commands](#terminal-commands)
     - [System Settings](#system-settings-1)
     - [Dev Environment](#dev-environment)
+      - [OhMyZsh](#ohmyzsh)
       - [Git](#git)
       - [SSH Keys](#ssh-keys)
   - [Web Browser Extensions](#web-browser-extensions)
@@ -87,6 +89,10 @@
 
 Settings > Profiles > MyProfile > Keyboard > Turn ON "Use Option as Meta Key" (Option + Backspace == Delete Whole Line)
 
+Settings > Profiles > MyProfile > ANSI Colors > Change Blue to Cyan
+
+Settings > Profiles > MyProfile > Window Size > Column = 90 && Rows = 22
+
 | Command              | Description                                                                                                  |
 | -------------------- | ------------------------------------------------------------------------------------------------------------ |
 | `Option + Backspace` | Delete Word                                                                                                  |
@@ -145,10 +151,25 @@ left_control -> left_command
 keypad_enter -> return_or_enter
 ```
 
+### LibreOffice
+
+```sh
+brew install --cask libreoffice
+```
+
+- View > User Interface > Tabbed > Apply to All
+- Tools > AutoCorrect Options > Options
+  - Turn OFF
+    - URL recognition
+    - Replace dashes
+    - Correct two initial capitals
+    - Capitalize first letter of every sentence
+    - Correct accidental usage of caps lock key
+
 ### Librewolf
 
 ```sh
-brew install librewolf --no-quarantine
+brew install --cask librewolf --no-quarantine
 xattr -d com.apple.quarantine /Applications/LibreWolf.app
 # brew reinstall librewolf --no-quarantine
 ```
@@ -497,6 +518,19 @@ brew install llvm
 # Adoptium OpenJDK (Eclipse Temurin) > https://adoptium.net/installation/
 brew tap homebrew/homebrew-core
 brew install --cask temurin@21
+```
+
+#### OhMyZsh
+
+Custom Theme without Starship Prompt
+
+```sh
+# Install & paste github/config/.zshrc
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+# Custom theme
+cp $ZSH/themes/robbyrussell.zsh-theme $ZSH_CUSTOM/themes/
+code $ZSH_CUSTOM/themes/robbyrussell.zsh-theme
+# Copy paste config/robbyrussell.zsh-theme
 ```
 
 #### Git
