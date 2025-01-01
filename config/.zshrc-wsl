@@ -67,6 +67,7 @@ zstyle ':omz:update' mode auto      # update automatically without asking
 
 # Silence launching ssh-agent
 zstyle :omz:plugins:ssh-agent quiet yes
+zstyle ':fzf-tab:*' use-fzf-default-opts yes
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -152,17 +153,20 @@ export PATH=$PATH:"/mnt/c/Users/same/AppData/Local/Programs/Microsoft VS Code/bi
 
 # NodeJS
 #-------
-export PATH="$PATH:/home/linuxbrew/.linuxbrew/opt/node@20/bin"
-# export PATH="/opt/homebrew/opt/node@20/bin:$PATH"
+export PATH="$PATH:/home/linuxbrew/.linuxbrew/opt/node@22/bin"
+# export PATH="$PATH:/usr/local/opt/node@22/bin"
+# export PATH="$PATH:/opt/homebrew/opt/node@22/bin"
 
 # FZF
 #----
 # alias f="fzf"
+# export FZF_BASE="/opt/homebrew/bin/fzf"
 # Non FD
 # export FZF_DEFAULT_COMMAND="--walker-skip .git,node_modules,target"
 # export FZF_CTRL_T_COMMAND="--walker-skip .git,node_modules,target"
 # export FZF_CTRL_R_COMMAND="--walker-skip .git,node_modules,target"
 # export FZF_ALT_C_COMMAND="--walker-skip .git,node_modules,target --preview 'tree -C {}'"
+# export FZF_ALT_C_OPTS="--walker-skip .git,node_modules,target --preview 'tree -C {}'"
 # Using FD
 # export FZF_DEFAULT_COMMAND="fd --type f --strip-cwd-prefix --hidden --follow --exclude={'**/.DS_Store/**','**/.dump*/**','**/.git/**','**/.idea/**','**/.npm*/**','**/.nvm/**','**/.pnpm*/**','**/.temp*/**','**/.tmp*/**','**/.vol/**','**/.vscode*/**','**/.yarn*/**','**/Applications/**','**/bin/**','**/build/**','**/cores/**','**/dist/**','**/downloads/**','**/eggs/**','**/etc/**','**/history/**','**/lib/**','**/lib64/**','**/Library/**','**/mnt/**','**/node_modules/**','**/opt/**','**/parts/**','**/private/**','**/sbin/**','**/sdist/**','**/System/**','**/target/**','**/temp/**','**/tmp/**','**/usr/**','**/var/**','**/venv/**','**/Volumes/**','**/wheels/**'}"
 FD_OPTIONS="--strip-cwd-prefix --follow --exclude={'**/.*OneDrive*','**/.android','**/.aws','**/.azure','**/.backup*','**/.bin*','**/.boto','**/.brew','**/.build','**/.bundle','**/.cache*','**/.cfg','**/.CFUserTextEncoding*','**/.classpath','**/.codeium','**/.conf','**/.config','**/.cups','**/.dbus','**/.dist*','**/.docker','**/.dotnet','**/.DS_Store','**/.dump*','**/.editorconfig','**/.eggs','**/.env','**/.factorypath','**/.firebase','**/.font*','**/.git','**/.gitflow*','**/.gradle','**/.hg*','**/.history','**/.homebrew','**/.hushlogin','**/.icloud','**/.idea*','**/.kube/cache','**/.landscape','**/.lemminx','**/.lesshst','**/.linuxbrew','**/.local','**/.localized','**/.m2','**/.matplotlib','**/.mounty','**/.next','**/.node_modules*','**/.node*','**/.nox','**/.npm*','**/.nvm*','**/.oh-my-zsh','**/.out','**/.output','**/.pnpm*','**/.postman','**/.project','**/.python*','**/.settings','**/.sf','**/.sts*','**/.svn','**/.target','**/.temp*','**/.temporary*','**/.temurin*','**/.tldrc','**/.tmp*','**/.tox','**/.trash*','**/.Trash*','**/.venv','**/.vercel','**/.vnc','**/.vol','**/.vscode*','**/.webpack*','**/.yarn*','**/.zcompdump*','**/.zprofile?*','**/.zsh_sessions*','**/.zshrc?*','**/*OneDrive*','**/3D Objects','**/AppData','**/Application*','**/backup*','**/Backup*','**/bin','**/boot','**/build.*','**/build*','**/Build*','**/cache*','**/Cache*','**/certs','**/Certs','**/Chrome Download','**/Chrome*','**/Contacts','**/cores','**/cvmfs','**/CVS','**/Default','**/Desktop','**/dist','**/Documents','**/Drop*Box','**/dump*','**/eggs','**/env','**/etc','**/External*','**/favorite*','**/Favorite*','**/favourite*','**/Favourite*','**/font*','**/Font*','**/Game*','**/history*','**/History*','**/home/(!s3same)','**/home/(!s3same)','**/home/(!s3samedev)','**/home/(!same)','**/htmlcov','**/Idm','**/IDM','**/image*','**/Image*','**/img*','**/InstallArea','**/Intel','**/Lecture*','**/lib','**/Lib','**/lib64','**/Libraries','**/Library*','**/Link*','**/media','**/Media','**/mnt','**/Movies','**/Mp3tag','**/Music','**/node_modules*','**/NVIDIA*','**/opt','**/out','**/output','**/People','**/PerfLogs','**/Personal','**/photo*','**/Photo*','**/pic*','**/Pic*','**/picture*','**/Picture*','**/Postman','**/prebundle','**/private','**/proc','**/Program Files (x86)','**/Program Files','**/ProgramData','**/Public','**/root','**/Root','**/run','**/Saved Games','**/sbin','**/Screenshot*','**/sdist','**/Search*','**/Shared*','**/Sharing*','**/srv','**/Standard Notes*','**/standardnotes*','**/Steam','**/sys','**/System*','**/target.*','**/target*','**/Target*','**/temp*','**/Temp*','**/Thumbs.db','**/tmp*','**/Tmp*','**/Tool*','**/torrent*','**/Torrent*','**/usr','**/Utilities','**/Utility','**/var','**/venv','**/vid*','**/Vid*','**/video*','**/Video*','**/vod*','**/Vod*','**/volumes','**/Volumes','**/vscode*','**/wheels','**/Windows'}"
@@ -171,8 +175,8 @@ export FZF_CTRL_T_COMMAND="fd --hidden $FD_OPTIONS"
 export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
 export FZF_DEFAULT_OPTS='
   --border
-  --color fg:15,bg:0,hl:84,fg+:15,bg+:239,hl+:215
-  --color info:141,prompt:84,spinner:212,pointer:212,marker:212
+  --color fg:15,bg:0,hl:215,fg+:15,bg+:239,hl+:10
+  --color info:141,prompt:10,spinner:212,pointer:212,marker:212
   --height=50%
   --layout=reverse
 '
@@ -183,7 +187,13 @@ export FZF_DEFAULT_OPTS='
 alias j17="export JAVA_HOME=`/usr/libexec/java_home -v 17`; java -version"
 alias j21="export JAVA_HOME=$(/usr/libexec/java_home -v 21); java -version"
 export JAVA_HOME=$(/usr/libexec/java_home -v 21)
-# export JAVA_HOME="/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home",
+# export JAVA_HOME="/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home"
+
+# Python
+#-------
+# export PATH="/opt/homebrew/opt/python@3.13/libexec/bin:$PATH"
+alias python="python3"
+alias py="python3"
 
 # Docker
 #-------
@@ -211,13 +221,73 @@ export VISUAL="$EDITOR"
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:di=1;36" # Prevent highlighting of directories (green background)
 export TZ="Australia/Sydney"
 
+# Custom Functions
+# ----------------
+# Find process ID of process using given port (usage: find-process-on-port 3000)
+fport() {
+  lsof -i :$1
+}
+alias fp="fport"
+# Kill process ID of process using given port (usage: kill-process-on-port 3000)
+kport() {
+  kill -9 $(lsof -t -i:$1)
+}
+alias kpo="kport"
+# Kill given process id PID (usage: kp 1234)
+kpid() {
+  kill -9 $1
+}
+alias kpi="kpid"
+# Show All Processes Owned By User (usage: mine)
+mine() {
+  ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,time,bsdtime,command --sort=-%cpu # Note: --sort=-%cpu does NOT work on macOS
+  # ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,time,bsdtime,command
+}
+# Create directory and cd into it (usage: mkcd dirName)
+mkcd() {
+  mkdir -p "$@"
+  cd "$@"
+}
+# OhMyZSH Override
+git_main_branch() {
+  echo master
+}
+# Upgrade zsh plugins
+zsh-upgrade-plugins() {
+  for dir in "$ZSH/custom/plugins"/*; do
+    if [ -d "$dir/.git" ]; then
+      echo "Updating repository in $dir"
+      cd "$dir"
+      git pull
+      # cd - > /dev/null
+    else
+      echo "$dir is not a git repository"
+    fi
+  done
+}
+# gcb newBranch && gco currBranch
+gcbb() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: gcbo <new-branch-name>"
+    return 1
+  fi
+  local newBranch=$1
+  # local currBranch=$(git rev-parse --abbrev-ref HEAD)
+  local currBranch=$(git_current_branch)
+  git checkout -b "$newBranch" && git checkout "$currBranch"
+}
+alias gcbo="gcbb"
+
 # Aliases
 #--------
 # alias g++="g++-13"
 # alias gcc="gcc-13"
 # alias gcp='(){ ga . && gc -m $1 && gp;}'
+# alias kill='kill -9'
 alias cls="clear"
 alias cpuhogs='ps wwaxr -o pid,stat,%cpu,%mem,time,command | head -10' # Show Top 10 CPU Hogs
+alias egrep="egrep --color=always"
+alias fgrep="fgrep --color=always"
 alias gclean='git reset --hard && git clean -dfx'
 alias gcleano='git fetch --all --prune && git reset --hard origin/$(git_current_branch) && git clean -dfx'
 alias gcmsg!='git commit --amend -m'
@@ -237,69 +307,10 @@ alias gundo='git reset --mixed HEAD~1'
 alias gwta='git worktree add' # cd myRepo && gwta ../targetBranchDir targetBranch
 alias gwtl='git worktree list'
 alias gwtr='git worktree remove' # cd myRepo && gwtr ../targetBranchDir || cd targetBranchDir && gwtr .
-alias ll='ls -AlF --color=auto'
-# alias ll='ls -AoF --color=auto'
+alias ll='ls -AoF --color=auto'
+# alias ll='ls -AlF --color=auto'
 alias ls='ls --color=auto'
 alias lsd='ls -d */'
 alias memhogs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10' # Show Top 10 Memory Hogs
 alias rezsh='source ~/.zshrc'
 alias untar="tar -xvf"
-
-# Custom Functions
-# ----------------
-# List processes that are using a port (usage: findport 3000) [note: the name should be findprocess but findport is faster to type]
-findport() {
-  lsof -i :$1
-}
-# Kill a process that is using a port (usage: killport 3000) [note: the name should be killprocess but killport is faster to type]
-killport() {
-  kill -9 $(lsof -t -i:$1)
-}
-# Show All Processes Owned By User (usage: mine)
-mine() {
-  ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,time,bsdtime,command --sort=-%cpu # Note: --sort=-%cpu does NOT work on macOS
-  # ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,time,bsdtime,command
-}
-# Create directory and cd into it (usage: mkcd dirName)
-mkcd() {
-  mkdir -p "$@"
-  cd "$@"
-}
-# OhMyZSH Override
-git_main_branch() {
-  echo master
-}
-zsh-upgrade-plugins() {
-  for dir in "$ZSH/custom/plugins"/*; do
-    if [ -d "$dir/.git" ]; then
-      echo "Updating repository in $dir"
-      cd "$dir"
-      git pull
-      # cd - > /dev/null
-    else
-      echo "$dir is not a git repository"
-    fi
-  done
-}
-# gcb newBranch && gco currBranch
-gcbo() {
-  if [ $# -ne 1 ]; then
-    echo "Usage: gcbo <new-branch-name>"
-    return 1
-  fi
-  local newBranch=$1
-  # local currBranch=$(git rev-parse --abbrev-ref HEAD)
-  local currBranch=$(git_current_branch)
-  git checkout -b "$newBranch" && git checkout "$currBranch"
-}
-# gcb newBranch && gco currBranch
-gcbb() {
-  if [ $# -ne 1 ]; then
-    echo "Usage: gcbb <new-branch-name>"
-    return 1
-  fi
-  local newBranch=$1
-  # local currBranch=$(git rev-parse --abbrev-ref HEAD)
-  local currBranch=$(git_current_branch)
-  git checkout -b "$newBranch" && git checkout "$currBranch"
-}
