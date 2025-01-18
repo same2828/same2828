@@ -244,6 +244,10 @@ kport() {
     echo "Usage: kport <port-number-to-free>"
     return 1
   fi
+  if [ -z "$(lsof -t -i:$1)" ]; then
+    echo "NO process is using port $1"
+    return 1
+  fi
   kill -9 $(lsof -t -i:$1)
 }
 alias kpo="kport"
@@ -282,8 +286,23 @@ mkcd() {
     echo "Usage: mkcd <directory-name-to-create>"
     return 1
   fi
-  mkdir -p "$@"
-  cd "$@"
+  if [ -d "$1" ]; then
+    echo -en "Delete EXISTING folder \033[1;31m'$1'\033[0m? (y/N): "
+    read -r response
+    # if [[ ! "$response" =~ ^[yY]$ ]] && [[ ! "$response" =~ ^$ ]]; then
+    # if [[ ! "$response" =~ ^[yY]$ ]] && [[ -n "$response" ]]; then
+    if [[ ! "$response" =~ ^[yY]$ ]]; then
+      echo "ERROR: \033[1;31m'$1'\033[0m already exists"
+      return 1
+    else
+      echo -e "\033[1;31mrm -rf '$1'\033[0m && \033[1;32mmkdir -p '$1'\033[0m"
+      rm -rf "$1"
+    fi
+  fi
+  mkdir -p "$1"
+  cd "$1"
+  # mkdir -p "$@"
+  # cd "$@"
 }
 # Open Project with IntelliJ (usage: idea .)
 idea() {
@@ -296,6 +315,7 @@ git_main_branch() {
 # Upgrade Brew Casks
 brew-upgrade-casks() {
   brew upgrade --cask $(brew list --cask)
+  # brew upgrade --cask $(brew outdated --cask --greedy)
 }
 # Upgrade zsh plugins
 zsh-upgrade-plugins() {
@@ -338,21 +358,34 @@ gbdd() {
   local didGitStash=false
   if [ "$currBranch" = "$branchToDelete" ]; then
     echo "Error: You cannot delete the branch you are currently on"
-    echo "Switching to $(git_main_branch) branch"
+    echo -e "Switching to \033[1;32m$(git_main_branch)\033[0m branch"
     git stash --include-untracked && didGitStash=true
     git checkout $(git_main_branch)
   fi
   local branchToDelete=$1
-  git fetch --all --prune --tags --force > /dev/null 2>&1 
-  git branch -D "$branchToDelete" && git push origin --delete "$branchToDelete"
+  git fetch --all --prune --tags --force > /dev/null 2>&1
+  echo -en "Confirm deletion of branch \033[1;31m'$branchToDelete'\033[0m in both LOCAL and REMOTE? [y/N]: "
+  # echo -en "Confirm deletion of \033[1;31mlocal/$branchToDelete\033[0m && \033[1;31mremote/$branchToDelete\033[0m? [y/N]: "
+  # echo -en "Confirm deletion of \033[1;31mlocal:$branchToDelete\033[0m && \033[1;31mremote:$branchToDelete\033[0m? [y/N]: "
+  read -r response
+  # if [[ ! "$response" =~ ^[yY]$ ]] && [[ ! "$response" =~ ^$ ]]; then
+  # if [[ ! "$response" =~ ^[yY]$ ]] && [[ -n "$response" ]]; then
+  if [[ ! "$response" =~ ^[yY]$ ]]; then
+    echo "Branch deletion cancelled"
+    return 1
+  else
+    # echo -e "Deleting \033[1;31mlocal/$branchToDelete\033[0m && \033[1;31mremote/$branchToDelete\033[0m"
+    # echo -e "Deleting \033[1;31mlocal:$branchToDelete\033[0m && \033[1;31mremote:$branchToDelete\033[0m"
+    # echo -e "Deleted branch \033[1;31m'$branchToDelete'\033[0m in both LOCAL and REMOTE"
+    echo -e "Deleted branch \033[1;31m'$branchToDelete'\033[0m"
+    git branch -D "$branchToDelete" && git push origin --delete "$branchToDelete"
+  fi
   if [ "$didGitStash" = true ]; then
     git stash pop
   fi
 }
 alias gbDd="gbdd"
 alias gbDD="gbdd"
-alias gbdr="gbdd"
-alias gbDr="gbdd"
 # gcb newBranch && gco currBranch (used for git worktree workflow) [usage: gcbb newBranch]
 gcbb() {
   if [ $# -ne 1 ]; then
@@ -362,6 +395,10 @@ gcbb() {
   local newBranch=$1
   # local currBranch=$(git rev-parse --abbrev-ref HEAD)
   local currBranch=$(git_current_branch)
+  if [ "$currBranch" = "$newBranch" ] || git show-ref --verify --quiet refs/heads/"$newBranch"; then
+    echo -e "ERROR: Branch \033[1;31m'$newBranch'\033[0m already exists"
+    return 1
+  fi
   git checkout -b "$newBranch" && git checkout "$currBranch"
 }
 alias gcbo="gcbb"
@@ -370,11 +407,24 @@ gundo() {
     echo "Usage: gundo <number-of-commits-to-rewind>"
     return 1
   fi
+  if ! [[ "$1" =~ ^[1-9][0-9]*$ ]]; then
+    echo "ERROR: Input must a number > 0"
+    return 1
+  fi
+  # totalNumCommits=$(git rev-list --count HEAD)
+  # if [ "$1" -gt "$totalNumCommits" ]; then
+  #   echo -e "ERROR: Cannot undo \033[1;31m$1\033[0m commits (only \033[1;32m$totalNumCommits\033[0m commits exist)"
+  #   return 1
+  # fi
   git reset --mixed HEAD~$1
 }
 safe-git-stash-pop() {
+  if [ $# -ne 1 ] && ! [ -d ".git" ]; then
+    echo -e "ERROR: \033[1;31m$(basename $(pwd))\033[0m is NOT a git repository, skipping"
+    return 1
+  fi
   # Try to apply stash without committing it
-  local dir=$1
+  local dir=${1:-$(basename $(pwd))}
   if git stash show -p | git apply --check 2>/dev/null; then
     echo -e "\033[1;33mPopping from stash:\033[0m"
     for file in $(git stash show --name-only); do
@@ -383,7 +433,7 @@ safe-git-stash-pop() {
     done
     git stash pop > /dev/null 2>&1
   else
-    echo -e "\033[1;31mWarning: Stash conflicts detected in \"$dir\"\033[0m (use 'git stash show -p' to see changes && use 'git stash pop' when ready to merge)"
+    echo -e "\033[1;31mWARNING: Stash conflicts detected in \"$dir\"\033[0m (use 'git stash show -p' to see changes && use 'git stash pop' when ready to merge)"
   fi
 }
 alias can-gstp="safe-git-stash-pop"
@@ -418,6 +468,7 @@ alias gl-repos="update-git-repos"
 
 # Git Aliases
 #------------
+alias gbd!='git branch -D'
 alias gclean='git reset --hard && git clean -dfx'
 alias gcleano='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -dfx'
 alias gcmsg!='git commit --amend -m'
