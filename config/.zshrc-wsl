@@ -132,7 +132,7 @@ source $ZSH/oh-my-zsh.sh
 bindkey '^j' autosuggest-toggle
 bindkey '^k' toggle-fzf-tab
 # Enforce < 81 character limit
-ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*gcmsg '*|*gcmsg \"*|(brew (install|uninstall|info|tap)|cat|cd|codium|curl|echo|fetch|git (add|branch|checkout|clone|merge|rebase|remote)|ga|gc|gca|gcam|gcas|gcasm|gcb|gcl|gcmsg|gco|gcs|gcsm|git commit -(am|m)|mkdir|mv|npm (install|uninstall|link|unlink)|npx|pnpm (add|remove|install|uninstall|link|unlink|up|update|upgrade)|sh|wget|yarn (add|remove|link|unlink|up)|youtube-dl) *)"
+ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*gcmsg '*|*gcmsg \"*|*gc!*|*gcmsg!*|(brew (install|uninstall|info|tap)|cat|cd|codium|cude|curl|echo|fetch|git (add|branch|checkout|clone|merge|rebase|remote)|ga|gc|gca|gcam|gcas|gcasm|gcb|gcl|gcmsg|gco|gcs|gcsm|git commit -(am|m)|mkdir|mv|npm (install|uninstall|link|unlink)|npx|pnpm (add|remove|install|uninstall|link|unlink|up|update|upgrade)|sh|wget|yarn (add|remove|link|unlink|up)|youtube-dl) *)"
 
 # Homebrew
 #---------
@@ -150,6 +150,12 @@ eval "$(starship init zsh)"
 #-------
 export PATH=$PATH:"/mnt/c/Users/same/AppData/Local/Programs/Microsoft VS Code/bin"
 # export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
+# NVM
+#----
+# export NVM_DIR="$HOME/.nvm"
+# [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+# [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 # NodeJS
 #-------
@@ -223,52 +229,134 @@ export TZ="Australia/Sydney"
 
 # Custom Functions
 # ----------------
-# Find process ID of process using given port (usage: find-process-on-port 3000)
+# Find process ID of process using given port (usage: find-process-id-on-port 3000)
 fport() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: fport <port-number-to-search>"
+    return 1
+  fi
   lsof -i :$1
 }
 alias fp="fport"
 # Kill process ID of process using given port (usage: kill-process-on-port 3000)
 kport() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: kport <port-number-to-free>"
+    return 1
+  fi
   kill -9 $(lsof -t -i:$1)
 }
 alias kpo="kport"
+alias freeport="kport"
+alias freepo="kport"
+alias freep="kport"
 # Kill given process id PID (usage: kp 1234)
 kpid() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: kpid <pid-to-kill>"
+    return 1
+  fi
   kill -9 $1
 }
 alias kpi="kpid"
 # Show All Processes Owned By User (usage: mine)
 mine() {
-  ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,time,bsdtime,command --sort=-%cpu # Note: --sort=-%cpu does NOT work on macOS
-  # ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,time,bsdtime,command
+  ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,command | sort -k 2 -r | awk '{ $5=substr($5,1,70); for(i=6;i<=NF;i++) $5=$5" "$i; $5=substr($5,1,70); NF=5; printf "%5s %4s %4s %7s %-70s\n", $1, $2, $3, $4, $5 }'
+  # ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,command | sort -k 2 -r | awk '{ $5=substr($5,1,70); for(i=6;i<=NF;i++) $5=$5" "$i; $5=substr($5,1,70); NF=5; print }'
+  # ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,time,bsdtime,command --sort=-%cpu # Note: --sort=-%cpu does NOT work on macOS
+  # ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,time,etime,command | sort -k 2 -r # Note: bsdtime does NOT work on macOS
+  # ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,time,etime,command | sort -k 2 -r | awk '{ $7=substr($7,1,70); for(i=8;i<=NF;i++) $7=$7" "$i; $7=substr($7,1,70); NF=7; print }'
+  # ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,time,etime,command | sort -k 2 -r | awk '{ $7=substr($7,1,70); for(i=8;i<=NF;i++) $7=$7" "$i; $7=substr($7,1,70); NF=7; print $1 " | " $2 " | " $3 " | " $4 " | " $5 " | " $6 " | " $7 }'
+}
+# Show Top 15 CPU Hogs (usage: cpuhogs)
+cpuhogs() {
+  ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,command | sort -k 2 -r | head -15 | awk '{ $5=substr($5,1,70); for(i=6;i<=NF;i++) $5=$5" "$i; $5=substr($5,1,70); NF=5; printf "%5s %4s %4s %7s %-70s\n", $1, $2, $3, $4, $5 }'
+}
+# Show Top 15 Memory Hogs (usage: memhogs)
+memhogs() {
+  ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,command | sort -k 3 -r | head -15 | awk '{ $5=substr($5,1,70); for(i=6;i<=NF;i++) $5=$5" "$i; $5=substr($5,1,70); NF=5; printf "%5s %4s %4s %7s %-70s\n", $1, $2, $3, $4, $5 }'
 }
 # Create directory and cd into it (usage: mkcd dirName)
 mkcd() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: mkcd <directory-name-to-create>"
+    return 1
+  fi
   mkdir -p "$@"
   cd "$@"
+}
+# Open Project with IntelliJ (usage: idea .)
+idea() {
+  open -a "IntelliJ IDEA CE" "$1"
 }
 # OhMyZSH Override
 git_main_branch() {
   echo master
 }
+# Upgrade Brew Casks
+brew-upgrade-casks() {
+  brew upgrade --cask $(brew list --cask)
+}
 # Upgrade zsh plugins
 zsh-upgrade-plugins() {
   for dir in "$ZSH/custom/plugins"/*; do
     if [ -d "$dir/.git" ]; then
-      echo "Updating repository in $dir"
+      pluginName=$(basename "$dir")
+      echo -e "Updating: \033[1;32m$pluginName\033[0m"
       cd "$dir"
-      git pull
+      git pull --rebase --autostash
       # cd - > /dev/null
     else
-      echo "$dir is not a git repository"
+      echo "$(basename "$dir") is NOT a git repository"
     fi
   done
+  cd
 }
-# gcb newBranch && gco currBranch
+alias omz-upgrade-plugins="zsh-upgrade-plugins"
+# Change Java JDK version (usage: jdk 17)
+jdk() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: jdk <java-jdk-version-to-use>"
+    return 1
+  fi
+  echo "Switching Java JDK to: $1";
+  export JAVA_HOME=$(/usr/libexec/java_home -v $1)
+  echo "\$JAVA_HOME:" $JAVA_HOME
+  echo "\$(java -version):"
+  echo "------------------"
+  java -version
+  echo "------------------"
+}
+# Delete both local and remote branch (usage: gbdd branchNameToDelete)
+gbdd() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: gbdd <branch-to-delete-name>"
+    return 1
+  fi
+  # local currBranch=$(git rev-parse --abbrev-ref HEAD)
+  local currBranch=$(git_current_branch)
+  local didGitStash=false
+  if [ "$currBranch" = "$branchToDelete" ]; then
+    echo "Error: You cannot delete the branch you are currently on"
+    echo "Switching to $(git_main_branch) branch"
+    git stash --include-untracked && didGitStash=true
+    git checkout $(git_main_branch)
+  fi
+  local branchToDelete=$1
+  git fetch --all --prune --tags --force > /dev/null 2>&1 
+  git branch -D "$branchToDelete" && git push origin --delete "$branchToDelete"
+  if [ "$didGitStash" = true ]; then
+    git stash pop
+  fi
+}
+alias gbDd="gbdd"
+alias gbDD="gbdd"
+alias gbdr="gbdd"
+alias gbDr="gbdd"
+# gcb newBranch && gco currBranch (used for git worktree workflow) [usage: gcbb newBranch]
 gcbb() {
   if [ $# -ne 1 ]; then
-    echo "Usage: gcbo <new-branch-name>"
+    echo "Usage: gcbb <new-branch-name>"
     return 1
   fi
   local newBranch=$1
@@ -277,40 +365,110 @@ gcbb() {
   git checkout -b "$newBranch" && git checkout "$currBranch"
 }
 alias gcbo="gcbb"
+gundo() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: gundo <number-of-commits-to-rewind>"
+    return 1
+  fi
+  git reset --mixed HEAD~$1
+}
+safe-git-stash-pop() {
+  # Try to apply stash without committing it
+  local dir=$1
+  if git stash show -p | git apply --check 2>/dev/null; then
+    echo -e "\033[1;33mPopping from stash:\033[0m"
+    for file in $(git stash show --name-only); do
+      # echo -e "\e[1;31m- Modified: $file\e[0m"
+      echo -e "\033[1;31m- Modified: $file\033[0m"
+    done
+    git stash pop > /dev/null 2>&1
+  else
+    echo -e "\033[1;31mWarning: Stash conflicts detected in \"$dir\"\033[0m (use 'git stash show -p' to see changes && use 'git stash pop' when ready to merge)"
+  fi
+}
+alias can-gstp="safe-git-stash-pop"
+update-git-repos() {
+  local startDir=$(pwd)
+  for dir in */; do
+    if [ -d "$dir" ]; then
+      # Strip trailing slash
+      dir=${dir%/}
+      cd "$dir" || continue
+      if [ -d ".git" ]; then
+        # echo -e "Updating: \e[1;32m$dir\e[0m"
+        echo -e "Updating: \033[1;32m$dir\033[0m"
+        if [ -n "$(git status --porcelain)" ]; then
+          git stash --include-untracked > /dev/null 2>&1
+        fi
+        # git fetch --all --prune --tags --force && git pull --rebase --autostash
+        # git fetch --all --prune --tags --force > /dev/null 2>&1 && git pull --rebase --autostash > /dev/null 2>&1
+        git fetch --all --prune --tags --force > /dev/null 2>&1 && git pull --rebase --autostash
+        if [ $(git stash list | wc -l) -gt 0 ]; then
+          safe-git-stash-pop "$dir"
+        fi
+      else
+        echo -e "\033[1;33m$dir\033[0m is NOT a git repository, skipping"
+      fi
+      cd "$startDir"
+      echo ""
+    fi
+  done
+}
+alias gl-repos="update-git-repos"
 
-# Aliases
-#--------
-# alias g++="g++-13"
-# alias gcc="gcc-13"
-# alias gcp='(){ ga . && gc -m $1 && gp;}'
-# alias kill='kill -9'
-alias cls="clear"
-alias cpuhogs='ps wwaxr -o pid,stat,%cpu,%mem,time,command | head -10' # Show Top 10 CPU Hogs
-alias egrep="egrep --color=always"
-alias fgrep="fgrep --color=always"
+# Git Aliases
+#------------
 alias gclean='git reset --hard && git clean -dfx'
-alias gcleano='git fetch --all --prune && git reset --hard origin/$(git_current_branch) && git clean -dfx'
+alias gcleano='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -dfx'
 alias gcmsg!='git commit --amend -m'
 alias gf='git fetch --all --prune'
+alias gfa='git fetch --all --prune'
+alias gf!='git fetch --all --prune --tags --force'
 alias gl="git pull --rebase --autostash"
 alias glo="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M%p'"
 alias glo2="git log --graph --oneline --decorate --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M%p'"
 alias glo3="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(magenta)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M:%S%p'"
-alias grep='grep --color=always'
-alias gstash='git stash --all'
+alias gpf="git push --force-with-lease --force-if-includes"
+alias gpf!="git push --force-with-lease --force-if-includes"
+alias gpf!!="git push --force"
+alias gpff="git push --force"
+alias gstash='git stash --include-untracked'
 alias gstashp='git stash pop'
-alias gsth='git stash --all'
+alias gsth='git stash --include-untracked'
 alias gstp='git stash pop'
-alias gstsh='git stash --all'
+alias gstsh='git stash --include-untracked'
 alias gstshp='git stash pop'
-alias gundo='git reset --mixed HEAD~1'
+alias gundo1='git reset --mixed HEAD~1'
+alias gundo!='git reset --hard ORIG_HEAD' # Undo's the gundo (note: ORIG_HEAD is a reference that points to the previous state of HEAD before disruptive operations like git reset, git rebase, git merge)
 alias gwta='git worktree add' # cd myRepo && gwta ../targetBranchDir targetBranch
-alias gwtl='git worktree list'
-alias gwtr='git worktree remove' # cd myRepo && gwtr ../targetBranchDir || cd targetBranchDir && gwtr .
-alias ll='ls -AoF --color=auto'
+alias gwtl='git worktree list' # (cd myRepo || cd targetBranchDir) && gwtl
+alias gwtr='git worktree remove' # (cd myRepo && gwtr ../targetBranchDir) || (cd targetBranchDir && gwtr .)
+
+# VSCodium > VSCode
+#--------------------
+# alias code="codium"
+# alias vscode="code"
+# alias vcode="code"
+
+# Aliases
+#--------
+# alias cpuhogs='ps wwaxr -o pid,stat,%cpu,%mem,time,command | head -10' # Show Top 10 CPU Hogs
+# alias gcp='(){ ga . && gc -m $1 && gp; }'
+# alias kill='kill -9'
 # alias ll='ls -AlF --color=auto'
+# alias memhogs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10' # Show Top 10 Memory Hogs
+alias brew-outdated-cask="brew update > /dev/null 2>&1 && brew outdated --cask --greedy"
+alias brew-outdated="brew update > /dev/null 2>&1 && brew outdated --greedy"
+alias brew-update="brew update > /dev/null 2>&1 && brew outdated --greedy"
+alias cls="clear"
+alias cude="codium"
+alias egrep="egrep --color=always"
+alias fgrep="fgrep --color=always"
+alias g++="g++-13"
+alias gcc="gcc-13"
+alias grep='grep --color=always'
+alias ll='ls -AoF --color=auto'
 alias ls='ls --color=auto'
 alias lsd='ls -d */'
-alias memhogs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10' # Show Top 10 Memory Hogs
 alias rezsh='source ~/.zshrc'
 alias untar="tar -xvf"
