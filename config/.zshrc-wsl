@@ -151,6 +151,41 @@ eval "$(starship init zsh)"
 export PATH=$PATH:"/mnt/c/Users/same/AppData/Local/Programs/Microsoft VS Code/bin"
 # export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 
+# FNM
+#----
+# export PATH="$HOME/.fnm:$PATH" # Only needed if fnm installed via CLI and NOT with Homebrew
+eval "$(fnm env --use-on-cd --shell zsh)"
+function fnm() {
+  # Extends fnm with the subcommand "upgrade"
+  # https://github.com/Schniz/fnm/issues/781#issuecomment-2482846772
+  if [[ $1 == "upgrade" ]]; then
+    local matched_verions=()
+    local pattern_match_version="* v$2"
+    local pattern_match_system="* system $2"
+    local is_system=0
+    local line=""
+    command fnm ls | while read LINE; do
+      line=${LINE}
+      if (( $line[(I)$pattern_match_version] )); then
+        matched_verions+=${${${line#* v}%% *}%% default}
+      fi
+      if (( $line[(I)$pattern_match_system] )); then
+        is_system=1
+      fi
+    done
+    for version in $matched_verions; do
+      command fnm uninstall $version
+    done
+    command fnm install "$2"
+    if (( $is_system )); then
+      echo "Re-alias system default version"
+      command fnm alias system $2
+    fi
+  else
+    command fnm "$@"
+  fi
+}
+
 # NVM
 #----
 # export NVM_DIR="$HOME/.nvm"
@@ -159,7 +194,7 @@ export PATH=$PATH:"/mnt/c/Users/same/AppData/Local/Programs/Microsoft VS Code/bi
 
 # NodeJS
 #-------
-export PATH="$PATH:/home/linuxbrew/.linuxbrew/opt/node@22/bin"
+# export PATH="$PATH:/home/linuxbrew/.linuxbrew/opt/node@22/bin"
 # export PATH="$PATH:/usr/local/opt/node@22/bin"
 # export PATH="$PATH:/opt/homebrew/opt/node@22/bin"
 
@@ -209,6 +244,10 @@ alias dc="docker compose"
 # Kubernetes
 #-----------
 alias k="kubectl"
+alias kctx="kubectx"
+alias kcx="kubectx"
+alias kx="kubectx"
+alias kns="kubens"
 alias kgpo="kubectl get pods"
 alias kgpon="kubectl get pods -n"
 alias kgpow="kubectl get pods --watch"
@@ -226,6 +265,12 @@ export EDITOR="code --wait"
 export VISUAL="$EDITOR"
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:di=1;36" # Prevent highlighting of directories (green background)
 export TZ="Australia/Sydney"
+
+# VSCodium > VSCode
+#--------------------
+# alias code="codium"
+# alias vscode="code"
+# alias vcode="code"
 
 # Custom Functions
 # ----------------
@@ -418,7 +463,24 @@ gundo() {
   # fi
   git reset --mixed HEAD~$1
 }
+# Either a git repository (.git folder) or git worktree repository (.git file && .gitignore file) [usage: is-git-repo; echo $?]
+is-git-repo() {
+  # V1
+  [ -d ".git" ] || { [ -f ".git" ] && [ -f ".gitignore" ]; } && return 0 || return 1
+  # [ -d ".git" ] || ([ -f ".git" ] && [ -f ".gitignore" ]) && return 0 || return 1
+  # V2
+  # [ -d ".git" ] || { [ -f ".git" ] && [ -f ".gitignore" ]; }
+  # [ -d ".git" ] || ([ -f ".git" ] && [ -f ".gitignore" ])
+  # return $?
+}
+is-not-git-repo() {
+  ! { [ -d ".git" ] || { [ -f ".git" ] && [ -f ".gitignore" ]; } } && return 0 || return 1
+  # ! ( [ -d ".git" ] || ([ -f ".git" ] && [ -f ".gitignore" ]) ) && return 0 || return 1
+}
 safe-git-stash-pop() {
+  # if [ $# -ne 1 ] && ! { [ -d ".git" ] || { [ -f ".git" ] && [ -f ".gitignore" ]; } }; then
+  # if [ $# -ne 1 ] && ! ( [ -d ".git" ] || ([ -f ".git" ] && [ -f ".gitignore" ]) ); then
+  # if [ $# -ne 1 ] && ! is-git-repo; then
   if [ $# -ne 1 ] && ! [ -d ".git" ]; then
     echo -e "ERROR: \033[1;31m$(basename $(pwd))\033[0m is NOT a git repository, skipping"
     return 1
@@ -444,6 +506,9 @@ update-git-repos() {
       # Strip trailing slash
       dir=${dir%/}
       cd "$dir" || continue
+      # if [ -d ".git" ] || ([ -f ".git" ] && [ -f ".gitignore" ]); then
+      # if [ -d ".git" ] || { [ -f ".git" ] && [ -f ".gitignore" ]; }; then
+      # if is-git-repo; then
       if [ -d ".git" ]; then
         # echo -e "Updating: \e[1;32m$dir\e[0m"
         echo -e "Updating: \033[1;32m$dir\033[0m"
@@ -481,7 +546,8 @@ alias glo2="git log --graph --oneline --decorate --pretty='%C(yellow)%h %C(cyan)
 alias glo3="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(magenta)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M:%S%p'"
 alias gpf="git push --force-with-lease --force-if-includes"
 alias gpf!="git push --force-with-lease --force-if-includes"
-alias gpf!!="git push --force"
+alias gpF!="git push --force"
+alias gpf@="git push --force"
 alias gpff="git push --force"
 alias gstash='git stash --include-untracked'
 alias gstashp='git stash pop'
@@ -494,12 +560,6 @@ alias gundo!='git reset --hard ORIG_HEAD' # Undo's the gundo (note: ORIG_HEAD is
 alias gwta='git worktree add' # cd myRepo && gwta ../targetBranchDir targetBranch
 alias gwtl='git worktree list' # (cd myRepo || cd targetBranchDir) && gwtl
 alias gwtr='git worktree remove' # (cd myRepo && gwtr ../targetBranchDir) || (cd targetBranchDir && gwtr .)
-
-# VSCodium > VSCode
-#--------------------
-# alias code="codium"
-# alias vscode="code"
-# alias vcode="code"
 
 # Aliases
 #--------
@@ -514,6 +574,8 @@ alias brew-update="brew update > /dev/null 2>&1 && brew outdated --greedy"
 alias cls="clear"
 alias cude="codium"
 alias egrep="egrep --color=always"
+alias finder="explorer.exe"
+alias open="explorer.exe"
 alias fgrep="fgrep --color=always"
 alias g++="g++-13"
 alias gcc="gcc-13"
