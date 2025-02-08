@@ -97,6 +97,7 @@
 - Inner/Nested containers are **INITIALISED** initialised and empty by default
 - CPP arguments (args) are **passed by value** (copy constructed) by default
   - CPP arguments (args) can be "passed by reference" if `&` is prepended to arguments (args)
+- `memset(memo, INT_MIN, sizeof(memo));` does NOT work since `memset()` fills memory byte by byte with a value between 0-255 (can only use `memset` for -1)
 - `bool` values `true` and `false` are mapped to `int` values `1` and `0` respectively
 
   - `true == 1`
@@ -285,7 +286,7 @@ std::vector<std::vector> memo(m, std::vector<int>(n, -1));
 
 // Method 3
 // std::vector<std::vector> memo;
-// this->memo = std::vector<std::vector<int>>(m, std::vector<int>(n, -1)); 
+// this->memo = std::vector<std::vector<int>>(m, std::vector<int>(n, -1));
 
 std::unordered_map<int, std::vector<int>> map;
 std::unordered_map<int, std::vector<std::pair<int, int>>> graph;
@@ -348,7 +349,7 @@ std::vector<std::vector<int>> vec(m, std::vector<int>(n, -1));
 
 // Method 3
 // std::vector<std::vector> vec;
-// this->vec = std::vector<std::vector<int>>(m, std::vector<int>(n, -1)); 
+// this->vec = std::vector<std::vector<int>>(m, std::vector<int>(n, -1));
 ```
 
 ## Graph

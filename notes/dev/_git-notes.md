@@ -3,19 +3,20 @@
 - [Table of Contents](#table-of-contents)
 - [Update My Repositories](#update-my-repositories)
 - [Git Commands](#git-commands)
-  - [Git Add](#git-add)
-  - [Git Commit](#git-commit)
+  - [`git add`](#git-add)
+  - [`git cherry-pick`](#git-cherry-pick)
+  - [`git commit`](#git-commit)
     - [Fixing Commits using `git commit --fixup <commitHash>` + `git rebase -i --autosquash`](#fixing-commits-using-git-commit---fixup-commithash--git-rebase--i---autosquash)
   - [Git Branches](#git-branches)
-  - [Git Rebase](#git-rebase)
+  - [`git rebase`](#git-rebase)
     - [Rebasing `feature` branch on `master`](#rebasing-feature-branch-on-master)
     - [Deleting Commits](#deleting-commits)
     - [Editing Commits](#editing-commits)
     - [Splitting Commits](#splitting-commits)
     - [Squashing Commits](#squashing-commits)
-  - [Git Remote](#git-remote)
-  - [Git Reset](#git-reset)
-  - [Git Rm](#git-rm)
+  - [`git remote`](#git-remote)
+  - [`git reset`](#git-reset)
+  - [`git rm`](#git-rm)
 - [Git Workflow](#git-workflow)
   - [Remove Most Recent Commit + Unstage \& Leave Changes in Working Directory](#remove-most-recent-commit--unstage--leave-changes-in-working-directory)
   - [Reset Repository](#reset-repository)
@@ -31,6 +32,7 @@
   - [SSH Keys for Multiple GitHub Accounts](#ssh-keys-for-multiple-github-accounts)
 - [Miscellaneous](#miscellaneous)
   - [Force Git to Pickup Change in Case](#force-git-to-pickup-change-in-case)
+  - [Fix `git fetch` would Clobber Existing Tags](#fix-git-fetch-would-clobber-existing-tags)
 - [OhMyZsh Git Shortcuts](#ohmyzsh-git-shortcuts)
 
 # Update My Repositories
@@ -41,7 +43,7 @@ cd ~/github/lc-topics && gl && cd ../lc-all && gl && cd ../notes && gl && cd ../
 
 # Git Commands
 
-## Git Add
+## `git add`
 
 ```sh
 # Add all files
@@ -56,7 +58,30 @@ git add github/notes/dev/*
 ga **/*.java
 ```
 
-## Git Commit
+## `git cherry-pick`
+
+Scenario
+
+- I have made `commit-a` on `master`
+- I have branched off `master` to create `branch2` and made commits `commit-b`, `commit-c` on `branch2`
+- We found errors with `commit-a` on `master` and have reverted/deleted `commit-a` and made new commits `fix1` and `fix2` on `master`
+- After fixing `master`, I have created a new branch `branch3` from `master`
+- How do I get commits `commit-b` and `commit-c` from `branch2` into `branch3`?
+
+Solution
+
+- To get commits `commit-b` and `commit-c` from `branch2` into `branch3`, use `git cherry-pick`
+
+```sh
+# Check out branch3
+git checkout branch3
+# Cherry-pick the commits from branch2
+# git cherry-pick <commit-b-hash>
+# git cherry-pick <commit-c-hash>
+git cherry-pick <commit-b-hash> <commit-c-hash>
+```
+
+## `git commit`
 
 ### Fixing Commits using `git commit --fixup <commitHash>` + `git rebase -i --autosquash`
 
@@ -181,7 +206,7 @@ git fetch --prune
 # git remote update --prune
 ```
 
-## Git Rebase
+## `git rebase`
 
 - Can either do
   - `git rebase HEAD~n` (where `n` is number of commits GO BACK FROM `HEAD`, so if fixing the previous `3` commits then `n` should be `3` [i.e. we jump back 3 commits from `HEAD` back to the `4th` commit in desc order (inclusive)]) (where `n` is number of commits to go back from HEAD to reach the commit to go back to)
@@ -462,7 +487,7 @@ added tests and improved syntax
 #
 ```
 
-## Git Remote
+## `git remote`
 
 ```sh
 git remote -v
@@ -472,7 +497,7 @@ git remote set-url origin <insert-git-ssh-url-here>
 git remote show origin
 ```
 
-## Git Reset
+## `git reset`
 
 ```sh
 # Undo the `git commit`
@@ -493,7 +518,7 @@ git reset HEAD^ --hard
 git reset HEAD~1 --hard
 ```
 
-## Git Rm
+## `git rm`
 
 ```sh
 git rm --cached .DS_Store
@@ -753,44 +778,67 @@ git mv oldFileName newFileName
 git config core.ignorecase false
 ```
 
+## Fix `git fetch` would Clobber Existing Tags
+
+```sh
+git fetch --tags --force
+git fetch --all --tags --force
+```
+
 # OhMyZsh Git Shortcuts
 
-| Shortcut  | Git Command                                                                                                                   |
-| --------- | ----------------------------------------------------------------------------------------------------------------------------- |
-| `ga`      | `git add`                                                                                                                     |
-| `gaa`     | `git add --all`                                                                                                               |
-| `gb`      | `git branch`                                                                                                                  |
-| `gba`     | `git branch -a`                                                                                                               |
-| `gbd`     | `git branch -d`                                                                                                               |
-| `gbD`     | `git branch -D`                                                                                                               |
-| `gcam`    | `git commit -a -m`                                                                                                            |
-| `gcb`     | `git checkout -b`                                                                                                             |
-| `gclean`  | `git reset --hard && git clean -dfx`                                                                                          |
-| `gcleano` | `git fetch --all --prune && git reset --hard origin/master && git clean -dfx`                                                 |
-| `gcmsg`   | `git commit -m`                                                                                                               |
-| `gcmsg!`  | `git commit --amend -m`                                                                                                       |
-| `gco`     | `git checkout`                                                                                                                |
-| `gf`      | `git fetch`                                                                                                                   |
-| `gfa`     | `git fetch --all --prune`                                                                                                     |
-| `ggu`     | `git pull --rebase origin $(current_branch)`                                                                                  |
-| `gl`      | `git pull`                                                                                                                    |
-| `glo`     | `git log --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN%Cgreen%d %Creset%s' --date=format:'%d/%m/%y %I:%M%P'` (`%p` for macOS) |
-| `gp`      | `git push`                                                                                                                    |
-| `gpf`     | `git push --force-with-lease`                                                                                                 |
-| `gpf!`    | `git push --force`                                                                                                            |
-| `gpsup`   | `git push --set-upstream origin $(git_current_branch)`                                                                        |
-| `grb`     | `git rebase`                                                                                                                  |
-| `grba`    | `git rebase --abort`                                                                                                          |
-| `grbc`    | `git rebase --continue`                                                                                                       |
-| `grbi`    | `git rebase -i`                                                                                                               |
-| `grhh`    | `git reset --hard`                                                                                                            |
-| `groh`    | `git reset origin/$(git_current_branch) --hard`                                                                               |
-| `gst`     | `git stash`                                                                                                                   |
-| `gstall`  | `git stash --all`                                                                                                             |
-| `gstash`  | `git stash --all`                                                                                                             |
-| `gstashp` | `git stash pop`                                                                                                               |
-| `gstp`    | `git stash pop`                                                                                                               |
-| `gundo`   | `git reset --mixed HEAD~1`                                                                                                    |
+| Shortcut  | Git Command                                                                                                                             |
+| --------- | --------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `ga`      | `git add`                                                                                                                               |                                                                                                                                                                 |
+| `gaa`     | `git add --all`                                                                                                                         |                                                                                                                                                                 |
+| `gb`      | `git branch`                                                                                                                            |                                                                                                                                                                 |
+| `gba`     | `git branch -a`                                                                                                                         |                                                                                                                                                                 |
+| `gbd`     | `git branch -d`                                                                                                                         |                                                                                                                                                                 |
+| `gbD`     | `git branch -D`                                                                                                                         |                                                                                                                                                                 |
+| `gbd!`    | `git branch -D`                                                                                                                         |                                                                                                                                                                 |
+| `gc!`     | `git commit --verbose --amend`                                                                                                          |                                                                                                                                                                 |
+| `gcam`    | `git commit -a -m`                                                                                                                      |                                                                                                                                                                 |
+| `gcb`     | `git checkout -b`                                                                                                                       |                                                                                                                                                                 |
+| `gclean`  | `git reset --hard && git clean -dfx`                                                                                                    |                                                                                                                                                                 |
+| `gclean`  | `git reset --hard && git clean -dfx`                                                                                                    |                                                                                                                                                                 |
+| `gcleano` | `git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -dfx`                             |                                                                                                                                                                 |
+| `gcmsg`   | `git commit -m`                                                                                                                         |                                                                                                                                                                 |
+| `gcmsg!`  | `git commit --amend -m`                                                                                                                 |                                                                                                                                                                 |
+| `gco`     | `git checkout`                                                                                                                          |                                                                                                                                                                 |
+| `gf`      | `git fetch --all --prune`                                                                                                               |                                                                                                                                                                 |
+| `gf!`     | `git fetch --all --prune --tags --force`                                                                                                |                                                                                                                                                                 |
+| `gfa`     | `git fetch --all --prune`                                                                                                               |                                                                                                                                                                 |
+| `ggu`     | `git pull --rebase origin $(current_branch)`                                                                                            |                                                                                                                                                                 |
+| `gl`      | `git pull --rebase --autostash`                                                                                                         |                                                                                                                                                                 |
+| `glo`     | `git log --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN%Cgreen%d %Creset%s' --date=format:'%d/%m/%y %I:%M%P'` (`%p` for macOS)           |                                                                                                                                                                 |
+| `glo2`    | `git log --graph --oneline --decorate --pretty=%C(yellow)%h %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d --date=format:%d/%m/%y %I:%M%p` |                                                                                                                                                                 |
+| `glo3`    | `git log --pretty=%C(yellow)%h %C(cyan)%cd %C(magenta)%aN %Creset%s%C(green)%d --date=format:%d/%m/%y %I:%M:%S%p`                       |                                                                                                                                                                 |
+| `gp`      | `git push`                                                                                                                              |                                                                                                                                                                 |
+| `gpf!`    | `git push --force-with-lease --force-if-includes`                                                                                       |                                                                                                                                                                 |
+| `gpf!!`   | `git push --force`                                                                                                                      |                                                                                                                                                                 |
+| `gpf`     | `git push --force-with-lease --force-if-includes`                                                                                       |                                                                                                                                                                 |
+| `gpff`    | `git push --force`                                                                                                                      |                                                                                                                                                                 |
+| `gpsup`   | `git push --set-upstream origin $(git_current_branch)`                                                                                  |                                                                                                                                                                 |
+| `grb`     | `git rebase`                                                                                                                            |                                                                                                                                                                 |
+| `grba`    | `git rebase --abort`                                                                                                                    |                                                                                                                                                                 |
+| `grbc`    | `git rebase --continue`                                                                                                                 |                                                                                                                                                                 |
+| `grbi`    | `git rebase -i`                                                                                                                         |                                                                                                                                                                 |
+| `grh`     | `git reset`                                                                                                                             |                                                                                                                                                                 |
+| `grhh`    | `git reset --hard`                                                                                                                      |                                                                                                                                                                 |
+| `groh`    | `git reset origin/$(git_current_branch) --hard`                                                                                         |                                                                                                                                                                 |
+| `gst`     | `git status`                                                                                                                            |                                                                                                                                                                 |
+| `gstash`  | `git stash --include-untracked`                                                                                                         |                                                                                                                                                                 |
+| `gstashp` | `git stash pop`                                                                                                                         |                                                                                                                                                                 |
+| `gsth`    | `git stash --include-untracked`                                                                                                         |                                                                                                                                                                 |
+| `gstp`    | `git stash pop`                                                                                                                         |                                                                                                                                                                 |
+| `gstsh`   | `git stash --include-untracked`                                                                                                         |                                                                                                                                                                 |
+| `gstshp`  | `git stash pop`                                                                                                                         |                                                                                                                                                                 |
+| `gundo`   | `git reset --mixed HEAD~1`                                                                                                              |                                                                                                                                                                 |
+| `gundo1`  | `git reset --mixed HEAD~1`                                                                                                              |                                                                                                                                                                 |
+| `gundo!`  | `git reset --hard ORIG_HEAD`                                                                                                            | # Undos the gundo (note: ORIG_HEAD is a reference that points to the previous state of HEAD before disruptive operations like git reset, git rebase, git merge) |
+| `gwta`    | `git worktree add`                                                                                                                      | `cd myRepo && gwta ../targetBranchDir targetBranch`                                                                                                             |
+| `gwtl`    | `git worktree list`                                                                                                                     | `(cd myRepo or cd targetBranchDir) && gwtl`                                                                                                                     |
+| `gwtr`    | `git worktree remove`                                                                                                                   | `(cd myRepo && gwtr ../targetBranchDir) or (cd targetBranchDir && gwtr .)`                                                                                      |
 
 | Shortcut               | Git Command                                                                                                                                  |
 | ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |

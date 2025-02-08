@@ -677,6 +677,7 @@ std::fill(std::begin(arr), std::end(arr), -1);
 // Initialise to -1
 int arr[5];
 memset(arr, -1, sizeof(arr));
+// memset(arr, INT_MIN, sizeof(arr)); // does NOT work since `memset()` fills memory byte by byte with a value between 0-255 (can only use `memset` for -1)
 ```
 
 ```cpp
@@ -708,6 +709,7 @@ int arr[5][5] = {};
 // Initialise to -1
 int arr[5][5];
 memset(arr, -1, sizeof(arr));
+// memset(arr, INT_MIN, sizeof(arr)); // does NOT work since `memset()` fills memory byte by byte with a value between 0-255 (can only use `memset` for -1)
 ```
 
 ```cpp

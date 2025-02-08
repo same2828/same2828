@@ -159,7 +159,7 @@ function fnm() {
   # Extends fnm with the subcommand "upgrade"
   # https://github.com/Schniz/fnm/issues/781#issuecomment-2482846772
   if [[ $1 == "upgrade" ]]; then
-    local matched_verions=()
+    local matched_versions=()
     local pattern_match_version="* v$2"
     local pattern_match_system="* system $2"
     local is_system=0
@@ -167,13 +167,13 @@ function fnm() {
     command fnm ls | while read LINE; do
       line=${LINE}
       if (( $line[(I)$pattern_match_version] )); then
-        matched_verions+=${${${line#* v}%% *}%% default}
+        matched_versions+=${${${line#* v}%% *}%% default}
       fi
       if (( $line[(I)$pattern_match_system] )); then
         is_system=1
       fi
     done
-    for version in $matched_verions; do
+    for version in $matched_versions; do
       command fnm uninstall $version
     done
     command fnm install "$2"
@@ -295,7 +295,7 @@ kport() {
   fi
   kill -9 $(lsof -t -i:$1)
 }
-alias kpo="kport"
+# alias kpo="kport"
 alias freeport="kport"
 alias freepo="kport"
 alias freep="kport"
@@ -337,7 +337,7 @@ mkcd() {
     # if [[ ! "$response" =~ ^[yY]$ ]] && [[ ! "$response" =~ ^$ ]]; then
     # if [[ ! "$response" =~ ^[yY]$ ]] && [[ -n "$response" ]]; then
     if [[ ! "$response" =~ ^[yY]$ ]]; then
-      echo "ERROR: \033[1;31m'$1'\033[0m already exists"
+      echo -e "ERROR: \033[1;31m'$1'\033[0m already exists"
       return 1
     else
       echo -e "\033[1;31mrm -rf '$1'\033[0m && \033[1;32mmkdir -p '$1'\033[0m"
@@ -364,6 +364,7 @@ brew-upgrade-casks() {
 }
 # Upgrade zsh plugins
 zsh-upgrade-plugins() {
+  omz update
   for dir in "$ZSH/custom/plugins"/*; do
     if [ -d "$dir/.git" ]; then
       pluginName=$(basename "$dir")
@@ -372,19 +373,23 @@ zsh-upgrade-plugins() {
       git pull --rebase --autostash
       # cd - > /dev/null
     else
-      echo "$(basename "$dir") is NOT a git repository"
+      echo -e "'$(basename "$dir")' is NOT a git repository"
     fi
   done
   cd
 }
 alias omz-upgrade-plugins="zsh-upgrade-plugins"
+alias omz-update="zsh-upgrade-plugins"
+alias omz-upgrade="zsh-upgrade-plugins"
+alias zsh-update="zsh-upgrade-plugins"
+alias zsh-upgrade="zsh-upgrade-plugins"
 # Change Java JDK version (usage: jdk 17)
 jdk() {
   if [ $# -ne 1 ]; then
     echo "Usage: jdk <java-jdk-version-to-use>"
     return 1
   fi
-  echo "Switching Java JDK to: $1";
+  echo -e "Switching to Java JDK \033[1;32mv$1\033[0m";
   export JAVA_HOME=$(/usr/libexec/java_home -v $1)
   echo "\$JAVA_HOME:" $JAVA_HOME
   echo "\$(java -version):"
@@ -392,6 +397,48 @@ jdk() {
   java -version
   echo "------------------"
 }
+java_compile_and_run() {
+  if [ "$#" -eq 0 ]; then
+    echo "Usage: jav <source_file>"
+    return 1
+  fi
+  local srcFile="$1"
+  # Append '.java' if not present
+  if [[ "$srcFile" != *.java ]]; then
+    srcFile="${srcFile}.java"
+  fi
+  local fileName="${srcFile%.*}"
+  local outputFile="$fileName.class"
+  javac "$srcFile"
+  echo -e "Compiled \033[1;32m$srcFile\033[0m to \033[1;32m$outputFile\033[0m"
+  echo -e "Running \033[1;32mjava $fileName\033[0m"
+  java "$fileName"
+}
+alias j--="java_compile_and_run"
+alias j++="java_compile_and_run"
+alias jav="java_compile_and_run"
+alias jc="java_compile_and_run"
+alias jcr="java_compile_and_run"
+g++_compile_and_run() {
+  if [ "$#" -eq 0 ]; then
+    echo "Usage: gpp <source_file>"
+    return 1
+  fi
+  local srcFile="$1"
+  # Append '.cpp' if not present
+  if [[ "$srcFile" != *.cpp ]]; then
+    srcFile="${srcFile}.cpp"
+  fi
+  local outputFile="${srcFile%.*}"
+  g++-13 "$srcFile" -o "$outputFile"
+  echo -e "Compiled \033[1;32m$srcFile\033[0m to \033[1;32m$outputFile\033[0m"
+  echo -e "Running \033[1;32m./$outputFile\033[0m"
+  ./"$outputFile"
+}
+alias c++="g++_compile_and_run"
+alias cpp="g++_compile_and_run"
+alias g--="g++_compile_and_run"
+alias gpp="g++_compile_and_run"
 # Delete both local and remote branch (usage: gbdd branchNameToDelete)
 gbdd() {
   if [ $# -ne 1 ]; then
@@ -423,7 +470,8 @@ gbdd() {
     # echo -e "Deleting \033[1;31mlocal:$branchToDelete\033[0m && \033[1;31mremote:$branchToDelete\033[0m"
     # echo -e "Deleted branch \033[1;31m'$branchToDelete'\033[0m in both LOCAL and REMOTE"
     echo -e "Deleted branch \033[1;31m'$branchToDelete'\033[0m"
-    git branch -D "$branchToDelete" && git push origin --delete "$branchToDelete"
+    git branch -D "$branchToDelete" # 2>/dev/null
+    git push origin --delete "$branchToDelete"
   fi
   if [ "$didGitStash" = true ]; then
     git stash pop
@@ -431,6 +479,35 @@ gbdd() {
 }
 alias gbDd="gbdd"
 alias gbDD="gbdd"
+# Delete remote branch (usage: gbdr remoteBranchNameToDelete)
+gbdr() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: gbdr <remote-branch-to-delete-name>"
+    return 1
+  fi
+  # local currBranch=$(git rev-parse --abbrev-ref HEAD)
+  local currBranch=$(git_current_branch)
+  local branchToDelete=$1
+  git fetch --all --prune --tags --force > /dev/null 2>&1
+  echo -en "Confirm deletion of branch \033[1;31m'$branchToDelete'\033[0m in REMOTE? [y/N]: "
+  # echo -en "Confirm deletion of \033[1;31mlocal/$branchToDelete\033[0m && \033[1;31mremote/$branchToDelete\033[0m? [y/N]: "
+  # echo -en "Confirm deletion of \033[1;31mlocal:$branchToDelete\033[0m && \033[1;31mremote:$branchToDelete\033[0m? [y/N]: "
+  read -r response
+  # if [[ ! "$response" =~ ^[yY]$ ]] && [[ ! "$response" =~ ^$ ]]; then
+  # if [[ ! "$response" =~ ^[yY]$ ]] && [[ -n "$response" ]]; then
+  if [[ ! "$response" =~ ^[yY]$ ]]; then
+    echo "Branch deletion cancelled"
+    return 1
+  else
+    # echo -e "Deleting \033[1;31mlocal/$branchToDelete\033[0m && \033[1;31mremote/$branchToDelete\033[0m"
+    # echo -e "Deleting \033[1;31mlocal:$branchToDelete\033[0m && \033[1;31mremote:$branchToDelete\033[0m"
+    # echo -e "Deleted branch \033[1;31m'$branchToDelete'\033[0m in both LOCAL and REMOTE"
+    echo -e "Deleted \033[1;31mREMOTE\033[0m branch \033[1;31m'$branchToDelete'\033[0m"
+    # git push origin --delete "$branchToDelete"
+    git push origin :"$branchToDelete"
+  fi
+}
+alias gbDr="gbdr"
 # gcb newBranch && gco currBranch (used for git worktree workflow) [usage: gcbb newBranch]
 gcbb() {
   if [ $# -ne 1 ]; then
@@ -560,6 +637,13 @@ alias gundo!='git reset --hard ORIG_HEAD' # Undo's the gundo (note: ORIG_HEAD is
 alias gwta='git worktree add' # cd myRepo && gwta ../targetBranchDir targetBranch
 alias gwtl='git worktree list' # (cd myRepo || cd targetBranchDir) && gwtl
 alias gwtr='git worktree remove' # (cd myRepo && gwtr ../targetBranchDir) || (cd targetBranchDir && gwtr .)
+
+# cd Aliases
+#-----------
+alias b="cd .."
+alias cdd="cd ~/dev/github"
+alias cd1="cd ~/dev/github"
+alias cd2="cd ~/dev/github28"
 
 # Aliases
 #--------

@@ -12,6 +12,7 @@
   - [macOS](#macos)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
   - [Command Palette](#command-palette)
+  - [Copilot](#copilot)
   - [Copy Line](#copy-line)
   - [Cycle Tabs](#cycle-tabs)
   - [Find Code in Files](#find-code-in-files)
@@ -270,7 +271,6 @@ Extension List:
 - Color Highlight (Sergii N)
 - Color Info (Matt Bierner)
 - copy-json-path (nidu)
-- Copy Word in Cursor (Alessandro Fragnani)
 - CSS Navigation (pucelle)
 - Debugger for Firefox (Firefox DevTools)
 - Dev Containers (Microsoft)
@@ -281,9 +281,7 @@ Extension List:
 - Error Lens (Alexander)
 - ESLint (Microsoft)
 - Even Better TOML (tamasfe)
-- Excel Viewer (MESCIUS)
 - Fast Compare (David Kolar)
-- Fetch Client (Ganesan Chandran)
 - File Utils (Steffen Leistner)
 - Format All Files in Workspace (Alex Ross)
 - Formatting Toggle (tombonnike)
@@ -297,24 +295,16 @@ Extension List:
 - Intellicode (Microsoft)
 - Java Extension Pack (Red Hat)
 - JavaScript (ES6) Code Snippets (charalampos karypidis)
-- JSON Crack (Aykut Sarac)
-- JSON Formatter (Clemens Peters)
-- JSON Path Status Bar (richie5um2)
-- JSON to TS (MariusAlchimavicius) (Newer version of json2ts)
 - Jumpy2 (David L. Goldberg)
 - Just Blame (Artem Sapegin)
 - Markdown All in One (Yu Zhang)
 - Material Icon Theme (Philipp Kief)
-- Microsoft Edge Tools for VS Code (Microsoft)
 - Multiple Cursor Case Preserve (Cardinal90)
-- Open Folder Context Menus (Chris Dias)
-- OpenAPI (Swagger) Editor (42Crunch)
 - Partial Diff (Ryuichi Inagaki)
 - Path Intellisense (Christian Kohler)
 - PostCSS Sorting (mrmlnc)
 - Prettier (Prettier)
 - Pretty TypeScript Errors (yoavbls)
-- Project Manager (Alessandro Fragnani)
 - Pylance (Microsoft)
 - Pylint (Microsoft)
 - Python (Microsoft)
@@ -322,7 +312,6 @@ Extension List:
 - Rainbow CSV (mechatroner)
 - Remove Non ASCII Characters (Samuel Charpentier)
 - Replace Curly Quotes (jinhyuk)
-- REST Client (Huachao Mao)
 - shell-format (foxundermoon)
 - ShellCheck (Timon Wong)
 - Sort Everything (Benny Neugebauer)
@@ -331,7 +320,7 @@ Extension List:
 - Sorting HTML and Jade attributes (mrmlnc)
 - Spring Boot Extension Pack (VMware)
 - SSH FS (Kelvin Schoofs)
-- Tailwind CSS IntelliSense (Tailwind Labs)
+- Tailwind CSS IntelliSense (Tailwind Labs) (note: this has a lot of memory leaks)
 - Text Pastry (jkjustjoshing)
 - Text Power Tools (Daniel Tar)
 - Todo Tree (Gruntfuggly)
@@ -364,6 +353,11 @@ Extension List:
   - Transform to Title Case
   - Transform to Uppercase
   - View: Toggle Word Wrap
+
+## Copilot
+
+- `Command + Shift + I` = Open GitHub Copilot
+- `Control + L` = Clear GitHub Copilot Chat
 
 ## Copy Line
 

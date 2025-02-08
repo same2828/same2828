@@ -60,6 +60,23 @@ com.example.demo.framework.main.MainApplication
 ENV1=VALUE1;ENV2=VALUE2;ENV3=VALUE3
 ```
 
+```sh
+# Compile
+mvn clean compile
+# Compile + Run Tests
+mvn clean install
+# Troubleshooting: Forces a check for missing releases and updated snapshots on remote repositories
+mvn clean compile -U
+mvn clean install -U
+mvn clean install -U -Dmaven.test.skip=true
+mvn spring-boot:run
+mvn spring-boot:run -Dspring-boot.run.arguments=--debug
+mvn spring-boot:run -Dspring-boot.run.profiles=local
+mvn spring-boot:run -Dspring-boot.run.arguments=--debug -Dspring-boot.run.profiles=local
+mvn dependency:tree | grep pkgOfInterest
+mvn dependency:tree > maven-dependencies.txt
+```
+
 # Lombok
 
 > If using `@Builder` annotation, you MUST also add `@AllArgsConstructor`, `@NoArgsConstructor` annotations

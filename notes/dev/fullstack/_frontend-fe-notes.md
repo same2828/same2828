@@ -3,6 +3,7 @@
 - [Table of Contents](#table-of-contents)
 - [Dev Setup](#dev-setup)
   - [Global](#global)
+  - [Node Version Managers](#node-version-managers)
   - [Project](#project)
     - [Initialisation/Creation](#initialisationcreation)
     - [NPM Packages](#npm-packages)
@@ -56,6 +57,40 @@ npm install -g typescript@latest
 npm install -g fkill-cli@latest
 ```
 
+## Node Version Managers
+
+- [nvm](https://github.com/nvm-sh/nvm) is the original Node.js version management tool
+- [fnm](https://github.com/Schniz/fnm) is a Node.js version management tool (nvm but written is Rust)
+- [asdf](https://asdf-vm.com/guide/getting-started.html) a version management tool that supports multiple programming languages
+- [volta](https://docs.volta.sh/guide/getting-started) is a Node.js version management AND package management tool
+- [n](https://github.com/tj/n) is Node.js module that can be installed through npm (this means that an EXISTING Node.js installation is required)
+
+```sh
+# Install nvm or fnm
+# Install node via nvm or fnm
+corepack enable
+corepack prepare pnpm@latest --activate
+```
+
+```sh
+# Install fnm via CLI
+# curl -fsSL https://fnm.vercel.app/install | bash
+# export PATH="$HOME/.fnm:$PATH"
+
+# Install fnm via Homebrew
+brew install fnm
+
+# Add to .zshrc
+eval "$(fnm env --use-on-cd --shell zsh)"
+
+fnm install --lts
+fnm list
+fnm use lts-latest
+
+corepack enable
+corepack prepare pnpm@latest --activate
+```
+
 ## Project
 
 ### Initialisation/Creation
@@ -65,6 +100,7 @@ npm install -g fkill-cli@latest
 ```sh
 # Create New Project
 yarn init -2
+# yarn set version berry
 yarn set version stable
 yarn install
 yarn run dev
