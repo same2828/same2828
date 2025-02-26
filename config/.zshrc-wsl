@@ -245,19 +245,58 @@ alias dc="docker compose"
 # Kubernetes
 #-----------
 alias k="kubectl"
-alias kctx="kubectx"
 alias kcx="kubectx"
-alias kx="kubectx"
+alias kctx="kubectx"
 alias kns="kubens"
-alias kgpo="kubectl get pods"
-alias kgpon="kubectl get pods -n"
-alias kgpow="kubectl get pods --watch"
-alias klo="kubectl logs -f"
-alias klog="kubectl logs -f"
-alias klogs="kubectl logs -f"
 alias kpo="kubectl get pods"
-alias kpon="kubectl get pods -n"
-alias kpow="kubectl get pods --watch"
+kubectl-get-pods-grep() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: kpog <pod-name-to-grep>"
+    return 1
+  fi
+  local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
+  echo -e "namespace: \033[1;36m$namespace\033[0m"
+  kubectl get pods -n $namespace | grep --color=always "$1"
+}
+alias kpog="kubectl-get-pods-grep"
+alias kgpo="kubectl-get-pods-grep"
+kubectl-get-pods-watch() {
+  kubectl get pods -n "$(kubectl config view --minify | grep namespace | cut -d" " -f6)" --watch
+}
+alias kpow="kubectl-get-pods-watch"
+alias kgpow="kubectl-get-pods-watch"
+kubectl-follow-pod-logs() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: klo <pod-name-to-view-logs>"
+    return 1
+  fi
+  kubectl logs -f
+}
+alias klo="kubectl-follow-pod-logs"
+alias klof="kubectl-follow-pod-logs"
+alias klog="kubectl-follow-pod-logs"
+alias klogf="kubectl-follow-pod-logs"
+alias klogs="kubectl-follow-pod-logs"
+kx() { 
+  [ "$1" ] && kubectl config use-context "$1" || kubectl config current-context
+}
+kn() { 
+  [ "$1" ] && kubectl config set-context --current --namespace "$1" || kubectl config view --minify | grep namespace | cut -d" " -f6 
+}
+# kx() {
+#   if [ -n "$1" ]; then
+#     kubectl config use-context "$1"
+#   else
+#     kubectl config current-context
+#   fi
+# }
+# kn() {
+#   if [ -n "$1" ]; then
+#     kubectl config set-context --current --namespace "$1"
+#   else
+#     kubectl config view --minify | grep namespace | cut -d' ' -f6
+#   fi
+# }
 
 # Environment Variables ENV
 #--------------------------
