@@ -86,7 +86,7 @@ import lombok.Builder;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-@Builder // <-- HERE
+@Builder(toBuilder = true) // <-- HERE
 @AllArgsConstructor // <-- HERE
 @NoArgsConstructor // <-- HERE
 public class MyClass {

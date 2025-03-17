@@ -1,6 +1,7 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Apps](#apps)
 - [Wipe Cache Partition](#wipe-cache-partition)
 - [Setup Notes](#setup-notes)
   - [Uninstall/Disable](#uninstalldisable)
@@ -21,6 +22,12 @@
   - [Show Weather/Reminders/Device Care App](#show-weatherremindersdevice-care-app)
   - [Special Access](#special-access)
   - [Turn Off Password Saving Prompt](#turn-off-password-saving-prompt)
+
+# Apps
+
+- [Digital Clock Widget](https://play.google.com/store/apps/details?id=com.maize.digitalClock&hl=en_AU)
+- [NetGuard](https://play.google.com/store/apps/details?id=eu.faircode.netguard&hl=en_AU)
+- [Tooly](https://play.google.com/store/apps/details?id=com.yousx.thetoolsapp&hl=en_AU)
 
 # Wipe Cache Partition
 
@@ -56,8 +63,8 @@ Disable
 
 ### Allow Reminder Content to be shown on Lock Screen
 
-`Settings > Notifications > Reminder > Notification Cateogires > Notification sound reminders` > Choose "Alert" + DISABLE "Show as pop-up"
-`Settings > Notifications > Reminder > Notification Cateogires > Notification sound reminders > Lock screen` > ENABLE "Show content"
+`Settings > Notifications > Reminder > Notification Categories > Notification sound reminders` > Choose "Alert" + DISABLE "Show as pop-up"
+`Settings > Notifications > Reminder > Notification Categories > Notification sound reminders > Lock screen` > ENABLE "Show content"
 
 ### Hide Keyboard Notification on Status Bar
 

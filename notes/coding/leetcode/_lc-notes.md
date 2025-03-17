@@ -271,6 +271,7 @@ int main() {
 - **Subarray = A contiguous/continuous sequence of elements (part of an array) whose relative ordering IS kept (contiguous subsequence)**
 - **Subsequence = A sequence of elements (part of an array) NOT necessarily contiguous/continuous but whose relative ordering IS kept**
 - **Subset = Any possible combination of elements (part of an array) NOT necessarily contiguous, whose relative ordering does NOT have to be kept and contains the empty set `{}`**
+- **Lexicographically Smallest = A string `a` is lexicographically smaller than a string `b` IFF `a.length() == b.length()` AND in the first position where `a` and `b` differ, string `a` has a letter that appears earlier in the alphabet than the corresponding letter in string `b`. Otherwise the shorter string is the lexicographically smaller one (i.e. if the first `Math.min(a.length, b.length)` characters do NOT differ, then the shorter string is the lexicographically smaller one)**
 
 # Edge Cases
 
@@ -1838,6 +1839,12 @@ for (int[] e : edges) {
 - A connected graph is a graph in which it's possible to get from every vertex in the graph to every other vertex through a series of edges, called a path
 - The minimum number of edges for undirected connected graph is `(n-1)` edges where `n` is the number of vertices
 
+```java
+// Assuming graph is a tree (i.e. has NO cycles)
+int numNodesInConnectedGraph = edges.size() + 1;
+int numNodesInConnectedGraph = edges.length + 1;
+```
+
 ## Eulerian Path / Eulerian Circuit
 
 - An Eulerian Path is a path in a graph that **visits every edge exactly once** (allowing for revisiting vertices)
@@ -3297,7 +3304,7 @@ Formula:
 
 ## Cache Locality for Dynamic Programming Memoisation
 
-> Place frequently changing variables with a LARGER RANGE as the LAST DIMENSION in `memo[][]`
+> Place frequently changing variables with a LARGER RANGE as the LAST DIMENSION in `memo[][]` (i.e. use `memo[2][m][n]` instead of `memo[m][n][2]`)
 
 - Cache Locality/Efficiency
   - Modern CPUs are designed to take advantage of spatial locality by loading data into faster cache memory in blocks. When data that are located next to each other in memory are accessed sequentially, this can significantly speed up access times

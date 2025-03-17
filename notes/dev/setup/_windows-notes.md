@@ -360,6 +360,19 @@ Enable DNS over HTTPS
 
 - `about:preferences > Privacy & Security > DNS over HTTPS > Increased Protection > Cloudflare`
 
+Change Search Engine to Google Search Verbatim
+
+- `about:config > browser.urlbar.update2.engineAliasRefresh  > Keep the selection on Boolean and click the plus sign button` (if the value isn't set to true automatically, double-click false to switch it to true)
+- `about:preferences > Search > Add Search Engine > https://www.google.com/search?q=%s&tbs=li%3A1`
+
+```sh
+https://www.google.com/search?q=%s&tbs=li:1
+https://www.google.com/search?q=%s&tbs=li%3A1
+https://www.google.com/search?q=%s&udm=14
+https://www.google.com/search?q=%s&udm=14&tbs=li:1
+https://www.google.com/search?q=%s&udm=14&tbs=li%3A1
+```
+
 ### MSI Afterburner
 
 Set Skin

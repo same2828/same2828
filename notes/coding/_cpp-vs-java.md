@@ -18,6 +18,7 @@
   - [TreeMap](#treemap)
 - [Data Types](#data-types-1)
 - [Digit Separators](#digit-separators)
+- [Enums](#enums)
 - [Equality Comparison (`==`)](#equality-comparison-)
 - [for() Loops](#for-loops)
 - [Imports](#imports)
@@ -356,6 +357,8 @@ std::vector<std::vector<int>> vec(m, std::vector<int>(n, -1));
 
 **Java**
 
+> Nodes Only
+
 ```java
 // Note: Can also use Set<Integer> as well
 Map<Integer, List<Integer>> graph = new HashMap<>();
@@ -364,6 +367,32 @@ for (int[] e : edges) {
   graph.computeIfAbsent(e[1], f -> new ArrayList<>()).add(e[0]);
 }
 ```
+
+```java
+List<List<Integer>> graph = new ArrayList<>();
+// Arrays.setAll(graph, f -> new ArrayList<>());
+for (int i = 0; i < n; i++) {
+  graph.add(new ArrayList<>());
+}
+for (int[] e : edges) {
+  graph.get(e[0]).add(e[1]);
+  graph.get(e[1]).add(e[0]);
+}
+```
+
+```java
+List<Integer>[] graph = new List[n];
+// Arrays.setAll(graph, f -> new ArrayList<>());
+for (int i = 0; i < n; i++) {
+  graph[i] = new ArrayList<>();
+}
+for (int[] e : edges) {
+  graph[e[0]].add(e[1]);
+  graph[e[1]].add(e[0]);
+}
+```
+
+> Nodes + Weights
 
 ```java
 // Note: Can also use Set<int[]>> as well
@@ -380,18 +409,6 @@ for (int[] e : edges) {
 ```
 
 ```java
-List<List<Integer>> graph = new ArrayList<>();
-// Arrays.setAll(graph, f -> new ArrayList<>());
-for (int i = 0; i < n; i++) {
-  graph.add(new ArrayList<>());
-}
-for (int[] e : edges) {
-  graph.get(e[0]).add(e[1]);
-  graph.get(e[1]).add(e[0]);
-}
-```
-
-```java
 List<List<int[]>> graph = new ArrayList<>();
 // Arrays.setAll(graph, f -> new ArrayList<>());
 for (int i = 0; i < n; i++) {
@@ -405,23 +422,11 @@ for (int[] e : edges) {
 // Access with
 // graph.get(i).get(j)[0];
 // graph.get(i).get(j)[1];
-// for (List<int[]> neiInfoList : graph.get(curr)) {
+// for (List<int[]> neiInfoList : graph.getOrDefault(curr, Collections.emptyList())) {
 //   for (int[] neiInfo : neiInfoList) {
 //     //...
 //   }
 // }
-```
-
-```java
-List<Integer>[] graph = new List[n];
-// Arrays.setAll(graph, f -> new ArrayList<>());
-for (int i = 0; i < n; i++) {
-  graph[i] = new ArrayList<>();
-}
-for (int[] e : edges) {
-  graph[e[0]].add(e[1]);
-  graph[e[1]].add(e[0]);
-}
 ```
 
 ```java
@@ -434,6 +439,48 @@ for (int[] e : edges) {
   graph[e[0]].add(new int[] {e[1], e[2]});
   graph[e[1]].add(new int[] {e[0], e[2]});
 }
+
+// Access with
+// graph[i].get(j)[0];
+// graph[i].get(j)[1];
+// for (int[] neiInfo : graph[curr]) {
+//   //...
+// }
+```
+
+```java
+List<int[]>[] graph = new List[n];
+// Arrays.setAll(graph, f -> new ArrayList<>());
+for (int i = 0; i < n; i++) {
+  graph[i] = new ArrayList<>();
+}
+for (int[] e : edges) {
+  graph[e[0]].add(new int[] {e[1], e[2]});
+  graph[e[1]].add(new int[] {e[0], e[2]});
+}
+
+// Access with
+// for (List<Integer> neiInfo : graph.getOrDefault(currNode, Collections.emptyList())) {
+//   int neiNode = neiInfo.get(0);
+//   int neiDist = neiInfo.get(1);
+//   //...
+// }
+```
+
+```java
+List<List<List<Integer>>> graph = new ArrayList<>();
+for (int i = 0; i < n; i++) {
+  graph.add(new ArrayList<>());
+}
+// Need to use -1 if we do NOT add 'n+1' entries into graph (and if cityNodeVals start at 1)
+for (int[] e : edges) {
+  graph[e[0] - 1].add(List.of(e[1] - 1, e[2]));
+  graph[e[1] - 1].add(List.of(e[0] - 1, e[2]));
+}
+// for (int i = 0; i < edges.length; i++) {
+//   graph.get(citySrc[i] - 1).add(List.of(cityDest[i] - 1, cityWeights[i]));
+//   graph.get(cityDest[i] - 1).add(List.of(citySrc[i] - 1, cityWeights[i]));
+// }
 
 // Access with
 // graph[i].get(j)[0];
@@ -856,6 +903,99 @@ int mod = 1'000'000'007;
 
 ```java
 int mod = 1_000_000_007;
+```
+
+# Enums
+
+**CPP/C++**
+
+```cpp
+// Traditional Enums
+class Solution {
+public:
+  enum Direction {
+    NORTH = 1;
+    EAST = 2;
+    SOUTH = 3;
+    WEST = 4;
+  };
+
+  int main() {
+    Direction dir = NORTH;
+    int val = dir;  // Valid: Implicit conversion
+    //...
+  }
+};
+```
+
+```cpp
+// Scoped Enums (Enum Classes)
+class Solution {
+public:
+  enum class Direction {
+    NORTH = 1;
+    EAST = 2;
+    SOUTH = 3;
+    WEST = 4;
+  };
+
+  int main() {
+    Direction dir = Direction::NORTH;
+    int val1 = e;  // ERROR/INVALID: No implicit conversion
+    int val2 = static_cast<int>(dir);  // Valid
+    //...
+  }
+};
+```
+
+**Java**
+
+```java
+// Ordinal-Based Enum (Simple Enum)
+class Solution {
+  enum Direction {
+    NORTH,
+    EAST,
+    SOUTH,
+    WEST;
+  }
+
+  int main() {
+    Direction dir = Direction.NORTH;
+    String dirStr = Direction.NORTH.name(); // "NORTH"
+    int dirVal = Direction.NORTH.getOrdinal(); // 0 (zero-indexed)
+    Direction nextDir = Direction.valueOf("EAST"); // Direction.EAST
+  }
+}
+```
+
+```java
+// Value-Based Enum (Enum with Instance Fields)
+class Solution {
+  enum Direction {
+    NORTH(1),
+    EAST(2),
+    SOUTH(3),
+    WEST(4);
+
+    private final int value;
+
+    Direction(int value) {
+      this.value = value;
+    }
+
+    public int getValue() {
+      return this.value;
+    }
+  }
+
+  int main() {
+    Direction dir = Direction.NORTH;
+    String dirStr = Direction.NORTH.name(); // "NORTH"
+    int dirVal = Direction.NORTH.getValue(); // 1 (custom getter for inner value, could also name it "degrees" as well)
+    Direction nextDir = Direction.valueOf("EAST"); // Direction.EAST
+  }
+}
 ```
 
 # Equality Comparison (`==`)

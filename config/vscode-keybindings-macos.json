@@ -148,5 +148,30 @@
   {
     "command": "workbench.action.quickOpen",
     "key": "shift shift"
+  },
+  {
+    "command": "-github.copilot.generate",
+    "key": "ctrl+enter",
+    "when": "editorTextFocus && github.copilot.activated && !commentEditorFocused && !inInteractiveInput && !interactiveEditorFocused"
+  },
+  {
+    "command": "github.copilot.generate",
+    "key": "ctrl+alt+enter",
+    "when": "editorTextFocus && github.copilot.activated && !commentEditorFocused && !inInteractiveInput && !interactiveEditorFocused"
+  },
+  {
+    "command": "-workbench.action.chat.applyInEditor",
+    "key": "ctrl+enter",
+    "when": "accessibleViewInCodeBlock && chatIsEnabled || chatIsEnabled && inChat && !inChatInput"
+  },
+  {
+    "command": "-workbench.action.chat.insertCodeBlock",
+    "key": "ctrl+enter",
+    "when": "accessibleViewInCodeBlock && chatIsEnabled || chatIsEnabled && inChat && !inChatInput"
+  },
+  {
+    "command": "-workbench.action.chat.runInTerminal",
+    "key": "ctrl+alt+enter",
+    "when": "accessibleViewInCodeBlock && chatIsEnabled || chatIsEnabled && inChat"
   }
 ]

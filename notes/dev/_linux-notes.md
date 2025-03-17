@@ -2,7 +2,18 @@
 
 - [Table of Contents](#table-of-contents)
 - [Commands](#commands)
-  - [apt](#apt)
+  - [`apt`](#apt)
+  - [`cp` - Copy](#cp---copy)
+  - [`date` - Timestamp](#date---timestamp)
+  - [`kill` - Kill ProcessId](#kill---kill-processid)
+  - [`ls`](#ls)
+  - [`pkill` - Kill Process by Name](#pkill---kill-process-by-name)
+  - [`ps`](#ps)
+  - [`where`](#where)
+  - [SSH](#ssh)
+    - [Change User](#change-user)
+    - [Copy Local File into Remote SSH Instance](#copy-local-file-into-remote-ssh-instance)
+    - [Copy File from Remote SSH Instance into Local Directory](#copy-file-from-remote-ssh-instance-into-local-directory)
 - [Scripts](#scripts)
   - [Template](#template)
 - [Workflow](#workflow)
@@ -19,7 +30,7 @@
 
 # Commands
 
-## apt
+## `apt`
 
 ```sh
 sudo apt update
@@ -41,6 +52,100 @@ sudo apt remove <pkg>
 # Remove pkg + configuration files
 sudo apt purge <pkg>
 sudo apt remove --purge <pkg>
+```
+
+## `cp` - Copy
+
+```sh
+# Copy file to current working directory
+cd /path/to/targetDirectory
+cp /path/to/srcFile ./
+```
+
+## `date` - Timestamp
+
+```sh
+# ISO 8601 standard format with ' ' separator
+date +"%Y-%m-%d %H:%M:%S"
+# ISO 8601 standard format with 'T' separator
+date +"%Y-%m-%dT%H:%M:%S"
+date +"%Y-%m-%dT%H-%M-%S"
+# ISO 8601 standard format with '_' separator
+date +"%Y-%m-%d_%H-%M-%S"
+# No separator (compact)
+date +"%Y%m%d%H%M%S"
+# Unix Timestamp (seconds since January 1, 1970)
+date +%s
+```
+
+## `kill` - Kill ProcessId
+
+```sh
+kill -9 <processId>
+```
+
+## `ls`
+
+```sh
+# OLDEST files at BOTTOM
+ls -lt
+# NEWEST files at BOTTOM
+ls -ltr
+
+# OLDEST files at BOTTOM
+ls -AoFt
+# NEWEST files at BOTTOM
+ls -AoFtr
+```
+
+## `pkill` - Kill Process by Name
+
+```sh
+pkill -9 -f "processName"
+```
+
+## `ps`
+
+```sh
+ps aux | grep -e "<process-name-to-find-using-regex>"
+ps aux | grep -i <process-name-to-find-ignore-case>"
+```
+
+## `where`
+
+```sh
+where jmeter
+```
+
+## SSH
+
+```sh
+ssh <ip_address>
+ssh <ip_address> -l <user_name>
+```
+
+### Change User
+
+```sh
+sudo su
+sudo su - root
+sudo su - userToChangeTo
+```
+
+### Copy Local File into Remote SSH Instance
+
+```sh
+scp /path/to/local/file user@remote-host-ip:/path/to/remote/directory
+# scp /path/to/local/file user@192.168.1.100:/path/to/remote/directory
+# scp /path/to/local/file user@example.com:/path/to/remote/directory
+```
+
+### Copy File from Remote SSH Instance into Local Directory
+
+```sh
+scp user@remote-ip-host:/path/to/remote/file /path/to/local/directory
+# scp user@192.168.1.100:/path/to/remote/directory /path/to/local/directory
+# scp user@example.com:/path/to/remote/directory /path/to/local/directory
 ```
 
 # Scripts

@@ -222,16 +222,16 @@ def twoPointer(arr1, arr2):
 
 ```cpp
 int slidingWindow(std::vector<int> &arr) {
-  int left = 0, result = 0, curr = 0;
+  int left = 0;
+  int result = 0;
+  int curr = 0;
 
   for (int right = 0; right < arr.size(); right++) {
     // do logic here to add arr[right] to curr
-
     while (WINDOW_CONDITION_BROKEN) {
       // remove arr[left] from curr
       left++;
     }
-
     // update result
   }
 
@@ -241,16 +241,16 @@ int slidingWindow(std::vector<int> &arr) {
 
 ```java
 public int slidingWindow(int[] arr) {
-  int left = 0, result = 0, curr = 0;
+  int left = 0;
+  int result = 0;
+  int curr = 0;
 
   for (int right = 0; right < arr.length; right++) {
     // do logic here to add arr[right] to curr
-
     while (WINDOW_CONDITION_BROKEN) {
       // remove arr[left] from curr
       left++;
     }
-
     // update result
   }
 
@@ -266,12 +266,10 @@ let slidingWindow = (arr) => {
 
   for (let right = 0; right < arr.length; right++) {
     // do logic here to add arr[right] to curr
-
     while (WINDOW_CONDITION_BROKEN) {
       // remove arr[left] from curr
       left++;
     }
-
     // update result
   }
 
@@ -285,11 +283,9 @@ def slidingWindow(arr):
 
   for right in range(len(arr)):
     # do logic here to add arr[right] to curr
-
     while WINDOW_CONDITION_BROKEN:
       # remove arr[left] from curr
       left += 1
-
     # update result
 
   return result

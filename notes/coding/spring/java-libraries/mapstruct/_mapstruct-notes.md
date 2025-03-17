@@ -1,7 +1,8 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [Links](#links)
+- [Official Docs](#official-docs)
+  - [MapStruct](#mapstruct)
 - [Quick Guide to MapStruct - Baeldung](#quick-guide-to-mapstruct---baeldung)
   - [MapStruct and Transfer Object Pattern](#mapstruct-and-transfer-object-pattern)
   - [Maven](#maven)
@@ -55,7 +56,9 @@
   - [Multiple Source Objects](#multiple-source-objects)
   - [Update Existing Objects with `@MappingTarget`](#update-existing-objects-with-mappingtarget)
 
-# Links
+# Official Docs
+
+## MapStruct
 
 - [MapStruct - JavaDocs](https://mapstruct.org/documentation/stable/api/)
 - [MapStruct - Reference](https://mapstruct.org/documentation/stable/reference/html/)

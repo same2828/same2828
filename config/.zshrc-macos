@@ -248,15 +248,24 @@ alias k="kubectl"
 alias kcx="kubectx"
 alias kctx="kubectx"
 alias kns="kubens"
-alias kpo="kubectl get pods"
+kubectl-get-pods() {
+  local context=$(kubectl config current-context)
+  echo -e "context: \033[1;36m$context\033[0m"
+  local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
+  echo -e "namespace: \033[1;36m$namespace\033[0m"
+  kubectl get pods -n $namespace
+}
+alias kpo="kubectl-get-pods"
 kubectl-get-pods-grep() {
   if [ $# -ne 1 ]; then
     echo "Usage: kpog <pod-name-to-grep>"
     return 1
   fi
+  local context=$(kubectl config current-context)
+  echo -e "context: \033[1;36m$context\033[0m"
   local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
   echo -e "namespace: \033[1;36m$namespace\033[0m"
-  kubectl get pods -n $namespace | grep --color=always "$1"
+  kubectl get pods -n $namespace | grep -e --color=always "$1"
 }
 alias kpog="kubectl-get-pods-grep"
 alias kgpo="kubectl-get-pods-grep"
@@ -277,11 +286,11 @@ alias klof="kubectl-follow-pod-logs"
 alias klog="kubectl-follow-pod-logs"
 alias klogf="kubectl-follow-pod-logs"
 alias klogs="kubectl-follow-pod-logs"
-kx() { 
+kx() {
   [ "$1" ] && kubectl config use-context "$1" || kubectl config current-context
 }
-kn() { 
-  [ "$1" ] && kubectl config set-context --current --namespace "$1" || kubectl config view --minify | grep namespace | cut -d" " -f6 
+kn() {
+  [ "$1" ] && kubectl config set-context --current --namespace "$1" || kubectl config view --minify | grep namespace | cut -d" " -f6
 }
 # kx() {
 #   if [ -n "$1" ]; then
@@ -385,7 +394,7 @@ alias psxre="ps-aux-regex"
 alias psxreg="ps-aux-regex"
 ps-aux-ignore-case() {
   if [ $# -ne 1 ]; then
-    echo "Usage: psaux <process-name-to-find-ignore-case>"
+    echo "Usage: psxi <process-name-to-find-ignore-case>"
     return 1
   fi
   # ps ax -o user,pid,%cpu,%mem,start,command | grep -i "$1"
@@ -713,9 +722,11 @@ alias gclean='git reset --hard && git clean -dfx'
 alias gcleano='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -dfx'
 alias gcmsg!='git commit --amend -m'
 alias gf='git fetch --all --prune'
-alias gfa='git fetch --all --prune'
 alias gf!='git fetch --all --prune --tags --force'
+alias gfa='git fetch --all --prune'
+alias gfa!='git fetch --all --prune --tags --force'
 alias gl="git pull --rebase --autostash"
+alias gl!="git fetch --all --prune --tags --force && git pull --rebase --autostash"
 alias glo="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M%p'"
 alias glo2="git log --graph --oneline --decorate --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M%p'"
 alias glo3="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(magenta)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M:%S%p'"
@@ -750,9 +761,9 @@ alias cd2="cd ~/dev/github28"
 # alias kill='kill -9'
 # alias ll='ls -AlF --color=auto'
 # alias memhogs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10' # Show Top 10 Memory Hogs
-alias brew-outdated-cask="brew update > /dev/null 2>&1 && brew outdated --cask --greedy"
-alias brew-outdated="brew update > /dev/null 2>&1 && brew outdated --greedy"
-alias brew-update="brew update > /dev/null 2>&1 && brew outdated --greedy"
+alias brew-outdated-cask="brew update > /dev/null 2>&1 && brew cleanup > /dev/null 2>&1 && brew outdated --cask --greedy"
+alias brew-outdated="brew update > /dev/null 2>&1 && brew cleanup > /dev/null 2>&1 && brew outdated --greedy"
+alias brew-update="brew update > /dev/null 2>&1 && brew cleanup > /dev/null 2>&1 && brew outdated --greedy"
 alias cls="clear"
 alias cude="codium"
 alias egrep="egrep --color=always"
@@ -761,6 +772,11 @@ alias fgrep="fgrep --color=always"
 alias g++="g++-13"
 alias gcc="gcc-13"
 alias grep='grep --color=always'
+alias grepe='grep -e --color=always'
+alias grepr='grep -e --color=always'
+alias grepre='grep -e --color=always'
+alias grepreg='grep -e --color=always'
+alias grepi='grep -i --color=always'
 alias ll='ls -AoF --color=auto'
 alias ls='ls --color=auto'
 alias lsd='ls -d */'

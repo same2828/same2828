@@ -3,6 +3,7 @@
 - [Table of Contents](#table-of-contents)
 - [Google Search Tips/Tricks](#google-search-tipstricks)
 - [Google Scholar](#google-scholar)
+- [Force Reload](#force-reload)
 - [Firefox Bookmark Keywords](#firefox-bookmark-keywords)
   - [Google Web Search](#google-web-search)
   - [Google Web Search + `site:reddit.com`](#google-web-search--siteredditcom)
@@ -58,6 +59,17 @@ Examples:
 author:green photosynthesis "leaf"
 ```
 
+# Force Reload
+
+| Shortcut                            | Description  |
+| ----------------------------------- | ------------ |
+| `Cmd + Shift + R`                   | Force Reload |
+| `Ctrl + Shift + R`                  | Force Reload |
+| `Ctrl + F5`                         | Force Reload |
+| `Hold Shift && Click Reload Button` | Force Reload |
+
+Note: `Cmd + R` or `F5` only does normal reload
+
 # Firefox Bookmark Keywords
 
 `Chrome > chrome:settings > Search Engine > Manage Search Engines and Site Search > Site Search > Add`
@@ -75,14 +87,37 @@ Flags:
   - Note: The benefits of this is questionable
 
 ```js
-javascript:(function(){n=0;q='search?udm=14&q=';p='';u='https://www.google.com/';d='q|p|query|search|term|search_query|as_q'.split('|');a=[];s='%s';c=location.search.slice(1).split('&');t=window.getSelection().toString();n=t?1:0;if(s=='%'+'s'||s=='')s=t;for(i%20in%20c){k=c[i].split('=');for(j%20in%20d){if(k[0]==d[j]&&k[1])a.push(escape(k[1]))}}t=unescape(a.join('%20').replace(/\+/g,'%20'));s=s?s:t;if(s){u+=q+s+(p?'&'+p:p)}else{u=(p?u+'?'+p:u)}if(n){window.open(u,"_blank")}else{location=u}})();
-javascript:(function(){n=0;q='search?udm=14&tbs=li:1&q=';p='';u='https://www.google.com/';d='q|p|query|search|term|search_query|as_q'.split('|');a=[];s='%s';c=location.search.slice(1).split('&');t=window.getSelection().toString();n=t?1:0;if(s=='%'+'s'||s=='')s=t;for(i%20in%20c){k=c[i].split('=');for(j%20in%20d){if(k[0]==d[j]&&k[1])a.push(escape(k[1]))}}t=unescape(a.join('%20').replace(/\+/g,'%20'));s=s?s:t;if(s){u+=q+s+(p?'&'+p:p)}else{u=(p?u+'?'+p:u)}if(n){window.open(u,"_blank")}else{location=u}})();
+javascript:(function(){n=0;q='search?&tbs=li:1&q=';p='';u='https://www.google.com/';d='q|p|query|search|term|search_query|as_q'.split('|');a=[];s='%s';c=location.search.slice(1).split('&');t=window.getSelection().toString();n=t?1:0;if(s=='%'+'s'||s=='')s=t;for(i%20in%20c){k=c[i].split('=');for(j%20in%20d){if(k[0]==d[j]&&k[1])a.push(escape(k[1]))}}t=unescape(a.join('%20').replace(/\+/g,'%20'));s=s?s:t;if(s){u+=q+s+(p?'&'+p:p)}else{u=(p?u+'?'+p:u)}if(n){window.open(u,"_blank")}else{location=u}})();
+javascript:(function(){n=0;q='search?&tbs=li%3A1&q=';p='';u='https://www.google.com/';d='q|p|query|search|term|search_query|as_q'.split('|');a=[];s='%s';c=location.search.slice(1).split('&');t=window.getSelection().toString();n=t?1:0;if(s=='%'+'s'||s=='')s=t;for(i%20in%20c){k=c[i].split('=');for(j%20in%20d){if(k[0]==d[j]&&k[1])a.push(escape(k[1]))}}t=unescape(a.join('%20').replace(/\+/g,'%20'));s=s?s:t;if(s){u+=q+s+(p?'&'+p:p)}else{u=(p?u+'?'+p:u)}if(n){window.open(u,"_blank")}else{location=u}})();
+javascript:(function(){n=0;q='search?&udm=14&q=';p='';u='https://www.google.com/';d='q|p|query|search|term|search_query|as_q'.split('|');a=[];s='%s';c=location.search.slice(1).split('&');t=window.getSelection().toString();n=t?1:0;if(s=='%'+'s'||s=='')s=t;for(i%20in%20c){k=c[i].split('=');for(j%20in%20d){if(k[0]==d[j]&&k[1])a.push(escape(k[1]))}}t=unescape(a.join('%20').replace(/\+/g,'%20'));s=s?s:t;if(s){u+=q+s+(p?'&'+p:p)}else{u=(p?u+'?'+p:u)}if(n){window.open(u,"_blank")}else{location=u}})();
+javascript:(function(){n=0;q='search?&udm=14&tbs=li:1&q=';p='';u='https://www.google.com/';d='q|p|query|search|term|search_query|as_q'.split('|');a=[];s='%s';c=location.search.slice(1).split('&');t=window.getSelection().toString();n=t?1:0;if(s=='%'+'s'||s=='')s=t;for(i%20in%20c){k=c[i].split('=');for(j%20in%20d){if(k[0]==d[j]&&k[1])a.push(escape(k[1]))}}t=unescape(a.join('%20').replace(/\+/g,'%20'));s=s?s:t;if(s){u+=q+s+(p?'&'+p:p)}else{u=(p?u+'?'+p:u)}if(n){window.open(u,"_blank")}else{location=u}})();
+javascript:(function(){n=0;q='define.php?term=';p='';u='https://www.urbandictionary.com/';d='q|p|query|search|term|search_query|as_q'.split('|');a=[];s='%s';c=location.search.slice(1).split('&');t=window.getSelection().toString();n=t?1:0;if(s=='%'+'s'||s=='')s=t;for(i%20in%20c){k=c[i].split('=');for(j%20in%20d){if(k[0]==d[j]&&k[1])a.push(escape(k[1]))}}t=unescape(a.join('%20').replace(/\+/g,'%20'));s=s?s:t;if(s){u+=q+s+(p?'&'+p:p)}else{u=(p?u+'?'+p:u)}if(n){window.open(u,"_blank")}else{location=u}})();
+javascript:(function(){n=0;q='results?q=';p='';u='https://www.youtube.com/';d='q|p|query|search|term|search_query|as_q'.split('|');a=[];s='%s';c=location.search.slice(1).split('&');t=window.getSelection().toString();n=t?1:0;if(s=='%'+'s'||s=='')s=t;for(i%20in%20c){k=c[i].split('=');for(j%20in%20d){if(k[0]==d[j]&&k[1])a.push(escape(k[1]))}}t=unescape(a.join('%20').replace(/\+/g,'%20'));s=s?s:t;if(s){u+=q+s+(p?'&'+p:p)}else{u=(p?u+'?'+p:u)}if(n){window.open(u,"_blank")}else{location=u}})();
+javascript:(function(){q='?q=';p='kp=-2';u='https://duckduckgo.com/';d='q|p|query|search|term|search_query|as_q'.split('|');a=[];s='%s';c=location.search.slice(1).split('&');t=window.getSelection().toString();n=t?1:0;if(s=='%'+'s'||s=='')s=t;for(i%20in%20c){k=c[i].split('=');for(j%20in%20d){if(k[0]==d[j]&&k[1])a.push(escape(k[1]))}}t=unescape(a.join('%20').replace(/\+/g,'%20'));s=s?s:t;if(s){u+=q+s+(p?'&'+p:p)}else{u=(p?u+'?'+p:u)}if(n){window.open(u,%22_blank%22)}else{location=u}})();
+```
+
+```
+https://www.google.com/search?q=%s&udm=14&tbs=li:1+site%3Areddit.com
+https://www.google.com/search?q=%s&udm=14&tbs=li%3A1+site%3Areddit.com
+
+https://www.google.com/search?udm=14&tbs=li:1&q=%s+site%3Astackoverflow.com+OR+site%3Asuperuser.com+OR+site%3A*.stackexchange.com+OR+site%3Aaskubuntu.com+OR+site%3Aserverfault.com
+https://www.google.com/search?udm=14&tbs=li%3A1&q=%s+site%3Astackoverflow.com+OR+site%3Asuperuser.com+OR+site%3A*.stackexchange.com+OR+site%3Aaskubuntu.com+OR+site%3Aserverfault.com
+
+https://www.google.com/search?udm=14&q=%s+site%3Astackoverflow.com+OR+site%3Asuperuser.com+OR+site%3A*.stackexchange.com+OR+site%3Aaskubuntu.com+OR+site%3Aserverfault.com
 ```
 
 ```sh
-https://www.google.com/search?udm=14&q=%s
-https://www.google.com/search?udm=14&tbs=li:1&q=%s
+https://www.google.com/search?q=%s&tbs=li:1
+https://www.google.com/search?q=%s&tbs=li%3A1
+https://www.google.com/search?q=%s&udm=14
+https://www.google.com/search?q=%s&udm=14&tbs=li:1
+https://www.google.com/search?q=%s&udm=14&tbs=li%3A1
 ```
+
+Read more
+
+- https://www.reddit.com/r/google/comments/1ff9jcg/tip_use_google_web_verbatim_search_as_default/
+- https://old.reddit.com/r/firefox/comments/o3yfeo/just_discovered_firefox_bookmark_keywords_you_can/
 
 ## Google Web Search + `site:reddit.com`
 

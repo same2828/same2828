@@ -1,57 +1,3 @@
-# Table of Contents
-
-- [Table of Contents](#table-of-contents)
-- [Official Docs](#official-docs)
-
-# Official Docs
-
-## Maven
-
-- [Maven - Guide Index](https://maven.apache.org/guides/index.html)
-- [Maven - User Index](https://maven.apache.org/users/index.html)
-- [Maven - `Pom` Reference](https://maven.apache.org/pom.html)
-- [Maven - `Settings` Reference](https://maven.apache.org/settings.html)
-- [Maven - `Plugins` Reference](https://maven.apache.org/plugins/index.html)
-- [Maven - Glossary](https://maven.apache.org/glossary.html)
-- [GitHub CLI - Maven](https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-java-with-maven)
-- [Maven Repository - Apache](https://mvnrepository.com/)
-- [Maven Central Repository - Sonatype](https://central.sonatype.com/)
-
-## Spring Framework
-
-- [`Spring Framework`](https://spring.io/projects/spring-framework)
-- [`Spring Framework` - Reference](https://docs.spring.io/spring-framework/reference/index.html)
-- [`Spring Framework` - JavaDocs](https://docs.spring.io/spring-framework/docs/current/javadoc-api/)
-- [`Spring Framework` - javadoc.io](https://javadoc.io/doc/org.springframework)
-
-## Spring Boot
-
-- [`Spring Boot`](https://spring.io/projects/spring-boot)
-- [`Spring Boot` - Reference](https://docs.spring.io/spring-boot/docs/current/reference/htmlsingle/)
-- [`Spring Boot` - JavaDocs](https://docs.spring.io/spring-boot/api/java/index.html)
-
-## Spring HTTP Package (under Spring Framework)
-
-- [`Spring HTTP` - JavaDocs](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/http/package-summary.html)
-
-## Spring WebFlux
-
-- [`Spring WebFlux` - javadoc.io](https://javadoc.io/doc/org.springframework/spring-webflux/latest/index.html)
-
-## Spring Test
-
-- [`Spring Test` - javadoc.io](https://javadoc.io/doc/org.springframework/spring-test/latest/index.html)
-
-## Spring Security
-
-- [`Spring Security`](https://spring.io/projects/spring-security)
-- [`Spring Security` - Reference](https://docs.spring.io/spring-security/reference/index.html)
-- [`Spring Security` - JavaDocs](https://docs.spring.io/spring-security/site/docs/current/api/)
-
-## SpringDoc
-
-- [`SpringDoc` - javadoc.io](https://javadoc.io/doc/org.springdoc)
-
 ## Jackson
 
 - [`jackson-core` - JavaDocs](http://fasterxml.github.io/jackson-core/javadoc/2.5/)
@@ -60,6 +6,17 @@
 - [`jackson-annotations` - javadoc.io](https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-annotations)
 - [`jackson-databind` - JavaDocs](http://fasterxml.github.io/jackson-annotations/javadoc/2.5/)
 - [`jackson-databind` - javadoc.io](https://javadoc.io/doc/com.fasterxml.jackson.core/jackson-databind)
+
+## Logback
+
+> Logback is a logging library for Java and is intended as a successor to the popular log4j project
+
+- [Logback Documentation Home](https://logback.qos.ch/documentation.html)
+- [Logback Manual](https://logback.qos.ch/manual/index.html)
+- [Logback-Parent 1.5.15 API - JavaDocs](https://logback.qos.ch/apidocs/index.html)
+- [Logback-Parent 1.5.15 Reference - JavaDocs](https://logback.qos.ch/xref/index.html)
+- [Logback-Access Parent 2.0.6 Api - JavaDocs](https://logback.qos.ch/apidocs-access/index.html)
+- [Logback-Access Parent 2.0.6 Reference - JavaDocs](https://logback.qos.ch/xref-access/index.html)
 
 ## Lombok
 
@@ -114,3 +71,12 @@ Note: Netty 5.X is abandoned
 
 - [`Netty 4` - User Guide](https://netty.io/wiki/user-guide-for-4.x.html)
 - [`Netty 4.1` - JavaDocs](https://netty.io/4.1/api/index.html)
+
+## SLF4J
+
+> The Simple Logging Facade for Java (SLF4J) serves as a simple facade or abstraction for various logging frameworks (e.g. java.util.logging, logback, log4j, reload4j) allowing the end user to plug in the desired logging framework at deployment time.
+
+[SLF4J Documentation Home](https://www.slf4j.org/docs.html)
+[SLF4J User Manual](https://www.slf4j.org/manual.html)
+[SLF4J Project Modules 2.0.x - JavaDocs](https://www.slf4j.org/apidocs/index.html)
+[SLF4J Project Modules 2.1.x - JavaDocs](https://www.slf4j.org/apidocs-2.1.0/index.html)

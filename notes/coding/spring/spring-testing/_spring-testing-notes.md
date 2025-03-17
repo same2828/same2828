@@ -217,6 +217,8 @@
 - [Maven - `Plugins` Reference](https://maven.apache.org/plugins/index.html)
 - [Maven - Glossary](https://maven.apache.org/glossary.html)
 - [GitHub CLI - Maven](https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-java-with-maven)
+- [Maven Repository - Apache](https://mvnrepository.com/)
+- [Maven Central Repository - Sonatype](https://central.sonatype.com/)
 
 ## Spring Framework
 

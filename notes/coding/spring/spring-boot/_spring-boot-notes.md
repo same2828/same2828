@@ -29,6 +29,9 @@
     - [Method Level Annotations/Decorators](#method-level-annotationsdecorators)
       - [`@Bean`](#bean)
     - [`@Component` vs `@Service`](#component-vs-service)
+- [`pom.xml`](#pomxml)
+  - [Bill of Materials (BOM) for Dependency Management](#bill-of-materials-bom-for-dependency-management)
+  - [Maven CI Friendly Versions](#maven-ci-friendly-versions)
 - [HowToDoInJava](#howtodoinjava)
   - [Accessing Properties in Spring Boot (`@Value` + `@ConfigurationProperties`) - HowToDoInJava](#accessing-properties-in-spring-boot-value--configurationproperties---howtodoinjava)
     - [Register Properties Files with `@PropertySource`](#register-properties-files-with-propertysource)
@@ -200,7 +203,7 @@
 - [Spring Boot 3 - Amigoscode](#spring-boot-3---amigoscode)
   - [Spring Initializr](#spring-initializr-2)
   - [Project Setup](#project-setup)
-  - [pom.xml](#pomxml)
+  - [pom.xml](#pomxml-1)
   - [Getting Started](#getting-started)
     - [Deleting Default Files](#deleting-default-files)
     - [Starting From Scratch](#starting-from-scratch)
@@ -306,6 +309,8 @@
 - [Maven - `Plugins` Reference](https://maven.apache.org/plugins/index.html)
 - [Maven - Glossary](https://maven.apache.org/glossary.html)
 - [GitHub CLI - Maven](https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-java-with-maven)
+- [Maven Repository - Apache](https://mvnrepository.com/)
+- [Maven Central Repository - Sonatype](https://central.sonatype.com/)
 
 ## Spring Framework
 
@@ -683,6 +688,134 @@ public class Main {
 - `@Component` is a general-purpose annotation that indicates a class is a Spring managed component
   - Spring will automatically detect classes annotated with `@Component` during component scanning and register them as beans in the application context
 - `@Service` is a specialization of the `@Component` annotation (its implementation itself is annotated with `@Component`) and is used to annotate classes at the service layer (indicates beans that contain business logic)
+
+# `pom.xml`
+
+## Bill of Materials (BOM) for Dependency Management
+
+`<type>pom</type>`
+
+- This specifies that the dependency is a POM file itself, not a JAR or other artifact type
+- When you set type to pom, you're saying "I want to reference this project's POM file" rather than including the project's compiled code
+
+`<scope>import</scope>`
+
+- The import scope is special and can only be used:
+- In the `<dependencyManagement></dependencyManagement>` section
+- With dependencies of `type>pom</type>`
+- It tells Maven to import all the dependency management information from the referenced POM into your project's dependency management
+- It's essentially saying "use all the version declarations from this other POM"
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example</groupId>
+  <artifactId>demo</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.4.3</version>
+  </parent>
+
+  <properties>
+    <java.version>21</java.version>
+    <spring-boot.version>3.4.3</spring-boot.version>
+    <testcontainers.version>1.20.5</testcontainers.version>
+  </properties>
+
+  <dependencyManagement>
+    <dependencies>
+      <!-- Import spring-boot BOM -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-dependencies</artifactId>
+        <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+      <!-- Import testcontainers BOM -->
+      <dependency>
+        <groupId>org.testcontainers</groupId>
+        <artifactId>testcontainers-bom</artifactId>
+        <version>${testcontainers.version}</version>
+      </dependency>
+    </dependencies>
+  </dependencyManagement>
+
+  <!-- Dependencies without versions (managed by BOM) -->
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-data-jpa</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>gcloud</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>junit-jupiter</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>postgresql</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+</project>
+```
+
+## Maven CI Friendly Versions
+
+- [Read more](https://maven.apache.org/guides/mini/guide-maven-ci-friendly.html)
+
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>com.example</groupId>
+  <artifactId>demo</artifactId>
+  <version>${revision}-${sha1}-${changelist}</version>
+
+  <!-- ... -->
+
+  <properties>
+    <revision>3.5.1</revision>
+    <changelist>SNAPSHOT</changelist>
+    <sha1/>
+  </properties>
+
+  <!-- ... -->
+```
+
+```sh
+# mvn cli command to print version in <version> (i.e. ROOT project.version in pom.xml)
+mvn help:evaluate -Dexpression=project.version -q -DforceStdout
+# mvn cli command to print customProperty value in <properties>
+mvn help:evaluate -Dexpression=revision -q -DforceStdout
+mvn help:evaluate -Dexpression=customProperty -q -DforceStdout
+```
 
 # HowToDoInJava
 
@@ -6471,7 +6604,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class Author {
   private Long id;
   private String name;
@@ -6491,7 +6624,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class Book {
   private String isbn;
   private String title;
@@ -8710,7 +8843,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "authors")
 public class Author {
@@ -8735,7 +8868,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Entity
 @Table(name = "books")
 public class Book {
@@ -10728,7 +10861,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 @NoArgsConstructor
 public class PokemonDto {
@@ -11304,7 +11437,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 public class PokemonResponse {
   private List<PokemonDto> content;
   private int pageNo;
@@ -11411,7 +11544,7 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Entity
 public class Review {
   @Id
@@ -11443,7 +11576,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@Builder(toBuilder = true)
 @Entity
 public class Pokemon {
   @Id

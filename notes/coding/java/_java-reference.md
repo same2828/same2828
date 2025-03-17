@@ -24,6 +24,7 @@
   - [Java Primitive Data Type to Wrapper Class Conversion](#java-primitive-data-type-to-wrapper-class-conversion)
 - [`Character` Class Methods](#character-class-methods)
   - [Methods](#methods)
+- [`Enum` Class](#enum-class)
 - [`Integer` Class](#integer-class)
   - [Fields](#fields)
   - [Methods](#methods-1)
@@ -705,6 +706,145 @@ Ranges:
 | `static char`                              | `Character.toUpperCase(char ch)`                                                               | Converts the character argument to uppercase using case mapping information from the UnicodeData file                                                                           |
 | `static int`                               | `Character.toUpperCase(int codePoint)`                                                         | Converts the character (Unicode code point) argument to uppercase using case mapping information from the UnicodeData file                                                      |
 | `static Character`                         | `Character.valueOf(char c)`                                                                    | Returns a Character instance representing the specified char value                                                                                                              |
+
+# `Enum` Class
+
+- [Read more](https://docs.oracle.com/en/java/javase/21/docs/api/java.base/java/lang/Enum.html)
+
+| Return Type                        | `Enum` Method                                   | Description                                                                                                                                         |
+| ---------------------------------- | ----------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `protected final Object`           | `.clone()`                                      | Throws CloneNotSupportedException.                                                                                                                  |
+| `final int`                        | `.compareTo(E o)`                               | Compares this enum with the specified object for order.                                                                                             |
+| `final Optional<Enum.EnumDesc<E>>` | `.describeConstable()`                          | Returns an enum descriptor EnumDesc for this instance, if one can be constructed, or an empty Optional if one cannot be.                            |
+| `final boolean`                    | `.equals(Object other)`                         | Returns true if the specified object is equal to this enum constant.                                                                                |
+| `final Class<E>`                   | `.getDeclaringClass()`                          | Returns the Class object corresponding to this enum constant's enum type.                                                                           |
+| `final int`                        | `.hashCode()`                                   | Returns a hash code for this enum constant.                                                                                                         |
+| `final String`                     | `.name()`                                       | Returns the name of this enum constant, exactly as declared in its enum declaration.                                                                |
+| `final int`                        | `.ordinal()`                                    | Returns the ordinal of this enumeration constant (its position in its enum declaration, where the initial constant is assigned an ordinal of zero). |
+| `String`                           | `.toString()`                                   | Returns the name of this enum constant, as contained in the declaration.                                                                            |
+| `static <T extends Enum<T>> T`     | `Enum.valueOf(Class<T> enumClass, String name)` | Returns the enum constant of the specified enum class with the specified name.                                                                      |
+| `static T[]`                       | `Enum.values()`                                 | Returns the enum constant of the specified enum class with the specified name.                                                                      |
+
+```java
+public enum Direction {
+  NORTH,
+  EAST,
+  SOUTH,
+  WEST;
+}
+
+// Usage
+String southStr = Direction.SOUTH.name(); // "SOUTH"
+int southPosition = Direction.SOUTH.ordinal(); // 2 (zero-indexed)
+Direction southDir = Direction.valueOf("SOUTH"); // Direction.SOUTH
+
+Direction[] allDirections = Direction.values();
+for (Direction dir : allDirections) {
+  System.out.println(dir);
+}
+// NORTH
+// EAST
+// SOUTH
+// WEST
+```
+
+```java
+public enum Direction {
+  NORTH(0),
+  EAST(90),
+  SOUTH(180),
+  WEST(270);
+
+  private final int degrees;
+
+  Direction(int degrees) {
+    this.degrees = degrees;
+  }
+
+  public int getDegrees() {
+    return degrees;
+  }
+
+  public Direction turnRight() {
+    return values()[(ordinal() + 1) % 4];
+  }
+
+  public static Direction fromDegrees(int degrees) {
+    // Normalize degrees to 0-359
+    int normalizedDegrees = ((degrees % 360) + 360) % 360;
+    for (Direction dir : values()) {
+      if (dir.getDegrees() == normalizedDegrees) {
+        return dir;
+      }
+    }
+    throw new IllegalArgumentException("No direction found for degrees: " + degrees);
+  }
+}
+
+// Usage
+Direction dir = Direction.NORTH;
+System.out.println(dir.getDegrees());  // Output: 0
+System.out.println(dir.turnRight());   // Output: EAST
+// Get all enum values
+Direction[] allDirections = Direction.values();
+// Convert string to enum
+Direction dir = Direction.valueOf("NORTH");
+// Get enum ordinal (position)
+int position = Direction.EAST.ordinal();  // Returns 1
+```
+
+```java
+// https://docs.oracle.com/javase/tutorial/java/javaOO/enum.html
+public enum Planet {
+  MERCURY(3.303e+23, 2.4397e6),
+  VENUS(4.869e+24, 6.0518e6),
+  EARTH(5.976e+24, 6.37814e6),
+  MARS(6.421e+23, 3.3972e6),
+  JUPITER(1.9e+27, 7.1492e7),
+  SATURN(5.688e+26, 6.0268e7),
+  URANUS(8.686e+25, 2.5559e7),
+  NEPTUNE(1.024e+26, 2.4746e7);
+
+  private final double mass; // in kilograms
+  private final double radius; // in meters
+
+  Planet(double mass, double radius) {
+    this.mass = mass;
+    this.radius = radius;
+  }
+
+  private double mass() {
+    return mass;
+  }
+
+  private double radius() {
+    return radius;
+  }
+
+  // universal gravitational constant  (m3 kg-1 s-2)
+  public static final double G = 6.67300E-11;
+
+  double surfaceGravity() {
+    return G * mass / (radius * radius);
+  }
+
+  double surfaceWeight(double otherMass) {
+    return otherMass * surfaceGravity();
+  }
+
+  public static void main(String[] args) {
+    if (args.length != 1) {
+      System.err.println("Usage: java Planet <earth_weight>");
+      System.exit(-1);
+    }
+    double earthWeight = Double.parseDouble(args[0]);
+    double mass = earthWeight / EARTH.surfaceGravity();
+    for (Planet p : Planet.values()) {
+      System.out.printf("Your weight on %s is %f%n", p, p.surfaceWeight(mass));
+    }
+  }
+}
+```
 
 # `Integer` Class
 
@@ -4761,7 +4901,7 @@ public class BankDemo {
 ## For-Each Loop
 
 ```java
-int[][]dp = new int[10][10];
+int[][] dp = new int[10][10];
 for (int[] arr : dp) {
   Arrays.fill(arr, Integer.MAX_VALUE);
 }
@@ -5002,10 +5142,10 @@ for (int[] row : arr) {
 
 ### `int[][][]`
 
-- Note: We put `n` as the LAST DIMENSION to take advantage of cache locality
+- Note: We initialise `int[k][m][n]` in ASCENDING order (`k <= m <= n`) to take advantage of cache locality
 
 ```java
-int[][][] memo = new int[m][k][n];
+int[][][] memo = new int[k][m][n];
 for (int[][] d2 : memo) {
   for (int[] row : d2) {
     Arrays.fill(row, -1);
@@ -5014,12 +5154,21 @@ for (int[][] d2 : memo) {
 ```
 
 ```java
-int[][][] memo = new int[m][k][n];
+int[][][] memo = new int[k][m][n];
 for (int i = 0; i < memo.length; i++) {
   for (int j = 0; j < memo[i].length; j++) {
     for (int k = 0; k < memo[i][j].length; k++) {
       memo[i][j][k] = -1;
     }
+  }
+}
+```
+
+```java
+int[][][] memo = new int[k][m][n];
+for (int i = 0; i < memo.length; i++) {
+  for (int j = 0; j < memo[i].length; j++) {
+    Arrays.fill(memo[i][j], -1);
   }
 }
 ```

@@ -154,17 +154,20 @@ keypad_enter -> return_or_enter
 ### LibreOffice
 
 ```sh
-brew install --cask libreoffice
+brew install --cask libreoffice-still
 ```
 
-- View > User Interface > Tabbed > Apply to All
-- Tools > AutoCorrect Options > Options
+- Open Blank Calc Spreadsheet > macOS Menu Bar > View > User Interface > Tabbed > Apply to All
+- Open Blank Calc Spreadsheet > macOS Menu Bar > Tools > AutoCorrect Options > Options
   - Turn OFF
     - URL recognition
     - Replace dashes
     - Correct two initial capitals
     - Capitalize first letter of every sentence
     - Correct accidental usage of caps lock key
+- Settings > Search for "Appearance" > Icon Theme > Colibre (SVG + dark)
+- Drag and Drop Cell
+  - Click on Cell > Shift + Click on Cell > Drag (using mouse, no shift)
 
 ### Librewolf
 
@@ -172,6 +175,39 @@ brew install --cask libreoffice
 brew install --cask librewolf --no-quarantine
 xattr -d com.apple.quarantine /Applications/LibreWolf.app
 # brew reinstall librewolf --no-quarantine
+```
+
+Change Zoom Levels
+
+- `URL Bar > about:config > zoom > toolkit.zoomManager.zoomValues > .25,.33,.5,.67,0.75,.8,.9,1,1.1,1.25,1.33,1.5,1.75,2,2.25,2.5,2.75,3,3.25,3.5,3.75,4,5`
+
+Disable Hover Preview
+
+`about:config > browser.tabs.hoverPreview.enabled = FALSE`
+
+`about:config > browser.tabs.hoverPreview.showThumbnails = FALSE`
+
+`about:config > browser.urlbar.update2.engineAliasRefresh  > Keep the selection on Boolean and click the plus sign button` (if the value isn't set to true automatically, double-click false to switch it to true)
+
+Enable Performance Mode
+
+- `Settings > General > Performance` > UNTICK "Use recommended performance settings" + Leave ON "Use hardware acceleration when available"
+
+Enable DNS over HTTPS
+
+- `about:preferences > Privacy & Security > DNS over HTTPS > Increased Protection > Cloudflare`
+
+Change Search Engine to Google Search Verbatim
+
+- `about:config > browser.urlbar.update2.engineAliasRefresh  > Keep the selection on Boolean and click the plus sign (+) button` (if the value isn't set to true automatically, double-click false to switch it to true)
+- `about:preferences > Search > Add Search Engine > https://www.google.com/search?q=%s&tbs=li%3A1`
+
+```sh
+https://www.google.com/search?q=%s&tbs=li:1
+https://www.google.com/search?q=%s&tbs=li%3A1
+https://www.google.com/search?q=%s&udm=14
+https://www.google.com/search?q=%s&udm=14&tbs=li:1
+https://www.google.com/search?q=%s&udm=14&tbs=li%3A1
 ```
 
 ### Mounty

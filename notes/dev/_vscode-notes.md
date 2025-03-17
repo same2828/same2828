@@ -12,7 +12,7 @@
   - [macOS](#macos)
 - [Keyboard Shortcuts](#keyboard-shortcuts)
   - [Command Palette](#command-palette)
-  - [Copilot](#copilot)
+  - [GitHub Copilot](#github-copilot)
   - [Copy Line](#copy-line)
   - [Cycle Tabs](#cycle-tabs)
   - [Find Code in Files](#find-code-in-files)
@@ -137,6 +137,7 @@ Extension List:
 - **Dracula (s3same)**
 - **Draw.io Integration (Henning Dieterichs)**
 - Duplicate Action (mrmlnc) (note: File Utils does same thing)
+- **Encode Decode (Mitch Denny)**
 - **Error Lens (Alexander)**
 - ES7+ React/Redux/GraphQL/React-Native snippets (dsznajder) (note: NOT updated since 2022)
 - **ESLint (Microsoft)**
@@ -278,10 +279,12 @@ Extension List:
 - DotENV (mikestead)
 - Dracula (s3same)
 - Draw.io Integration (Henning Dieterichs)
+- Encode Decode (Mitch Denny)
 - Error Lens (Alexander)
 - ESLint (Microsoft)
 - Even Better TOML (tamasfe)
 - Fast Compare (David Kolar)
+- File Bunny (Rob O'Leary)
 - File Utils (Steffen Leistner)
 - Format All Files in Workspace (Alex Ross)
 - Formatting Toggle (tombonnike)
@@ -354,10 +357,18 @@ Extension List:
   - Transform to Uppercase
   - View: Toggle Word Wrap
 
-## Copilot
+## GitHub Copilot
 
-- `Command + Shift + I` = Open GitHub Copilot
-- `Control + L` = Clear GitHub Copilot Chat
+| Shortcut            | Description               |
+| ------------------- | ------------------------- |
+| `Cmd + Shift + I`   | Open GitHub Copilot       |
+| `Control + L`       | Clear GitHub Copilot Chat |
+| `Option + ]`        | See Next Suggestion       |
+| `Option + [`        | See Previous Suggestion   |
+| `Option + \`        | Trigger Inline Suggestion |
+| `Cmd + Right Arrow` | Accept at Word Level      |
+| `Tab`               | Accept Suggestion         |
+| `Esc`               | Reject Suggestion         |
 
 ## Copy Line
 

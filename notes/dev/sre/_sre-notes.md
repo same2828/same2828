@@ -9,7 +9,7 @@
 
 # Port Numbers
 
-```
+```sh
 sudo apt install -y net-tools
 sudo apt install -y nc
 ```
