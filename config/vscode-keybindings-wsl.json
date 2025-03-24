@@ -1,19 +1,19 @@
 [
   {
-    "command": "workbench.action.files.saveWithoutFormatting",
-    "key": "ctrl+s"
-  },
-  {
     "command": "-workbench.action.files.saveWithoutFormatting",
     "key": "ctrl+k ctrl+shift+s"
   },
   {
-    "command": "workbench.action.files.save",
-    "key": "alt+s"
+    "command": "workbench.action.files.saveWithoutFormatting",
+    "key": "ctrl+s"
   },
   {
     "command": "-workbench.action.files.save",
     "key": "ctrl+s"
+  },
+  {
+    "command": "workbench.action.files.save",
+    "key": "alt+s"
   },
   {
     "command": "-tabnine.accept-inline-suggestion",
@@ -21,13 +21,13 @@
     "when": "tabnine.in-inline-suggestions && tabnine.inline-suggestion:enabled || tabnine.in-inline-suggestions && tabnine.snippet-suggestion:enabled"
   },
   {
-    "command": "workbench.explorer.fileView.focus",
-    "key": "ctrl+k f"
-  },
-  {
     "command": "-workbench.action.closeFolder",
     "key": "ctrl+k f",
     "when": "emptyWorkspaceSupport && workbenchState != 'empty'"
+  },
+  {
+    "command": "workbench.explorer.fileView.focus",
+    "key": "ctrl+k f"
   },
   {
     "command": "explorer.newFile",
@@ -40,14 +40,12 @@
     "when": "explorerViewletFocus"
   },
   {
-    "command": "-workbench.action.navigateForward",
-    "key": "alt+right",
-    "when": "canNavigateForward"
+    "command": "-workbench.action.previousEditor",
+    "key": "ctrl+pageup"
   },
   {
-    "command": "-workbench.action.navigateBack",
-    "key": "alt+left",
-    "when": "canNavigateBack"
+    "command": "workbench.action.previousEditor",
+    "key": "ctrl+pageup"
   },
   {
     "command": "-workbench.action.nextEditor",
@@ -58,12 +56,9 @@
     "key": "ctrl+pagedown"
   },
   {
-    "command": "-workbench.action.previousEditor",
-    "key": "ctrl+pageup"
-  },
-  {
-    "command": "workbench.action.previousEditor",
-    "key": "ctrl+pageup"
+    "command": "-editor.action.formatDocument",
+    "key": "shift+alt+f",
+    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
   },
   {
     "command": "editor.action.formatDocument",
@@ -71,9 +66,9 @@
     "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
   },
   {
-    "command": "-editor.action.formatDocument",
-    "key": "shift+alt+f",
-    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
+    "command": "-markdown.extension.editing.toggleStrikethrough",
+    "key": "alt+s",
+    "when": "false"
   },
   {
     "command": "markdown.extension.editing.toggleStrikethrough",
@@ -81,19 +76,14 @@
     "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
   },
   {
-    "command": "-markdown.extension.editing.toggleStrikethrough",
-    "key": "alt+s",
+    "command": "-markdown.extension.checkTaskList",
+    "key": "alt+c",
     "when": "false"
   },
   {
     "command": "markdown.extension.checkTaskList",
     "key": "alt+c",
     "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
-  },
-  {
-    "command": "-markdown.extension.checkTaskList",
-    "key": "alt+c",
-    "when": "false"
   },
   {
     "command": "-markdown.extension.onShiftEnterKey",
@@ -122,5 +112,50 @@
   {
     "command": "workbench.action.quickOpen",
     "key": "shift shift"
+  },
+  {
+    "command": "-github.copilot.generate",
+    "key": "ctrl+enter",
+    "when": "editorTextFocus && github.copilot.activated && !commentEditorFocused && !inInteractiveInput && !interactiveEditorFocused"
+  },
+  {
+    "command": "github.copilot.generate",
+    "key": "ctrl+alt+enter",
+    "when": "editorTextFocus && github.copilot.activated && !commentEditorFocused && !inInteractiveInput && !interactiveEditorFocused"
+  },
+  {
+    "command": "-workbench.action.chat.applyInEditor",
+    "key": "ctrl+enter",
+    "when": "accessibleViewInCodeBlock && chatIsEnabled || chatIsEnabled && inChat && !inChatInput"
+  },
+  {
+    "command": "-workbench.action.chat.insertCodeBlock",
+    "key": "ctrl+enter",
+    "when": "accessibleViewInCodeBlock && chatIsEnabled || chatIsEnabled && inChat && !inChatInput"
+  },
+  {
+    "command": "-workbench.action.chat.runInTerminal",
+    "key": "ctrl+alt+enter",
+    "when": "accessibleViewInCodeBlock && chatIsEnabled || chatIsEnabled && inChat"
+  },
+  {
+    "command": "-workbench.action.navigateBack",
+    "key": "alt+left",
+    "when": "canNavigateBack"
+  },
+  {
+    "command": "workbench.action.navigateBack",
+    "key": "alt+-",
+    "when": "canNavigateBack"
+  },
+  {
+    "command": "-workbench.action.navigateForward",
+    "key": "alt+right",
+    "when": "canNavigateForward"
+  },
+  {
+    "command": "workbench.action.navigateForward",
+    "key": "alt+=",
+    "when": "canNavigateForward"
   }
 ]

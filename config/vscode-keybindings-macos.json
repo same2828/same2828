@@ -1,20 +1,20 @@
 // Place your key bindings in this file to override the defaultsauto[]
 [
   {
-    "command": "workbench.action.files.saveWithoutFormatting",
-    "key": "cmd+s"
-  },
-  {
     "command": "-workbench.action.files.saveWithoutFormatting",
     "key": "cmd+k s"
   },
   {
-    "command": "workbench.action.files.save",
-    "key": "alt+s"
+    "command": "workbench.action.files.saveWithoutFormatting",
+    "key": "cmd+s"
   },
   {
     "command": "-workbench.action.files.save",
     "key": "cmd+s"
+  },
+  {
+    "command": "workbench.action.files.save",
+    "key": "alt+s"
   },
   {
     "command": "-tabnine.accept-inline-suggestion",
@@ -22,13 +22,13 @@
     "when": "tabnine.in-inline-suggestions && tabnine.inline-suggestion:enabled || tabnine.in-inline-suggestions && tabnine.snippet-suggestion:enabled"
   },
   {
-    "command": "workbench.explorer.fileView.focus",
-    "key": "cmd+k f"
-  },
-  {
     "command": "-workbench.action.closeFolder",
     "key": "cmd+k f",
     "when": "emptyWorkspaceSupport && workbenchState != 'empty'"
+  },
+  {
+    "command": "workbench.explorer.fileView.focus",
+    "key": "cmd+k f"
   },
   {
     "command": "explorer.newFile",
@@ -41,12 +41,12 @@
     "when": "explorerViewletFocus"
   },
   {
-    "command": "redo",
-    "key": "cmd+y"
-  },
-  {
     "command": "-redo",
     "key": "shift+cmd+z"
+  },
+  {
+    "command": "redo",
+    "key": "cmd+y"
   },
   {
     "command": "-rerunSearchEditorSearch",
@@ -54,27 +54,22 @@
     "when": "inSearchEditor"
   },
   {
-    "command": "revealFileInOS",
-    "key": "shift+cmd+r", // external keyboard: "shift+alt+r", internal keyboard: "shift+cmd+r"
-    "when": "!editorFocus"
-  },
-  {
     "command": "-revealFileInOS",
     "key": "alt+cmd+r",
     "when": "!editorFocus"
   },
   {
-    "command": "workbench.action.files.revealActiveFileInWindows",
-    "key": "shift+cmd+r"
+    "command": "revealFileInOS",
+    "key": "shift+cmd+r", // external keyboard: "shift+alt+r", internal keyboard: "shift+cmd+r"
+    "when": "!editorFocus"
   },
   {
     "command": "-workbench.action.files.revealActiveFileInWindows",
     "key": "cmd+k r"
   },
   {
-    "command": "renameFile",
-    "key": "shift+enter",
-    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+    "command": "workbench.action.files.revealActiveFileInWindows",
+    "key": "shift+cmd+r"
   },
   {
     "command": "-renameFile",
@@ -82,9 +77,9 @@
     "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
   },
   {
-    "command": "explorer.openAndPassFocus",
-    "key": "enter",
-    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsFolder && !inputFocus"
+    "command": "renameFile",
+    "key": "shift+enter",
+    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
   },
   {
     "command": "-explorer.openAndPassFocus",
@@ -92,9 +87,9 @@
     "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsFolder && !inputFocus"
   },
   {
-    "command": "editor.action.formatDocument",
-    "key": "alt+a",
-    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
+    "command": "explorer.openAndPassFocus",
+    "key": "enter",
+    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsFolder && !inputFocus"
   },
   {
     "command": "-editor.action.formatDocument",
@@ -102,9 +97,9 @@
     "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
   },
   {
-    "command": "markdown.extension.editing.toggleStrikethrough",
-    "key": "shift+alt+s",
-    "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
+    "command": "editor.action.formatDocument",
+    "key": "alt+a",
+    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
   },
   {
     "command": "-markdown.extension.editing.toggleStrikethrough",
@@ -112,14 +107,19 @@
     "when": "false"
   },
   {
-    "command": "markdown.extension.checkTaskList",
-    "key": "alt+c",
+    "command": "markdown.extension.editing.toggleStrikethrough",
+    "key": "shift+alt+s",
     "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
   },
   {
     "command": "-markdown.extension.checkTaskList",
     "key": "alt+c",
     "when": "false"
+  },
+  {
+    "command": "markdown.extension.checkTaskList",
+    "key": "alt+c",
+    "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
   },
   {
     "command": "-markdown.extension.onShiftEnterKey",
@@ -173,5 +173,20 @@
     "command": "-workbench.action.chat.runInTerminal",
     "key": "ctrl+alt+enter",
     "when": "accessibleViewInCodeBlock && chatIsEnabled || chatIsEnabled && inChat"
+  },
+  {
+    "command": "workbench.action.navigateBack",
+    "key": "ctrl+-",
+    "when": "canNavigateBack"
+  },
+  {
+    "command": "-workbench.action.navigateForward",
+    "key": "ctrl+shift+-",
+    "when": "canNavigateForward"
+  },
+  {
+    "command": "workbench.action.navigateForward",
+    "key": "ctrl+=",
+    "when": "canNavigateForward"
   }
 ]
