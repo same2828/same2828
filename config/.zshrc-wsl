@@ -866,5 +866,6 @@ alias grepi='grep -i --color=always'
 alias ll='ls -AoF --color=auto'
 alias ls='ls --color=auto'
 alias lsd='ls -Aod --color=auto */'
+alias now='date +"%Y-%m-%d %H:%M:%S"'
 alias rezsh='source ~/.zshrc'
 alias untar="tar -xvf"
