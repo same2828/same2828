@@ -18,10 +18,11 @@
   - [`git reset`](#git-reset)
   - [`git rm`](#git-rm)
 - [Git Workflow](#git-workflow)
-  - [Remove Most Recent Commit + Unstage \& Leave Changes in Working Directory](#remove-most-recent-commit--unstage--leave-changes-in-working-directory)
-  - [Reset Repository](#reset-repository)
   - [Adding Files to Previous Commit](#adding-files-to-previous-commit)
   - [Change Most Recent Git Commit Message](#change-most-recent-git-commit-message)
+  - [Remove Most Recent Commit + Unstage \& Leave Changes in Working Directory](#remove-most-recent-commit--unstage--leave-changes-in-working-directory)
+  - [Rename File (Force Git to Pickup Case Changes)](#rename-file-force-git-to-pickup-case-changes)
+  - [Reset Repository](#reset-repository)
   - [Git Ignore Check](#git-ignore-check)
   - [Git Worktree](#git-worktree)
 - [Setup](#setup)
@@ -532,33 +533,6 @@ gp
 
 # Git Workflow
 
-## Remove Most Recent Commit + Unstage & Leave Changes in Working Directory
-
-```sh
-git reset --soft HEAD~1
-git restore --staged .
-```
-
-```sh
-git reset --mixed HEAD~1
-```
-
-## Reset Repository
-
-```sh
-git reset --hard && git clean -dfx
-git pull
-
-gclean
-gl
-```
-
-```sh
-git remote update origin --prune
-git fetch --all --prune
-git fetch --all --prune && git reset --hard origin/master && git clean -dfx
-```
-
 ## Adding Files to Previous Commit
 
 ```sh
@@ -577,6 +551,42 @@ gcn!
 ```sh
 git commit --amend -m 'updated commit message'
 gcmsg! 'updated commit message'
+```
+
+## Remove Most Recent Commit + Unstage & Leave Changes in Working Directory
+
+```sh
+git reset --soft HEAD~1
+git restore --staged .
+```
+
+```sh
+git reset --mixed HEAD~1
+```
+
+## Rename File (Force Git to Pickup Case Changes)
+
+```sh
+# Change Filename in Java Class
+git mv oldFileName newFileName
+git commit -m "rename"
+# Troubleshoot: git mv fullPathToOldFileName fullPathToNewFileName
+```
+
+## Reset Repository
+
+```sh
+git reset --hard && git clean -dfx
+git pull
+
+gclean
+gl
+```
+
+```sh
+git remote update origin --prune
+git fetch --all --prune
+git fetch --all --prune && git reset --hard origin/master && git clean -dfx
 ```
 
 ## Git Ignore Check
@@ -614,10 +624,14 @@ gwtr ../targetBranchDir
 
 ```ini
 # ~/.gitconfig
+#-------------------------------------------------------------------------------
+#                               Git Config Global
+#-------------------------------------------------------------------------------
 # https://git-scm.com/docs/git-config#Documentation/git-config.txt
 [alias]
+  # https://git-scm.com/docs/git-config#Documentation/git-config.txt-alias
   # Print the name of the current branch (useful for scripting)
-  currbranch = "!git branch --contains HEAD | grep '*' | tr -s ' ' | cut -d ' ' -f2"
+  # currbranch = "!git branch --contains HEAD | grep '*' | tr -s ' ' | cut -d ' ' -f2"
   # Associates a new commit with an existing commit hash (usage: git fix <prevCommitHashToAssociate>)
   fix = commit --fixup
   # fixup = "commit --fixup=HEAD"
@@ -626,12 +640,19 @@ gwtr ../targetBranchDir
   # Undo last commit but keep changed files in staged area (usage: git uncommit)
   uncommit = reset --soft HEAD~1
 [branch]
+  # https://git-scm.com/docs/git-config#Documentation/git-config.txt-branchsort
+  # https://git-scm.com/docs/git-branch#_configuration
   sort = -committerdate
 [core]
+  # https://git-scm.com/docs/git-config#Documentation/git-config.txt-corefileMode
   autocrlf = false
+  # autocrlf = input # Convert CRLF to LF on commit
+  eol = lf
   editor = code --wait
+  ignorecase = false
   pager = less -F -X
 [diff]
+  # https://git-scm.com/docs/git-diff#_configuration
   # Use descriptive initials (c = commit, i = index, w = working tree) instead of a/b
   mnemonicPrefix = true
   # Show renames/moves
@@ -641,37 +662,64 @@ gwtr ../targetBranchDir
   # When using --word-diff, assume --word-diff-regex=.
   wordRegex = .
 [difftool "vscode"]
+  # https://git-scm.com/docs/git-difftool#_configuration
   cmd = code --wait --diff $LOCAL $REMOTE
 [fetch]
+  # https://git-scm.com/docs/git-fetch#_configuration
   prune = true
   prunetags = true
 [grep]
+  # https://git-scm.com/docs/git-grep#_configuration
   break = true
+  extendedRegexp = true
   heading = true
   lineNumber = true
-  extendedRegexp = true
 [init]
+  # https://git-scm.com/docs/git-init#_configuration
   defaultBranch = master
 [log]
+  # https://git-scm.com/docs/git-log#_configuration
   date = local
 [merge]
+  # https://git-scm.com/docs/git-merge#_configuration
   conflictstyle = zdiff3
   tool = vscode
 [mergetool "vscode"]
+  # https://git-scm.com/docs/git-mergetool#_configuration
   cmd = code --wait $MERGED
 [pull]
+  # https://git-scm.com/docs/git-config#Documentation/git-config.txt-pullrebase
   rebase = true
 [push]
+  # https://git-scm.com/docs/git-push#_configuration
   autoSetupRemote = true
   default = simple
 [rebase]
+  # https://git-scm.com/docs/git-rebase#_configuration
   autosquash = true
   autostash = true
 [remote "origin"]
+  # https://git-scm.com/docs/git-config#Documentation/git-config.txt-remoteltnamegtprune
   prune = true
 [user]
+  # https://git-scm.com/docs/git-config#Documentation/git-config.txt-username
   name = s3same
   email = s3samedev@gmail.com
+
+#-------------------------------------------------------------------------------
+#                 User Specific Configurations based on Profile
+#-------------------------------------------------------------------------------
+# https://gist.github.com/jexchan/2351996?permalink_comment_id=4535652#gistcomment-4535652
+# https://gist.github.com/yinzara/bbedc35798df0495a4fdd27857bca2c1
+[includeIf "gitdir:~/**/github/"]
+  # path = ~/.dotfiles/s3same-gh.gitconfig
+  path = ~/dev/github/config/s3same.gitconfig
+[includeIf "gitdir:~/**/github28/"]
+  # path = ~/.dotfiles/same2828-gh.gitconfig
+  path = ~/dev/github/config/same2828.gitconfig
+[includeIf "gitdir:~/**/githubs3/"]
+  # path = ~/.dotfiles/s3same-gh.gitconfig
+  path = ~/dev/github/config/s3samedev.gitconfig
 ```
 
 **Git Config Commands**

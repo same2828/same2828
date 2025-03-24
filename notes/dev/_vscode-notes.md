@@ -20,6 +20,7 @@
   - [Go to Specific Line](#go-to-specific-line)
   - [Move Editor Into Next Group](#move-editor-into-next-group)
   - [Multiple Cursors](#multiple-cursors)
+  - [Navigation](#navigation)
   - [Open File in File Explorer](#open-file-in-file-explorer)
   - [Open Markdown Preview](#open-markdown-preview)
   - [Search for Files (in opened folder workspace)](#search-for-files-in-opened-folder-workspace)
@@ -429,6 +430,8 @@ github/lc-all/**/*.java, *.py
   - `Ctrl + L`
 - Select All Occurrences Of Current Selection
   - `Ctrl + Shift + L`
+- Add selection to Next Find Match (incremental)
+  - `Ctrl + D`
 - Select All Occurrences Of Current Word
   - `Ctrl + F2`
 - Expand Selection
@@ -439,6 +442,13 @@ github/lc-all/**/*.java, *.py
   - `Shift + Alt + (drag mouse)`
 - Column Box Selection (Keyboard)
   - `Ctrl + Shift + Alt + (arrow key)`
+
+## Navigation
+
+Note: Used to jump back to previous file/line after ctrl+clicking definition
+
+Go Backward: `Control + -`
+Go Forward: `Control + =`
 
 ## Open File in File Explorer
 

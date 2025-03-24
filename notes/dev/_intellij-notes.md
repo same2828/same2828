@@ -18,11 +18,23 @@
 # Maven
 
 ```sh
+# Compile
+mvn clean compile
+# Compile + Run Tests
+mvn clean install
+# Troubleshooting: Forces a check for missing releases and updated snapshots on remote repositories
 mvn clean compile -U
-
 mvn clean install -U
-
-mvn clean install -Dmaven.test.skip=true -U
+# Skip compilation && execution of tests
+mvn clean install -U -Dmaven.test.skip=true
+# Skip execution of tests
+mvn clean install -U -DskipTests
+mvn spring-boot:run
+mvn spring-boot:run -Dspring-boot.run.arguments=--debug
+mvn spring-boot:run -Dspring-boot.run.profiles=local
+mvn spring-boot:run -Dspring-boot.run.arguments=--debug -Dspring-boot.run.profiles=local
+mvn dependency:tree | grep pkgOfInterest
+mvn dependency:tree > maven-dependencies.txt
 ```
 
 - `Shift + Shift > Reload All Maven Projects`

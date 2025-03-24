@@ -68,7 +68,10 @@ mvn clean install
 # Troubleshooting: Forces a check for missing releases and updated snapshots on remote repositories
 mvn clean compile -U
 mvn clean install -U
+# Skip compilation && execution of tests
 mvn clean install -U -Dmaven.test.skip=true
+# Skip execution of tests
+mvn clean install -U -DskipTests
 mvn spring-boot:run
 mvn spring-boot:run -Dspring-boot.run.arguments=--debug
 mvn spring-boot:run -Dspring-boot.run.profiles=local

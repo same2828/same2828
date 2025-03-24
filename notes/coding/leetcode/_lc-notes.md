@@ -1566,8 +1566,7 @@ int dp(int currCol, int prevVal) {
 ## Preventing Integer Overflow/Underflow
 
 - Top Down DP Recursion Base Case: `if (i == nums1.length || j == nums2.length) { return Integer.MIN_VALUE; }`
-- However we want use the returned value for addition/subtraction
-- Problem: Integer overflow/underflow with `Integer.MIN_VALUE`
+- Problem: Integer overflow/underflow with `Integer.MIN_VALUE` we want use the returned value for addition/subtraction
 - Solution: Use `Math.max(dp(nextState), 0)`
 - See: 1458.max-dot-product-of-two-subsequences
 
@@ -1600,6 +1599,10 @@ class Solution {
   }
 }
 ```
+
+- Problem: Integer overflow/underflow with `Integer.MIN_VALUE`
+- Solution: Return sentinel value of `Integer.MIN_VALUE / 2`
+- See: 3473.sum-of-k-subarrays-with-length-at-least-m.java
 
 ## Common Causes of Errors
 
@@ -3276,6 +3279,7 @@ Formula:
   - `Map<Integer, Integer>[] memo` >> `int[][] memo`
   - `std::unordered_map<int, int> memo[26];` >> `std::vector<std::vector<int>> memo`
   - See: 3389.minimum-operations-to-make-character-frequencies-equal
+- Cache Locality: `memo[z][y][x]` where `z < y < x`
 
 **CPP/C++**
 
@@ -3305,6 +3309,7 @@ Formula:
 ## Cache Locality for Dynamic Programming Memoisation
 
 > Place frequently changing variables with a LARGER RANGE as the LAST DIMENSION in `memo[][]` (i.e. use `memo[2][m][n]` instead of `memo[m][n][2]`)
+> `memo[z][y][x]` where `z < y < x`
 
 - Cache Locality/Efficiency
   - Modern CPUs are designed to take advantage of spatial locality by loading data into faster cache memory in blocks. When data that are located next to each other in memory are accessed sequentially, this can significantly speed up access times
@@ -3401,29 +3406,50 @@ Look at where you are doing repeated calculations (especially in recursive calls
 | nums      | 1   | 2   | 3   | 4   | 5   |     |
 | prefixSum | 0   | 1   | 3   | 6   | 10  | 15  |
 
-- Version 1
+> Version 1
 
 ```java
+int[] prefixSum = new int[n + 1];
 for (int i = 0; i < n; i++) {
   prefixSum[i + 1] = prefixSum[i] + nums[i];
 }
 ```
 
-- Version 2
+> Version 2
 
 ```java
+int[] prefixSum = new int[n + 1];
 for (int i = 1; i <= n; i++) {
   prefixSum[i] = prefixSum[i - 1] + nums[i - 1];
 }
 ```
 
-- Get Sum Between Indices i...j (inclusive)
+> Get Subarray Sum Between Indices i...j (inclusive) || Get Subarray Sum Between `nums[i] to nums[j]` INCLUSIVE
 
 ```java
 int sum = prefixSum[j + 1] - prefixSum[i];
 ```
 
-- For C++ can use `std::partial_sum` algorithm
+```java
+int main() {
+  int[] prefixSum = new int[n + 1];
+  for (int i = 0; i < n; i++) {
+    prefixSum[i + 1] = prefixSum[i] + nums[i];
+  }
+  // ...
+}
+
+int dp() {
+  //...
+  int subarraySum = 0;
+  if ((i + m - 1) < nums.length) { // i+m-1 - i + 1 == m
+    // subarraySum of nums[i] to nums[i+m-1] INCLUSIVE
+    subarraySum = prefixSum[i + m] - prefixSum[i];
+  }
+}
+```
+
+> For C++ can use `std::partial_sum` algorithm
 
 ```cpp
 int n = nums.size()
