@@ -19,12 +19,18 @@
   sort = -committerdate
 [core]
   # https://git-scm.com/docs/git-config#Documentation/git-config.txt-corefileMode
-  autocrlf = false
+  autocrlf = false 
+  # autocrlf = input # Convert CRLF to LF on commit
+  eol = lf
   editor = code --wait
-  pager = less -F -X
   ignorecase = false
+  pager = less -F -X
+[commit]
+  # https://git-scm.com/docs/git-commit
+  cleanup = scissors
 [diff]
   # https://git-scm.com/docs/git-diff#_configuration
+  algorithm = histogram
   # Use descriptive initials (c = commit, i = index, w = working tree) instead of a/b
   mnemonicPrefix = true
   # Show renames/moves
@@ -43,9 +49,9 @@
 [grep]
   # https://git-scm.com/docs/git-grep#_configuration
   break = true
+  extendedRegexp = true
   heading = true
   lineNumber = true
-  extendedRegexp = true
 [init]
   # https://git-scm.com/docs/git-init#_configuration
   defaultBranch = master
@@ -73,6 +79,10 @@
 [remote "origin"]
   # https://git-scm.com/docs/git-config#Documentation/git-config.txt-remoteltnamegtprune
   prune = true
+[rerere]
+  # https://git-scm.com/docs/git-rerere
+  # This enables rerere ("reuse recovered resolution"), which remembers how you resolved merge conflicts during a git rebase and automatically resolves conflicts for you when it can
+  enabled = false
 [user]
   # https://git-scm.com/docs/git-config#Documentation/git-config.txt-username
   name = s3same

@@ -14,10 +14,15 @@
   - [pnpm](#pnpm)
   - [Vite](#vite)
   - [TailwindCSS](#tailwindcss)
+- [Modern Device Dimensions for Chrome DevTools](#modern-device-dimensions-for-chrome-devtools)
 - [CSS = Styling](#css--styling)
 - [HTML = Structuring](#html--structuring)
+- [NPM](#npm)
+  - [package.json](#packagejson)
+    - [Dependencies](#dependencies)
 - [JavaScript = Interactivity](#javascript--interactivity)
 - [ReactJS](#reactjs)
+- [Icons](#icons)
 
 # Dev Setup
 
@@ -30,22 +35,25 @@
 # yarn global add npm
 
 # Install NodeJS
-brew install node@20
+# brew install node@20
 # brew postinstall node@20
-brew link node@20 --overwrite
+# brew link node@20 --overwrite
 # brew unlink node@20 && brew link --force node@20
 
 # Note: Corepack comes preinstalled with NodeJS and you should use the corresponding corepack version that comes with the node version that you choose to brew install
 # brew install corepack
 
 # Enable Corepack
-corepack enable
-
+# corepack enable
 # Install & Update pnpm
-corepack prepare pnpm@latest --activate
-
+# corepack prepare pnpm@latest --activate
 # Install & Update Yarn
-corepack prepare yarn@stable --activate
+# corepack prepare yarn@stable --activate
+
+# FNM
+fnm install --lts
+# fnm install 22
+fnm default 22
 
 # NPM Global
 npm list -g
@@ -55,6 +63,7 @@ npm update -g
 npm install -g vite@latest
 npm install -g typescript@latest
 npm install -g fkill-cli@latest
+npm install -g pnpm@latest-10
 ```
 
 ## Node Version Managers
@@ -129,7 +138,7 @@ pnpm create vite .
 # Choose either "TypeScript + SWC" or "JavaScript + SWC"
 
 pnpm install
-pnpm run dev
+pnpm dev || pnpm run dev
 ```
 
 ### NPM Packages
@@ -352,6 +361,10 @@ export default function App() {
 }
 ```
 
+# Modern Device Dimensions for Chrome DevTools
+
+https://gist.github.com/mfehrenbach/aaf646bee2e8880b5142d92e20b633d4
+
 # CSS = Styling
 
 - align-items (center, stretch, flex-start, flex-end) (y axis alignment)
@@ -411,6 +424,19 @@ export default function App() {
 - Can include raw CSS in HTML file (or include/import it from external folder)
 - Can include raw JavaScript in HTML file (or include/import it from external folder)
 
+# NPM
+
+## package.json
+
+### Dependencies
+
+https://docs.npmjs.com/cli/v11/configuring-npm/package-json#dependencies
+
+Version Formats
+Exact Version: "react": "18.3.1" - Installs exactly this version
+Caret Range (^): "react": "^18.3.1" - Allows updates to minor and patch versions (18.3.1 to <19.0.0)
+Tilde Range (~): "typescript": "~5.4.5" - Allows only patch updates (5.4.5 to <5.5.0)
+
 # JavaScript = Interactivity
 
 - Manipulate HTML via DOM
@@ -441,3 +467,11 @@ export default function App() {
 - Can push html templates into useState variable
 - Can push data/json into useState variable
 - Can add eventListeners()
+
+# Icons
+
+https://www.streamlinehq.com/?tab=free
+
+https://react-icons.github.io/react-icons/
+
+https://fontawesome.com/icons

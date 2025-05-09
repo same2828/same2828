@@ -61,6 +61,8 @@
   - [Boolean to Integer Hack](#boolean-to-integer-hack)
   - [Digit DP](#digit-dp)
   - [Handling Edge Cases for Memoisation](#handling-edge-cases-for-memoisation)
+    - [Comparing with Initial Value to Skip](#comparing-with-initial-value-to-skip)
+    - [**Using a GLOBAL `static final` value** for Base Case](#using-a-global-static-final-value-for-base-case)
   - [Preventing Integer Overflow/Underflow](#preventing-integer-overflowunderflow)
   - [Common Causes of Errors](#common-causes-of-errors-1)
 - [DFS](#dfs)
@@ -130,7 +132,9 @@
         - [Iterative Pascal's Triangle](#iterative-pascals-triangle)
         - [Recursive nCr()/nCk()](#recursive-ncrnck)
       - [Number of Unique Combinations/Subsets Possible](#number-of-unique-combinationssubsets-possible)
-  - [Digits (Create Number Recursively)](#digits-create-number-recursively)
+  - [Digits](#digits)
+    - [Create Number Recursively](#create-number-recursively)
+    - [Count/Find Number of Digits in an Integer/Number](#countfind-number-of-digits-in-an-integernumber)
   - [Division](#division-1)
   - [Exponent](#exponent)
     - [Rules](#rules)
@@ -272,6 +276,8 @@ int main() {
 - **Subsequence = A sequence of elements (part of an array) NOT necessarily contiguous/continuous but whose relative ordering IS kept**
 - **Subset = Any possible combination of elements (part of an array) NOT necessarily contiguous, whose relative ordering does NOT have to be kept and contains the empty set `{}`**
 - **Lexicographically Smallest = A string `a` is lexicographically smaller than a string `b` IFF `a.length() == b.length()` AND in the first position where `a` and `b` differ, string `a` has a letter that appears earlier in the alphabet than the corresponding letter in string `b`. Otherwise the shorter string is the lexicographically smaller one (i.e. if the first `Math.min(a.length, b.length)` characters do NOT differ, then the shorter string is the lexicographically smaller one)**
+- **Permutation = A rearrangement of ALL the elements of an array (where order DOES matter)**
+- **Combination = A selection of some/all elements from an array (where the order of selection does NOT matter)**
 
 # Edge Cases
 
@@ -1536,6 +1542,8 @@ int dp(int i, int isCurrDigitBound) {
 
 ## Handling Edge Cases for Memoisation
 
+### Comparing with Initial Value to Skip
+
 - Sometimes the initial value (e.g. `-1` CANNOT be used since when we want to store it in dp/memo, it gives an invalid array index)
   - See: 3176.find-the-maximum-length-of-a-good-subsequence-i where we use `[prev+1]`
 - The fix is to add a check to the `if()` condition to SKIP the first/initial value given
@@ -1562,6 +1570,72 @@ int dp(int currCol, int prevVal) {
 
 - Example
   - 3122.minimum-number-of-operations-to-satisfy-conditions
+
+### **Using a GLOBAL `static final` value** for Base Case
+
+```java
+class Solution {
+  int n, k;
+  int[] nums;
+  int[] digitCounts;
+  List<Integer>[][] memo;
+  private static final List<Integer> NOT_FOUND = new ArrayList<>(); // <-- HERE
+
+  public int[] concatenatedDivisibility(int[] nums, int k) {
+    this.k = k;
+    this.n = nums.length;
+    this.nums = nums;
+    // Sort to get the lexicographically smallest and to BREAK later on
+    Arrays.sort(nums);
+    digitCounts = new int[n];
+    for (int i = 0; i < nums.length; i++) {
+      int num = nums[i];
+      int digitCount = 0;
+      while (num > 0) {
+        digitCount++;
+        num /= 10;
+      }
+      digitCounts[i] = digitCount;
+      // digitCounts[i] = (nums[i] == 0 ? 1 : (int) Math.log10(nums[i]) + 1);
+    }
+    this.memo = new List[k][1 << n];
+    List<Integer> result = dp(0, 0);
+    int[] lexicoSmallest = new int[result.size()];
+    for (int i = 0; i < result.size(); i++) {
+      lexicoSmallest[i] = result.get(i);
+    }
+    return lexicoSmallest;
+  }
+
+  List<Integer> dp(int currMask, int currRem) {
+    if (currMask == (1 << n) - 1) {
+      return currRem == 0 ? new ArrayList<>() : NOT_FOUND; // <-- HERE
+    }
+    if (memo[currRem][currMask] != null) {
+      return memo[currRem][currMask];
+    }
+    List<Integer> lexicoSmallest = NOT_FOUND; // <-- HERE
+    for (int i = 0; i < n; i++) {
+      if ((currMask & (1 << i)) != 0) {
+        continue;
+      }
+      int newRem = ((int) (currRem * Math.pow(10, digitCounts[i])) + nums[i]) % k;
+      if (newRem < 0) {
+        newRem += k;
+      }
+      List<Integer> tail = dp(currMask | (1 << i), newRem);
+      if (tail != NOT_FOUND) { // <-- HERE
+        List<Integer> cand = new ArrayList<>();
+        cand.add(nums[i]);
+        cand.addAll(tail);
+        lexicoSmallest = cand;
+        break; // BREAK here to get the lexicographically smallest
+      }
+    }
+    return memo[currRem][currMask] = lexicoSmallest;
+  }
+}
+```
 
 ## Preventing Integer Overflow/Underflow
 
@@ -1600,8 +1674,8 @@ class Solution {
 }
 ```
 
-- Problem: Integer overflow/underflow with `Integer.MIN_VALUE`
-- Solution: Return sentinel value of `Integer.MIN_VALUE / 2`
+- Problem: Integer overflow/underflow with `Integer.MIN_VALUE` and `Integer.MAX_VALUE`
+- Solution: Return sentinel value of `Integer.MIN_VALUE / 2` and `Integer.MAX_VALUE / 2`
 - See: 3473.sum-of-k-subarrays-with-length-at-least-m.java
 
 ## Common Causes of Errors
@@ -2742,7 +2816,9 @@ long findNumCombinationsInSubset(int n) {
 }
 ```
 
-## Digits (Create Number Recursively)
+## Digits
+
+### Create Number Recursively
 
 - To build a number recursively (from right to left)
   - Make sure to first convert `num` to a `String` first to be able to bind/bound digits
@@ -2781,6 +2857,27 @@ class Solution {
     int rightSum = dfs(currNode.right, currSum);
     return leftSum + rightSum;
   }
+}
+```
+
+### Count/Find Number of Digits in an Integer/Number
+
+```java
+int num = 1234;
+int digitsInNum = (num == 0 ? 1 : 1 + ((int) Math.log10(num)));
+```
+
+```java
+private int countDigits(int num) {
+  if (num == 0) {
+    return 1;
+  }
+  int numDigits = 0;
+  while (num > 0) {
+    numDigits++;
+    num /= 10;
+  }
+  return numDigits;
 }
 ```
 

@@ -19,6 +19,7 @@
     - [Windows Explorer Filename Sorting](#windows-explorer-filename-sorting)
   - [Keyboard](#keyboard)
     - [Prevent Accented Characters + Remove Input Menu from Menu Bar](#prevent-accented-characters--remove-input-menu-from-menu-bar)
+    - [Disable Mail App Shortcut](#disable-mail-app-shortcut)
     - [Keyboard Remap](#keyboard-remap)
   - [System Settings](#system-settings)
     - [Accessibility](#accessibility)
@@ -47,6 +48,7 @@
   - [Apps to Check Out](#apps-to-check-out)
   - [Force Reload Chrome Tab](#force-reload-chrome-tab)
 - [Clean Install](#clean-install)
+- [Delete Apple Intelligence (Apple AI)](#delete-apple-intelligence-apple-ai)
 
 # Dev Setup
 
@@ -159,7 +161,8 @@ brew install --cask libreoffice-still
 
 - Open Blank Calc Spreadsheet > macOS Menu Bar > View > User Interface > Tabbed > Apply to All
 - Open Blank Calc Spreadsheet > macOS Menu Bar > Tools > AutoCorrect Options > Options
-  - Turn OFF
+  - Turn OFF Everything
+    - Use replacement table
     - URL recognition
     - Replace dashes
     - Correct two initial capitals
@@ -325,7 +328,7 @@ brew install --cask vscodium
 
 `System Settings > Keyboard > Input Sources > All Input Sources` > Turn OFF `Show input menu in menu bar`
 
-`System Settings > Keyboard > Keyboard Shortcuts`
+`System Settings > Keyboard > Keyboard Shortcuts...`
 
 - `Mission Control > Quick Note` > Turn OFF
 - `Input Sources` > Turn OFF ALL
@@ -333,6 +336,23 @@ brew install --cask vscodium
 - `Services > Text` > Turn OFF (for apps such as Keka)
 - `Accessibility` > Turn OFF ALL
 - `App Shortcuts` > Turn OFF ALL
+
+### Disable Mail App Shortcut
+
+`System Settings > Keyboard > Keyboard Shortcuts... > App Shortcuts > Add (+)`
+
+```
+Application: All Applications
+Menu Title: Email This Page
+Keyboard Shortcut: fn + control + option + command + shift + f1
+
+Application: All Applications
+Menu Title: Email Link
+Keyboard Shortcut: fn + control + option + command + shift + f1
+```
+
+https://apple.stackexchange.com/questions/439822/cant-disable-command-shift-i-to-open-mail
+https://jamierubin.net/2021/07/30/how-to-remap-cmd-i-to-avoid-opening-the-mail-app-on-a-mac/
 
 ### Keyboard Remap
 
@@ -441,9 +461,11 @@ defaults write com.apple.dock size-immutable -bool false; killall Dock
 
 # Lock Dock Contents
 defaults write com.apple.dock contents-immutable -bool true; killall Dock
+defaults write com.apple.dock contents-immutable -bool false; killall Dock
 
 # Lock Dock Position
 defaults write com.apple.dock position-immutable -bool true; killall Dock
+defaults write com.apple.dock position-immutable -bool false; killall Dock
 
 # Faster Docker Hiding
 defaults write com.apple.dock autohide-delay -float 0; defaults write com.apple.dock autohide-time-modifier -int 0; killall Dock
@@ -457,6 +479,10 @@ defaults write com.apple.dock persistent-apps -array-add '{tile-data={}; tile-ty
 
 # Add Half Height Docker Spacer
 defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="small-spacer-tile";}' && killall Dock
+
+# Disable Apple Intelligence: https://old.reddit.com/r/MacOS/comments/1id8tns/turning_off_apple_intelligence_from_terminal/
+defaults write com.apple.CloudSubscriptionFeatures.optIn "device" -bool "false"
+defaults write com.apple.CloudSubscriptionFeatures.optIn "auto_opt_in" -bool "false"
 ```
 
 ### Dev Environment
@@ -480,6 +506,7 @@ defaults write com.apple.dock persistent-apps -array-add '{"tile-type"="small-sp
 touch ~/.hushlogin
 
 # Install Homebrew > https://brew.sh/
+#------------------------------------
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
 # Follow the "Next Steps" Info > Enter Commands Listed
@@ -500,8 +527,9 @@ sudo sh -c "echo $(which zsh) >> /etc/shells"
 sudo chsh -s $(which zsh)
 # Restart PC
 
-# OhMyZsh > https://github.com/ohmyzsh/ohmyzsh
-brew install curl && brew install fetch && brew install wget && brew install git
+# Install OhMyZsh > https://github.com/ohmyzsh/ohmyzsh
+#-----------------------------------------------------
+brew install curl fetch wget git fzf ripgrep fd
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
 # Update OhMyZsh
@@ -518,19 +546,16 @@ git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-m
 # fast-theme -t <pathToCustomTheme>
 # cd
 
-# Starship + .zshrc
-brew install starship && brew install node@20
-brew link node@20 --overwrite
-brew install fzf && brew install ripgrep && brew install fd
-mkdir ~/.ssh && code ~/.zshrc
-# Copy paste github/config/.zshrc-macos (make sure all "/home/linuxbrew/.linuxbrew/" is changed to "/opt/homebrew/" in .zshrc)
-
-# Starship Prompt Customisation
-mkdir -p ~/.config && touch ~/.config/starship.toml && code ~/.config/starship.toml
-# Copy paste github/config/starship-macos.toml
+# Use custom ~/.zshrc, ~/.zprofile, ~/.ssh/config, ~/.gitconfig
+#--------------------------------------------------------------
+mkdir ~/.ssh && touch ~/.ssh/config && touch ~/.gitconfig && code ~/ && code ~/.zshrc && code ~/.zprofile && code ~/.ssh/config && code ~/.gitconfig
+# Copy paste github/config/.zshrc-macos into ~/.zshrc (make sure all "/home/linuxbrew/.linuxbrew/" is changed to "/opt/homebrew/" in ~/.zshrc)
+# Copy paste github/config/.zprofile-macos into ~/.zprofile
+# Copy paste github/config/.gitconfig into ~/.gitconfig
 
 # GCC
-brew install gcc
+#----
+brew install gcc@13
 # Set Homebrew GCC as default GCC instead of macOS GCC
 # Method 1: Add the following to .zshrc
 alias gcc="gcc-13"
@@ -543,17 +568,42 @@ sudo ln -sf $(which g++-13) /usr/local/bin/g++
 sudo ln -sf $(which c++-13) /usr/local/bin/c++
 sudo ln -sf $(which cpp-13) /usr/local/bin/cpp
 
+# Use GNU CLI Tools > BSD CLI Tools
+#----------------------------------
 # Install GNU Utils > https://gist.github.com/skyzyx/3438280b18e4f7c490db8a2a2ca0b9da
 # Afterwards append contents of use-gnu.sh to ~/.zshrc/ or ~/.zprofile file
 brew install autoconf bash binutils coreutils diffutils findutils gawk gnu-indent gnu-sed gnu-tar gnu-which gpatch grep gzip less make nano watch wdiff wget zip
+brew install jq parallel perl tee
 
 # Other Brew Installs
-brew install clang-format && brew install cmake &&  brew install jq && brew install tldr && brew install tree && brew install python && brew install go
-brew install llvm
+#--------------------
+brew install fastfetch python go tldr tree
+brew install fnm # alternatively nvm
+# brew install clang-format cmake llvm
 
 # Adoptium OpenJDK (Eclipse Temurin) > https://adoptium.net/installation/
+#------------------------------------------------------------------------
 brew tap homebrew/homebrew-core
 brew install --cask temurin@21
+
+# Brew Casks
+#-----------
+brew install --cask bruno libreoffice-still librewolf macfuse temurin@21 vscodium
+
+# Starship
+#---------
+brew install starship
+# brew install node@20
+# brew link node@20 --overwrite
+# Starship Prompt Customisation
+mkdir -p ~/.config && touch ~/.config/starship.toml && code ~/ && code ~/.config/starship.toml
+# Copy paste github/config/starship-macos.toml
+
+# Zsh Theme (NO Starship)
+# -----------------------
+cp $ZSH/themes/robbyrussell.zsh-theme $ZSH_CUSTOM/themes/
+code $ZSH_CUSTOM/themes/robbyrussell.zsh-theme
+# Copy paste github/config/robbyrussell.zsh-theme
 ```
 
 #### OhMyZsh
@@ -789,3 +839,35 @@ softwareupdate --fetch-full-installer --full-installer-version 15.1.1
 
 sudo /Applications/Install\ macOS\ Sequoia.app/Contents/Resources/createinstallmedia --volume /Volumes/Sandisk\ 32GB\ Dual
 ```
+
+# Delete Apple Intelligence (Apple AI)
+
+- https://old.reddit.com/r/MacOS/comments/1hca5ap/how_do_i_remove_apple_intelligence_permanently/
+- https://old.reddit.com/r/MacOS/comments/1gertfw/removing_language_model_of_apple_intelligence/
+- https://old.reddit.com/r/MacOSBeta/comments/1eqrg3k/apple_intelligence_stuck_downloading_for_over_a/
+- https://forums.macrumors.com/threads/save-7gb-storage-per-device-by-disabling-apple-intelligence.2448265/page-7
+
+1. Disable Apple Intelligence in System Settings
+2. Boot into Recovery Mode
+   - Press and Hold the power button until the System Volumes and the Options button appear
+   - Options > Continue
+   - Select an administrator account > Enter password
+3. Open Terminal (Utilities menu > Terminal)
+   - `csrutil disable`
+4. Shut Down
+5. Boot into Recovery Mode Again
+   - Press and Hold the power button until the System Volumes and the Options button appear
+   - Options > Continue
+   - Select an administrator account > Enter password
+6. Choose Disk Utility > Right-click on 'Data' under 'Macintosh HD' and choose Mount (MOST IMPORTANT STEP)
+7. Quit Disk Utility
+8. Open Terminal (Utilities menu > Terminal)
+   - `ls /Volumes`
+   - `cd /Volumes/"Macintosh HD - Data"`
+   - `cd /System/Library/AssetsV2`
+   - `ls | grep -ie 'MobileAsset_UAF_FM*'`
+   - `rm -rf com_apple_MobileAsset_UAF_FM_GenerativeModels`
+   - `rm -rf com_apple_MobileAsset_UAF_FM_Overrides`
+   - `rm -rf com_apple_MobileAsset_UAF_FM_Visual`
+   - `csrutil enable`
+9. Restart

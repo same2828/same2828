@@ -262,13 +262,43 @@ private:
   - Declaration + Initialisation == `Interface<Type> dataStructure = new ImplementingClass<>();`
 
 ```java
-int[][] memo = new int[m][n];
+int[][] memo = new int[m][n]; // memo[i][j] = 0 by default
 for (int[] row : memo) {
   Arrays.fill(row, -1);
 }
 
 Map<Integer, List<Integer>> map = new HashMap<>();
+// map.computeIfAbsent(x, f -> new ArrayList<>()).add(y);
+// for (List<Integer> ls : map.getOrDefault(x, Collections.emptyList())) {
+//   for (int : ls) {
+//     //...
+//   }
+// }
+
 Map<Integer, List<int[]>> graph = new HashMap<>();
+// graph.computeIfAbsent(x, f -> new ArrayList<>()).add(new int[] { x, y });
+// for (List<int[]> ls : map.getOrDefault(x, Collections.emptyList())) {
+//   for (int[] : ls) {
+//     //...
+//   }
+// }
+
+List<Integer>[][] memo = new List[m][n]; // memo[i][j] = null by default
+for (int i = 0; i < m; i++) {
+  for (int j = 0; j < n; j++) {
+    memo[i][j] = new ArrayList<>();
+  }
+}
+// memo[i][j].add(x);
+// memo[i][j].add(y);
+
+List<int[]>[][] memo = new List[m][n]; // memo[i][j] = null by default
+for (int i = 0; i < m; i++) {
+  for (int j = 0; j < n; j++) {
+    memo[i][j] = new ArrayList<>();
+  }
+}
+// memo[i][j].add(new int[] {x, y});
 ```
 
 **C++/CPP**

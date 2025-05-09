@@ -1,12 +1,13 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Lookarounds](#lookarounds)
 - [regex101](#regex101)
   - [Common Tokens](#common-tokens)
   - [Anchors](#anchors)
   - [Quantifiers](#quantifiers)
   - [Group Constructs](#group-constructs)
-  - [Lookarounds](#lookarounds)
+  - [Lookarounds](#lookarounds-1)
     - [Use Case for Negative LookBEHIND](#use-case-for-negative-lookbehind)
   - [Flags/Modifiers](#flagsmodifiers)
     - [Multiple Lines Flag `/m` Explanation](#multiple-lines-flag-m-explanation)
@@ -19,19 +20,44 @@
     - [Logic](#logic)
     - [Anchors and Boundaries](#anchors-and-boundaries)
       - [`^` - Start of String or Start of Line](#---start-of-string-or-start-of-line)
-    - [Lookarounds](#lookarounds-1)
+    - [Lookarounds](#lookarounds-2)
   - [Anchors](#anchors-1)
     - [`\G` - Beginning of String or End of Previous Match](#g---beginning-of-string-or-end-of-previous-match)
       - [`\K` - Rest Match](#k---rest-match)
       - [`\G` - "Beginning of String" Match: Using or Bridling `\G`](#g---beginning-of-string-match-using-or-bridling-g)
 
+# Lookarounds
+
+> Note: `PATTERN` declared INSIDE the lookaround are NOT matched
+> Note: non-caputuring groups `(?:PATTERN)` CANNOT be used with/inside lookarounds
+
+| Regex                | Description using `foobarbarfoo`                                    |
+| -------------------- | ------------------------------------------------------------------- |
+| `bar(?=bar)`         | Finds the 1st `bar` ("bar" which has "bar" after it)                |
+| `bar(?!bar)`         | Finds the 2nd `bar` ("bar" which does not have "bar" after it)      |
+| `(?<=foo)bar`        | Finds the 1st `bar` ("bar" which has "foo" before it)               |
+| `(?<!foo)bar`        | Finds the 2nd `bar` ("bar" which does not have "foo" before it)     |
+| `(?<=foo)bar(?=bar)` | Finds the 1st `bar` ("bar" with "foo" before it and "bar" after it) |
+
+| Regex   | Lookaround          | Pattern       | Description                                      |
+| ------- | ------------------- | ------------- | ------------------------------------------------ |
+| `(?=)`  | Positive Lookahead  | `foo(?=bar)`  | Finds/matches `foo` where `bar` MUST follow      |
+| `(?!)`  | Negative Lookahead  | `foo(?!bar)`  | Finds/matches `foo` where `bar` does NOT follow  |
+| `(?<=)` | Positive Lookbehind | `(?<=bar)foo` | Finds/matches `foo` where `bar` MUST precede     |
+| `(?<!)` | Negative Lookbehind | `(?<!bar)foo` | Finds/matches `foo` where `bar` does NOT precede |
+
 # regex101
 
 ## Common Tokens
 
+A note on the `.` behaviour
+
+- Outside character classes `.`: `.` is a special metacharacter that matches any character (except newline by default)
+- Inside character classes `[.]`: `.` loses its special meaning and becomes a literal period character
+
 | Common Tokens                                              | Regex      |
 | ---------------------------------------------------------- | ---------- |
-| Match any character EXCEPT linebreaks `[^\n\r]`            | `.`        |
+| Match any character EXCEPT newlines/linebreaks `[^\n\r]`   | `.`        |
 | Match any character INCLUDING linebreaks                   | `[\s\S]`   |
 | Character set                                              | `[abc]`    |
 | Negated character set                                      | `[^abc]`   |

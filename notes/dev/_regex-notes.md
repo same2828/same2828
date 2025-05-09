@@ -1,12 +1,16 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [Exclude Word/String](#exclude-wordstring)
-- [Find Duplicate Lines](#find-duplicate-lines)
-- [Remove Blank Lines](#remove-blank-lines)
-- [Remove Comments That End With Period (`.`)](#remove-comments-that-end-with-period-)
-- [Remove Lines That End With Period (`.`)](#remove-lines-that-end-with-period-)
-- [Find words that contain `ized` but cannot have an `@`](#find-words-that-contain-ized-but-cannot-have-an-)
+- [Lookarounds](#lookarounds)
+- [Examples](#examples)
+  - [Exclude Word/String](#exclude-wordstring)
+  - [Find Duplicate Lines](#find-duplicate-lines)
+  - [Find Unquoted Strings in yaml/yml](#find-unquoted-strings-in-yamlyml)
+  - [Find Words Without the Prefix `.`](#find-words-without-the-prefix-)
+  - [Find Words Containing `ized` but without an `@`](#find-words-containing-ized-but-without-an-)
+  - [Remove Blank Lines](#remove-blank-lines)
+  - [Remove Comments That End With Period (`.`)](#remove-comments-that-end-with-period-)
+  - [Remove Lines That End With Period (`.`)](#remove-lines-that-end-with-period-)
 - [Regexr Cheatsheet](#regexr-cheatsheet)
   - [Character classes](#character-classes)
   - [Anchors](#anchors)
@@ -14,24 +18,88 @@
   - [Groups \& Lookaround](#groups--lookaround)
   - [Quantifiers \& Alternation](#quantifiers--alternation)
 
-# Exclude Word/String
+# Lookarounds
+
+> Note: Any `patterns` declared INSIDE the lookaround are NOT matched
+> Note: Non-capturing groups `(?:pattern)` CANNOT be used with/inside lookarounds
+
+| Regex                | Description using `foobarbarfoo`                                    |
+| -------------------- | ------------------------------------------------------------------- |
+| `bar(?=bar)`         | Finds the 1st `bar` ("bar" which has "bar" after it)                |
+| `bar(?!bar)`         | Finds the 2nd `bar` ("bar" which does not have "bar" after it)      |
+| `(?<=foo)bar`        | Finds the 1st `bar` ("bar" which has "foo" before it)               |
+| `(?<!foo)bar`        | Finds the 2nd `bar` ("bar" which does not have "foo" before it)     |
+| `(?<=foo)bar(?=bar)` | Finds the 1st `bar` ("bar" with "foo" before it and "bar" after it) |
+
+| Regex   | Lookaround          | Pattern       | Description                                      |
+| ------- | ------------------- | ------------- | ------------------------------------------------ |
+| `(?=)`  | Positive Lookahead  | `foo(?=bar)`  | Finds/matches `foo` where `bar` MUST follow      |
+| `(?!)`  | Negative Lookahead  | `foo(?!bar)`  | Finds/matches `foo` where `bar` does NOT follow  |
+| `(?<=)` | Positive Lookbehind | `(?<=bar)foo` | Finds/matches `foo` where `bar` MUST precede     |
+| `(?<!)` | Negative Lookbehind | `(?<!bar)foo` | Finds/matches `foo` where `bar` does NOT precede |
+
+# Examples
+
+## Exclude Word/String
 
 ```re
 (?!ignore1|ignore2|ignoreN)
 ```
 
-# Find Duplicate Lines
+## Find Duplicate Lines
 
 ```re
 ^(.*)(\r?\n\1)+$
+^(.*)(?:(\r?\n|\n|$)\1)+$
+^(.*)(?:(\s|$)\1)+$
+^(.*[\n]*)(?:(\r?\n|\n|$)\1*)+
 ```
 
-# Remove Blank Lines
+## Find Unquoted Strings in yaml/yml
+
+```re
+<!-- Missing PREFIX quote | Missing SUFFIX Quote -->
+
+// Regex V1
+^([^'\r\n]+)(?<!')[^'\r\n]+['](?!')(\r\n?|\n|$)
+^([^'\r\n]+)(?<!')['][^'\r\n]+(?!')(\r\n?|\n|$)
+^(['])[^'\r\n]+(?!')(\r\n?|\n|$)
+// Regex V1 Combined
+^([^'\r\n]+)(?<!')([^'\r\n]+[']|['][^'\r\n]+)(?!')(\r\n?|\n|$)|^(['])[^'\r\n]+(?!')(\r\n?|\n|$)
+
+// Regex V2
+^(?:[^'\r\n]+)(?<!')(?:[^'\r\n]+['])(?!')(?:\r\n?|\n|$)
+^(?:[^'\r\n]+)(?<!')(?:['][^'\r\n]+)(?!')(?:\r\n?|\n|$)
+^(?:['])(?:[^'\r\n]+)(?!')(?:\r\n?|\n|$)
+// Regex V2 Combined
+(?:^(?:[^'\r\n]+)(?<!')(?:[^'\r\n]+[']|['][^'\r\n]+)(?!')(?:\r\n?|\n|$))|(?:^(?:['])(?:[^'\r\n]+)(?!')(?:\r\n?|\n|$))
+```
+
+## Find Words Without the Prefix `.`
+
+```re
+(?<!\.)\b\w+\b
+```
+
+## Find Words Containing `ized` but without an `@`
+
+```re
+\b(?<!@)\w*ized\w*\b
+```
+
+- `\b` asserts a word boundary, ensuring we match whole words
+- `(?<!@)` is a negative lookbehind that asserts what directly precedes the current position in the string is not an `@` character
+- `\w*` matches any word character (equivalent to `[a-zA-Z0-9_]`) zero or more times, both before and after `ized`
+- `ized` matches the literal string `ized`
+- `\b` asserts another word boundary at the end
+
+## Remove Blank Lines
 
 Find
 
 ```re
-^(?:[\t ]*(?:\r?\n|\r))+
+^(?:[\s]*(?:\r\n?|\n))+
+^(?:[\s]*(?:\r\n?|\n|$))+
 ```
 
 Replace
@@ -40,7 +108,7 @@ Replace
 [LEAVE THIS EMPTY]
 ```
 
-# Remove Comments That End With Period (`.`)
+## Remove Comments That End With Period (`.`)
 
 Find
 
@@ -54,7 +122,7 @@ Replace
 $1
 ```
 
-# Remove Lines That End With Period (`.`)
+## Remove Lines That End With Period (`.`)
 
 Find
 
@@ -67,18 +135,6 @@ Replace
 ```re
 $1\n
 ```
-
-# Find words that contain `ized` but cannot have an `@`
-
-```re
-\b(?<!@)\w*ized\w*\b
-```
-
-- `\b` asserts a word boundary, ensuring we match whole words
-- `(?<!@)` is a negative lookbehind that asserts what directly precedes the current position in the string is not an `@` character
-- `\w*` matches any word character (equivalent to `[a-zA-Z0-9_]`) zero or more times, both before and after `ized`
-- `ized` matches the literal string `ized`
-- `\b` asserts another word boundary at the end
 
 # Regexr Cheatsheet
 

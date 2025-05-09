@@ -68,6 +68,7 @@ zstyle ':omz:update' mode auto      # update automatically without asking
 # Silence launching ssh-agent
 zstyle :omz:plugins:ssh-agent quiet yes
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
+zstyle ':fzf-tab:*' fzf-flags '--height=99%'
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -84,7 +85,20 @@ plugins=(git ssh-agent fzf-tab zsh-autosuggestions fast-syntax-highlighting fzf)
 source $ZSH/oh-my-zsh.sh
 # source <(fzf --zsh)
 
+#--------------------
 # User configuration
+#--------------------
+# OhMyZSH Override
+git_main_branch() {
+  echo master
+}
+# zsh-autosuggestions
+#--------------------
+# ctrl + j = toggle zsh-autosuggestions on/off
+bindkey '^j' autosuggest-toggle
+bindkey '^k' toggle-fzf-tab
+# Enforce < 81 character limit
+ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*gcmsg '*|*gcmsg \"*|*gc!*|*gcmsg!*|(brew (install|uninstall|info|tap)|cat|cd|codium|cude|curl|echo|fetch|git (add|branch|checkout|clone|merge|rebase|remote)|ga|gc|gca|gcam|gcas|gcasm|gcb|gcl|gcmsg|gco|gcs|gcsm|git commit -(am|m)|mkdir|mv|npm (install|uninstall|link|unlink)|npx|pnpm (add|remove|install|uninstall|link|unlink|up|update|upgrade)|sh|wget|yarn (add|remove|link|unlink|up)|youtube-dl) *)"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -126,14 +140,6 @@ source $ZSH/oh-my-zsh.sh
 # export PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH
 # export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 
-# zsh-autosuggestions
-#--------------------
-# ctrl + j = toggle zsh-autosuggestions on/off
-bindkey '^j' autosuggest-toggle
-bindkey '^k' toggle-fzf-tab
-# Enforce < 81 character limit
-ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*gcmsg '*|*gcmsg \"*|*gc!*|*gcmsg!*|(brew (install|uninstall|info|tap)|cat|cd|codium|cude|curl|echo|fetch|git (add|branch|checkout|clone|merge|rebase|remote)|ga|gc|gca|gcam|gcas|gcasm|gcb|gcl|gcmsg|gco|gcs|gcsm|git commit -(am|m)|mkdir|mv|npm (install|uninstall|link|unlink)|npx|pnpm (add|remove|install|uninstall|link|unlink|up|update|upgrade)|sh|wget|yarn (add|remove|link|unlink|up)|youtube-dl) *)"
-
 # Homebrew
 #---------
 # eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
@@ -146,10 +152,48 @@ export PATH="/home/linuxbrew/.linuxbrew/bin:$PATH"
 #---------
 eval "$(starship init zsh)"
 
+# FZF
+#----
+# alias f="fzf"
+# export FZF_BASE="/opt/homebrew/bin/fzf"
+# Non FD
+# export FZF_DEFAULT_COMMAND="--walker-skip .git,node_modules,target"
+# export FZF_CTRL_T_COMMAND="--walker-skip .git,node_modules,target"
+# export FZF_CTRL_R_COMMAND="--walker-skip .git,node_modules,target"
+# export FZF_ALT_C_COMMAND="--walker-skip .git,node_modules,target --preview 'tree -C {}'"
+# export FZF_ALT_C_OPTS="--walker-skip .git,node_modules,target --preview 'tree -C {}'"
+# Using FD
+# export FZF_DEFAULT_COMMAND="fd --type f --strip-cwd-prefix --hidden --follow --exclude={'**/.DS_Store/**','**/.dump*/**','**/.git/**','**/.idea/**','**/.npm*/**','**/.nvm/**','**/.pnpm*/**','**/.temp*/**','**/.tmp*/**','**/.vol/**','**/.vscode*/**','**/.yarn*/**','**/Applications/**','**/bin/**','**/build/**','**/cores/**','**/dist/**','**/downloads/**','**/eggs/**','**/etc/**','**/history/**','**/lib/**','**/lib64/**','**/Library/**','**/mnt/**','**/node_modules/**','**/opt/**','**/parts/**','**/private/**','**/sbin/**','**/sdist/**','**/System/**','**/target/**','**/temp/**','**/tmp/**','**/usr/**','**/var/**','**/venv/**','**/Volumes/**','**/wheels/**'}"
+FD_OPTIONS="--strip-cwd-prefix --follow --exclude={'**/.*OneDrive*','**/.android','**/.aws','**/.azure','**/.backup*','**/.bin*','**/.boto','**/.brew','**/.build','**/.bundle','**/.cache*','**/.cfg','**/.CFUserTextEncoding*','**/.classpath','**/.codeium','**/.conf','**/.config','**/.cups','**/.dbus','**/.dist*','**/.docker','**/.dotnet','**/.DS_Store','**/.dump*','**/.editorconfig','**/.eggs','**/.env','**/.factorypath','**/.firebase','**/.font*','**/.git','**/.gitflow*','**/.gradle','**/.hg*','**/.history','**/.homebrew','**/.hushlogin','**/.icloud','**/.idea*','**/.kube/cache','**/.landscape','**/.lemminx','**/.lesshst','**/.linuxbrew','**/.local','**/.localized','**/.m2','**/.matplotlib','**/.mounty','**/.next','**/.node_modules*','**/.node*','**/.nox','**/.npm*','**/.nvm*','**/.oh-my-zsh','**/.out','**/.output','**/.pnpm*','**/.postman','**/.project','**/.python*','**/.settings','**/.sf','**/.sts*','**/.svn','**/.target','**/.temp*','**/.temporary*','**/.temurin*','**/.tldrc','**/.tmp*','**/.tox','**/.trash*','**/.Trash*','**/.venv','**/.vercel','**/.vnc','**/.vol','**/.vscode*','**/.webpack*','**/.yarn*','**/.zcompdump*','**/.zprofile?*','**/.zsh_sessions*','**/.zshrc?*','**/*OneDrive*','**/3D Objects','**/AppData','**/Application*','**/backup*','**/Backup*','**/bin','**/boot','**/build.*','**/build*','**/Build*','**/cache*','**/Cache*','**/certs','**/Certs','**/Chrome Download','**/Chrome*','**/Contacts','**/cores','**/cvmfs','**/CVS','**/Default','**/Desktop','**/dist','**/Documents','**/Drop*Box','**/dump*','**/eggs','**/env','**/etc','**/External*','**/favorite*','**/Favorite*','**/favourite*','**/Favourite*','**/font*','**/Font*','**/Game*','**/history*','**/History*','**/home/(!s3same)','**/home/(!s3same)','**/home/(!s3samedev)','**/home/(!same)','**/htmlcov','**/Idm','**/IDM','**/image*','**/Image*','**/img*','**/InstallArea','**/Intel','**/Lecture*','**/lib','**/Lib','**/lib64','**/Libraries','**/Library*','**/Link*','**/media','**/Media','**/mnt','**/Movies','**/Mp3tag','**/Music','**/node_modules*','**/NVIDIA*','**/opt','**/out','**/output','**/People','**/PerfLogs','**/Personal','**/photo*','**/Photo*','**/pic*','**/Pic*','**/picture*','**/Picture*','**/Postman','**/prebundle','**/private','**/proc','**/Program Files (x86)','**/Program Files','**/ProgramData','**/Public','**/root','**/Root','**/run','**/Saved Games','**/sbin','**/Screenshot*','**/sdist','**/Search*','**/Shared*','**/Sharing*','**/srv','**/Standard Notes*','**/standardnotes*','**/Steam','**/sys','**/System*','**/target.*','**/target*','**/Target*','**/temp*','**/Temp*','**/Thumbs.db','**/tmp*','**/Tmp*','**/Tool*','**/torrent*','**/Torrent*','**/usr','**/Utilities','**/Utility','**/var','**/venv','**/vid*','**/Vid*','**/video*','**/Video*','**/vod*','**/Vod*','**/volumes','**/Volumes','**/vscode*','**/wheels','**/Windows'}"
+export FZF_DEFAULT_COMMAND="fd --type f --type l --hidden $FD_OPTIONS"
+export FZF_CTRL_T_COMMAND="fd --hidden $FD_OPTIONS"
+export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
+export FZF_DEFAULT_OPTS='
+  --border
+  --color fg:15,bg:0,hl:215,fg+:15,bg+:239,hl+:10
+  --color info:141,prompt:10,spinner:212,pointer:212,marker:212
+  --height=50%
+  --layout=reverse
+'
+
 # VSCode
 #-------
 export PATH=$PATH:"/mnt/c/Users/same/AppData/Local/Programs/Microsoft VS Code/bin"
 # export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
+
+# VSCodium > VSCode
+#------------------
+# alias code="codium"
+# alias vscode="code"
+# alias vcode="code"
+
+# Environment Variables ENV
+#--------------------------
+# export EDITOR="codium --wait"
+export EDITOR="code --wait"
+export VISUAL="$EDITOR"
+export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:di=1;36" # Prevent highlighting of directories (green background)
+export TZ="Australia/Sydney"
 
 # FNM
 #----
@@ -159,6 +203,20 @@ function fnm() {
   # Extends fnm with the subcommand "upgrade"
   # https://github.com/Schniz/fnm/issues/781#issuecomment-2482846772
   if [[ $1 == "upgrade" ]]; then
+    # Validate that $2 exists and is a valid version number
+    if [[ -z "$2" ]]; then
+      echo "Usage: fnm upgrade <node-version>"
+      return 1
+    elif ! [[ "$2" =~ ^[0-9]{2}$ ]]; then
+      echo "Error: Invalid version number '$2'. Version number needs to be 2 digits"
+      return 1
+    fi
+    local latest_remote_node_version=$(command fnm ls-remote | grep "$major_node_version" | tail -n 1 | awk '{print $1}')
+    local current_node_version=$(node -v)
+    if [[ "$current_node_version" == "$latest_remote_node_version" ]]; then
+      echo -e "\033[1;32mAlready using the latest Node.js $2.x version: $current_node_version\033[0m"
+      return 0
+    fi
     local matched_versions=()
     local pattern_match_version="* v$2"
     local pattern_match_system="* system $2"
@@ -198,45 +256,6 @@ function fnm() {
 # export PATH="$PATH:/usr/local/opt/node@22/bin"
 # export PATH="$PATH:/opt/homebrew/opt/node@22/bin"
 
-# FZF
-#----
-# alias f="fzf"
-# export FZF_BASE="/opt/homebrew/bin/fzf"
-# Non FD
-# export FZF_DEFAULT_COMMAND="--walker-skip .git,node_modules,target"
-# export FZF_CTRL_T_COMMAND="--walker-skip .git,node_modules,target"
-# export FZF_CTRL_R_COMMAND="--walker-skip .git,node_modules,target"
-# export FZF_ALT_C_COMMAND="--walker-skip .git,node_modules,target --preview 'tree -C {}'"
-# export FZF_ALT_C_OPTS="--walker-skip .git,node_modules,target --preview 'tree -C {}'"
-# Using FD
-# export FZF_DEFAULT_COMMAND="fd --type f --strip-cwd-prefix --hidden --follow --exclude={'**/.DS_Store/**','**/.dump*/**','**/.git/**','**/.idea/**','**/.npm*/**','**/.nvm/**','**/.pnpm*/**','**/.temp*/**','**/.tmp*/**','**/.vol/**','**/.vscode*/**','**/.yarn*/**','**/Applications/**','**/bin/**','**/build/**','**/cores/**','**/dist/**','**/downloads/**','**/eggs/**','**/etc/**','**/history/**','**/lib/**','**/lib64/**','**/Library/**','**/mnt/**','**/node_modules/**','**/opt/**','**/parts/**','**/private/**','**/sbin/**','**/sdist/**','**/System/**','**/target/**','**/temp/**','**/tmp/**','**/usr/**','**/var/**','**/venv/**','**/Volumes/**','**/wheels/**'}"
-FD_OPTIONS="--strip-cwd-prefix --follow --exclude={'**/.*OneDrive*','**/.android','**/.aws','**/.azure','**/.backup*','**/.bin*','**/.boto','**/.brew','**/.build','**/.bundle','**/.cache*','**/.cfg','**/.CFUserTextEncoding*','**/.classpath','**/.codeium','**/.conf','**/.config','**/.cups','**/.dbus','**/.dist*','**/.docker','**/.dotnet','**/.DS_Store','**/.dump*','**/.editorconfig','**/.eggs','**/.env','**/.factorypath','**/.firebase','**/.font*','**/.git','**/.gitflow*','**/.gradle','**/.hg*','**/.history','**/.homebrew','**/.hushlogin','**/.icloud','**/.idea*','**/.kube/cache','**/.landscape','**/.lemminx','**/.lesshst','**/.linuxbrew','**/.local','**/.localized','**/.m2','**/.matplotlib','**/.mounty','**/.next','**/.node_modules*','**/.node*','**/.nox','**/.npm*','**/.nvm*','**/.oh-my-zsh','**/.out','**/.output','**/.pnpm*','**/.postman','**/.project','**/.python*','**/.settings','**/.sf','**/.sts*','**/.svn','**/.target','**/.temp*','**/.temporary*','**/.temurin*','**/.tldrc','**/.tmp*','**/.tox','**/.trash*','**/.Trash*','**/.venv','**/.vercel','**/.vnc','**/.vol','**/.vscode*','**/.webpack*','**/.yarn*','**/.zcompdump*','**/.zprofile?*','**/.zsh_sessions*','**/.zshrc?*','**/*OneDrive*','**/3D Objects','**/AppData','**/Application*','**/backup*','**/Backup*','**/bin','**/boot','**/build.*','**/build*','**/Build*','**/cache*','**/Cache*','**/certs','**/Certs','**/Chrome Download','**/Chrome*','**/Contacts','**/cores','**/cvmfs','**/CVS','**/Default','**/Desktop','**/dist','**/Documents','**/Drop*Box','**/dump*','**/eggs','**/env','**/etc','**/External*','**/favorite*','**/Favorite*','**/favourite*','**/Favourite*','**/font*','**/Font*','**/Game*','**/history*','**/History*','**/home/(!s3same)','**/home/(!s3same)','**/home/(!s3samedev)','**/home/(!same)','**/htmlcov','**/Idm','**/IDM','**/image*','**/Image*','**/img*','**/InstallArea','**/Intel','**/Lecture*','**/lib','**/Lib','**/lib64','**/Libraries','**/Library*','**/Link*','**/media','**/Media','**/mnt','**/Movies','**/Mp3tag','**/Music','**/node_modules*','**/NVIDIA*','**/opt','**/out','**/output','**/People','**/PerfLogs','**/Personal','**/photo*','**/Photo*','**/pic*','**/Pic*','**/picture*','**/Picture*','**/Postman','**/prebundle','**/private','**/proc','**/Program Files (x86)','**/Program Files','**/ProgramData','**/Public','**/root','**/Root','**/run','**/Saved Games','**/sbin','**/Screenshot*','**/sdist','**/Search*','**/Shared*','**/Sharing*','**/srv','**/Standard Notes*','**/standardnotes*','**/Steam','**/sys','**/System*','**/target.*','**/target*','**/Target*','**/temp*','**/Temp*','**/Thumbs.db','**/tmp*','**/Tmp*','**/Tool*','**/torrent*','**/Torrent*','**/usr','**/Utilities','**/Utility','**/var','**/venv','**/vid*','**/Vid*','**/video*','**/Video*','**/vod*','**/Vod*','**/volumes','**/Volumes','**/vscode*','**/wheels','**/Windows'}"
-export FZF_DEFAULT_COMMAND="fd --type f --type l --hidden $FD_OPTIONS"
-export FZF_CTRL_T_COMMAND="fd --hidden $FD_OPTIONS"
-export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
-export FZF_DEFAULT_OPTS='
-  --border
-  --color fg:15,bg:0,hl:215,fg+:15,bg+:239,hl+:10
-  --color info:141,prompt:10,spinner:212,pointer:212,marker:212
-  --height=50%
-  --layout=reverse
-'
-
-# Java
-#-----
-# alias j='f(){ export JAVA_HOME=/usr/libexec/java_home -v $1 }; java -version'
-alias j17="export JAVA_HOME=`/usr/libexec/java_home -v 17`; java -version"
-alias j21="export JAVA_HOME=$(/usr/libexec/java_home -v 21); java -version"
-export JAVA_HOME=$(/usr/libexec/java_home -v 21)
-# export JAVA_HOME="/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home"
-alias j="java"
-
-# Python
-#-------
-# export PATH="/opt/homebrew/opt/python@3.13/libexec/bin:$PATH"
-alias python="python3"
-alias py="python3"
-
 # Docker
 #-------
 alias d="docker"
@@ -265,7 +284,7 @@ kubectl-get-pods-grep() {
   echo -e "context: \033[1;36m$context\033[0m"
   local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
   echo -e "namespace: \033[1;36m$namespace\033[0m"
-  kubectl get pods -n $namespace | grep -P --color=always "$1"
+  kubectl get pods -n $namespace | grep --color=always -iP "$1"
 }
 alias kpog="kubectl-get-pods-grep"
 alias kgpo="kubectl-get-pods-grep"
@@ -290,7 +309,7 @@ kx() {
   [ "$1" ] && kubectl config use-context "$1" || kubectl config current-context
 }
 kn() {
-  [ "$1" ] && kubectl config set-context --current --namespace "$1" || kubectl config view --minify | grep namespace | cut -d" " -f6
+  [ "$1" ] && kubectl config set-context --current --namespace "$1" || kubectl config view --minify | grep --color=always namespace | cut -d" " -f6
 }
 # kx() {
 #   if [ -n "$1" ]; then
@@ -303,23 +322,67 @@ kn() {
 #   if [ -n "$1" ]; then
 #     kubectl config set-context --current --namespace "$1"
 #   else
-#     kubectl config view --minify | grep namespace | cut -d' ' -f6
+#     kubectl config view --minify | grep --color=always namespace | cut -d' ' -f6
 #   fi
 # }
 
-# Environment Variables ENV
-#--------------------------
-# export EDITOR="codium --wait"
-export EDITOR="code --wait"
-export VISUAL="$EDITOR"
-export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:di=1;36" # Prevent highlighting of directories (green background)
-export TZ="Australia/Sydney"
+# Java
+#-----
+# alias j='f(){ export JAVA_HOME=/usr/libexec/java_home -v $1 }; java -version'
+alias j17="export JAVA_HOME=`/usr/libexec/java_home -v 17`; java -version"
+alias j21="export JAVA_HOME=$(/usr/libexec/java_home -v 21); java -version"
+export JAVA_HOME=$(/usr/libexec/java_home -v 21)
+# export JAVA_HOME="/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home"
+alias j="java"
 
-# VSCodium > VSCode
-#--------------------
-# alias code="codium"
-# alias vscode="code"
-# alias vcode="code"
+# Maven
+#------
+alias mvn--="mvn clean install -U -DskipTests"
+alias mvn++="mvn clean install -U -DskipTests"
+alias mvnc="mvn clean install -U -DskipTests"
+alias mvn-compile="mvn clean install -U -DskipTests"
+alias mvn!="mvn clean install -U -Dmaven.test.skip=true"
+alias mvn--!="mvn clean install -U -Dmaven.test.skip=true"
+alias mvn++!="mvn clean install -U -Dmaven.test.skip=true"
+alias mvnc!="mvn clean install -U -Dmaven.test.skip=true"
+alias mvn-test="mvn clean install -U"
+alias mvn-install="mvn clean install -U"
+alias mvn-stall="mvn clean install -U"
+alias mvn-tree="mvn dependency:tree -Dverbose"
+mvn-dependency-tree-print-to-file() {
+  if [ $# -eq 1 ]; then
+    local outputFile="$1"
+    mvn dependency:tree -Dverbose -DoutputFile=$outputFile
+    return 0
+  fi
+  mvn dependency:tree -Dverbose -DoutputFile=mvn-dependency-tree.txt
+}
+alias mvn-tree-cat="mvn-dependency-tree-print-to-file"
+alias mvn-tree-output="mvn-dependency-tree-print-to-file"
+alias mvn-tree-print="mvn-dependency-tree-print-to-file"
+mvn-dependency-tree-filter() {
+  if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+    echo "Usage: mvn-tree-includes <group-id> <artifact-id>"
+    return 1
+  fi
+  local groupId="$1"
+  local artifactId="$1"
+  if [ $# -eq 1 ]; then
+    mvn dependency:tree -Dverbose -Dincludes=$groupId:$artifactId
+  elif [ $# -eq 2 ]; then
+    artifactId="$2"
+    mvn dependency:tree -Dverbose -Dincludes=$groupId:$artifactId
+  fi
+}
+alias mvn-tree-filter="mvn-dependency-tree-filter"
+alias mvn-tree-find="mvn-dependency-tree-filter"
+alias mvn-tree-includes="mvn-dependency-tree-filter"
+
+# Python
+#-------
+# export PATH="/opt/homebrew/opt/python@3.13/libexec/bin:$PATH"
+alias python="python3"
+alias py="python3"
 
 # Custom Functions
 # ----------------
@@ -385,8 +448,8 @@ ps-aux-regex() {
     echo "Usage: psx <process-name-to-find-using-regex>"
     return 1
   fi
-  # ps ax -o user,pid,%cpu,%mem,start,command | grep -P "$1"
-  ps ax -o user,pid,%cpu,%mem,start,command | sort -k 3 -r | grep -P "$1"
+  # ps ax -o user,pid,%cpu,%mem,start,command | grep --color=always -iP "$1"
+  ps ax -o user,pid,%cpu,%mem,start,command | sort -k 3 -r | grep --color=always -iP "$1"
 }
 alias psaux="ps-aux-regex"
 alias psx="ps-aux-regex"
@@ -397,8 +460,8 @@ ps-aux-ignore-case() {
     echo "Usage: psxi <process-name-to-find-ignore-case>"
     return 1
   fi
-  # ps ax -o user,pid,%cpu,%mem,start,command | grep -i "$1"
-  ps ax -o user,pid,%cpu,%mem,start,command | sort -k 3 -r | grep -i "$1"
+  # ps ax -o user,pid,%cpu,%mem,start,command | grep --color=always -i "$1"
+  ps ax -o user,pid,%cpu,%mem,start,command | sort -k 3 -r | grep --color=always -i "$1"
 }
 alias psauxi="ps-aux-ignore-case"
 alias psauxic="ps-aux-ignore-case"
@@ -446,10 +509,6 @@ mkcd() {
 idea() {
   open -a "IntelliJ IDEA CE" "$1"
 }
-# OhMyZSH Override
-git_main_branch() {
-  echo master
-}
 # Upgrade Brew Casks
 brew-upgrade-casks() {
   brew upgrade --cask $(brew list --cask)
@@ -493,7 +552,7 @@ change-jdk() {
 alias jdk="change-jdk"
 java_compile_and_run() {
   if [ "$#" -eq 0 ]; then
-    echo "Usage: jav <source_file>"
+    echo "Usage: j++ <source-file>"
     return 1
   fi
   local srcFile="$1"
@@ -515,7 +574,7 @@ alias jc="java_compile_and_run"
 alias jcr="java_compile_and_run"
 g++_compile_and_run() {
   if [ "$#" -eq 0 ]; then
-    echo "Usage: gpp <source-file>"
+    echo "Usage: g-- <source-file>"
     return 1
   fi
   local srcFile="$1"
@@ -533,6 +592,40 @@ alias c++="g++_compile_and_run"
 alias cpp="g++_compile_and_run"
 alias g--="g++_compile_and_run"
 alias gpp="g++_compile_and_run"
+perl-grep() {
+  if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+    echo "Usage: pgrep 'regex-pattern' <optional-file-name>"
+    return 1
+  fi
+  local pattern="$1"
+  if [ $# -eq 1 ]; then
+    # perl -nle "print if /$pattern/gim"
+    perl -nle "if (/$pattern/gim) { s/($pattern)/\033[1;31m\$1\033[0m/gim; print }"
+  elif [ $# -eq 2 ]; then
+    local filename="$2"
+    # perl -nle "print if /$pattern/gim" $filename
+    perl -nle "if (/$pattern/gim) { s/($pattern)/\033[1;31m\$1\033[0m/gim; print }" $filename
+  fi
+}
+alias pgrep="perl-grep"
+alias prep="perl-grep"
+perl-grep-only-matching() {
+  if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+    echo "Usage: pgrep2 'regex-pattern' <optional-file-name>"
+    return 1
+  fi
+  local pattern="$1"
+  if [ $# -eq 1 ]; then
+    perl -nle "print \$& while /$pattern/gim"
+  elif [ $# -eq 2 ]; then
+    local filename="$2"
+    perl -nle "print \$& while /$pattern/gim" $filename
+  fi
+}
+alias pgrep2="perl-grep-only-matching"
+
+# Git Functions
+#--------------
 # Delete both local and remote branch (usage: gbdd branchNameToDelete)
 gbdd() {
   if [ $# -ne 1 ]; then
@@ -719,9 +812,39 @@ update-git-repos() {
   done
 }
 alias gl-repos="update-git-repos"
+git-local-only-branches() {
+  # Ensure we are in a git repository
+  # if ! git rev-parse --git-dir >/dev/null 2>&1; then
+  if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    echo -e "ERROR: \033[1;31m$(basename $(pwd))\033[0m is NOT a git repository"
+    return 1
+  fi
+  git fetch --all --prune --tags --force >/dev/null 2>&1 || return 1 # Stop if fetch fails
+  echo "LOCAL branches with NO remote/upstream counterpart:"
+  local branch
+  local has_output=0
+  # Iterate through all local branches
+  for branch in $(git branch --format='%(refname:short)'); do
+    # Check if the branch has an upstream configured AND if that upstream ref still exists
+    # The @{u} shorthand resolves to the upstream branch ref.
+    # If it fails (exit code != 0), the upstream is missing or was pruned.
+    if ! git rev-parse --abbrev-ref --symbolic-full-name "${branch}@{u}" >/dev/null 2>&1; then
+      echo "  $branch"
+      has_output=1
+    fi
+  done
+  # if [[ $has_output -eq 0 ]]; then
+  #   echo "  (None found)"
+  # fi
+}
+alias gb-local="git-local-only-branches"
+alias gblocal="git-local-only-branches"
+alias gb-norem="git-local-only-branches"
+alias gb-noremote="git-local-only-branches"
+alias gb-no-remote="git-local-only-branches"
 git-worktree-add() {
   if ! [ -d ".git" ]; then
-    echo -e "ERROR: \033[1;31m$(basename $(pwd))\033[0m is NOT a git repository, skipping"
+    echo -e "ERROR: \033[1;31m$(basename $(pwd))\033[0m is NOT a git repository"
     return 1
   fi
   if [ $# -ne 1 ] && [ $# -ne 2 ]; then
@@ -730,22 +853,44 @@ git-worktree-add() {
     echo -e "\033[1;32mgwta <target-branch>\033[0m (note: implicitly target-branch-directory = '../\${1//\//-}')"
     return 1
   fi
+  if ! [ -d ".git" ]; then
+    echo -e "ERROR: \033[1;31m$(basename $(pwd))\033[0m is NOT the ROOT git repository"
+    return 1
+  fi
+  local repoName=$(basename $(pwd))
   if [ $# -eq 1 ]; then
-    # local dirname=${1//\//-} # Replace '/' with '-'
-    # git worktree add -b "../$dirname" "$1"
-    # local dirname="${1#../}"               # First remove '../' prefix if it exists
-    # dirname="${dirname#worktree-}"         # Then remove 'worktree-' prefix if it exists
-    # dirname="../worktree-${dirname//\//-}" # Replace '/' with '-'
-    local dirname="../worktree-${1//\//-}" # Replace '/' with '-'
+    # Check if the given branch $1 exists
+    if ! git rev-parse --verify "$1" >/dev/null 2>&1; then
+      echo -e "ERROR: Branch \033[1;31m$1\033[0m does NOT exist"
+      return 1
+    fi
+    local dirname="${1#../}"                # First remove '../' prefix if it exists
+    dirname="${dirname#worktree-}"          # Then remove 'worktree-' prefix if it exists
+    dirname="${dirname#$repoName-}"         # Then remove '$repoName-' prefix if it exists
+    dirname="../$repoName-${dirname//\//-}" # Replace '/' with '-'local dirname="../${1//\//-}" # Replace '/' with '-'
+    if [ -d "$1" ]; then
+      echo -e "ERROR: Directory \033[1;31m$1\033[0m ALREADY exists"
+      return 1
+    fi
     echo -e "\033[1;32mCreated\033[0m Git Worktree: \033[1;36m$dirname\033[0m on branch \033[1;35m$1\033[0m"
-    git worktree add -b "$dirname" "$1"
+    git worktree add "$dirname" "$1"
   elif [ $# -eq 2 ]; then
+    # Check if the given branch $2 exists
+    if ! git rev-parse --verify "$2" >/dev/null 2>&1; then
+      echo -e "ERROR: Branch \033[1;31m$2\033[0m does NOT exist"
+      return 1
+    fi
     # local dirname="$(echo "$1" | tr -d '/.')" # Remove all occurrences of '/' and '.' from string
-    local dirname="${1#../}"               # First remove '../' prefix if it exists
-    dirname="${dirname#worktree-}"         # Then remove 'worktree-' prefix if it exists
-    dirname="../worktree-${dirname//\//-}" # Replace '/' with '-'
-    echo -e "\033[1;32mCreated\033[0m Git Worktree: \033[1;36m$dirname\033[0m on branch \033[1;35m$2\033[0m"
-    git worktree add -b "$dirname" "$2"
+    local dirname="${1#../}"                # First remove '../' prefix if it exists
+    dirname="${dirname#worktree-}"          # Then remove 'worktree-' prefix if it exists
+    dirname="${dirname#$repoName-}"         # Then remove '$repoName-' prefix if it exists
+    dirname="../$repoName-${dirname//\//-}" # Replace '/' with '-'
+    if [ -d "$1" ]; then
+      echo -e "ERROR: Directory \033[1;31m$1\033[0m ALREADY exists"
+      return 1
+    fi
+    echo -e "Created Git Worktree: \033[1;36m$dirname\033[0m on branch \033[1;35m$2\033[0m"
+    git worktree add "$dirname" "$2"
   fi
 }
 alias gwta='git-worktree-add'
@@ -758,45 +903,40 @@ git-worktree-remove() {
   # Special case: if $1 is exactly ".", remove the current worktree directory
   if [ "$1" = "." ]; then
     echo -e "\033[1;31mRemoved\033[0m Git Worktree: \033[1;31m$(basename $(pwd))\033[0m"
-    git worktree remove .
+    git worktree remove -f .
     return 0
   fi
+  if ! [ -d ".git" ]; then
+    echo -e "ERROR: \033[1;31m$(basename $(pwd))\033[0m is NOT the ROOT git repository"
+    return 1
+  fi
+  local repoName=$(basename $(pwd))
   # local temp="${1//\//}"         # First remove all '/' characters
   # local dirname="../${temp//./}" # Then remove all '.' characters
   # local dirname="../$(echo "$1" | tr -d '/.')"
   # local dirname="../worktree-$(echo "$1" | tr -d '/.')"
-  local dirname="${1#../}"               # First remove '../' prefix if it exists
-  dirname="${dirname#worktree-}"         # Then remove 'worktree-' prefix if it exists
-  dirname="../worktree-${dirname//\//-}" # Replace '/' with '-'
+  local dirname="${1#../}"                # First remove '../' prefix if it exists
+  dirname="${dirname#worktree-}"          # Then remove 'worktree-' prefix if it exists
+  dirname="${dirname#$repoName-}"         # Then remove '$repoName-' prefix if it exists
+  dirname="../$repoName-${dirname//\//-}" # Replace '/' with '-'
   if ! [ -d "$dirname" ]; then
-    echo -e "ERROR: Git Worktree \033[1;31m$dirname\033[0m does NOT exist"
+    echo -e "ERROR: Git Worktree Directory \033[1;31m$dirname\033[0m does NOT exist"
     return 1
   fi
-  echo -e "\033[1;31mRemoved\033[0m Git Worktree: \033[1;31m$dirname\033[0m"
+  echo -e "Removed Git Worktree: \033[1;31m$dirname\033[0m"
   git worktree remove -f "$dirname"
 }
 alias gwtr='git-worktree-remove'
 alias gwtrm='git-worktree-remove'
 
-# Maven
-#------
-alias mvn--="mvn clean install -U -DskipTests"
-alias mvn++="mvn clean install -U -DskipTests"
-alias mvnc="mvn clean install -U -DskipTests"
-alias mvn-compile="mvn clean install -U -DskipTests"
-alias mvn!="mvn clean install -U -Dmaven.test.skip=true"
-alias mvn--!="mvn clean install -U -Dmaven.test.skip=true"
-alias mvn++!="mvn clean install -U -Dmaven.test.skip=true"
-alias mvnc!="mvn clean install -U -Dmaven.test.skip=true"
-alias mvn-test="mvn clean install -U"
-alias mvn-install="mvn clean install -U"
-alias mvn-stall="mvn clean install -U"
-
 # Git Aliases
 #------------
 alias gbd!='git branch -D'
-alias gclean='git reset --hard && git clean -dfx'
-alias gcleano='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -dfx'
+alias gc!='git commit --verbose --amend' # git add <files> && gc!
+alias gclean='git reset --hard && git clean -df'
+alias gclean!='git reset --hard && git clean -dfx'
+alias gcleano='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -df'
+alias gcleano!='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -dfx'
 alias gcmsg!='git commit --amend -m'
 alias gf='git fetch --all --prune'
 alias gf!='git fetch --all --prune --tags --force'
@@ -816,6 +956,7 @@ alias gmv='git mv'
 alias grename='git mv'
 alias greset='git reset --hard'
 alias greseth='git reset --hard'
+alias greset!='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -df'
 alias gresetho='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch)'
 alias gresetorig='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch)'
 alias gresetorigin='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch)'
@@ -850,22 +991,28 @@ alias brew-outdated="brew update > /dev/null 2>&1 && brew cleanup > /dev/null 2>
 alias brew-update="brew update > /dev/null 2>&1 && brew cleanup > /dev/null 2>&1 && brew outdated --greedy"
 alias cls="clear"
 alias cude="codium"
-alias egrep="egrep --color=always"
+alias egrep="egrep --color=always -i"
 alias finder="explorer.exe"
 alias open="explorer.exe"
-alias fgrep="fgrep --color=always"
+alias fgrep="fgrep --color=always -i"
 alias g++="g++-13"
 alias gcc="gcc-13"
-alias grep='grep --color=always'
-alias grepe='grep -P --color=always'
-alias grepp='grep -P --color=always'
-alias grepr='grep -P --color=always'
-alias grepre='grep -P --color=always'
-alias grepreg='grep -P --color=always'
-alias grepi='grep -i --color=always'
+alias grep='grep --color=always -i'
+alias grepe='grep --color=always -iP'
+alias grepp='grep --color=always -iP'
+alias grepr='grep --color=always -iP'
+alias grepre='grep --color=always -iP'
+alias grepreg='grep --color=always -iP'
+alias grepi='grep --color=always -i'
 alias ll='ls -AoF --color=auto'
 alias ls='ls --color=auto'
 alias lsd='ls -Aod --color=auto */'
+alias n='npm'
+alias n-update='npm outdated -g'
+alias p='pnpm'
+alias p-update='pnpm outdated'
 alias now='date +"%Y-%m-%d %H:%M:%S"'
 alias rezsh='source ~/.zshrc'
+alias timestamp='date +"%Y-%m-%d %H:%M:%S"'
 alias untar="tar -xvf"
+alias zshrc="codium ~/ && codium ~/.zshrc"

@@ -430,8 +430,11 @@ github/lc-all/**/*.java, *.py
   - `Ctrl + L`
 - Select All Occurrences Of Current Selection
   - `Ctrl + Shift + L`
+  - `Command + Shift + L`
 - Add selection to Next Find Match (incremental)
+  - Note: May need to highlight specific selection using `shift` first before pressing `Command + D`
   - `Ctrl + D`
+  - `Command + D`
 - Select All Occurrences Of Current Word
   - `Ctrl + F2`
 - Expand Selection

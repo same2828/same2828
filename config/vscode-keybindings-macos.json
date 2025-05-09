@@ -188,5 +188,35 @@
     "command": "workbench.action.navigateForward",
     "key": "ctrl+=",
     "when": "canNavigateForward"
+  },
+  {
+    "key": "enter",
+    "command": "-workbench.action.chat.submit",
+    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
+  },
+  {
+    "key": "cmd+enter",
+    "command": "workbench.action.chat.submit",
+    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
+  },
+  {
+    "key": "cmd+enter",
+    "command": "-workbench.action.chat.submitWithCodebase",
+    "when": "chatInputHasText && chatRequestIsPaused && inChatInput || chatInputHasText && inChatInput && !chatSessionRequestInProgress || chatInstructionsAttached && chatRequestIsPaused && inChatInput || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress"
+  },
+  {
+    "key": "shift+cmd+enter",
+    "command": "workbench.action.chat.submitWithCodebase",
+    "when": "chatInputHasText && chatRequestIsPaused && inChatInput || chatInputHasText && inChatInput && !chatSessionRequestInProgress || chatInstructionsAttached && chatRequestIsPaused && inChatInput || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress"
+  },
+  {
+    "key": "shift+ctrl+enter",
+    "command": "workbench.action.chat.submitWithoutDispatching",
+    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
+  },
+  {
+    "key": "ctrl+alt+o",
+    "command": "editor.action.organizeImports",
+    "when": "textInputFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)source\\.organizeImports\\b/"
   }
 ]

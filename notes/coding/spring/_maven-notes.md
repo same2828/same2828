@@ -1,7 +1,32 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Maven Links](#maven-links)
+- [Jars](#jars)
 - [Maven Commands](#maven-commands)
+- [Maven Dependency Conflict Resolution](#maven-dependency-conflict-resolution)
+
+# Maven Links
+
+- [Maven - Guide Index](https://maven.apache.org/guides/index.html)
+- [Maven - User Index](https://maven.apache.org/users/index.html)
+- [Maven - `Pom` Reference](https://maven.apache.org/pom.html)
+- [Maven - `Settings` Reference](https://maven.apache.org/settings.html)
+- [Maven - `Plugins` Reference](https://maven.apache.org/plugins/index.html)
+- [Maven - Glossary](https://maven.apache.org/glossary.html)
+- [GitHub CLI - Maven](https://docs.github.com/en/actions/use-cases-and-examples/building-and-testing/building-and-testing-java-with-maven)
+- [Maven Repository - Apache](https://mvnrepository.com/)
+- [Maven Central Repository - Sonatype](https://central.sonatype.com/)
+
+# Jars
+
+Maven will priorities LOCALLY built jars over REMOTE (even if they have the same pom.xml version numbers)
+
+This means you can
+
+1. Clone and locally edit a dependency
+2. Run `mvn clean install` on that dependency
+3. In your project IntelliJ run `Reload all Maven Projects` and `Sync all Maven Projects` to import your local edits
 
 # Maven Commands
 
@@ -79,3 +104,20 @@ mvn dependency:tree > maven-dependencies.txt
 | `mvn versions:use-next-releases`          | Uses the next releases of dependencies                                                           |
 | `mvn versions:use-next-snapshots`         | Uses the next snapshots of dependencies                                                          |
 | `mvn versions:update-properties`          | Updates properties to the latest versions                                                        |
+
+# Maven Dependency Conflict Resolution
+
+Maven resolves version conflicts using the "nearest-wins" strategy.
+
+When multiple versions of the same dependency exist in a project's dependency tree, Maven prioritizes the version that's "nearest" to your project in the dependency hierarchy.
+
+- **Dependency Distance**: The closer a dependency is to your project in the dependency graph, the higher its priority. Distance is measured by how many levels deep the dependency is
+- **Direct Dependencies Take Precedence**: Dependencies directly declared in your project's POM file (at distance 1) always win over transitive dependencies (at distance 2 or greater)
+- **First Declaration Wins**: If two dependencies are at the same distance from your project, the one that's declared **FIRST** in the POM file wins
+
+Example:
+
+- If your project directly depends on:
+  - Library A, which depends on Library C version 1.0
+  - Library B, which depends on Library C version 2.0
+  - Maven will use Library C version 1.0 if Library A is declared BEFORE Library B in your POM file, or version 2.0 if Library B is declared first

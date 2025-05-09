@@ -1,4 +1,7 @@
 {
+  "[astro]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
   "[c]": {
     "editor.defaultFormatter": "ms-vscode.cpptools"
   },
@@ -9,7 +12,8 @@
     "wrap-log-simple.useParentheses": false
   },
   "[css]": {
-    "editor.defaultFormatter": "vscode.css-language-features"
+    // "editor.defaultFormatter": "vscode.css-language-features"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[go]": {
     "wrap-log-simple.functionName": "fmt.Println"
@@ -836,36 +840,78 @@
     "**/node_modules/**": true
   },
   "formatAll.excludeFolders": [
+    ".astro",
     ".chrome",
     ".git",
+    ".gradle",
     ".idea",
+    ".mvn",
     ".vscode*",
+    "**/build/",
     "**/node_modules",
     "**/node_modules/**",
     "dist",
-    "node_modules"
+    "node_modules",
+    "out/",
+    "target/"
   ],
   "formatAll.includeFileExtensions": [
+    ".angular",
+    ".astro",
     ".c",
+    ".cjs",
     ".cpp",
     ".css",
+    ".cts",
     ".go",
+    ".golang",
+    ".gqs",
+    ".graphql",
     ".html",
+    ".java",
     ".js",
     ".json",
+    ".jsonc",
     ".jsx",
+    ".less",
+    ".markdown",
     ".md",
+    ".mdx",
+    ".mjs",
+    ".mts",
+    ".prettierrc.cjs",
+    ".prettierrc.cts",
+    ".prettierrc.js",
+    ".prettierrc.json",
+    ".prettierrc.json5 ",
+    ".prettierrc.mjs",
+    ".prettierrc.mts",
+    ".prettierrc.toml",
+    ".prettierrc.ts",
+    ".prettierrc.yaml",
+    ".prettierrc.yml",
+    ".prettierrc",
     ".py",
     ".rs",
+    ".scss",
+    ".svelte",
+    ".toml",
     ".ts",
-    ".tsx"
+    ".tsx",
+    ".vue",
+    ".xml",
+    ".yaml",
+    ".yml"
   ],
   "formattingToggle.affects": ["editor.formatOnSave"],
   "git.openRepositoryInParentFolders": "always",
   "github.copilot.chat.codeGeneration.useInstructionFiles": false,
+  "github.copilot.chat.edits.newNotebook.enabled": false,
   "github.copilot.chat.edits.suggestRelatedFilesForTests": false,
   "github.copilot.chat.edits.suggestRelatedFilesFromGitHistory": false,
   "github.copilot.chat.localeOverride": "en",
+  "github.copilot.chat.newWorkspaceCreation.enabled": false,
+  "github.copilot.chat.search.semanticTextResults": false,
   "github.copilot.nextEditSuggestions.enabled": false,
   "gitlens.ai.experimental.generateCommitMessage.enabled": false,
   "gitlens.codeLens.authors.enabled": false,
@@ -1058,7 +1104,9 @@
   },
   "prettier.jsxSingleQuote": true,
   "prettier.printWidth": 120,
+  "prettier.quoteProps": "consistent",
   "prettier.singleQuote": true,
+  "prettier.trailingComma": "all",
   "prolog.linter.run": "never",
   "pros.useGoogleAnalytics": false,
   "pylint.args": [
@@ -1418,6 +1466,7 @@
   "search.exclude": {
     "**/.*OneDrive*/**": true,
     "**/.android/**": true,
+    "**/.astro/**": true,
     "**/.aws/**": true,
     "**/.azure/**": true,
     "**/.backup*/**": true,
@@ -1584,7 +1633,6 @@
     "**/InstallArea/**": true,
     "**/Intel/**": true,
     "**/Lecture*/**": true,
-    "**/lib/**": true,
     "**/Lib/**": true,
     "**/lib64/**": true,
     "**/Libraries/**": true,
@@ -1660,7 +1708,25 @@
     "**/Volumes/**": true,
     "**/vscode*/**": true,
     "**/wheels/**": true,
-    "**/Windows/**": true
+    "**/Windows/**": true,
+    "/bin/**": true,
+    "/boot/**": true,
+    "/etc/**": true,
+    "/lib/**": true,
+    "/lib64/**": true,
+    "/media/**": true,
+    "/mnt/**": true,
+    "/opt/**": true,
+    "/proc/**": true,
+    "/root/**": true,
+    "/run/**": true,
+    "/sbin/**": true,
+    "/srv/**": true,
+    "/sys/**": true,
+    "/tmp/**": true,
+    "/usr/**": true,
+    "/var/**": true,
+    "lib/**": true
   },
   "search.quickOpen.includeHistory": false,
   "security.workspace.trust.untrustedFiles": "open",
@@ -1888,8 +1954,8 @@
   "todo-tree.general.tags": [
     "???",
     "??",
-    "?",
     "ALERT",
+    "ASK",
     "BUG",
     "BUGGED",
     "BUGS",
@@ -1918,10 +1984,11 @@
     "TODOS",
     "WARN",
     "WARNING",
+    "WHY",
     "XXX"
   ],
   "todo-tree.general.tagGroups": {
-    "?": ["?", "??", "???"],
+    "??": ["??", "???", "Q", "QUESTION", "ASK", "WHY"],
     "BUG": ["BUG", "BUGGED", "BUGS"],
     "ERROR": ["ERROR", "ERR", "XXX"],
     "FIXME": ["FIXME", "FIXIT", "FIX"],
@@ -1944,7 +2011,7 @@
     "type": "text-and-comment"
   },
   "todo-tree.highlights.customHighlight": {
-    "?": {
+    "??": {
       "icon": "question",
       "foreground": "#FF40FF",
       "background": "#000",
@@ -2016,6 +2083,7 @@
   "turboConsoleLog.quote": "'",
   "typescript.format.semicolons": "insert",
   "typescript.surveys.enabled": false,
+  "typescript.updateImportsOnFileMove.enabled": "always",
   "update.mode": "start",
   "vsintellicode.modify.editor.suggestSelection": "automaticallyOverrodeDefaultValue",
   "window.commandCenter": false,
@@ -2082,7 +2150,8 @@
     "gitDecoration.modifiedResourceForeground": "#8BE9FD",
     "gitDecoration.untrackedResourceForeground": "#50FA7B",
     "inputOption.activeBorder": "#2AAAFF",
-    "keybindingLabel.background": "#03395E",
+    // "keybindingLabel.background": "#03395E",
+    "keybindingLabel.background": "#004E9C",
     "keybindingLabel.foreground": "#FFFFFF",
     "list.activeSelectionBackground": "#004E9C",
     // "list.activeSelectionBackground": "#004F9E",
@@ -2167,7 +2236,9 @@
   "workbench.colorTheme": "Dracula",
   "workbench.editor.empty.hint": "hidden",
   "workbench.editorAssociations": {
-    "git-rebase-todo": "default"
+    // "*.copilotmd": "vscode.markdown.preview.editor",
+    "git-rebase-todo": "default",
+    "*.svg": "default"
   },
   "workbench.enableExperiments": false,
   "workbench.iconTheme": "material-icon-theme",

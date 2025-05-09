@@ -4,10 +4,18 @@
 - [Update My Repositories](#update-my-repositories)
 - [Git Commands](#git-commands)
   - [`git add`](#git-add)
+  - [`git branch`](#git-branch)
+    - [Delete Branch](#delete-branch)
+    - [List Branches](#list-branches)
+    - [Rename Branch](#rename-branch)
+    - [Update Local List Of Remote Branches](#update-local-list-of-remote-branches)
   - [`git cherry-pick`](#git-cherry-pick)
   - [`git commit`](#git-commit)
     - [Fixing Commits using `git commit --fixup <commitHash>` + `git rebase -i --autosquash`](#fixing-commits-using-git-commit---fixup-commithash--git-rebase--i---autosquash)
-  - [Git Branches](#git-branches)
+  - [`git merge`](#git-merge)
+    - [Merge Commit (`git merge --no-ff`)](#merge-commit-git-merge---no-ff)
+    - [Squash and Merge (`git merge --squash`)](#squash-and-merge-git-merge---squash)
+    - [Rebase and Merge (`git rebase -i origin/master && git merge --ff-only`)](#rebase-and-merge-git-rebase--i-originmaster--git-merge---ff-only)
   - [`git rebase`](#git-rebase)
     - [Rebasing `feature` branch on `master`](#rebasing-feature-branch-on-master)
     - [Deleting Commits](#deleting-commits)
@@ -57,6 +65,80 @@ git add github/notes/dev/*
 
 # Add java files only
 ga **/*.java
+```
+
+## `git branch`
+
+### Delete Branch
+
+```sh
+# Delete LOCAL Branch
+git branch -D localBranch
+gbD localBranch
+
+# Delete REMOTE Branch
+git push origin --delete remoteBranch
+git push origin -d remoteBranch
+git push origin :remoteBranch
+```
+
+### List Branches
+
+```sh
+# List LOCAL Branches
+git branch
+gb
+
+# List REMOTE Branches
+git branch -r
+gbr
+
+# List LOCAL && REMOTE Branches
+git branch -a
+gba
+```
+
+### Rename Branch
+
+```sh
+# Step 1: Rename Local Branch
+# If you are ON the TARGET branch to rename
+git checkout oldName
+git branch -m newName
+git branch --move newName
+# If you are on a DIFFERENT branch (i.e. NOT on the target branch)
+git branch -m oldName newName
+git branch --move oldName newName
+# Step 2: Delete Old Remote Branch
+git push origin :oldName
+git push origin -d oldName
+git push origin --delete remoteBranch
+# Alternatively you can RENAME the Remote Branch (your local branch still points to the now deleted oldName on the remote; you will need to point your local branch to newName on the remote via `git push origin -u newName`)
+git push origin :oldName newName
+# Step 3: Reset the Upstream Branch for the New Local Branch (and/or create a new remote branch)
+git push origin -u newName
+git push origin --set-upstream newName
+# Combining Steps 2 + 3 (delete old remote branch and create new remote branch and update upstream branch for local branch)
+git push -u origin :oldName newName
+git push --set-upstream origin :oldName newName
+# Step 4: Update Local List of Remote Branches
+git fetch --prune
+# git remote update --prune
+# TLDR
+git branch -m oldName newName
+git push -u origin :oldName newName
+git fetch --prune
+```
+
+### Update Local List Of Remote Branches
+
+```sh
+# Delete local tags that no longer exist on any remote (does NOT fetch all tags from remote)
+git fetch --all --prune --prune-tags
+# Fetch all remote tags and forces overwrites local tags if they conflict with remote tags
+git fetch --all --prune --tags --force
+# Note: git remote prune == git fetch --prune (except that git fetch will fetch changes first)
+# git remote update --prune
 ```
 
 ## `git cherry-pick`
@@ -146,65 +228,84 @@ git log --oneline
 # ac5db87 Project Structure Initialisation
 ```
 
-## Git Branches
+## `git merge`
+
+> 3 methods of merging
+>
+> Merge Commit: All commits from source branch will be added to target branch AND a merge commit
+>
+> Squash and Merge: All commits from source branch will be added to the base branch as a SINGLE commit
+>
+> Rebase and Merge: All commits from source branch will be rebased and added to target branch (NO merge commit)
+
+- Read More
+  - https://stackoverflow.com/questions/2427238/what-is-the-difference-between-merge-squash-and-rebase
+
+### Merge Commit (`git merge --no-ff`)
+
+- Explanation: This is the standard merge method
+- It takes all commits from your feature branch and adds them to the master branch AND it also creates a new "merge commit" on the master branch
+- This merge commit ties the histories of the two branches together and clearly indicates when the feature was merged
+- It preserves the exact history of your feature branch, showing all its individual commits alongside the merge itself
 
 ```sh
-# Delete LOCAL Branch
-git branch -D localBranch
-gbD localBranch
+# Switch to the target branch (master)
+git checkout master && git pull origin master
 
-# Delete REMOTE Branch
-git push origin --delete remoteBranch
-git push origin -d remoteBranch
-git push origin :remoteBranch
+# Merge the feature branch, explicitly creating a merge commit (--no-ff) even if it could be fast-forwarded
+git merge --no-ff feature
 
-# View LOCAL Branches
-git branch
-gb
+# Push the updated master branch (with the merge commit)
+git push origin master
+```
 
-# View REMOTE Branches
-git branch -r
-gbr
+### Squash and Merge (`git merge --squash`)
 
-# View LOCAL && REMOTE Branches
-git branch -a
-gba
+- Explanation: This method takes all the changes made across all commits in your feature branch, combines ("squashes") them into ONE SINGLE new commit, and then adds that single commit to the master branch
+- The individual commit history of the feature branch is discarded in the master branch's history, resulting in a cleaner, more linear history on master
+- Each merged pull request appears as one commit
 
-# Rename Branch
-# -------------
-# Step 1: Rename Local Branch
-# If you are ON the TARGET branch to rename
-git checkout oldName
-git branch -m newName
-git branch --move newName
-# If you are on a DIFFERENT branch (i.e. NOT on the target branch)
-git branch -m oldName newName
-git branch --move oldName newName
-# Step 2: Delete Old Remote Branch
-git push origin :oldName
-git push origin -d oldName
-git push origin --delete remoteBranch
-# Alternatively you can RENAME the Remote Branch (your local branch still points to the now deleted oldName on the remote; you will need to point your local branch to newName on the remote via `git push origin -u newName`)
-git push origin :oldName newName
-# Step 3: Reset the Upstream Branch for the New Local Branch (and/or create a new remote branch)
-git push origin -u newName
-git push origin --set-upstream newName
-# Combining Steps 2 + 3 (delete old remote branch and create new remote branch and update upstream branch for local branch)
-git push -u origin :oldName newName
-git push --set-upstream origin :oldName newName
-# Step 4: Update Local List of Remote Branches
-git fetch --prune
-# git remote update --prune
-# TLDR
-git branch -m oldName newName
-git push -u origin :oldName newName
-git fetch --prune
+```sh
+# Switch to the target branch (master)
+git checkout master && git pull origin master
 
-# Update Local List Of Remote Branches
-# ------------------------------------
-# Note: git remote prune == git fetch --prune (except that git fetch will fetch changes first)
-git fetch --prune
-# git remote update --prune
+# Bring in changes from the feature branch and stage them, but DON'T commit yet
+git merge --squash feature
+
+# Manually create a single commit for all the squashed changes (typically the commit message summarises the entire feature)
+git commit -m "feature: Add the complete feature from PR #<your_pr_number> (squashed)"
+
+# Push the updated master branch (with the single squashed commit)
+git push origin master
+```
+
+### Rebase and Merge (`git rebase -i origin/master && git merge --ff-only`)
+
+Explanation: This method takes all the commits from your feature branch and re-applies them, one by one, on top of the latest commit in the master branch
+It rewrites the feature branch's history so that it appears as if the commits were made directly on master after the point where the feature branch originally diverged
+This results in a perfectly linear history on the master branch, without any merge commits
+
+```sh
+# Fetch the latest changes from the target branch (master)
+git fetch origin master
+
+# Switch to the feature branch
+git checkout feature && git pull origin feature && git checkout -b feature-rebased
+
+# Rebase your feature branch commits onto the latest master
+git rebase -i origin/master
+# Resolve any conflicts that arise during the rebase
+# Force push the rebased feature branch
+git push origin feature-rebased --force-with-lease
+
+# Switch to the target branch (master)
+git checkout master && git pull origin master
+
+# Merge the now-rebased feature branch. This will be a "fast-forward" merge
+git merge feature --ff-only
+
+# Push the updated master branch (which now includes the rebased commits)
+git push origin master
 ```
 
 ## `git rebase`
@@ -542,8 +643,15 @@ git commit -m 'added tests'
 # Realised that you forgot to add test.java
 git add test2.java
 
+# Opens text editor to allow you to change the commit message
+git commit --amend
+gc!
+# Does NOT open the text editor (reuses the same commit message from the original commit being amended)
 git commit --amend --no-edit
 gcn!
+
+git push --force-with-lease --force-if-includes
+gpf!
 ```
 
 ## Change Most Recent Git Commit Message
