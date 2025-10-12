@@ -1,52 +1,8 @@
-// Place your key bindings in this file to override the defaultsauto[]
 [
   {
-    "command": "-workbench.action.files.saveWithoutFormatting",
-    "key": "cmd+k s"
-  },
-  {
-    "command": "workbench.action.files.saveWithoutFormatting",
-    "key": "cmd+s"
-  },
-  {
-    "command": "-workbench.action.files.save",
-    "key": "cmd+s"
-  },
-  {
-    "command": "workbench.action.files.save",
-    "key": "alt+s"
-  },
-  {
-    "command": "-tabnine.accept-inline-suggestion",
-    "key": "tab",
-    "when": "tabnine.in-inline-suggestions && tabnine.inline-suggestion:enabled || tabnine.in-inline-suggestions && tabnine.snippet-suggestion:enabled"
-  },
-  {
-    "command": "-workbench.action.closeFolder",
-    "key": "cmd+k f",
-    "when": "emptyWorkspaceSupport && workbenchState != 'empty'"
-  },
-  {
-    "command": "workbench.explorer.fileView.focus",
-    "key": "cmd+k f"
-  },
-  {
-    "command": "explorer.newFile",
-    "key": "cmd+n",
-    "when": "explorerViewletFocus"
-  },
-  {
-    "command": "explorer.newFolder",
-    "key": "cmd+shift+n",
-    "when": "explorerViewletFocus"
-  },
-  {
-    "command": "-redo",
-    "key": "shift+cmd+z"
-  },
-  {
-    "command": "redo",
-    "key": "cmd+y"
+    "command": "-markdown.extension.onShiftEnterKey",
+    "key": "shift+enter",
+    "when": "editorTextFocus && !editorHasMultipleSelections && !editorReadonly && !markdown.extension.editor.cursor.inFencedCodeBlock && !markdown.extension.editor.cursor.inMathEnv && !suggestWidgetVisible && editorLangId =~ /^markdown$|^rmd$|^quarto$/ || editorTextFocus && !editorHasMultipleSelections && !editorReadonly && !markdown.extension.editor.cursor.inFencedCodeBlock && !markdown.extension.editor.cursor.inMathEnv && config.editor.acceptSuggestionOnEnter == 'off' && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
   },
   {
     "command": "-rerunSearchEditorSearch",
@@ -54,110 +10,9 @@
     "when": "inSearchEditor"
   },
   {
-    "command": "-revealFileInOS",
-    "key": "alt+cmd+r",
-    "when": "!editorFocus"
-  },
-  {
-    "command": "revealFileInOS",
-    "key": "shift+cmd+r", // external keyboard: "shift+alt+r", internal keyboard: "shift+cmd+r"
-    "when": "!editorFocus"
-  },
-  {
-    "command": "-workbench.action.files.revealActiveFileInWindows",
-    "key": "cmd+k r"
-  },
-  {
-    "command": "workbench.action.files.revealActiveFileInWindows",
-    "key": "shift+cmd+r"
-  },
-  {
-    "command": "-renameFile",
-    "key": "enter",
-    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
-  },
-  {
-    "command": "renameFile",
-    "key": "shift+enter",
-    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
-  },
-  {
-    "command": "-explorer.openAndPassFocus",
-    "key": "cmd+down",
-    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsFolder && !inputFocus"
-  },
-  {
-    "command": "explorer.openAndPassFocus",
-    "key": "enter",
-    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsFolder && !inputFocus"
-  },
-  {
-    "command": "-editor.action.formatDocument",
-    "key": "shift+alt+f",
-    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
-  },
-  {
-    "command": "editor.action.formatDocument",
-    "key": "alt+a",
-    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
-  },
-  {
-    "command": "-markdown.extension.editing.toggleStrikethrough",
-    "key": "alt+s",
-    "when": "false"
-  },
-  {
-    "command": "markdown.extension.editing.toggleStrikethrough",
-    "key": "shift+alt+s",
-    "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
-  },
-  {
-    "command": "-markdown.extension.checkTaskList",
-    "key": "alt+c",
-    "when": "false"
-  },
-  {
-    "command": "markdown.extension.checkTaskList",
-    "key": "alt+c",
-    "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
-  },
-  {
-    "command": "-markdown.extension.onShiftEnterKey",
-    "key": "shift+enter",
-    "when": "editorTextFocus && !editorHasMultipleSelections && !editorReadonly && !markdown.extension.editor.cursor.inFencedCodeBlock && !markdown.extension.editor.cursor.inMathEnv && !suggestWidgetVisible && editorLangId =~ /^markdown$|^rmd$|^quarto$/ || editorTextFocus && !editorHasMultipleSelections && !editorReadonly && !markdown.extension.editor.cursor.inFencedCodeBlock && !markdown.extension.editor.cursor.inMathEnv && config.editor.acceptSuggestionOnEnter == 'off' && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
-  },
-  {
-    "command": "-workbench.action.chat.openEditSession",
-    "key": "shift+cmd+i",
-    "when": "chatEditingParticipantRegistered && chatIsEnabled && view != 'workbench.panel.chat.view.edits'"
-  },
-  {
-    "command": "-workbench.action.chat.open",
-    "key": "ctrl+cmd+i",
-    "when": "chatPanelParticipantRegistered"
-  },
-  {
-    "command": "workbench.action.chat.open",
-    "key": "shift+cmd+i"
-  },
-  {
-    "command": "bookmarks.toggleLabeled",
-    "key": "alt+cmd+i",
-    "when": "editorTextFocus"
-  },
-  {
-    "command": "workbench.action.quickOpen",
-    "key": "shift shift"
-  },
-  {
-    "command": "-github.copilot.generate",
-    "key": "ctrl+enter",
-    "when": "editorTextFocus && github.copilot.activated && !commentEditorFocused && !inInteractiveInput && !interactiveEditorFocused"
-  },
-  {
-    "command": "github.copilot.generate",
-    "key": "ctrl+alt+enter",
-    "when": "editorTextFocus && github.copilot.activated && !commentEditorFocused && !inInteractiveInput && !interactiveEditorFocused"
+    "command": "-tabnine.accept-inline-suggestion",
+    "key": "tab",
+    "when": "tabnine.in-inline-suggestions && tabnine.inline-suggestion:enabled || tabnine.in-inline-suggestions && tabnine.snippet-suggestion:enabled"
   },
   {
     "command": "-workbench.action.chat.applyInEditor",
@@ -170,9 +25,255 @@
     "when": "accessibleViewInCodeBlock && chatIsEnabled || chatIsEnabled && inChat && !inChatInput"
   },
   {
+    "command": "-workbench.action.chat.openEditSession",
+    "key": "shift+cmd+i"
+  },
+  {
     "command": "-workbench.action.chat.runInTerminal",
     "key": "ctrl+alt+enter",
     "when": "accessibleViewInCodeBlock && chatIsEnabled || chatIsEnabled && inChat"
+  },
+  {
+    "command": "-workbench.action.chat.startVoiceChat",
+    "key": "cmd+i"
+  },
+  {
+    "command": "-workbench.action.chat.stopListeningAndSubmit",
+    "key": "cmd+i"
+  },
+  {
+    "command": "-workbench.action.closeFolder",
+    "key": "cmd+k f",
+    "when": "emptyWorkspaceSupport && workbenchState != 'empty'"
+  },
+  {
+    "command": "bookmarks.toggleLabeled",
+    "key": "alt+cmd+i",
+    "when": "editorTextFocus"
+  },
+  {
+    "command": "-editor.action.formatDocument",
+    "key": "shift+alt+f",
+    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
+  },
+  {
+    "command": "editor.action.formatDocument",
+    "key": "alt+a",
+    "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
+  },
+  {
+    "command": "editor.action.organizeImports",
+    "key": "ctrl+alt+o",
+    "when": "textInputFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)source\\.organizeImports\\b/"
+  },
+  {
+    "key": "alt+o",
+    "command": "editor.action.organizeImports",
+    "when": "textInputFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)source\\.organizeImports\\b/"
+  },
+  {
+    "key": "shift+alt+o",
+    "command": "editor.action.organizeImports",
+    "when": "textInputFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)source\\.organizeImports\\b/"
+  },
+  {
+    "command": "explorer.newFile",
+    "key": "cmd+n",
+    "when": "explorerViewletFocus"
+  },
+  {
+    "command": "explorer.newFolder",
+    "key": "cmd+shift+n",
+    "when": "explorerViewletFocus"
+  },
+  {
+    "command": "-explorer.openAndPassFocus",
+    "key": "cmd+down",
+    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsFolder && !inputFocus"
+  },
+  {
+    "command": "explorer.openAndPassFocus",
+    "key": "enter",
+    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsFolder && !inputFocus"
+  },
+  {
+    "command": "-github.copilot.generate",
+    "key": "ctrl+enter",
+    "when": "editorTextFocus && github.copilot.activated && !commentEditorFocused && !inInteractiveInput && !interactiveEditorFocused"
+  },
+  {
+    "command": "github.copilot.generate",
+    "key": "ctrl+alt+enter",
+    "when": "editorTextFocus && github.copilot.activated && !commentEditorFocused && !inInteractiveInput && !interactiveEditorFocused"
+  },
+  {
+    "command": "-markdown.extension.checkTaskList",
+    "key": "alt+c",
+    "when": "false"
+  },
+  {
+    "command": "markdown.extension.checkTaskList",
+    "key": "alt+c",
+    "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
+  },
+  {
+    "command": "-markdown.extension.editing.toggleStrikethrough",
+    "key": "alt+s",
+    "when": "false"
+  },
+  {
+    "command": "markdown.extension.editing.toggleStrikethrough",
+    "key": "shift+alt+s",
+    "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
+  },
+  {
+    "command": "-redo",
+    "key": "shift+cmd+z"
+  },
+  {
+    "command": "redo",
+    "key": "cmd+y"
+  },
+  {
+    "command": "-renameFile",
+    "key": "enter",
+    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+  },
+  {
+    "command": "renameFile",
+    "key": "shift+enter",
+    "when": "filesExplorerFocus && foldersViewVisible && !explorerResourceIsRoot && !explorerResourceReadonly && !inputFocus"
+  },
+  {
+    "command": "-revealFileInOS",
+    "key": "alt+cmd+r",
+    "when": "!editorFocus"
+  },
+  {
+    "command": "revealFileInOS",
+    "key": "shift+cmd+r",
+    "when": "!editorFocus"
+  },
+  {
+    "key": "cmd+/",
+    "command": "-workbench.action.chat.attachContext",
+    "when": "inChatInput && chatLocation == 'panel'"
+  },
+  {
+    "key": "shift+2",
+    "command": "workbench.action.chat.attachContext",
+    "when": "inChatInput && chatLocation == 'panel' && !chatInputHasText"
+  },
+  {
+    "key": "shift+`",
+    "command": "workbench.action.chat.attachContext",
+    "when": "inChatInput && chatLocation == 'panel'"
+  },
+  {
+    "command": "-workbench.action.chat.open",
+    "key": "ctrl+cmd+i"
+  },
+  {
+    "command": "workbench.action.chat.newChat",
+    "key": "ctrl+l",
+    "when": "chatEditingParticipantRegistered && chatIsEnabled && inChat"
+  },
+  {
+    "command": "-workbench.action.chat.open",
+    "key": "shift+cmd+i"
+    // "when": "!chatSetupDisabled && !chatSetupHidden"
+  },
+  {
+    "command": "workbench.action.chat.openask",
+    "key": "shift+cmd+i"
+    // "when": "!chatSetupDisabled && !chatSetupHidden"
+  },
+  {
+    "command": "-workbench.action.chat.openagent",
+    "key": "ctrl+cmd+i",
+    "when": "config.chat.agent.enabled && !chatSetupDisabled && !chatSetupHidden"
+  },
+  {
+    "command": "-workbench.action.chat.openagent",
+    "key": "shift+cmd+i",
+    "when": "config.chat.agent.enabled && !chatSetupDisabled && !chatSetupHidden"
+  },
+  {
+    "command": "-workbench.action.chat.openModelPicker",
+    "key": "alt+cmd+.",
+    "when": "chatIsEnabled && inChatInput"
+  },
+  {
+    "command": "-workbench.action.chat.openModePicker",
+    "key": "cmd+.",
+    "when": "chatIsEnabled && inChatInput && chatLocation == 'panel'"
+  },
+  {
+    "command": "-workbench.action.chat.submit",
+    "key": "enter"
+  },
+  {
+    "command": "-workbench.action.chat.submit",
+    "key": "enter",
+    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
+  },
+  {
+    "command": "-workbench.action.chat.submit",
+    "key": "enter",
+    "when": "inChatInput && chatMode == 'ask'"
+  },
+  {
+    "command": "-workbench.action.chat.submit",
+    "key": "cmd+enter",
+    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
+  },
+  {
+    "command": "workbench.action.chat.submitWithoutDispatching",
+    "key": "cmd+enter",
+    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
+  },
+  {
+    "command": "-workbench.action.chat.submitWithCodebase",
+    "key": "cmd+enter"
+  },
+  {
+    "command": "workbench.action.chat.submitWithCodebase",
+    "key": "shift+cmd+enter",
+    "when": "chatInputHasText && chatRequestIsPaused && inChatInput || chatInputHasText && inChatInput && !chatSessionRequestInProgress || chatInstructionsAttached && chatRequestIsPaused && inChatInput || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress"
+  },
+  {
+    "command": "workbench.action.chat.submitWithoutDispatching",
+    "key": "ctrl+enter",
+    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
+  },
+  {
+    "command": "workbench.action.chat.submitWithoutDispatching",
+    "key": "alt+enter",
+    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
+  },
+  {
+    "command": "-workbench.action.files.revealActiveFileInWindows",
+    "key": "cmd+k r"
+  },
+  {
+    "command": "workbench.action.files.revealActiveFileInWindows",
+    "key": "shift+cmd+r"
+  },
+  {
+    "command": "-workbench.action.files.save",
+    "key": "cmd+s"
+  },
+  {
+    "command": "workbench.action.files.save",
+    "key": "alt+s"
+  },
+  {
+    "command": "-workbench.action.files.saveWithoutFormatting",
+    "key": "cmd+k s"
+  },
+  {
+    "command": "workbench.action.files.saveWithoutFormatting",
+    "key": "cmd+s"
   },
   {
     "command": "workbench.action.navigateBack",
@@ -190,38 +291,11 @@
     "when": "canNavigateForward"
   },
   {
-    "key": "enter",
-    "command": "-workbench.action.chat.submit",
-    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
+    "command": "workbench.action.quickOpen",
+    "key": "shift shift"
   },
   {
-    "key": "enter",
-    "command": "-workbench.action.chat.submit",
-    "when": "inChatInput && chatMode == 'ask'"
-  },
-  {
-    "key": "cmd+enter",
-    "command": "workbench.action.chat.submit",
-    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
-  },
-  {
-    "key": "cmd+enter",
-    "command": "-workbench.action.chat.submitWithCodebase",
-    "when": "chatInputHasText && chatRequestIsPaused && inChatInput || chatInputHasText && inChatInput && !chatSessionRequestInProgress || chatInstructionsAttached && chatRequestIsPaused && inChatInput || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress"
-  },
-  {
-    "key": "shift+cmd+enter",
-    "command": "workbench.action.chat.submitWithCodebase",
-    "when": "chatInputHasText && chatRequestIsPaused && inChatInput || chatInputHasText && inChatInput && !chatSessionRequestInProgress || chatInstructionsAttached && chatRequestIsPaused && inChatInput || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress"
-  },
-  {
-    "key": "shift+ctrl+enter",
-    "command": "workbench.action.chat.submitWithoutDispatching",
-    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
-  },
-  {
-    "key": "ctrl+alt+o",
-    "command": "editor.action.organizeImports",
-    "when": "textInputFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)source\\.organizeImports\\b/"
+    "command": "workbench.explorer.fileView.focus",
+    "key": "cmd+k f"
   }
 ]

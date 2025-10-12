@@ -61,12 +61,17 @@ author:green photosynthesis "leaf"
 
 # Force Reload
 
-| Shortcut                            | Description  |
-| ----------------------------------- | ------------ |
-| `Cmd + Shift + R`                   | Force Reload |
-| `Ctrl + Shift + R`                  | Force Reload |
-| `Ctrl + F5`                         | Force Reload |
-| `Hold Shift && Click Reload Button` | Force Reload |
+| Browser | OS      | Shortcut                            |
+| ------- | ------- | ----------------------------------- |
+| Chrome  | macOS   | `Cmd + Shift + R`                   |
+| Chrome  | macOS   | `Hold Shift && Click Reload Button` |
+| Chrome  | Windows | `Ctrl + F5`                         |
+| Chrome  | Windows | `Hold Ctrl && Click Reload Button`  |
+|         |         |                                     |
+| Firefox | macOS   | `Cmd + Shift + R`                   |
+| Firefox | macOS   | `Hold Shift && Click Reload Button` |
+| Firefox | Windows | `Ctrl + F5`                         |
+| Firefox | Windows | `Ctrl + Shift + R`                  |
 
 Note: `Cmd + R` or `F5` only does normal reload
 

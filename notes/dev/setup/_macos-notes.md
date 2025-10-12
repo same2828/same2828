@@ -21,6 +21,7 @@
     - [Prevent Accented Characters + Remove Input Menu from Menu Bar](#prevent-accented-characters--remove-input-menu-from-menu-bar)
     - [Disable Mail App Shortcut](#disable-mail-app-shortcut)
     - [Keyboard Remap](#keyboard-remap)
+  - [MacPorts](#macports)
   - [System Settings](#system-settings)
     - [Accessibility](#accessibility)
     - [Hot Corners](#hot-corners)
@@ -151,6 +152,8 @@ scroll_lock -> volume_increment
 left_command -> left_control
 left_control -> left_command
 keypad_enter -> return_or_enter
+application -> right_control
+right_control -> right_command
 ```
 
 ### LibreOffice
@@ -199,6 +202,12 @@ Enable Performance Mode
 Enable DNS over HTTPS
 
 - `about:preferences > Privacy & Security > DNS over HTTPS > Increased Protection > Cloudflare`
+
+Turn off Ai Features
+
+- `about:config > browser.ml.chat.enabled = FALSE`
+- `about:config > browser.ml.enable = FALSE`
+- `about:config > extensions.ml.enabled = FALSE`
 
 Change Search Engine to Google Search Verbatim
 
@@ -393,6 +402,53 @@ scroll_lock -> volume_increment
 left_command -> left_control
 left_control -> left_command
 keypad_enter -> return_or_enter
+```
+
+## MacPorts
+
+[MacPorts](https://www.macports.org/)
+[MacPorts Ports](https://ports.macports.org/)
+
+```sh
+sudo port selfupdate && sudo port upgrade outdated
+```
+
+```sh
+# Update MacPorts tree
+sudo port selfupdate
+
+# Upgrade all outdated ports
+sudo port upgrade outdated
+
+# Search for a port
+port search <package_name>
+
+# Get info about a port
+port info <package_name>
+
+# List files installed by a port (including filepaths)
+port contents <package_name>
+
+# List installed ports
+port installed
+
+# Install a port
+sudo port install <package_name>
+
+# Uninstall a port
+sudo port uninstall <package_name>
+
+# Uninstall all inactive ports and their dependencies
+sudo port uninstall --follow-dependents <package_name>
+
+# Clean up intermediate build files
+sudo port clean --all <package_name>
+
+# Reclaim space by removing files for inactive ports
+sudo port reclaim
+
+# Find which port installed a file
+port provides /path/to/file
 ```
 
 ## System Settings
@@ -843,31 +899,33 @@ sudo /Applications/Install\ macOS\ Sequoia.app/Contents/Resources/createinstallm
 # Delete Apple Intelligence (Apple AI)
 
 - https://old.reddit.com/r/MacOS/comments/1hca5ap/how_do_i_remove_apple_intelligence_permanently/
+- https://old.reddit.com/r/mac/comments/1kntq8x/how_can_i_delete_apple_intelligence/
 - https://old.reddit.com/r/MacOS/comments/1gertfw/removing_language_model_of_apple_intelligence/
 - https://old.reddit.com/r/MacOSBeta/comments/1eqrg3k/apple_intelligence_stuck_downloading_for_over_a/
 - https://forums.macrumors.com/threads/save-7gb-storage-per-device-by-disabling-apple-intelligence.2448265/page-7
 
 1. Disable Apple Intelligence in System Settings
 2. Boot into Recovery Mode
-   - Press and Hold the power button until the System Volumes and the Options button appear
-   - Options > Continue
+   - Press and Hold the power button until the Startup Options appear (System Volumes and the Options button appear)
+   - `Options > Continue`
    - Select an administrator account > Enter password
-3. Open Terminal (Utilities menu > Terminal)
+3. Open Terminal (`Utilities menu > Terminal`)
    - `csrutil disable`
 4. Shut Down
 5. Boot into Recovery Mode Again
-   - Press and Hold the power button until the System Volumes and the Options button appear
-   - Options > Continue
+   - Press and Hold the power button until the Startup Options appear (System Volumes and the Options button appear)
+   - `Options > Continue`
    - Select an administrator account > Enter password
-6. Choose Disk Utility > Right-click on 'Data' under 'Macintosh HD' and choose Mount (MOST IMPORTANT STEP)
+6. Choose `Disk Utility > Right-click on 'Macintosh HD - Data' under 'Macintosh HD'` and choose Mount **(MOST IMPORTANT STEP)**
 7. Quit Disk Utility
-8. Open Terminal (Utilities menu > Terminal)
+8. Open Terminal (`Utilities menu > Terminal`)
    - `ls /Volumes`
    - `cd /Volumes/"Macintosh HD - Data"`
-   - `cd /System/Library/AssetsV2`
+   - `pwd`
+   - `cd System/Library/AssetsV2`
+   - `pwd`
    - `ls | grep -ie 'MobileAsset_UAF_FM*'`
    - `rm -rf com_apple_MobileAsset_UAF_FM_GenerativeModels`
-   - `rm -rf com_apple_MobileAsset_UAF_FM_Overrides`
    - `rm -rf com_apple_MobileAsset_UAF_FM_Visual`
    - `csrutil enable`
 9. Restart

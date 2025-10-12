@@ -69,6 +69,8 @@ zstyle ':omz:update' mode auto      # update automatically without asking
 zstyle :omz:plugins:ssh-agent quiet yes
 zstyle ':fzf-tab:*' use-fzf-default-opts yes
 zstyle ':fzf-tab:*' fzf-flags '--height=99%'
+zstyle ':fzf-tab:*' continuous-trigger ''
+# zstyle ':fzf-tab:*' accept-line ''
 
 # Which plugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
@@ -157,10 +159,8 @@ eval "$(starship init zsh)"
 # alias f="fzf"
 # export FZF_BASE="/opt/homebrew/bin/fzf"
 # Non FD
-# export FZF_DEFAULT_COMMAND="--walker-skip .git,node_modules,target"
-# export FZF_CTRL_T_COMMAND="--walker-skip .git,node_modules,target"
-# export FZF_CTRL_R_COMMAND="--walker-skip .git,node_modules,target"
-# export FZF_ALT_C_COMMAND="--walker-skip .git,node_modules,target --preview 'tree -C {}'"
+# export FZF_CTRL_T_OPTS="--walker-skip .git,node_modules,target"
+# export FZF_CTRL_R_OPTS="--walker-skip .git,node_modules,target"
 # export FZF_ALT_C_OPTS="--walker-skip .git,node_modules,target --preview 'tree -C {}'"
 # Using FD
 # export FZF_DEFAULT_COMMAND="fd --type f --strip-cwd-prefix --hidden --follow --exclude={'**/.DS_Store/**','**/.dump*/**','**/.git/**','**/.idea/**','**/.npm*/**','**/.nvm/**','**/.pnpm*/**','**/.temp*/**','**/.tmp*/**','**/.vol/**','**/.vscode*/**','**/.yarn*/**','**/Applications/**','**/bin/**','**/build/**','**/cores/**','**/dist/**','**/downloads/**','**/eggs/**','**/etc/**','**/history/**','**/lib/**','**/lib64/**','**/Library/**','**/mnt/**','**/node_modules/**','**/opt/**','**/parts/**','**/private/**','**/sbin/**','**/sdist/**','**/System/**','**/target/**','**/temp/**','**/tmp/**','**/usr/**','**/var/**','**/venv/**','**/Volumes/**','**/wheels/**'}"
@@ -189,8 +189,8 @@ export PATH=$PATH:"/mnt/c/Users/same/AppData/Local/Programs/Microsoft VS Code/bi
 
 # Environment Variables ENV
 #--------------------------
-# export EDITOR="codium --wait"
-export EDITOR="code --wait"
+# export EDITOR="command codium --wait"
+export EDITOR="command code --wait"
 export VISUAL="$EDITOR"
 export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:di=1;36" # Prevent highlighting of directories (green background)
 export TZ="Australia/Sydney"
@@ -258,8 +258,134 @@ function fnm() {
 
 # Docker
 #-------
+# Docker container management
 alias d="docker"
+alias dps="docker ps"
+alias dpsa="docker ps -a"
+# alias dstop="docker stop -t0"
+alias dstart="docker start"
+alias drestart="docker restart -t0"
+# alias drm="docker rm -f"
+alias dexec="docker exec -it"
+# alias dlogs="docker logs -f"
+alias dinspect="docker inspect"
+# Stop all running containers
+docker-stop-all() {
+  docker ps -aq | xargs -r docker stop --signal=9 -t0
+}
+alias dstop-all="docker-stop-all"
+# Remove all stopped containers
+docker-rm-all() {
+  docker ps -aq -f | xargs -r docker rm -f
+}
+alias drm-all="docker-rm-all"
+# Remove all stopped containers
+docker-stop-rm-all() {
+  docker ps -aq | xargs -r docker stop --signal=9 -t0
+  docker ps -aq -f | xargs -r docker rm -f
+}
+alias dstoprm-all="docker-stop-rm-all"
+# Remove all dangling (unused) images
+docker-rmi-dangling() {
+  docker images -qf dangling=true | xargs -r docker rmi -f
+}
+alias drmi-dangling="docker-rmi-dangling"
+# Remove all dangling (unused) volumes
+docker-rmv-dangling() {
+  docker volume ls -qf dangling=true | xargs -r docker volume rm -f
+}
+alias drmv-dangling="docker-rmv-dangling"
+docker-shell() {
+  if [ $# -ne 1 ] || [ -z "$1" ]; then
+    echo "Usage: dsh <container-name-or-id>"
+    return 1
+  fi
+  # docker exec -it "$1" "/usr/bin/env bash"
+  docker ps -a | grep -iP "$1" | head -n 1 | awk '{print $1}' | xargs docker exec -it "$1" "/usr/bin/env bash"
+}
+alias dsh="docker-shell"
+alias d-sh="docker-shell"
+# Follow logs of a container
+dlogs() {
+  if [ $# -ne 1 ] || [ -z "$1" ]; then
+    echo "Usage: dlogs <regex-pattern-of-cntr>"
+    return 1
+  fi
+  # docker logs -f "$1"
+  docker ps -a | grep -iP "$1" | head -n 1 | awk '{print $1}' | xargs docker logs -f
+}
+alias dlo="dlogs"
+# Function to stop containers matching a name pattern
+docker-stop-grep() {
+  if [ $# -ne 1 ] || [ -z "$1" ]; then
+    echo "Usage: docker-stop-grep <regex-pattern-of-cntr>"
+    return 1
+  fi
+  docker ps -a | grep -iP "$1" | awk '{print $1}' | xargs -r docker stop --signal=9 -t0
+}
+alias dstop="docker-stop-grep"
+# Function to remove containers matching a name pattern
+docker-rm-grep() {
+  if [ $# -ne 1 ] || [ -z "$1" ]; then
+    echo "Usage: docker-rm-grep <regex-pattern-of-cntr>"
+    return 1
+  fi
+  docker ps -a | grep -iP "$1" | awk '{print $1}' | xargs -r docker rm -f
+}
+alias drm="docker-rm-grep"
+# Get container IP address
+dip() {
+  if [ $# -ne 1 ] || [ -z "$1" ]; then
+    echo "Usage: dip <regex-pattern-of-cntr>"
+    return 1
+  fi
+  # docker inspect --format '{{ .NetworkSettings.IPAddress }}' "$1"
+  docker ps -a | grep -iP "$1" |  head -n 1 | awk '{print $1}' | xargs docker inspect --format '{{ .NetworkSettings.IPAddress }}'
+}
+# Docker Images
+# alias drmi="docker rmi -f"
+alias dimages="docker images"
+alias dpull="docker pull"
+alias dbuild="docker build"
+alias dtag="docker tag"
+# Function to remove images matching a name pattern
+docker-rmi-grep() {
+  if [ $# -ne 1 ] || [ -z "$1" ]; then
+    echo "Usage: docker-rmi-grep <regex-pattern-of-image>"
+    return 1
+  fi
+  docker images | grep -iP "$1" | awk '{print $1}' | xargs -r docker rmi -f
+}
+alias drmi="docker-rmi-grep"
+# Docker Volumes and Networks
+alias dvls="docker volume ls"
+alias dvrm="docker volume rm -f"
+alias dnls="docker network ls"
+alias dnrm="docker network rm -f"
+# Docker Ccleanup
+alias dprune="docker system prune -f"
+alias dprune!="docker system prune -af --volumes"
+# Docker Compose
 alias dc="docker compose"
+alias dc-build="docker compose build"
+alias dc-down="docker compose down -t0"
+alias dc-exec="docker compose exec"
+alias dc-logs="docker compose logs"
+alias dc-ps="docker compose ps"
+alias dc-pull="docker compose pull"
+alias dc-restart="docker compose restart -t0"
+alias dc-start="docker compose start"
+alias dc-stop="docker compose stop -t0"
+alias dc-up="docker compose up"
+alias dc-upd="docker compose up -d"
+docker-compose-logs-follow() {
+  if [ -z "$1" ]; then
+    docker compose logs -f
+  else
+    docker compose logs -f "$1"
+  fi
+}
+alias dclogsf="docker-compose-logs-follow"
 
 # Kubernetes
 #-----------
@@ -267,13 +393,24 @@ alias k="kubectl"
 alias kcx="kubectx"
 alias kctx="kubectx"
 alias kns="kubens"
+kubectl-show() {
+  local context=$(kubectl config current-context)
+  echo -e "Context: \033[1;35m$context\033[0m"
+  local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
+  echo -e "Namespace: \033[1;35m$namespace\033[0m"
+}
+alias ksho="kubectl-show"
+alias kshow="kubectl-show"
 kubectl-get-pods() {
   local context=$(kubectl config current-context)
-  echo -e "context: \033[1;36m$context\033[0m"
+  echo -e "Context: \033[1;35m$context\033[0m"
   local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
-  echo -e "namespace: \033[1;36m$namespace\033[0m"
+  echo -e "Namespace: \033[1;35m$namespace\033[0m"
   kubectl get pods -n $namespace
 }
+alias kg="kubectl-get-pods"
+alias kgp="kubectl-get-pods"
+alias kgpo="kubectl-get-pods"
 alias kpo="kubectl-get-pods"
 kubectl-get-pods-grep() {
   if [ $# -ne 1 ]; then
@@ -281,18 +418,33 @@ kubectl-get-pods-grep() {
     return 1
   fi
   local context=$(kubectl config current-context)
-  echo -e "context: \033[1;36m$context\033[0m"
+  echo -e "Context: \033[1;35m$context\033[0m"
   local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
-  echo -e "namespace: \033[1;36m$namespace\033[0m"
+  echo -e "Namespace: \033[1;35m$namespace\033[0m"
   kubectl get pods -n $namespace | grep --color=always -iP "$1"
 }
+alias kgpg="kubectl-get-pods-grep"
+alias kgpog="kubectl-get-pods-grep"
 alias kpog="kubectl-get-pods-grep"
-alias kgpo="kubectl-get-pods-grep"
 kubectl-get-pods-watch() {
+  local context=$(kubectl config current-context)
+  echo -e "Context: \033[1;35m$context\033[0m"
+  local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
+  echo -e "Namespace: \033[1;35m$namespace\033[0m"
   kubectl get pods -n "$(kubectl config view --minify | grep namespace | cut -d" " -f6)" --watch
 }
 alias kpow="kubectl-get-pods-watch"
 alias kgpow="kubectl-get-pods-watch"
+kubectl-describe-pod() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: kdpo <pod-name-to-describe>"
+    return 1
+  fi
+  kubectl describe pod "$1"
+}
+alias kd="kubectl-describe-pod"
+alias kdp="kubectl-describe-pod"
+alias kdpo="kubectl-describe-pod"
 kubectl-follow-pod-logs() {
   if [ $# -ne 1 ]; then
     echo "Usage: klo <pod-name-to-view-logs>"
@@ -337,17 +489,19 @@ alias j="java"
 
 # Maven
 #------
-alias mvn--="mvn clean install -U -DskipTests"
+alias mvn--="mvn clean install -U -DskipTests" # Compiles test classes but skips test execution
 alias mvn++="mvn clean install -U -DskipTests"
 alias mvnc="mvn clean install -U -DskipTests"
 alias mvn-compile="mvn clean install -U -DskipTests"
-alias mvn!="mvn clean install -U -Dmaven.test.skip=true"
+alias mvn!="mvn clean install -U -Dmaven.test.skip=true" # Skips both compilation AND execution of tests
 alias mvn--!="mvn clean install -U -Dmaven.test.skip=true"
 alias mvn++!="mvn clean install -U -Dmaven.test.skip=true"
 alias mvnc!="mvn clean install -U -Dmaven.test.skip=true"
-alias mvn-test="mvn clean install -U"
 alias mvn-install="mvn clean install -U"
-alias mvn-stall="mvn clean install -U"
+alias mvnci="mvn clean install -U"
+alias mvni="mvn clean install -U"
+alias mvn-run="mvn spring-boot:run -Dspring-boot.run.arguments=--debug -Dspring-boot.run.profiles=local"
+alias mvn-dependency-tree="mvn dependency:tree -Dverbose"
 alias mvn-tree="mvn dependency:tree -Dverbose"
 mvn-dependency-tree-print-to-file() {
   if [ $# -eq 1 ]; then
@@ -395,7 +549,6 @@ findport() {
   lsof -i :$1
 }
 alias find-port="findport"
-alias fp="findport"
 alias fport="findport"
 # Kill process ID of process using given port (usage: kill-process-on-port 3000)
 killport() {
@@ -424,8 +577,10 @@ killpid() {
   kill -9 $1
 }
 alias kill-pid="killpid"
-alias kpi="killpid"
 alias kpid="killpid"
+alias kill!="killpid"
+alias quit="killpid"
+alias quit!="killpid"
 # Show All Processes Owned By User (usage: mine)
 mine() {
   ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,command | sort -k 2 -r | awk '{ $5=substr($5,1,70); for(i=6;i<=NF;i++) $5=$5" "$i; $5=substr($5,1,70); NF=5; printf "%5s %4s %4s %7s %-70s\n", $1, $2, $3, $4, $5 }'
@@ -455,6 +610,9 @@ alias psaux="ps-aux-regex"
 alias psx="ps-aux-regex"
 alias psxre="ps-aux-regex"
 alias psxreg="ps-aux-regex"
+alias find-pid="ps-aux-regex"
+alias findpid="ps-aux-regex"
+alias fpid="ps-aux-regex"
 ps-aux-ignore-case() {
   if [ $# -ne 1 ]; then
     echo "Usage: psxi <process-name-to-find-ignore-case>"
@@ -474,13 +632,6 @@ ppkill() {
   fi
   pkill -9 -f "$1"
 }
-alias fkill="ppkill"
-alias fkill!="ppkill"
-alias fq="ppkill"
-alias fq!="ppkill"
-alias kill!="ppkill"
-alias pkill!="ppkill"
-alias quit="ppkill"
 # Create directory and cd into it (usage: mkcd dirName)
 mkcd() {
   if [ $# -ne 1 ]; then
@@ -507,7 +658,8 @@ mkcd() {
 }
 # Open Project with IntelliJ (usage: idea .)
 idea() {
-  open -a "IntelliJ IDEA CE" "$1"
+  # open -a "IntelliJ IDEA CE" "$1"
+  open -a "IntelliJ IDEA" "$1"
 }
 # Upgrade Brew Casks
 brew-upgrade-casks() {
@@ -607,7 +759,6 @@ perl-grep() {
     perl -nle "if (/$pattern/gim) { s/($pattern)/\033[1;31m\$1\033[0m/gim; print }" $filename
   fi
 }
-alias pgrep="perl-grep"
 alias prep="perl-grep"
 perl-grep-only-matching() {
   if [ $# -eq 0 ] || [ $# -gt 2 ]; then
@@ -616,20 +767,20 @@ perl-grep-only-matching() {
   fi
   local pattern="$1"
   if [ $# -eq 1 ]; then
-    perl -nle "print \$& while /$pattern/gim"
+    perl -nle "print \"\033[1;31m\$&\033[0m\" while /$pattern/gim"
   elif [ $# -eq 2 ]; then
     local filename="$2"
-    perl -nle "print \$& while /$pattern/gim" $filename
+    perl -nle "print \"\033[1;31m\$&\033[0m\" while /$pattern/gim" $filename
   fi
 }
-alias pgrep2="perl-grep-only-matching"
+alias prep2="perl-grep-only-matching"
 
 # Git Functions
 #--------------
-# Delete both local and remote branch (usage: gbdd branchNameToDelete)
-gbdd() {
+# Delete both local and remote branch (usage: gbdd branchNameToDeleteInLocalAndRemote)
+delete-local-and-remote-branch() {
   if [ $# -ne 1 ]; then
-    echo "Usage: gbdd <branch-name-to-delete>"
+    echo "Usage: gbdd <branch-name-to-delete-in-local-and-remote>"
     return 1
   fi
   local branchToDelete=$1
@@ -641,39 +792,71 @@ gbdd() {
   local currBranch=$(git_current_branch)
   local didGitStash=false
   if [ "$currBranch" = "$branchToDelete" ]; then
-    echo "Error: You cannot delete the branch you are currently on"
+    echo -e "\033[1;31mError: You cannot delete the branch you are currently on\033[0m"
     echo -e "Switching to \033[1;35m$(git_main_branch)\033[0m branch"
     git stash --include-untracked && didGitStash=true
     git checkout $(git_main_branch)
   fi
   git fetch --all --prune --tags --force > /dev/null 2>&1
-  echo -en "Confirm DELETION of branch \033[1;31m$branchToDelete\033[0m in both LOCAL and REMOTE? [yes/N]: "
-  # echo -en "Confirm deletion of \033[1;31mlocal/$branchToDelete\033[0m && \033[1;31mremote/$branchToDelete\033[0m? [y/N]: "
-  # echo -en "Confirm deletion of \033[1;31mlocal:$branchToDelete\033[0m && \033[1;31mremote:$branchToDelete\033[0m? [y/N]: "
+  echo -en "Confirm DELETION of branch \033[1;31m$branchToDelete\033[0m in both \033[1;35mLOCAL\033[0m and \033[1;35mREMOTE\033[0m? [yes/N]: "
   read -r response
   # if [[ ! "$response" =~ ^[yY]$ ]] && [[ ! "$response" =~ ^$ ]]; then
   # if [[ ! "$response" =~ ^[yY]$ ]] && [[ -n "$response" ]]; then
   # if [[ ! "$response" =~ ^[yY]$ ]]; then
   # if [[ ! "$response" =~ ^[yY]([eE][sS])?$ ]]; then
+  # if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+  # if [[ ! "$response" =~ ^[yY][eE][sS]$ ]] && [[ ! "$response" =~ ^[yY]$ ]]; then
   if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
     echo -e "Branch deletion CANCELLED"
     return 1
-  else
-    # echo -e "Deleting \033[1;31mlocal/$branchToDelete\033[0m && \033[1;31mremote/$branchToDelete\033[0m"
-    # echo -e "Deleting \033[1;31mlocal:$branchToDelete\033[0m && \033[1;31mremote:$branchToDelete\033[0m"
-    # echo -e "Deleted branch \033[1;31m$branchToDelete\033[0m"
-    echo -e "DELETED branch \033[1;31m$branchToDelete\033[0m in both LOCAL and REMOTE"
-    git branch -D "$branchToDelete" # 2>/dev/null
-    git push origin --delete "$branchToDelete"
   fi
+  echo -e "DELETED branch \033[1;31m$branchToDelete\033[0m in both \033[1;35mLOCAL\033[0m and \033[1;35mREMOTE\033[0m"
+  git branch -D "$branchToDelete" # 2>/dev/null
+  git push origin --delete "$branchToDelete"
   if [ "$didGitStash" = true ]; then
     git stash pop
   fi
 }
-alias gbDd="gbdd"
-alias gbDD="gbdd"
-# Delete remote branch (usage: gbdr remoteBranchNameToDelete)
-gbdr() {
+alias gbdd="delete-local-and-remote-branch"
+alias gbDd="delete-local-and-remote-branch"
+alias gbDD="delete-local-and-remote-branch"
+# Delete local branch only (usage: gbd localBranchNameToDelete)
+delete-local-branch() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: gbd <local-branch-name-to-delete>"
+    return 1
+  fi
+  local branchToDelete=$1
+  if [ "$branchToDelete" = "master" ] || [ "$branchToDelete" = "main" ]; then
+    echo -e "ERROR: Cannot delete \033[1;31m$branchToDelete\033[0m"
+    return 1
+  fi
+  # local currBranch=$(git rev-parse --abbrev-ref HEAD)
+  local currBranch=$(git_current_branch)
+  local didGitStash=false
+  if [ "$currBranch" = "$branchToDelete" ]; then
+    echo -e "\033[1;31mError: You cannot delete the branch you are currently on\033[0m"
+    echo -e "Switching to \033[1;35m$(git_main_branch)\033[0m branch"
+    git stash --include-untracked && didGitStash=true
+    git checkout $(git_main_branch)
+  fi
+  echo -en "Confirm DELETION of branch \033[1;31m$branchToDelete\033[0m in \033[1;35mLOCAL\033[0m? [yes/N]: "
+  read -r response
+  if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+    echo -e "Branch deletion CANCELLED"
+    return 1
+  fi
+  # echo -e "Deleted \033[1;31mLOCAL\033[0m branch \033[1;31m$branchToDelete\033[0m"
+  echo -e "Deleted branch \033[1;31m$branchToDelete\033[0m in \033[1;35mLOCAL\033[0m"
+  git branch --delete --force "$branchToDelete"
+  if [ "$didGitStash" = true ]; then
+    git stash pop
+  fi
+}
+alias gbd="delete-local-branch"
+alias gbD="delete-local-branch"
+# Delete remote branch only (usage: gbdr remoteBranchNameToDelete)
+delete-remote-branch() {
   if [ $# -ne 1 ]; then
     echo "Usage: gbdr <remote-branch-name-to-delete>"
     return 1
@@ -686,27 +869,19 @@ gbdr() {
   # local currBranch=$(git rev-parse --abbrev-ref HEAD)
   local currBranch=$(git_current_branch)
   git fetch --all --prune --tags --force > /dev/null 2>&1
-  echo -en "Confirm DELETION of branch \033[1;31m$branchToDelete\033[0m in REMOTE? [yes/N]: "
-  # echo -en "Confirm deletion of \033[1;31mlocal/$branchToDelete\033[0m && \033[1;31mremote/$branchToDelete\033[0m? [y/N]: "
-  # echo -en "Confirm deletion of \033[1;31mlocal:$branchToDelete\033[0m && \033[1;31mremote:$branchToDelete\033[0m? [y/N]: "
+  echo -en "Confirm DELETION of branch \033[1;31m$branchToDelete\033[0m in \033[1;35mREMOTE\033[0m? [yes/N]: "
   read -r response
-  # if [[ ! "$response" =~ ^[yY]$ ]] && [[ ! "$response" =~ ^$ ]]; then
-  # if [[ ! "$response" =~ ^[yY]$ ]] && [[ -n "$response" ]]; then
-  # if [[ ! "$response" =~ ^[yY]$ ]]; then
-  # if [[ ! "$response" =~ ^[yY]([eE][sS])?$ ]]; then
   if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
     echo -e "Branch deletion CANCELLED"
     return 1
-  else
-    # echo -e "Deleting \033[1;31mlocal/$branchToDelete\033[0m && \033[1;31mremote/$branchToDelete\033[0m"
-    # echo -e "Deleting \033[1;31mlocal:$branchToDelete\033[0m && \033[1;31mremote:$branchToDelete\033[0m"
-    # echo -e "Deleted branch \033[1;31m'$branchToDelete'\033[0m in both LOCAL and REMOTE"
-    echo -e "Deleted \033[1;31mREMOTE\033[0m branch \033[1;31m$branchToDelete\033[0m"
-    # git push origin --delete "$branchToDelete"
-    git push origin :"$branchToDelete"
   fi
+  # echo -e "Deleted \033[1;35mREMOTE\033[0m branch \033[1;31m$branchToDelete\033[0m"
+  echo -e "Deleted branch \033[1;31m$branchToDelete\033[0m in \033[1;35mREMOTE\033[0m"
+  # git push origin --delete "$branchToDelete"
+  git push origin :"$branchToDelete"
 }
-alias gbDr="gbdr"
+alias gbdr="delete-remote-branch"
+alias gbDr="delete-remote-branch"
 # gcb newBranch && gco currBranch (used for git worktree workflow) [usage: gcbb newBranch]
 gcbb() {
   if [ $# -ne 1 ]; then
@@ -745,6 +920,64 @@ gundo() {
   # fi
   git reset --mixed HEAD~$1
 }
+git-reset-hard() {
+  echo -en "Confirm \033[1;31mgit reset --hard\033[0m? [yes/N]: "
+  read -r response
+  # if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
+  # if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+  if [[ ! "$response" =~ ^[yY][eE][sS]$ ]] && [[ ! "$response" =~ ^[yY]$ ]]; then
+    echo -e "git reset --hard CANCELLED"
+    return 1
+  fi
+  git reset --hard
+}
+alias grh="git-reset-hard"
+alias greset="git-reset-hard"
+alias greseth="git-reset-hard"
+git-reset-hard-and-git-clean() {
+  echo -en "Confirm \033[1;31mgit reset --hard && git clean -fd\033[0m? [yes/N]: "
+  read -r response
+  # if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
+  # if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+  if [[ ! "$response" =~ ^[yY][eE][sS]$ ]] && [[ ! "$response" =~ ^[yY]$ ]]; then
+    echo -e "git reset --hard && git clean -fd CANCELLED"
+    return 1
+  fi
+  git reset --hard && git clean -fd
+}
+alias grh!="git-reset-hard-and-git-clean"
+alias greset!="git-reset-hard-and-git-clean"
+alias greseth!="git-reset-hard-and-git-clean"
+git-reset-hard-origin() {
+  local currBranch=$(git_current_branch)
+  echo -en "Confirm \033[1;31mgit reset --hard origin/$currBranch\033[0m? [yes/N]: "
+  read -r response
+  # if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
+  # if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+  if [[ ! "$response" =~ ^[yY][eE][sS]$ ]] && [[ ! "$response" =~ ^[yY]$ ]]; then
+    echo -e "git reset --hard origin/$currBranch CANCELLED"
+    return 1
+  fi
+  git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch)
+}
+alias grho="git-reset-hard-origin"
+alias greseto="git-reset-hard-origin"
+alias gresetho="git-reset-hard-origin"
+git-reset-hard-origin-and-git-clean() {
+  local currBranch=$(git_current_branch)
+  echo -en "Confirm \033[1;31mgit reset --hard origin/$currBranch && git clean -fd\033[0m? [yes/N]: "
+  read -r response
+  # if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
+  # if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+  if [[ ! "$response" =~ ^[yY][eE][sS]$ ]] && [[ ! "$response" =~ ^[yY]$ ]]; then
+    echo -e "git reset --hard origin/$currBranch && git clean -fd CANCELLED"
+    return 1
+  fi
+  git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -fd
+}
+alias grho!="git-reset-hard-origin-and-git-clean"
+alias greseto!="git-reset-hard-origin-and-git-clean"
+alias gresetho!="git-reset-hard-origin-and-git-clean"
 # Either a git repository (.git folder) or git worktree repository (.git file && .gitignore file) [usage: is-git-repo; echo $?]
 is-git-repo() {
   # V1
@@ -756,8 +989,8 @@ is-git-repo() {
   # return $?
 }
 is-not-git-repo() {
-  ! { [ -d ".git" ] || { [ -f ".git" ] && [ -f ".gitignore" ]; } } && return 0 || return 1
-  # ! ( [ -d ".git" ] || ([ -f ".git" ] && [ -f ".gitignore" ]) ) && return 0 || return 1
+  ! { [ -d ".git" ] || { [ -f ".git" ] && [ -f ".gitignore" ]; } } && return 0 || return 1 # The curly braces {} group commands together but execute them in the current shell context (more efficient) (requires spaces around braces and semicolon before closing brace)
+  # ! ( [ -d ".git" ] || ([ -f ".git" ] && [ -f ".gitignore" ]) ) && return 0 || return 1 # The parentheses () create a subshell to execute the commands (less efficient) (does not require special spacing or semicolons)
 }
 safe-git-stash-pop() {
   # if [ $# -ne 1 ] && ! { [ -d ".git" ] || { [ -f ".git" ] && [ -f ".gitignore" ]; } }; then
@@ -819,24 +1052,35 @@ git-local-only-branches() {
     echo -e "ERROR: \033[1;31m$(basename $(pwd))\033[0m is NOT a git repository"
     return 1
   fi
-  git fetch --all --prune --tags --force >/dev/null 2>&1 || return 1 # Stop if fetch fails
+  if ! git fetch --all --prune --tags --force &>/dev/null; then
+    echo -e "ERROR: Failed to fetch updates from remote"
+    return 1
+  fi
   echo "LOCAL branches with NO remote/upstream counterpart:"
   local branch
-  local has_output=0
   # Iterate through all local branches
-  for branch in $(git branch --format='%(refname:short)'); do
-    # Check if the branch has an upstream configured AND if that upstream ref still exists
-    # The @{u} shorthand resolves to the upstream branch ref.
-    # If it fails (exit code != 0), the upstream is missing or was pruned.
-    if ! git rev-parse --abbrev-ref --symbolic-full-name "${branch}@{u}" >/dev/null 2>&1; then
-      echo "  $branch"
-      has_output=1
+  # V1:
+  # for branch in $(git branch --format='%(refname:short)'); do
+  #   # Check if the branch has an upstream configured AND if that upstream ref still exists
+  #   # The @{u} shorthand resolves to the upstream branch ref.
+  #   # If it fails (exit code != 0), the upstream is missing or was pruned.
+  #   if ! git rev-parse --abbrev-ref --symbolic-full-name "${branch}@{u}" >/dev/null 2>&1; then
+  #     echo "  \033[1;35m$branch\033[0m"
+  #   fi
+  # done
+  # V2:
+  # git for-each-ref --format='%(refname:short)' refs/heads/ | while read -r branch; do
+  #   if ! git rev-parse --verify "${branch}@{u}" >/dev/null 2>&1; then
+  #     echo "  \033[1;35m$branch\033[0m"
+  #   fi
+  # done
+  git for-each-ref --format='%(refname:short)' refs/heads/ | while IFS= read -r branch; do
+    if ! git rev-parse --verify "${branch}@{u}" >/dev/null 2>&1; then # >/dev/null 2>&1 == &>/dev/null (but the later is Bash-specific)
+      echo "  \033[1;35m$branch\033[0m"
     fi
   done
-  # if [[ $has_output -eq 0 ]]; then
-  #   echo "  (None found)"
-  # fi
 }
+alias gbl="git-local-only-branches"
 alias gb-local="git-local-only-branches"
 alias gblocal="git-local-only-branches"
 alias gb-norem="git-local-only-branches"
@@ -928,15 +1172,26 @@ git-worktree-remove() {
 }
 alias gwtr='git-worktree-remove'
 alias gwtrm='git-worktree-remove'
+timeis() {
+  date +"%Y-%m-%d@%H:%M:%S"
+  date +"%Y-%m-%d-%H:%M:%S"
+  date +"%Y-%m-%d-%H-%M-%S"
+  date +"%d-%m-%Y@%H:%M:%S"
+  date +"%d-%m-%Y-%H:%M:%S"
+  date +"%d-%m-%Y-%H-%M-%S"
+}
 
 # Git Aliases
 #------------
 alias gbd!='git branch -D'
+alias gbl='git blame -w' # OhMyZsh default alias (overridden by git-local-only-branches)
+alias gb-rem='git branch -r'
+alias gb-remote='git branch -r'
 alias gc!='git commit --verbose --amend' # git add <files> && gc!
-alias gclean='git reset --hard && git clean -df'
-alias gclean!='git reset --hard && git clean -dfx'
-alias gcleano='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -df'
-alias gcleano!='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -dfx'
+alias gclean='git reset --hard && git clean -fd'
+alias gclean!='git reset --hard && git clean -fdx'
+alias gcleano='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -fd'
+alias gcleano!='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -fdx'
 alias gcmsg!='git commit --amend -m'
 alias gf='git fetch --all --prune'
 alias gf!='git fetch --all --prune --tags --force'
@@ -945,6 +1200,8 @@ alias gfa!='git fetch --all --prune --tags --force'
 alias gl="git pull --rebase --autostash"
 alias gl!="git fetch --all --prune --tags --force && git pull --rebase --autostash"
 alias glo="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M%p'"
+alias glof="git log --pretty='%C(yellow)%H %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M%p'"
+alias glo-full="git log --pretty='%C(yellow)%H %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M%p'"
 alias glo2="git log --graph --oneline --decorate --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M%p'"
 alias glo3="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(magenta)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M:%S%p'"
 alias gpf="git push --force-with-lease --force-if-includes"
@@ -954,12 +1211,11 @@ alias gpf@="git push --force"
 alias gpff="git push --force"
 alias gmv='git mv'
 alias grename='git mv'
-alias greset='git reset --hard'
-alias greseth='git reset --hard'
-alias greset!='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -df'
-alias gresetho='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch)'
-alias gresetorig='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch)'
-alias gresetorigin='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch)'
+# alias greset='git reset --hard && git clean -fd'
+# alias greseth='git reset --hard && git clean -fd'
+alias greset!='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -fdx'
+alias greseto!='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -fdx'
+alias gresetho!='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -fdx'
 alias gstash='git stash --include-untracked'
 alias gstashp='git stash pop'
 alias gsth='git stash --include-untracked'
@@ -998,21 +1254,27 @@ alias fgrep="fgrep --color=always -i"
 alias g++="g++-13"
 alias gcc="gcc-13"
 alias grep='grep --color=always -i'
-alias grepe='grep --color=always -iP'
-alias grepp='grep --color=always -iP'
-alias grepr='grep --color=always -iP'
-alias grepre='grep --color=always -iP'
-alias grepreg='grep --color=always -iP'
-alias grepi='grep --color=always -i'
-alias ll='ls -AoF --color=auto'
+alias grepe='command grep --color=always -iP' # -iE (for FreeBSD/macOS) && -iP (for GNU/Linux)
+alias grepp='command grep --color=always -iP' # 'command' to prevent alias expansion for grep alias above
+alias grepr='command grep --color=always -iP'
+alias grepre='command grep --color=always -iP'
+alias grepreg='command grep --color=always -iP'
+alias grepi='command grep --color=always -i'
+alias ll='command ls -AoF --color=auto'
 alias ls='ls --color=auto'
-alias lsd='ls -Aod --color=auto */'
+alias lsd='command ls -Aod --color=auto */'
 alias n='npm'
 alias n-update='npm outdated -g'
 alias p='pnpm'
 alias p-update='pnpm outdated'
 alias now='date +"%Y-%m-%d %H:%M:%S"'
 alias rezsh='source ~/.zshrc'
-alias timestamp='date +"%Y-%m-%d %H:%M:%S"'
+# alias timeis='date +"%Y-%m-%d@%H:%M:%S"'
+alias time1='date +"%Y-%m-%d@%H:%M:%S"'
+alias time2='date +"%d-%m-%Y@%H:%M:%S"'
+alias time3='date +"%Y-%m-%d-%H:%M:%S"'
+alias time4='date +"%d-%m-%Y-%H:%M:%S"'
+alias time5='date +"%Y-%m-%d-%H-%M-%S"'
+alias time6='date +"%d-%m-%Y-%H-%M-%S"'
 alias untar="tar -xvf"
 alias zshrc="codium ~/ && codium ~/.zshrc"

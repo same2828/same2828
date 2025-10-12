@@ -47,6 +47,9 @@
 - [Links](#links)
   - [Hard Links](#hard-links)
   - [Symbolic Links (Symlinks)](#symbolic-links-symlinks)
+  - [Zsh](#zsh)
+    - [`{}` - Grouping Commands](#---grouping-commands)
+    - [`()` - Subshell Execution](#---subshell-execution)
 
 # Commands
 
@@ -903,3 +906,35 @@ Characteristics:
 - If you delete the original file, the symbolic link becomes a dangling link (broken link) pointing to a non-existent file.
 - Symbolic links can span across different filesystems.
 - Symbolic links can reference directories as well as files.
+
+## Zsh
+
+### `{}` - Grouping Commands
+
+The curly braces {} group commands together but execute them in the current shell context:
+
+- Commands inside {} run in the same shell process
+- Variables set inside {} affect the current shell
+- More efficient (no subprocess creation)
+- Requires spaces around braces and semicolon before closing brace
+
+```sh
+is-not-git-repo() {
+  ! { [ -d ".git" ] || { [ -f ".git" ] && [ -f ".gitignore" ]; } } && return 0 || return 1 # The curly braces {} group commands together but execute them in the current shell context (more efficient) (requires spaces around braces and semicolon before closing brace)
+}
+```
+
+### `()` - Subshell Execution
+
+The parentheses () create a subshell to execute the commands:
+
+- Commands inside () run in a separate subprocess
+- Variables set inside () don't affect the parent shell
+- Slightly less efficient due to subshell creation
+- Does NOT require special spacing or semicolons
+
+```sh
+is-not-git-repo() {
+  ! ( [ -d ".git" ] || ([ -f ".git" ] && [ -f ".gitignore" ]) ) && return 0 || return 1 # The parentheses () create a subshell to execute the commands (less efficient) (does not require special spacing or semicolons)
+}
+```

@@ -225,10 +225,57 @@ public class ProjectConfig {
 
 ## `@Bean` Vs `@Component`
 
-| `@Bean`                                  | `@Component` |
-| ---------------------------------------- | ------------ |
-| Must exist INSIDE `@Configuration` class |              |
-| `@Bean` methods MUST return `new ...`    |              |
+| `@Bean`                                                                        | `@Component`                                             |
+| ------------------------------------------------------------------------------ | -------------------------------------------------------- |
+| Must exist INSIDE `@Configuration` class                                       | Can be used directly on top of any class                 |
+| `@Bean` methods MUST return `new ...`                                          | Spring automatically creates the instance                |
+| Method-level annotation                                                        | Class-level annotation                                   |
+| Used for classes from external libraries (Jackson, JDBC drivers, HTTP clients) | Used for your own classes that you have control over     |
+| Allows custom bean creation logic                                              | Simple bean creation with no custom logic                |
+| Requires explicit configuration class                                          | Works with `@ComponentScan`                              |
+| Bean name derived from method name (by default)                                | Bean name derived from class name (camelCase by default) |
+| More control over instantiation process                                        | Less control, Spring handles instantiation               |
+| Preferred when you need conditional bean creation                              | Preferred for straightforward component registration     |
+
+| `@Bean`                                                                                      | `@Component`                                                                                |
+| -------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------- |
+| One or more instances of the class can be added to the Spring Context                        | Only one instance of the class can be added to the Spring context                           |
+| We can create an object instance of any class from external libraries                        | We can create an object instance for application class only which are created by Dev team   |
+| Usually we need to write more code like separate methods to create beans instances           | Bean instances can be created with very less code like using @Component on top of the class |
+| Developer will have full control in creating and configuring the bean                        | Developer will not have any control in creating and configuring the bean                    |
+| Spring framework creates the bean based on the instructions and values provided by developer | Spring framework takes charge of creating the bean                                          |
+
+When you use third-party libraries (like Jackson, Hibernate, Apache Commons, etc.), you cannot add `@Component` annotation to those library classes because:
+
+- You don't own the source code - the classes are in external JAR files
+- You cannot modify them - they're compiled `.class` files, not `.java` files you can edit
+- Recompiling isn't an option - even if you had the source, modifying library code is bad practice
+
+Example: Let's say you want to use Jackson's ObjectMapper as a Spring bean:
+
+❌ Cannot do this (because you don't own ObjectMapper class):
+
+```java
+// This is impossible - ObjectMapper is in jackson-databind.jar
+@Component // ❌ You cannot add this to a third-party class
+public class ObjectMapper {
+  //...
+}
+```
+
+✅ Must do this instead (using `@Bean`):
+
+```java
+@Configuration
+public class AppConfig {
+  @Bean  // ✅ Create a bean from a third-party class
+  public ObjectMapper objectMapper() {
+    ObjectMapper objMapper = new ObjectMapper();
+    objMapper.configure(SerializationFeature.INDENT_OUTPUT, true);
+    return objMapper;
+  }
+}`
+```
 
 ## `@PostConstruct` Annotation
 

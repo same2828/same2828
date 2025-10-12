@@ -21,7 +21,7 @@
     - [XOR Properties](#xor-properties)
   - [Bitmask/Bit Manipulation Tips/Tricks](#bitmaskbit-manipulation-tipstricks)
   - [Common Causes of Errors/Mistakes/Pitfalls](#common-causes-of-errorsmistakespitfalls)
-  - [Check If Number Is A Power Of 2](#check-if-number-is-a-power-of-2)
+  - [Check if a Number is a Power of 2](#check-if-a-number-is-a-power-of-2)
   - [Bit Manipulation](#bit-manipulation)
     - [Multiply by 2](#multiply-by-2)
     - [Divide by 2](#divide-by-2)
@@ -33,6 +33,10 @@
     - [Unset i'th bit](#unset-ith-bit)
     - [Flip i'th bit](#flip-ith-bit)
     - [XOR (`^`)](#xor-)
+      - [Keeping track of Parity (Odd/Even)](#keeping-track-of-parity-oddeven)
+      - [Unique Element Detection](#unique-element-detection)
+      - [Flipping Bits](#flipping-bits)
+      - [Swapping Numbers](#swapping-numbers)
       - [Toggling Parity](#toggling-parity)
 - [BFS](#bfs)
   - [Find Nodes in Cycle](#find-nodes-in-cycle)
@@ -62,7 +66,7 @@
   - [Digit DP](#digit-dp)
   - [Handling Edge Cases for Memoisation](#handling-edge-cases-for-memoisation)
     - [Comparing with Initial Value to Skip](#comparing-with-initial-value-to-skip)
-    - [**Using a GLOBAL `static final` value** for Base Case](#using-a-global-static-final-value-for-base-case)
+    - [Using a GLOBAL `static final` Sentinel Value for Base Case](#using-a-global-static-final-sentinel-value-for-base-case)
   - [Preventing Integer Overflow/Underflow](#preventing-integer-overflowunderflow)
   - [Common Causes of Errors](#common-causes-of-errors-1)
 - [DFS](#dfs)
@@ -93,6 +97,7 @@
   - [Manhattan Distance](#manhattan-distance)
 - [Hacks/Tricks](#hackstricks)
   - [Array Wrap Around](#array-wrap-around)
+  - [Array Indexing `0` or `1` using `sign`](#array-indexing-0-or-1-using-sign)
   - [Bitwise OR `|` for True/False](#bitwise-or--for-truefalse)
   - [Constants](#constants)
   - [Division](#division)
@@ -278,6 +283,7 @@ int main() {
 - **Lexicographically Smallest = A string `a` is lexicographically smaller than a string `b` IFF `a.length() == b.length()` AND in the first position where `a` and `b` differ, string `a` has a letter that appears earlier in the alphabet than the corresponding letter in string `b`. Otherwise the shorter string is the lexicographically smaller one (i.e. if the first `Math.min(a.length, b.length)` characters do NOT differ, then the shorter string is the lexicographically smaller one)**
 - **Permutation = A rearrangement of ALL the elements of an array (where order DOES matter)**
 - **Combination = A selection of some/all elements from an array (where the order of selection does NOT matter)**
+- **Subtree = In a rooted tree, the subtree of some node `v` is the set of all vertices whose their path to the root contains `v`**
 
 # Edge Cases
 
@@ -396,8 +402,8 @@ class Solution {
   }
   ```
 
-- Backtracking is a method to generate all permutations/combinations/subsets in O(1) time
-  - MODIFY state (i.e. swap elements) BEFORE the `dfs()` call in O(1) time and UN-MODIFY state (i.e. unswap elements) AFTER the `dfs()` call in O(1) time
+- Backtracking is a method to generate all permutations/combinations/subsets in `O(1)` time
+  - MODIFY state (i.e. swap elements) BEFORE the `dfs()` call in `O(1)` time and UN-MODIFY state (i.e. unswap elements) AFTER the `dfs()` call in `O(1)` time
   - DFS + Backtracking
 - [Read more](https://dimosr.github.io/backtracking-vs-depth-first-search)
 - Examples
@@ -432,7 +438,7 @@ class Solution {
 - **`long long = 8 bytes = 64 bits`**
 - **`double = 8 bytes = 64 bits`**
 
-- The most significant bit (**MSB**) (the bit furthest to the LEFT) (also known as highest bit) is used to represent the sign of a number, where 0 indicates a positive value and 1 indicates a negative value
+- The most significant bit (**MSB**) (the bit furthest to the LEFT) (also known as highest bit) is used to represent the sign of a number, where `0` indicates a POSITIVE (`+`) value and `1` indicates a NEGATIVE (`-`) value
 - The least significant bit (**LSB**) (the bit furthest to the RIGHT)
 - Binary representations can be BUILT on top of each other using either `+` or `|`
 
@@ -457,6 +463,7 @@ int[] binaryRep = new int[n];
 int num = 0;
 for (int i = n - 1; i >= 0; i--) {
   if (binaryRep[i] == 1) {
+    // n - 1 because [(n - 1) - 0  + 1] == n
     num += (int) Math.pow(2, n - 1 - i);
   }
 }
@@ -464,9 +471,9 @@ for (int i = n - 1; i >= 0; i--) {
 
 ## Negative Numbers (Two's Complement)
 
-- To represent a negative number in binary, we utilise "Two's Complement"
+- To represent a negative number in binary, we utilise `"Two's Complement"`
 
-  - Negative numbers are represented by taking the binary representation of the positive counterpart and then inverting all the bits (changing 0s to 1s and 1s to 0s) and adding 1 to the result
+  - Negative numbers are represented by taking the binary representation of the positive counterpart and then inverting all the bits (changing `0s to 1s` and `1s to 0s`) AND adding `1` to the result
   - Example for `-1`
     - Step 1: Positive Counterpart = `1` = `0001`
     - Step 2: Invert all bits = `1110`
@@ -478,8 +485,20 @@ for (int i = n - 1; i >= 0; i--) {
 
 ## Converting Binary String to Integer
 
-- You need to read string **BACKWARDS/REVERSE**
-  - I.e. `String s = "1011"`, we need to read from index `s.length() - 1` to `0`
+- Read string **BACKWARDS/REVERSE (RIGHT TO LEFT)** to construct integer
+  - i.e. `String s = "1011"`, we need to read from index `s.length() - 1` to `0`
+- When converting a binary string (like `"1011"`) to an integer, you process the string from right to left (from the least significant bit to the most significant bit)
+- This is because the rightmost character represents the lowest bit (2^0), and each character to the left represents a higher power of `2`
+
+For example, `"1011"`:
+
+```
+'1' at index 3 (rightmost) = 2^0 = 1
+'1' at index 2 = 2^1 = 2
+'0' at index 1 = 2^2 = 4
+'1' at index 0 (leftmost) = 2^3 = 8
+So, you sum: 8 + 0 + 2 + 1 = 11.
+```
 
 # Bitwise Operators
 
@@ -487,7 +506,7 @@ for (int i = n - 1; i >= 0; i--) {
 | ------------------ | ------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --- |
 | AND                | **`x & y`**  | If both bits in the compared position of the bit patterns are 1, the bit in the resulting bit pattern is 1, otherwise 0                                               |
 | OR                 | **`x \| y`** | If both bits in the compared position of the bit patterns are 0, the bit in the resulting bit pattern is 0, otherwise 1                                               |
-| NOT/NEG            | **`~ x`**    | Flips the bits of the number i.e. if the ith bit is 0, it will change it to 1 and vice versa                                                                          |
+| NOT/NEG            | **`~x`**     | Flips the bits of the number i.e. if the ith bit is 0, it will change it to 1 and vice versa                                                                          |
 | Exclusive-Or (XOR) | **`x ^ y`**  | If BOTH bits in the compared position of the bit patterns are 0 or 1, the bit in the resulting bit pattern is 0, otherwise 1                                          |
 | Left Shift         | **`x << n`** | MULTIPLIES the number `x` by `2^n` (`x << n == x * 2^n`) <br> Moves/Shifts each bit `n` positions to the LEFT <br> Left-end bit vanishes; right-end bit replaced by 0 |
 | Right Shift        | **`x >> n`** | DIVIDES the number `x` by `2^n` (`x >> n == x / 2^n`) <br> Moves/Shifts each bit `n` positions to the RIGHT <br> Right-end bit vanishes; left-end bit replaced by 0   |     |
@@ -530,7 +549,7 @@ for (int i = n - 1; i >= 0; i--) {
   - `a ^ b = c ^ d`
   - `a ^ b ^ c = d`
 - `a ^ a = 0`
-  - Any number XOR-ed with itself results in zero
+  - Any number XOR-ed with itself results in zero `0`
 - `a ^ 0 = a`
   - Any number XOR-ed with zero remains unchanged
 - `a ^ b = b ^ a`
@@ -542,7 +561,7 @@ for (int i = n - 1; i >= 0; i--) {
 
 ## Bitmask/Bit Manipulation Tips/Tricks
 
-- The bitmask of `-1` a mask of all 1's
+- The bitmask of `-1` a mask of all 1's (`0b11111111111111111111111111111111`)
 - If question asks for `&`, we can reset mask with `-1` or `((1 << n) - 1)` which is a bitmask of all 1's
   - The reason is that in the next iteration when you `&` any number `x` with that bitmask, you get the same number `x` back
 
@@ -551,7 +570,7 @@ for (int i = n - 1; i >= 0; i--) {
 > Shifts involving negative values are NOT portable (implementation defined) [common source of errors/bugs]
 > Always use unsigned values/variables when shifting to be safe/portable
 
-> Bitwise Operators (`&`, `|`, `~`, `^`) have **LOWER** precedence than boolean comparison operators (`!=`, `==`, `>`, `>=`, `<`, `<=`)
+> Bitwise Operators (`&`, `|`, `~`, `^`) have **LOWER** precedence than Boolean Comparison Operators (`!=`, `==`, `>`, `>=`, `<`, `<=`)
 > so will always need to **wrap the bitwise/binary expression in NESTED brackets/parentheses BEFORE performing a boolean comparison**
 > (common source of errors/bugs)
 
@@ -582,7 +601,7 @@ if ((mask & (1 << i))) { ... }
 if (!(mask & (1 << i))) { ... }
 ```
 
-If trying to bitshift a number by a large amount in **C++**, you may need to use a for loop to prevent "shift exponent num is too large for 64-bit type 'long 'long'" error
+If trying to bitshift a number by a large amount in **C++**, you may need to use a for loop to prevent `"shift exponent num is too large for 64-bit type 'long 'long'"` error
 
 ```cpp
 // Does NOT work (invalid)
@@ -609,7 +628,7 @@ int dp(int i, int charMask, boolean canChange) {
 }
 ```
 
-## Check If Number Is A Power Of 2
+## Check if a Number is a Power of 2
 
 - `(x & (x -1)) == 0`
 - A power of two in binary form has only one '1' (MSB)
@@ -651,7 +670,7 @@ int b = (a >> 1); // b = 5
 
 ## Bitmask
 
-- Note we can only use bitmask if there are `<=32` or `<=64` elements
+- Note we can only use bitmask if there are `<= 32` or `<= 64` elements
   - `int == 32 bit`
   - `long == 64 bit`
 
@@ -680,9 +699,16 @@ if (num & (1 << i)) {
 }
 ```
 
-**Note: CANNOT do `if ((num & (1 << i)) == 1)`, since the result of the `AND &` operation may NOT be 1**
+**Note: CANNOT do `if ((num & (1 << i)) == 1)`, since the result of the `AND &` operation may NOT be 1** (common )
 
-Do `if ((num & (1 << i)) != 0)` or `if ((num & (1 << i)) > 0)` instead
+Solution: Use `if ((num & (1 << i)) != 0)` or `if ((num & (1 << i)) > 0)` instead
+
+Explanation:
+
+- When you do `num & (1 << i)`, the result is either `0` (if the i'th bit is not set) or a power of two (e.g. `2^i`) if the i'th bit is set
+- Example: If `i = 3`, then `1 << 3 = 8`, and if the 3rd bit is set in `num` then `num & (1 << 3) = 8` and NOT `1`
+- Therefore, checking `(num & (1 << i)) == 1` only works if `i == 0` (common source of errors/bugs)
+- For other values of `i`, you should check `!= 0` or `> 0` instead
 
 ```java
 if ((num & (1 << i)) != 0) {
@@ -710,8 +736,8 @@ int numBitsSet = __builtin_popcount(currMask);
 ```java
 int numBitsSet = 0;
 while (currMask > 0) {
-  numBitsSet += (currMask & 1) == 1 ? 1 : 0;
-  currMask >> 1;
+  numBitsSet += ((currMask & 1) == 1) ? 1 : 0;
+  currMask >> 1; // Divide currMask by 2
 }
 ```
 
@@ -744,42 +770,89 @@ mask ^= (1 << i);
 - If the XOR operation returns a non-zero value, it means `nums[i]` and `nums[j]` are different values
 
 ```java
-if (nums[i] ^ nums[j]) == if (nums[i] != nums[j])
+// Below are EQUIVALENT
+if ((nums[i] ^ nums[j]) != 0) {
+
+}
+
+if (nums[i] != nums[j]) {
+
+}
 ```
 
-- Keeping track of Parity (Odd/Even)
+```java
+// Below are EQUIVALENT
+if (nums[i] ^ nums[j]) {
 
-  - 0 == "even" number of times a character has occurred
-  - 1 == "odd" number of times a character has occurred
-  - We switch between 0 and 1 with the XOR operation ((0 ^ 1) == 1 && (1 ^ 1) == 0)
-  - See: 2791.count-paths-that-can-form-a-palindrome-in-a-tree
+}
 
-- Unique Element Detection
+if (nums[i] != nums[j]) {
 
-  - Bitwise XOR is used to find the unique number in an array where all numbers except one are present twice
-  - This is because the XOR of all elements gives us an odd occurring element. A property of XOR is that the XOR of a number with itself is 0, and the XOR of a number with 0 is the number itself
-  - So, if we XOR all the elements, we'll end up with the element that appears an odd number of times.
+}
+```
 
-- Flipping Bits
+#### Keeping track of Parity (Odd/Even)
 
-  - XOR with 1 is often used to flip bits in a bitmask
-  - This is because `(1 ^ 1) = 0` (flips 1 to 0) and `(0 ^ 1) = 1` (flips 0 to 1)
-  - For example, if you want to flip the ith bit in a number n, you can use the operation `n ^= (1 << i)`
+- 0 == "even" number of times a character has occurred
+- 1 == "odd" number of times a character has occurred
+- We switch between 0 and 1 with the XOR operation `((0 ^ 1) == 1 && (1 ^ 1) == 0)`
+- See: `2791.count-paths-that-can-form-a-palindrome-in-a-tree`
 
-- Swapping Numbers
-  - XOR can be used to swap two numbers without the need for a temporary variable
-  - The sequence of operations is
-    ```java
-    x ^= y;
-    y ^= x;
-    x ^= y;
-    ```
-  - After these operations, the original value of x is now in y and vice versa
+#### Unique Element Detection
+
+- Bitwise XOR is used to find the unique number in an array where all numbers except one are present twice
+- This is because the XOR of all elements gives us an odd occurring element. A property of XOR is that the XOR of a number with itself is 0, and the XOR of a number with 0 is the number itself
+- So, if we XOR all the elements, we'll end up with the element that appears an odd number of times
 
 ```java
-// i = 10010, j = 10, prevMask = 10000
+class Solution {
+  public int findUniqueElement(int[] nums) {
+    int result = 0;
+    // XOR all elements together
+    for (int num : nums) {
+      result ^= num;
+    }
+    return result;
+  }
+
+  public static void main(String[] args) {
+    Solution solution = new Solution();
+    // Example 1: [2, 1, 3, 2, 3], 1 appears once, others appear twice
+    int[] nums1 = { 2, 1, 3, 2, 3 };
+    System.out.println("Unique element: " + solution.findUniqueElement(nums1)); // Output: 1
+    // Example 3: [7, 7, 8, 8, 9], 9 appears once, others appear twice
+    int[] nums2 = { 7, 7, 8, 8, 9 };
+    System.out.println("Unique element: " + solution.findUniqueElement(nums2)); // Output: 9
+  }
+}
+```
+
+#### Flipping Bits
+
+- XOR with 1 is often used to flip bits in a bitmask
+- This is because `(1 ^ 1) = 0` (flips 1 to 0) and `(0 ^ 1) = 1` (flips 0 to 1)
+- For example, if you want to flip the i'th bit in a number n, you can use the operation `n ^= (1 << i)`
+
+#### Swapping Numbers
+
+- XOR can be used to swap two numbers without the need for a temporary variable
+- The sequence of operations is
+  ```java
+  x ^= y;
+  y ^= x;
+  x ^= y;
+  ```
+- After these operations, the original value of x is now in y and vice versa
+
+```java
+// mask = 10010, j = 1, prevMask = 10000
 int prevMask = mask - (1 << j);
 int prevMask = mask ^ (1 << j);
+
+// 10010 mask
+// 00010 (1 << j)
+// ----- mask ^ (1 << j)
+// 10000 prevMask
 
 int mask -= (1 << j);
 int mask ^= (1 << j);
@@ -789,7 +862,7 @@ int mask ^= (1 << j);
 
 ```java
 int newMask = mask - (1 << i);
-int newMask = mask ^ (1 << j);
+int newMask = mask ^ (1 << i);
 ```
 
 #### Toggling Parity
@@ -1571,7 +1644,7 @@ int dp(int currCol, int prevVal) {
 - Example
   - 3122.minimum-number-of-operations-to-satisfy-conditions
 
-### **Using a GLOBAL `static final` value** for Base Case
+### Using a GLOBAL `static final` Sentinel Value for Base Case
 
 ```java
 class Solution {
@@ -2194,6 +2267,22 @@ for (int i = 0; i < n; i++) {
 ```
 
 - See: 3542.non-negative-prefix-sum
+
+## Array Indexing `0` or `1` using `sign`
+
+The expression `arr[(sign + 1) / 2]` is used to convert the sign variable (which can be either `1` or `-1`) into a valid array index for the memoization table
+
+Here's how it works:
+
+When `sign = 1`: `(1 + 1) / 2 = 2 / 2 = 1`
+When `sign = -1`: `(-1 + 1) / 2 = 0 / 2 = 0`
+
+So this expression maps:
+
+- sign = -1 -> index 0
+- sign = 1 -> index 1
+
+- See: 3544.subtree-inversion-sum.java
 
 ## Bitwise OR `|` for True/False
 

@@ -98,6 +98,7 @@
       - [Configure AWS S3 Client using `@Bean` annotation](#configure-aws-s3-client-using-bean-annotation)
       - [Inject the S3Client as a Bean](#inject-the-s3client-as-a-bean)
 - [Spring Hibernate/JPA](#spring-hibernatejpa)
+  - [`EntityManager` vs `JpaRepository`](#entitymanager-vs-jparepository)
 
 # Links
 
@@ -1665,3 +1666,22 @@ public class DocumentsService {
 ```
 
 # Spring Hibernate/JPA
+
+## `EntityManager` vs `JpaRepository`
+
+> EntityManager = If you need low-level control and ﬂexibility
+> JpaRepository = If you want high-level of abstraction
+
+Entity Manager
+
+- Need low-level control over the database operations and want to write custom queries
+- Provides low-level access to JPA and work directly with JPA entities
+- Complex queries that required advanced features such as native SQL queries or stored procedure calls
+- When you have custom requirements that are not easily handled by higher-level abstractions
+
+JpaRepository
+
+- Provides commonly used CRUD operations out of the box, reducing the amount of code you need to write
+- Additional features such as pagination, sorting
+- Generate queries based on method names
+- Can also create custom queries using @Query

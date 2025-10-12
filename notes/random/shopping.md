@@ -26,6 +26,8 @@
     - [R.M. Williams](#rm-williams)
   - [Sneakers](#sneakers)
     - [Adidas Stan Smith](#adidas-stan-smith)
+  - [Sports Shoes](#sports-shoes)
+    - [Under Armour](#under-armour)
 
 # Measurements
 
@@ -339,3 +341,15 @@ https://www.platypusshoes.com.au/shop/mens/footwear/sneakers/adidas
 https://www.gluestore.com.au/collections/mens-low-top-sneakers?sortBy=Price%20-%20Low%20to%20High
 
 https://www.ozbargain.com.au/search/node/stan%20smith
+
+## Sports Shoes
+
+### Under Armour
+
+- Under Armour Charged Rogue 3 Knit Mens Running Shoes
+  - Size
+    - US 12.5
+    - UK 11.5
+    - EU 47
+    - 30.5cm
+    - 11.5inches

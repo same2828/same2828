@@ -1,19 +1,188 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
-- [Format](#format)
+- [Config](#config)
+  - [Appearance \& Behaviour](#appearance--behaviour)
+  - [Editor](#editor)
+  - [Keymap](#keymap)
+  - [Sidebars/Toolbars](#sidebarstoolbars)
+  - [Plugins](#plugins)
+  - [Advanced Settings](#advanced-settings)
+- [Shortcuts](#shortcuts)
+- [Troubleshooting](#troubleshooting)
+  - [Miscellaneous](#miscellaneous)
 - [Maven](#maven)
 - [Application Configuration](#application-configuration)
-- [Troubleshooting](#troubleshooting)
 - [Debugging](#debugging)
-- [Shortcuts](#shortcuts)
+- [Plugins](#plugins-1)
+  - [Karate Test Automation](#karate-test-automation)
+- [Shortcuts](#shortcuts-1)
 
-# Format
+# Config
 
-| Description      | Shortcut               |
-| ---------------- | ---------------------- |
-| Format Code      | `Command + Option + L` |
-| Optimise Imports | `Control + Option + O` |
+## Appearance & Behaviour
+
+`Appearance & Behaviour > UI Options` > Turn ON `Always show full path in window header`
+
+`Appearance & Behaviour > Menus and Toolbars > Main Toolbar > Left > Add... > Main Menu > Navigate` > Back && Forward
+
+## Editor
+
+`Editor > General.ON Save` > Turn OFF `Keep trailing spaces on caret line`
+
+`Editor > General.ON Save` > `Remove trailing spaces on: All lines`
+
+`Editor > General > Appearance` > Turn ON `Show whitespaces`
+
+`Editor > General > Appearance` > Turn OFF `Show code lens on scrollbar hover`
+
+`Editor > General > Code Folding` > `Show code folding arrows: Always`
+
+`Editor > General > Code Folding` > Turn OFF everything
+
+`Editor > General > Breadcrumbs ` > `Placement: Top` && Select ALL languages
+
+`Editor > General > Editor Tabs > Appearance` > Turn ON `Mark modified`
+
+`Editor > General > Editor Tabs > Tab Order` > Turn ON `Sort tabs alphabetically` and `Open new tabs at the end`
+
+`Editor > General > Sticky Lines` > Turn ON only for `JSON`, `YAML`
+
+`Editor > General > Sticky Lines` > `Maximum number of lines: 10`
+
+`Editor > Color Scheme > General > Code > Line number` > #B3B3B3 (default: #A3A5BA)
+
+`Editor > Color Scheme > General > Code > TODO defaults` > #FF8C00
+
+`Editor > Color Scheme > General > Editor > Breadcrumbs` > #FFFFFF
+
+`Editor > Color Scheme > General > Editor > Caret` > #EEEEEE
+
+`Editor > Color Scheme > General > Editor > Guides > Hard wrap guide` > #5A5A5A (default: #A8B0E2)
+
+`Editor > Color Scheme > General > Editor > Guides > Indent guide` > #43434f (default: #3E404B)
+
+`Editor > Color Scheme > General > Editor > Guides > Indent guide selected` > #5A5A5A (default: #A8B0E2)
+
+`Editor > Color Scheme > General > Editor > Guides > Visual guides` > #5A5A5A (default: #6B7090)
+
+`Editor > Color Scheme > General > Errors and Warnings > Unused Code` > #BBBBBB (default: #72737A)
+
+`Editor > Color Scheme > General > Text > Folded Text` > #B7C4FF
+
+`Editor > Code Style > Java > Tabs and Indents > Tab size`: 2
+
+`Editor > Code Style > Java > Tabs and Indents > Indent`: 2
+
+`Editor > Code Style > Java > Tabs and Indents > Continuation Indent`: 2
+
+`Editor > Code Style > Java > Wrapping and Braces > Keep when reformatting` > Turn OFF everything
+
+`Editor > Code Style > Java > Blank Lines > Keep maximum blank lines` > Change all to 1
+
+`Editor > Code Style > Java > Imports > Class count to use import with '*'`: 999
+
+`Editor > Code Style > Java > Imports > Names count to use import with '*'`: 999
+
+`Editor > Code Style > Java > Code Generation > Comment Code`
+
+- Turn OFF `Line comment at first column`
+- Turn ON `Add a space at line comment start`
+- Turn ON `Enforce on reformat`
+- Turn OFF `Block comment at first column`
+- Turn ON `Add spaces around block comments`
+
+- [Disable Italics](https://stackoverflow.com/a/76388214)
+- [Fix comment shortcut behaviour](https://stackoverflow.com/a/69490719)
+- [Comment out several lines of code](https://stackoverflow.com/questions/61827270/keyboard-shortcut-to-comment-several-lines-of-code-in-intellij)
+
+## Keymap
+
+Download `VSCode Keymap` plugin
+
+`Settings > Keymap > VSCode (macOS)`
+
+| Shortcut                                     | Keymap               |
+| -------------------------------------------- | -------------------- |
+| `Code.CodeFormattingActions.ReformatCode`    | Option + Shift + F   |
+| `Code.CodeFormattingActions.ReformatCode`    | Option + S           |
+| `Code.CodeFormattingActions.OptimizeImports` | Option + Shift + O   |
+| `Code.CodeFormattingActions.OptimizeImports` | Control + Option + O |
+
+## Sidebars/Toolbars
+
+Right sidebar = View > Tool Windows
+
+## Plugins
+
+- `VSCode Keymap`
+- Disable
+  - `AI-Powered` >`MCP Server`
+  - `IDE Localisation` > `All`
+  - `IDE Settings` > `Backup and Sync`
+  - `Local AI/ML Tools` > `All` (except for `Full Line Code Completion`)
+  - `Remote Development` > `Code With Me`, `Station`
+
+## Advanced Settings
+
+`Advanced Settings > Editor` > Turn OFF `Move caret down after COmment with Line Comment action`
+
+`Advanced Settings > User Interface` > Turn OFF `Merge main menu with window title`
+
+# Shortcuts
+
+- [IntelliJ Shortcuts Pdf](https://resources.jetbrains.com/storage/products/intellij-idea/docs/IntelliJIDEA_ReferenceCard.pdf)
+
+| Description                       | Shortcut                           | Other                                                                                           |
+| --------------------------------- | ---------------------------------- | ----------------------------------------------------------------------------------------------- |
+| Format Code                       | `Command + Option + L`             |                                                                                                 |
+| Optimise Imports                  | `Control + Option + O`             |                                                                                                 |
+| Go to implementation(s)           | `Command + Option + B`             |                                                                                                 |
+| Go to Declaration                 | `Command + B` or `Command + Click` |                                                                                                 |
+| Navigate Back                     | `Command + Option + Left Arrow`    |                                                                                                 |
+| Navigate Forward                  | `Command + Option + Right Arrow`   |                                                                                                 |
+| Go to super-method / super-class  | `Command + U`                      |                                                                                                 |
+| Go to previous method             | `Control + Up Arrow`               |                                                                                                 |
+| Go to next method                 | `Control + Down Arrow`             |                                                                                                 |
+| Move to code block start          | `Command + Option + ]`             |                                                                                                 |
+| Move to code block end            | `Command + Option + [`             |                                                                                                 |
+| Find usages / Find usages in file | `Option + F7` or `Command + F7`    | Maven: `Download Sources and Documentation` && Change Usages `Scope` to `Project and Libraries` |
+| Highlight usages in file          | `Command + Shift +  F7`            |                                                                                                 |
+| Show usages                       | `Command + Option + F7`            |                                                                                                 |
+
+# Troubleshooting
+
+**Cannot have the SAME project open in BOTH VSCode and IntelliJ**
+
+1. `VSCode > Ctrl + P > Java: Clean Java Language Server Workspace`
+2. Close VSCode window of project
+3. `Shift + Shift > Actions > Invalid Caches... > Select All > Invalid and Restart`
+4. `Shift + Shift > Actions > Sync All Maven Projects`
+5. `Shift + Shift > Actions > Reload All Maven Projects`
+6. In IntelliJ Maven:
+   - Toggle the `Skip Tests` mode
+   - Run `clean install` Maven Goal
+
+## Miscellaneous
+
+- Project missing Java JDK: `File > Project Structure > Add JDK`
+
+- `Shift + Shift > Actions > Reload from Disk`
+- `Shift + Shift > Actions > Reload all Maven Projects`
+- `Shift + Shift > Actions > Add Maven Projects`
+- `Shift + Shift > Actions > Reload Configuration`
+- `Shift + Shift > Actions > Invalid Caches... > Select All > Invalid and Restart` **(troubleshoot 4)**
+
+- `File > Reload All from Disk (Command + Option + Y)`
+- `File > Invalidate Caches... (Select All)`
+- `File > Project Structure > Add JDK`
+
+- `Right Click on Repo > Reload from Disk`
+
+- `rm -rf .idea` **(troubleshoot 3)**
+- `rm -rf .vscode` **(troubleshoot 2)**
+
+- `VSCode > Ctrl + P > Java: Clean Java Language Server Workspace` in VSCode **(troubleshoot 1)**
 
 # Maven
 
@@ -71,38 +240,23 @@ com.example.demo.framework.main.MainApplication
 ENV1=VALUE1;ENV2=VALUE2;ENV3=VALUE3
 ```
 
-# Troubleshooting
-
-- Project missing Java JDK: `File > Project Structure > Add JDK`
-
-- `Shift + Shift > Actions > Reload from Disk`
-- `Shift + Shift > Actions > Reload all Maven Projects`
-- `Shift + Shift > Actions > Add Maven Projects`
-- `Shift + Shift > Actions > Reload Configuration`
-- `Shift + Shift > Actions > Invalid Caches... (Select All)` **(troubleshoot 4)**
-
-- `File > Reload All from Disk (Command + Option + Y)`
-- `File > Invalidate Caches... (Select All)`
-- `File > Project Structure > Add JDK`
-
-- `Right Click on Repo > Reload from Disk`
-
-- `rm -rf .idea` **(troubleshoot 3)**
-- `rm -rf .vscode` **(troubleshoot 2)**
-
-- `VSCode > Ctrl + P > Java: Clean Java Language Server Workspace` in VSCode **(troubleshoot 1)**
-
 # Debugging
 
 - Place break point on line in code (red dot in sidebar)
   - Note: Sometimes may need to place multiple breakpoints (just add a few on the lines below of target)
-- Choose to "Debug" instead of "Run" for the test case/file
+- Choose to `Debug` instead of `Run` for the test case/file
 - If breakpoint is hit BEFORE the Postman collection is ran, then press "Resume Program"
 - Run Postman collection
 - Wait for breakpoint to be hit and program to be paused
 - Examine variables and their values
 - "Step Over" is used more commonly then "Step Into"
   - Note: Variable values will sometimes only be shown once the line has passed, hence the reason we place multiple breakpoints on subsequent lines
+
+# Plugins
+
+## Karate Test Automation
+
+Use `Cucumber for Java` and `Gherkin` > `Karate`
 
 # Shortcuts
 
