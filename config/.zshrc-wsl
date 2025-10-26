@@ -393,14 +393,14 @@ alias k="kubectl"
 alias kcx="kubectx"
 alias kctx="kubectx"
 alias kns="kubens"
-kubectl-show() {
+kubectl-info() {
   local context=$(kubectl config current-context)
   echo -e "Context: \033[1;35m$context\033[0m"
   local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
   echo -e "Namespace: \033[1;35m$namespace\033[0m"
 }
-alias ksho="kubectl-show"
-alias kshow="kubectl-show"
+alias k-info="kubectl-info"
+alias kinfo="kubectl-info"
 kubectl-get-pods() {
   local context=$(kubectl config current-context)
   echo -e "Context: \033[1;35m$context\033[0m"
@@ -443,6 +443,7 @@ kubectl-describe-pod() {
   kubectl describe pod "$1"
 }
 alias kd="kubectl-describe-pod"
+alias kdo="kubectl-describe-pod"
 alias kdp="kubectl-describe-pod"
 alias kdpo="kubectl-describe-pod"
 kubectl-follow-pod-logs() {
@@ -486,6 +487,57 @@ alias j21="export JAVA_HOME=$(/usr/libexec/java_home -v 21); java -version"
 export JAVA_HOME=$(/usr/libexec/java_home -v 21)
 # export JAVA_HOME="/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home"
 alias j="java"
+alias jdk-list="/usr/libexec/java_home -V"
+alias jdk-ls="/usr/libexec/java_home -V"
+# Change Java JDK version (usage: jdk 17)
+change-jdk() {
+  # if [ $# -ne 1 ]; then
+  #   echo "Usage: jdk <java-jdk-version-to-use>"
+  #   return 1
+  # fi
+  echo "------------------------------------------------------------"
+  echo "Available Java JDK versions on this system:"
+  echo "------------------------------------------------------------"
+  /usr/libexec/java_home -V
+  echo "------------------------------------------------------------"
+  echo -en "Enter Java JDK version to use: "
+  read -r response
+  echo "------------------------------------------------------------"
+  if [[ ! "$response" =~ ^[[:digit:]]{1,2}$ ]]; then
+    echo -e "\033[1;31m ERROR: Enter a valid Java JDK version number (e.g., 8, 11, 17, 21)\033[0m"
+    return 1
+  fi
+  echo -e "\033[1;32mSwitched to Java JDK: $response\033[0m";
+  export JAVA_HOME=$(/usr/libexec/java_home -v $response)
+  java -version
+  echo "\$JAVA_HOME:" $JAVA_HOME
+}
+alias jdk="change-jdk"
+java_compile_and_run() {
+  if [ "$#" -eq 0 ]; then
+    echo "Usage: j++ <source-file>"
+    return 1
+  fi
+  local srcFile="$1"
+  # Append '.java' if not present
+  if [[ "$srcFile" != *.java ]]; then
+    srcFile="${srcFile}.java"
+  fi
+  local fileName="${srcFile%.*}"
+  local outputFile="$fileName.class"
+  javac "$srcFile"
+  echo -e "Compiled \033[1;32m$srcFile\033[0m to \033[1;32m$outputFile\033[0m"
+  echo -e "Running \033[1;32mjava $fileName\033[0m"
+  java "$fileName"
+}
+java-info() {
+  java -version
+  echo "\$JAVA_HOME:" $JAVA_HOME
+}
+alias j--="java_compile_and_run"
+alias j++="java_compile_and_run"
+alias jc="java_compile_and_run"
+alias jcr="java_compile_and_run"
 
 # Maven
 #------
@@ -687,43 +739,6 @@ alias omz-update="zsh-upgrade-plugins"
 alias omz-upgrade="zsh-upgrade-plugins"
 alias zsh-update="zsh-upgrade-plugins"
 alias zsh-upgrade="zsh-upgrade-plugins"
-# Change Java JDK version (usage: jdk 17)
-change-jdk() {
-  if [ $# -ne 1 ]; then
-    echo "Usage: jdk <java-jdk-version-to-use>"
-    return 1
-  fi
-  echo -e "Switching to Java JDK \033[1;32mv$1\033[0m";
-  export JAVA_HOME=$(/usr/libexec/java_home -v $1)
-  echo "\$JAVA_HOME:" $JAVA_HOME
-  echo "\$(java -version):"
-  echo "------------------"
-  java -version
-  echo "------------------"
-}
-alias jdk="change-jdk"
-java_compile_and_run() {
-  if [ "$#" -eq 0 ]; then
-    echo "Usage: j++ <source-file>"
-    return 1
-  fi
-  local srcFile="$1"
-  # Append '.java' if not present
-  if [[ "$srcFile" != *.java ]]; then
-    srcFile="${srcFile}.java"
-  fi
-  local fileName="${srcFile%.*}"
-  local outputFile="$fileName.class"
-  javac "$srcFile"
-  echo -e "Compiled \033[1;32m$srcFile\033[0m to \033[1;32m$outputFile\033[0m"
-  echo -e "Running \033[1;32mjava $fileName\033[0m"
-  java "$fileName"
-}
-alias j--="java_compile_and_run"
-alias j++="java_compile_and_run"
-alias jav="java_compile_and_run"
-alias jc="java_compile_and_run"
-alias jcr="java_compile_and_run"
 g++_compile_and_run() {
   if [ "$#" -eq 0 ]; then
     echo "Usage: g-- <source-file>"
@@ -921,7 +936,12 @@ gundo() {
   git reset --mixed HEAD~$1
 }
 git-reset-hard() {
-  echo -en "Confirm \033[1;31mgit reset --hard\033[0m? [yes/N]: "
+  # if [ $# -gt 0 ]; then
+  #   echo -en "Confirm \033[1;31mgit reset --hard $@\033[0m? [yes/N]: "
+  # else
+  #   echo -en "Confirm \033[1;31mgit reset --hard\033[0m? [yes/N]: "
+  # fi
+  echo -en "Confirm \033[1;31mgit reset --hard${@:+ $@}\033[0m? [yes/N]: "
   read -r response
   # if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
   # if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
@@ -929,13 +949,22 @@ git-reset-hard() {
     echo -e "git reset --hard CANCELLED"
     return 1
   fi
-  git reset --hard
+  if [ $# -eq 0 ]; then
+    git reset --hard && git clean -fd
+    return
+  fi
+  git reset --hard "$@"
 }
 alias grh="git-reset-hard"
 alias greset="git-reset-hard"
 alias greseth="git-reset-hard"
 git-reset-hard-and-git-clean() {
-  echo -en "Confirm \033[1;31mgit reset --hard && git clean -fd\033[0m? [yes/N]: "
+  # if [ $# -gt 0 ]; then
+  #   echo -en "Confirm \033[1;31mgit reset --hard $@ && git clean -fd\033[0m? [yes/N]: "
+  # else
+  #   echo -en "Confirm \033[1;31mgit reset --hard && git clean -fd\033[0m? [yes/N]: "
+  # fi
+  echo -en "Confirm \033[1;31mgit reset --hard${@:+ $@} && git clean -fd\033[0m? [yes/N]: "
   read -r response
   # if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
   # if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
@@ -943,7 +972,11 @@ git-reset-hard-and-git-clean() {
     echo -e "git reset --hard && git clean -fd CANCELLED"
     return 1
   fi
-  git reset --hard && git clean -fd
+  if [ $# -eq 0 ]; then
+    git reset --hard && git clean -fd
+    return
+  fi
+  git reset --hard "$@" && git clean -fd
 }
 alias grh!="git-reset-hard-and-git-clean"
 alias greset!="git-reset-hard-and-git-clean"
