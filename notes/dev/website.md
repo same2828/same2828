@@ -164,3 +164,15 @@ npx browserslist@latest --update-db
 - `yarn upgrade <packageName>`
 - `yarn upgrade <packageName> --latest`
 - `yarn upgrade-interactive`
+
+# Redo
+
+```
+fnm
+fnm upgrade 22
+npm install -g pnpm@latest-10
+pnpm outdated
+pnpm update
+pnpm update --latest
+pnpm dev
+```
