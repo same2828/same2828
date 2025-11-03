@@ -269,7 +269,11 @@ SpotX > BlockTheSpot
 
 [SpotX - Windows](https://github.com/SpotX-Official/SpotX)
 
-[SpotX - macOS](https://github.com/SpotX-Official/SpotX-Bash)
+[SpotX Bash - macOS](https://github.com/SpotX-Official/SpotX-Bash)
+
+```sh
+bash <(curl -sSL https://spotx-official.github.io/run.sh) --installmac -f -B
+```
 
 ### VSCodium
 

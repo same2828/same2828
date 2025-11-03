@@ -985,6 +985,20 @@ class Solution {
   - `lnt-all/848.minimize-max-distance-to-gas-station`
   - `lnt-all/617.maximum-average-subarray-ii`
 
+```java
+int left = 0;
+int right = nums.length;
+while (left < right) {
+  int mid = left + (right - left) / 2;
+  if (condition) {
+    right = mid;
+  } else {
+    left = mid + 1;
+  }
+}
+return left;
+```
+
 # Binary Search Tree (BST)
 
 ## Info
