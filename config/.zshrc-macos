@@ -170,10 +170,11 @@ export FZF_CTRL_T_COMMAND="fd --hidden $FD_OPTIONS"
 export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
 export FZF_DEFAULT_OPTS='
   --border
-  --color fg:15,bg:0,hl:215,fg+:15,bg+:239,hl+:10
-  --color info:141,prompt:10,spinner:212,pointer:212,marker:212
   --height=50%
   --layout=reverse
+  --color fg:15,bg:0,hl:84 # fg:255 && fg+:255 for gray
+  --color fg+:15,bg+:0,hl+:215 # hl+:212 = pink, hl+:215 = orange
+  --color info:141,prompt:84,spinner:212,pointer:212,marker:212
 '
 
 # VSCode
@@ -538,6 +539,8 @@ alias j--="java_compile_and_run"
 alias j++="java_compile_and_run"
 alias jc="java_compile_and_run"
 alias jcr="java_compile_and_run"
+alias which-java="java --version"
+alias whichjava="java --version"
 
 # Maven
 #------
@@ -1289,6 +1292,14 @@ timeis() {
   date +"%d-%m-%Y@%H:%M:%S"
   date +"%d-%m-%Y-%H:%M:%S"
   date +"%d-%m-%Y-%H-%M-%S"
+}
+timeis2() {
+  date +"%Y-%m-%d@%I:%M:%S%p"
+  date +"%Y-%m-%d-%I:%M:%S%p"
+  date +"%Y-%m-%d-%I-%M-%S%p"
+  date +"%d-%m-%Y@%I:%M:%S%p"
+  date +"%d-%m-%Y-%I:%M:%S%p"
+  date +"%d-%m-%Y-%I-%M-%S%p"
 }
 
 # Git Aliases

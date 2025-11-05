@@ -36,11 +36,11 @@
 
 `Editor > General > Appearance` > Turn OFF `Show code lens on scrollbar hover`
 
+`Editor > General > Breadcrumbs ` > `Placement: Top` && Select ALL languages
+
 `Editor > General > Code Folding` > `Show code folding arrows: Always`
 
 `Editor > General > Code Folding` > Turn OFF everything
-
-`Editor > General > Breadcrumbs ` > `Placement: Top` && Select ALL languages
 
 `Editor > General > Editor Tabs > Appearance` > Turn ON `Mark modified`
 
@@ -60,7 +60,7 @@
 
 `Editor > Color Scheme > General > Editor > Guides > Hard wrap guide` > #5A5A5A (default: #A8B0E2)
 
-`Editor > Color Scheme > General > Editor > Guides > Indent guide` > #43434f (default: #3E404B)
+`Editor > Color Scheme > General > Editor > Guides > Indent guide` > #43434F (default: #3E404B)
 
 `Editor > Color Scheme > General > Editor > Guides > Indent guide selected` > #5A5A5A (default: #A8B0E2)
 
@@ -69,6 +69,14 @@
 `Editor > Color Scheme > General > Errors and Warnings > Unused Code` > #BBBBBB (default: #72737A)
 
 `Editor > Color Scheme > General > Text > Folded Text` > #B7C4FF
+
+`Editor > Color Scheme > Language Defaults > Comments > Block Comment` > #B7C4FF
+
+`Editor > Color Scheme > Language Defaults > Comments > Doc Comment > Text` > #B7C4FF
+
+`Editor > Color Scheme > Language Defaults > Comments > Line Comment` > #B7C4FF
+
+`Editor > Color Scheme > Language Defaults > Identifiers > Label` > #B7C4FF
 
 `Editor > Code Style > Java > Tabs and Indents > Tab size`: 2
 

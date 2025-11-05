@@ -666,7 +666,24 @@ ForwardIterator min_element(ForwardIterator first, ForwardIterator last);
 ```
 
 - Since `arr` decays into a pointer to its first element, `arr + size` is a pointer that points to one past the end of the array
-- This makes it equivalent to providing iterators that define the range `[arr, arr + size)`, which is exactly what `std::min_element `expects
+- This makes it equivalent to providing iterators that define the range `[arr, arr + size)`, which is exactly what `std::min_element `expects.
+
+```cpp
+#include <algorithm>
+#include <iostream>
+
+int main() {
+  int arr[] = {3, 7, 2, 9, 4, 1, 8};
+  int size = sizeof(arr) / sizeof(arr[0]);
+  // Find pointer to max element (not iterator - arrays use pointers)
+  int *max_ptr = std::max_element(arr, arr + size);
+  // Print the maximum value
+  std::cout << "Maximum element: " << *max_ptr << std::endl;
+  // Print the index of the maximum element
+  std::cout << "Index: " << (max_ptr - arr) << std::endl;
+  return 0;
+}
+```
 
 **Example**
 

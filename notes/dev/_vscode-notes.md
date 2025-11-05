@@ -316,6 +316,7 @@ Extension List:
 - Rainbow CSV (mechatroner)
 - Remove Non ASCII Characters (Samuel Charpentier)
 - Replace Curly Quotes (jinhyuk)
+- Reveal in Explorer (Iancovski)
 - shell-format (foxundermoon)
 - ShellCheck (Timon Wong)
 - Sort Everything (Benny Neugebauer)
