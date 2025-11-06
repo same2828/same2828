@@ -58,7 +58,9 @@ style = " "
 [time]
 disabled = false
 format = '[$time]($style) '
-time_format = "%-I:%M:%S%P - %d/%m"
-style = "bold white"
+time_format = "%d-%m-%Y_@%I:%M:%S%P"
+# time_format = "%-I:%M:%S%P - %d/%m"
+style = "white"
+# style = "bold white"
 # format = '[\[ $time \]]($style) '
 # time_format = "[%d/%m/%y - %-I:%M:%S%P]"
