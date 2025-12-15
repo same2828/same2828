@@ -21,8 +21,7 @@
   },
   {
     "command": "-workbench.action.chat.insertCodeBlock",
-    "key": "ctrl+enter",
-    "when": "accessibleViewInCodeBlock && chatIsEnabled || chatIsEnabled && inChat && !inChatInput"
+    "key": "ctrl+enter"
   },
   {
     "command": "-workbench.action.chat.openEditSession",
@@ -77,6 +76,11 @@
     "when": "textInputFocus && !editorReadonly && supportedCodeAction =~ /(\\s|^)source\\.organizeImports\\b/"
   },
   {
+    "command": "editor.action.revealDefinition",
+    "key": "ctrl+enter",
+    "when": "editorHasDefinitionProvider && editorTextFocus"
+  },
+  {
     "command": "explorer.newFile",
     "key": "cmd+n",
     "when": "explorerViewletFocus"
@@ -123,7 +127,7 @@
   },
   {
     "command": "markdown.extension.editing.toggleStrikethrough",
-    "key": "shift+alt+s",
+    "key": "alt+x",
     "when": "editorTextFocus && !editorReadonly && editorLangId =~ /^markdown$|^rmd$|^quarto$/"
   },
   {
@@ -155,13 +159,13 @@
     "when": "!editorFocus"
   },
   {
+    "command": "workbench.action.chat.attachContext",
     "key": "cmd+/",
-    "command": "-workbench.action.chat.attachContext",
     "when": "inChatInput && chatLocation == 'panel'"
   },
   {
-    "key": "shift+2",
     "command": "workbench.action.chat.attachContext",
+    "key": "shift+2",
     "when": "inChatInput && chatLocation == 'panel' && !chatInputHasText"
   },
   {
@@ -176,7 +180,7 @@
   {
     "command": "workbench.action.chat.newChat",
     "key": "ctrl+l",
-    "when": "chatEditingParticipantRegistered && chatIsEnabled && inChat"
+    "when": "chatIsEnabled && inChat && chatLocation == 'panel'"
   },
   {
     "command": "-workbench.action.chat.open",
@@ -190,13 +194,7 @@
   },
   {
     "command": "-workbench.action.chat.openagent",
-    "key": "ctrl+cmd+i",
-    "when": "config.chat.agent.enabled && !chatSetupDisabled && !chatSetupHidden"
-  },
-  {
-    "command": "-workbench.action.chat.openagent",
-    "key": "shift+cmd+i",
-    "when": "config.chat.agent.enabled && !chatSetupDisabled && !chatSetupHidden"
+    "key": "ctrl+cmd+i"
   },
   {
     "command": "-workbench.action.chat.openModelPicker",
@@ -215,22 +213,11 @@
   {
     "command": "-workbench.action.chat.submit",
     "key": "enter",
-    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
+    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatAgentKind == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatAgentKind == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatAgentKind == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatAgentKind == 'ask'"
   },
   {
     "command": "-workbench.action.chat.submit",
-    "key": "enter",
-    "when": "inChatInput && chatMode == 'ask'"
-  },
-  {
-    "command": "-workbench.action.chat.submit",
-    "key": "cmd+enter",
-    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
-  },
-  {
-    "command": "workbench.action.chat.submitWithoutDispatching",
-    "key": "cmd+enter",
-    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
+    "key": "cmd+enter"
   },
   {
     "command": "-workbench.action.chat.submitWithCodebase",
@@ -238,18 +225,13 @@
   },
   {
     "command": "workbench.action.chat.submitWithCodebase",
-    "key": "shift+cmd+enter",
-    "when": "chatInputHasText && chatRequestIsPaused && inChatInput || chatInputHasText && inChatInput && !chatSessionRequestInProgress || chatInstructionsAttached && chatRequestIsPaused && inChatInput || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress"
+    "key": "cmd+shift+enter",
+    "when": "chatInputHasText && inChatInput && !chatSessionRequestInProgress"
   },
   {
     "command": "workbench.action.chat.submitWithoutDispatching",
-    "key": "ctrl+enter",
-    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
-  },
-  {
-    "command": "workbench.action.chat.submitWithoutDispatching",
-    "key": "alt+enter",
-    "when": "chatInputHasText && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask' || chatInstructionsAttached && chatRequestIsPaused && inChatInput && chatMode == 'ask' || chatInstructionsAttached && inChatInput && !chatSessionRequestInProgress && chatMode == 'ask'"
+    "key": "cmd+enter",
+    "when": "chatInputHasText && inChatInput && !chatSessionRequestInProgress && chatAgentKind == 'ask' || chatPromptFileAttached && inChatInput && !chatSessionRequestInProgress && chatAgentKind == 'ask'"
   },
   {
     "command": "-workbench.action.files.revealActiveFileInWindows",
@@ -281,6 +263,11 @@
     "when": "canNavigateBack"
   },
   {
+    "command": "workbench.action.navigateBack",
+    "key": "ctrl+[",
+    "when": "canNavigateBack"
+  },
+  {
     "command": "-workbench.action.navigateForward",
     "key": "ctrl+shift+-",
     "when": "canNavigateForward"
@@ -288,6 +275,11 @@
   {
     "command": "workbench.action.navigateForward",
     "key": "ctrl+=",
+    "when": "canNavigateForward"
+  },
+  {
+    "command": "workbench.action.navigateForward",
+    "key": "ctrl+]",
     "when": "canNavigateForward"
   },
   {

@@ -66,11 +66,11 @@
 
 `Editor > Color Scheme > General > Editor > Guides > Indent guide selected` > #5A5A5A (default: #A8B0E2)
 
-`Editor > Color Scheme > General > Editor > Guides > Vertical Scrollbar > Thumb` > #6b6b6b (default: #3A3D4C)
-
-`Editor > Color Scheme > General > Editor > Guides > Vertical Scrollbar > Thumb while scrolling` > #969696 (default: #3A3D4C)
-
 `Editor > Color Scheme > General > Editor > Guides > Visual guides` > #5A5A5A (default: #6B7090)
+
+`Editor > Color Scheme > General > Editor > Vertical Scrollbar > Thumb` > #6B6B6B (default: #3A3D4C)
+
+`Editor > Color Scheme > General > Editor > Vertical Scrollbar > Thumb while scrolling` > #969696 (default: #3A3D4C)
 
 `Editor > Color Scheme > General > Errors and Warnings > Unused Code` > #BBBBBB (default: #72737A)
 
@@ -116,12 +116,14 @@ Download `VSCode Keymap` plugin
 
 `Settings > Keymap > VSCode (macOS)`
 
-| Shortcut                                     | Keymap               |
-| -------------------------------------------- | -------------------- |
-| `Code.CodeFormattingActions.ReformatCode`    | Option + Shift + F   |
-| `Code.CodeFormattingActions.ReformatCode`    | Option + S           |
-| `Code.CodeFormattingActions.OptimizeImports` | Option + Shift + O   |
-| `Code.CodeFormattingActions.OptimizeImports` | Control + Option + O |
+| Shortcut                                     | Keymap                 | Notes                                 |
+| -------------------------------------------- | ---------------------- | ------------------------------------- |
+| `Code.CodeFormattingActions.ReformatCode`    | `Option + Shift + F`   |                                       |
+| `Code.CodeFormattingActions.ReformatCode`    | `Option + S`           |                                       |
+| `Code.CodeFormattingActions.OptimizeImports` | `Option + Shift + O`   |                                       |
+| `Code.CodeFormattingActions.OptimizeImports` | `Control + Option + O` |                                       |
+| `Edit.FindUsages.FindUsages`                 | `Command + Shift + F`  |                                       |
+| `Edit.Find.FindInFiles`                      | `Option + Shift + F`   | Equivalent of `cmd+shift+f` in VSCode |
 
 ## Sidebars/Toolbars
 

@@ -941,6 +941,18 @@ git fetch --tags --force
 git fetch --all --tags --force
 ```
 
+## Migration of Repositories between Servers
+
+Example: Bitbucket to Github migration
+
+```sh
+git clone --mirror <old-repo-link>
+cd old-repo.git
+# Replace "github" with whatever remote you are migrating to
+git remote add github <new-repo-link>
+git push --mirror github
+```
+
 # OhMyZsh Git Shortcuts
 
 | Shortcut  | Git Command                                                                                                                             |

@@ -983,6 +983,7 @@
   "java.imports.gradle.wrapper.checksums": [],
   "java.inlayHints.parameterNames.enabled": "all",
   // "java.jdt.ls.java.home": "/opt/homebrew/Caskroom/temurin@21/21.0.5,11",
+  // "java.project.resourceFilters": ["node_modules", ".git"],
   "java.project.resourceFilters": [
     "^(?!~?/(Users|home)/(same|s3same|s3samedev)/(dev|github[\\w]*|gitlab[\\w]*|gh[\\w]*|gl[\\w]*|downloads|Downloads)).*?(?<!\\.java)$",
     "^(?!~?/(Users|home)/(same|s3same|s3samedev)/(dev|github[\\w]*|gitlab[\\w]*|gh[\\w]*|gl[\\w]*|downloads|Downloads)).*(?<!\\.java)$",

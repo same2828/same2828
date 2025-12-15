@@ -987,6 +987,7 @@
   "java.imports.gradle.wrapper.checksums": [],
   "java.inlayHints.parameterNames.enabled": "all",
   "java.jdt.ls.java.home": "/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home",
+  // "java.project.resourceFilters": ["node_modules", ".git"],
   "java.project.resourceFilters": [
     "^(?!~?/(Users|home)/(same|s3same|s3samedev)/(dev|github[\\w]*|gitlab[\\w]*|gh[\\w]*|gl[\\w]*|downloads|Downloads)).*?(?<!\\.java)$",
     "^(?!~?/(Users|home)/(same|s3same|s3samedev)/(dev|github[\\w]*|gitlab[\\w]*|gh[\\w]*|gl[\\w]*|downloads|Downloads)).*(?<!\\.java)$",

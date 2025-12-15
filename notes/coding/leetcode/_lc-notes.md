@@ -3055,6 +3055,17 @@ class Solution {
 }
 ```
 
+```java
+private int gcd(int dividend, int divisor) {
+  while (divisor != 0) {
+    int remainder = dividend % divisor;
+    dividend = divisor;
+    divisor = remainder;
+  }
+  return dividend;
+}
+```
+
 ### Prime Factorisation Method
 
 - Every composite number (number with more than one factor) can be written as a product of prime numbers
