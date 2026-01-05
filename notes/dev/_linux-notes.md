@@ -737,7 +737,7 @@ scp user@remote-ip-host:/path/to/remote/file /path/to/local/directory
 - Reordering: `sort`
 - Viewing (always end of pipeline): more, less
 - File system search: find
-- Programmable filters: sed (also awk, python, perl, …)
+- Programmable filters: sed (also awk, python, perl, ...)
 
 # Process Substitution (Named Pipes)
 

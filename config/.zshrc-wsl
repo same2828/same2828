@@ -1110,7 +1110,7 @@ git-local-only-branches() {
   #     echo "  \033[1;35m$branch\033[0m"
   #   fi
   # done
-  git for-each-ref --format='%(refname:short)' refs/heads/ | while IFS= read -r branch; do
+  git for-each-ref --sort=-committerdate --format='%(refname:short)' refs/heads/ | while IFS= read -r branch; do
     if ! git rev-parse --verify "${branch}@{u}" >/dev/null 2>&1; then # >/dev/null 2>&1 == &>/dev/null (but the later is Bash-specific)
       echo "  \033[1;35m$branch\033[0m"
     fi
@@ -1215,6 +1215,7 @@ timeis() {
   date +"%d-%m-%Y@%H:%M:%S"
   date +"%d-%m-%Y-%H:%M:%S"
   date +"%d-%m-%Y-%H-%M-%S"
+  date +%s
 }
 timeis2() {
   date +"%Y-%m-%d@%I:%M:%S%p"
@@ -1223,6 +1224,7 @@ timeis2() {
   date +"%d-%m-%Y@%I:%M:%S%p"
   date +"%d-%m-%Y-%I:%M:%S%p"
   date +"%d-%m-%Y-%I-%M-%S%p"
+  date +%s
 }
 
 # Git Aliases

@@ -275,6 +275,7 @@
   "C_Cpp.intelliSenseEngine": "Tag Parser",
   "C_Cpp.workspaceParsingPriority": "low",
   "chat.commandCenter.enabled": false,
+  "chat.viewSessions.enabled": false,
   "clangd.arguments": ["ColumnLimit: 120"],
   "clangd.onConfigChanged": "restart",
   "cmake.buildBeforeRun": true,
@@ -962,9 +963,11 @@
   "hungryDelete.enableSmartBackspace": false,
   "indentRainbow.errorColor": "rgba(128,32,32,0)",
   "indentRainbow.includedLanguages": ["python", "shellscript", "plaintext"],
+  "inlineChat.holdToSpeech": false,
   "java.autobuild.enabled": false,
   "java.compile.nullAnalysis.mode": "automatic",
   "java.configuration.updateBuildConfiguration": "automatic",
+  // "java.diagnostic.filter": ["**/.git", "**/node_modules/**"],
   "java.diagnostic.filter": [
     "!((~/Users)|(/home))/(same|s3same*)/!(dev|github*|gitlab*|gh|gl|downloads|Downloads)/**/!(*.java)",
     "**/_*/**",
@@ -983,6 +986,7 @@
   "java.imports.gradle.wrapper.checksums": [],
   "java.inlayHints.parameterNames.enabled": "all",
   // "java.jdt.ls.java.home": "/opt/homebrew/Caskroom/temurin@21/21.0.5,11",
+  // "java.maven.downloadSources": true,
   // "java.project.resourceFilters": ["node_modules", ".git"],
   "java.project.resourceFilters": [
     "^(?!~?/(Users|home)/(same|s3same|s3samedev)/(dev|github[\\w]*|gitlab[\\w]*|gh[\\w]*|gl[\\w]*|downloads|Downloads)).*?(?<!\\.java)$",
@@ -1739,6 +1743,7 @@
     "lib/**": true
   },
   "search.quickOpen.includeHistory": false,
+  "search.useIgnoreFiles": false,
   "security.allowedUNCHosts": ["wsl.localhost"],
   "security.workspace.trust.untrustedFiles": "open",
   "sonarlint.disableTelemetry": true,
@@ -1859,6 +1864,7 @@
   "terminal.integrated.gpuAcceleration": "off",
   "terminal.integrated.scrollback": 2000,
   "terminal.integrated.stickyScroll.enabled": false,
+  "terminal.integrated.suggest.enabled": false,
   "terraform.telemetry.enabled": false,
   "todo-tree.filtering.excludeGlobs": [
     "!((~/Users)|(/home))/(same|s3same*)/!(dev|github*|gitlab*|gh|gl|downloads|Downloads)/**",

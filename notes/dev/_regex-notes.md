@@ -2,6 +2,7 @@
 
 - [Table of Contents](#table-of-contents)
 - [Lookarounds](#lookarounds)
+- [Atomic groups (?\>)](#atomic-groups-)
 - [Examples](#examples)
   - [Exclude Word/String](#exclude-wordstring)
   - [Find Duplicate Lines](#find-duplicate-lines)
@@ -23,20 +24,44 @@
 > Note: Any `patterns` declared INSIDE the lookaround are NOT matched
 > Note: Non-capturing groups `(?:pattern)` CANNOT be used with/inside lookarounds
 
-| Regex                | Description using `foobarbarfoo`                                    |
-| -------------------- | ------------------------------------------------------------------- |
-| `bar(?=bar)`         | Finds the 1st `bar` ("bar" which has "bar" after it)                |
-| `bar(?!bar)`         | Finds the 2nd `bar` ("bar" which does not have "bar" after it)      |
-| `(?<=foo)bar`        | Finds the 1st `bar` ("bar" which has "foo" before it)               |
-| `(?<!foo)bar`        | Finds the 2nd `bar` ("bar" which does not have "foo" before it)     |
-| `(?<=foo)bar(?=bar)` | Finds the 1st `bar` ("bar" with "foo" before it and "bar" after it) |
+| Regex                | Description using `foobarbarfoo`                                                        |
+| -------------------- | --------------------------------------------------------------------------------------- |
+| `bar(?=bar)`         | Matches the 1st `bar` in `foobarbarfoo` ("bar" which has "bar" after it)                |
+| `bar(?!bar)`         | Matches the 2nd `bar` in `foobarbarfoo` ("bar" which does not have "bar" after it)      |
+| `(?<=foo)bar`        | Matches the 1st `bar` in `foobarbarfoo` ("bar" which has "foo" before it)               |
+| `(?<!foo)bar`        | Matches the 2nd `bar` in `foobarbarfoo` ("bar" which does not have "foo" before it)     |
+| `(?<=foo)bar(?=bar)` | Matches the 1st `bar` in `foobarbarfoo` ("bar" with "foo" before it and "bar" after it) |
 
-| Regex   | Lookaround          | Pattern       | Description                                      |
-| ------- | ------------------- | ------------- | ------------------------------------------------ |
-| `(?=)`  | Positive Lookahead  | `foo(?=bar)`  | Finds/matches `foo` where `bar` MUST follow      |
-| `(?!)`  | Negative Lookahead  | `foo(?!bar)`  | Finds/matches `foo` where `bar` does NOT follow  |
-| `(?<=)` | Positive Lookbehind | `(?<=bar)foo` | Finds/matches `foo` where `bar` MUST precede     |
-| `(?<!)` | Negative Lookbehind | `(?<!bar)foo` | Finds/matches `foo` where `bar` does NOT precede |
+| Regex   | Lookaround          | Pattern       | Description                                                                                             |
+| ------- | ------------------- | ------------- | ------------------------------------------------------------------------------------------------------- |
+| `(?=)`  | Positive Lookahead  | `foo(?=bar)`  | Matches `foo` where `bar` MUST follow                                                                   |
+| `(?!)`  | Negative Lookahead  | `foo(?!bar)`  | Matches `foo` where `bar` does NOT follow                                                               |
+| `(?<=)` | Positive Lookbehind | `(?<=bar)foo` | Matches `foo` where `bar` MUST precede                                                                  |
+| `(?<!)` | Negative Lookbehind | `(?<!bar)foo` | Matches `foo` where `bar` does NOT precede                                                              |
+| `(?>)`  | Atomic Group        | `a(?>bc\|b)c` | Matches `abcc` but fails on `abc` because the atomic group locks in `bc` and won't backtrack to try `b` |
+| `(?:)`  | Non-Capturing Group | `(?:foo)bar`  | Matches `foobar`, only `bar` is captured, `foo` is NOT captured                                         |
+
+| Regex   | Lookaround          | Pattern   | Description                                                                                                                        |
+| ------- | ------------------- | --------- | ---------------------------------------------------------------------------------------------------------------------------------- |
+| `(?=)`  | Positive Lookahead  | `A(?=B)`  | Matches expression A where expression B follows                                                                                    |
+| `(?!)`  | Negative Lookahead  | `A(?!B)`  | Matches expression A where expression B does not follow                                                                            |
+| `(?<=)` | Positive Lookbehind | `(?<=B)A` | Matches expression A where expression B precedes                                                                                   |
+| `(?<!)` | Negative Lookbehind | `(?<!B)A` | Matches expression A where expression B does not precede                                                                           |
+| `(?>)`  | Atomic Group        |           | Non-capturing group that discards alternative patterns after the first matched pattern inside the group (backtracking is disabled) |
+| `(?:)`  | Non-Capturing Group |           | Text that is matched will NOT be captured and CANNOT be used in backreference                                                      |
+
+# Atomic groups (?>)
+
+An atomic group exits a group and throws away alternative patterns after the first matched pattern inside the group (backtracking is disabled).
+
+`(?>foo|foot)s` applied to `foots` will match its 1st alternative `foo`, then fail as `s` does not immediately follow, and stop as backtracking is disabled
+
+A non-atomic group will allow backtracking; if subsequent matching ahead fails, it will backtrack and use alternative patterns until a match for the entire expression is found or all possibilities are exhausted
+
+`(foo|foot)s` applied to `foots` will:
+
+- Match its 1st alternative `foo`, then fail as `s` does not immediately follow in `foots`, and backtrack to its 2nd alternative;
+- Match its 2nd alternative `foot`, then succeed as `s` immediately follows in `foots`, and stop.
 
 # Examples
 
@@ -100,6 +125,9 @@ Find
 ```re
 ^(?:[\s]*(?:\r\n?|\n))+
 ^(?:[\s]*(?:\r\n?|\n|$))+
+
+^([\s]*(\r\n?|\n))+
+^([\s]*(\r\n?|\n|$))+
 ```
 
 Replace

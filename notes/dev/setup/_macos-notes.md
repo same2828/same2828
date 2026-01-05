@@ -742,6 +742,8 @@ sudo spctl --master-disable
 ```sh
 sudo xattr -cr /path/to/application.app
 # sudo xattr -cr "/Applications/App Cleaner 8.app"
+sudo xattr -dr com.apple.quarantine /path/to/application.app
+# sudo xattr -dr com.apple.quarantine "/Applications/Alfred 5.app"
 ```
 
 ## Microsoft Office
