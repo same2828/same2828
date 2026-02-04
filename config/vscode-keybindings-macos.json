@@ -1,11 +1,41 @@
 [
   {
+    "command": "-agentSession.archive",
+    "key": "cmd+backspace",
+    "when": "agentSessionsViewerFocused && !agentSessionIsArchived"
+  },
+  {
+    "command": "-agentSession.unarchive",
+    "key": "shift+cmd+backspace",
+    "when": "agentSessionIsArchived && agentSessionsViewerFocused"
+  },
+  {
+    "command": "-chat.action.focus",
+    "key": "cmd+up",
+    "when": "chatCursorAtTop && inChatInput && !quickChatHasFocus"
+  },
+  {
+    "command": "-chat.action.focus",
+    "key": "cmd+up",
+    "when": "inChatInput && isLinux && !quickChatHasFocus || inChatInput && isWindows && !quickChatHasFocus"
+  },
+  {
+    "command": "-chat.action.focus",
+    "key": "cmd+down",
+    "when": "inChat && inChatInput && quickChatHasFocus"
+  },
+  {
     "command": "-chat.inlineResourceAnchor.copyResource",
     "key": "cmd+c"
   },
   {
     "command": "-chat.inlineResourceAnchor.openToSide",
     "key": "ctrl+enter"
+  },
+  {
+    "command": "-chatEditor.action.showAccessibleDiffView",
+    "key": "f7",
+    "when": "chatEdits.hasEditorModifications && editorFocus && !chatEdits.isCurrentlyBeingModified"
   },
   {
     "command": "-editor.action.accessibilityHelp",
@@ -146,6 +176,21 @@
     "key": "cmd+up"
   },
   {
+    "command": "-workbench.chat.action.focusLastFocused",
+    "key": "shift+cmd+up",
+    "when": "chatCursorAtTop && inChatInput && !quickChatHasFocus"
+  },
+  {
+    "command": "-workbench.chat.action.focusLastFocused",
+    "key": "shift+cmd+down",
+    "when": "inChat && inChatInput && quickChatHasFocus"
+  },
+  {
+    "command": "-workbench.chat.action.focusLastFocused",
+    "key": "shift+cmd+up",
+    "when": "inChatInput && isLinux && !quickChatHasFocus || inChatInput && isWindows && !quickChatHasFocus"
+  },
+  {
     "command": "-workbench.action.chat.holdToVoiceChatInChatView",
     "key": "cmd+i"
   },
@@ -154,8 +199,48 @@
     "key": "ctrl+enter"
   },
   {
+    "command": "-workbench.action.chat.nextCodeBlock",
+    "key": "alt+cmd+pagedown",
+    "when": "chatIsEnabled && inChat"
+  },
+  {
+    "command": "-workbench.action.chat.nextFileTree",
+    "key": "cmd+f9",
+    "when": "chatIsEnabled && inChat"
+  },
+  {
+    "command": "-workbench.action.chat.nextUserPrompt",
+    "key": "alt+cmd+down",
+    "when": "chatIsEnabled && inChat"
+  },
+  {
     "command": "-workbench.action.chat.openEditSession",
     "key": "shift+cmd+i"
+  },
+  {
+    "command": "-workbench.action.chat.openSessionInEditorGroup",
+    "key": "ctrl+enter",
+    "when": "agentSessionsViewerFocused"
+  },
+  {
+    "command": "-workbench.action.chat.openSessionInNewEditorGroup",
+    "key": "ctrl+alt+enter",
+    "when": "agentSessionsViewerFocused"
+  },
+  {
+    "command": "-workbench.action.chat.previousCodeBlock",
+    "key": "alt+cmd+pageup",
+    "when": "chatIsEnabled && inChat"
+  },
+  {
+    "command": "-workbench.action.chat.previousFileTree",
+    "key": "shift+cmd+f9",
+    "when": "chatIsEnabled && inChat"
+  },
+  {
+    "command": "-workbench.action.chat.previousUserPrompt",
+    "key": "alt+cmd+up",
+    "when": "chatIsEnabled && inChat"
   },
   {
     "command": "-workbench.action.quickchat.toggle",

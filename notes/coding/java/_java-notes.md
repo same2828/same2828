@@ -16,7 +16,7 @@
     - [`List<Integer>[]`](#listinteger)
 - [Interface Types](#interface-types)
 - [List Type](#list-type)
-  - [Long Type](#long-type)
+  - [`long` Type](#long-type)
 - [Null Type](#null-type)
 - [PriorityQueue](#priorityqueue)
   - [Custom Comparator](#custom-comparator)
@@ -65,6 +65,10 @@ void dfs(int currNode, int parentNode = -1) {
 int mod = (int) 1e9 + 7;
 int mod = 1_000_000_007;
 ```
+
+# Enum
+
+
 
 # Initialisation
 

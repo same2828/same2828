@@ -42,6 +42,7 @@
   - [Find Nodes in Cycle](#find-nodes-in-cycle)
   - [Giving Unique ID to Each Subtree (Finding Duplicate Subtrees)](#giving-unique-id-to-each-subtree-finding-duplicate-subtrees)
 - [Binary Search](#binary-search)
+  - [lee215's binary search template](#lee215s-binary-search-template)
 - [Binary Search Tree (BST)](#binary-search-tree-bst)
   - [Info](#info)
   - [Code](#code)
@@ -472,7 +473,6 @@ for (int i = n - 1; i >= 0; i--) {
 ## Negative Numbers (Two's Complement)
 
 - To represent a negative number in binary, we utilise `"Two's Complement"`
-
   - Negative numbers are represented by taking the binary representation of the positive counterpart and then inverting all the bits (changing `0s to 1s` and `1s to 0s`) AND adding `1` to the result
   - Example for `-1`
     - Step 1: Positive Counterpart = `1` = `0001`
@@ -985,12 +985,14 @@ class Solution {
   - `lnt-all/848.minimize-max-distance-to-gas-station`
   - `lnt-all/617.maximum-average-subarray-ii`
 
+## lee215's binary search template
+
 ```java
 int left = 0;
-int right = nums.length;
+int right = nums.length; // right can also be *std::max_element(nums.begin(), nums.end())
 while (left < right) {
   int mid = left + (right - left) / 2;
-  if (condition) {
+  if (condition) { // if (condition >= k)
     right = mid;
   } else {
     left = mid + 1;
@@ -2584,48 +2586,38 @@ public:
 # LeetCode Patterns
 
 - If input array is sorted:
-
   - Binary search
   - Two pointers
 
 - If asked for all permutations/subsets:
-
   - Backtracking
 
 - If given a tree:
-
   - DFS
   - BFS
 
 - If given a graph:
-
   - DFS
   - BFS
 
 - If given a linked list:
-
   - Two pointers
 
 - If recursion is banned:
-
   - Stack
 
 - If must solve in-place:
-
   - Swap corresponding values
   - Store one or more different values in the same pointer
 
 - If asked for maximum/minimum subarray/subset/options:
-
   - Dynamic programming
 
 - If asked for top/least K items:
-
   - Heap Priority Queue
   - QuickSelect
 
 - If asked for common strings:
-
   - Map
   - Trie
 
@@ -2636,7 +2628,6 @@ public:
 # `long` or `long long` Type
 
 - `long` type for Java
-
   - Operations on `int` are NOT promoted to `long` even if target variable is of type `long`
   - Need to add `1L` into operation
 
@@ -2652,7 +2643,6 @@ public:
   ```
 
 - `long long` type for C++
-
   - Operations on `int` are NOT promoted to `long long` even if target variable is of type `long long`
   - Need to add `1LL` into operation
 
@@ -3015,12 +3005,10 @@ private int countDigits(int num) {
 ### Euclidean Algorithm
 
 - Euclid's Division Lemma
-
   - **`a = bq + r (where 0 <= r < b)`**
   - Recursively apply lemma to `b` and `r` until `r = 0` (at which case `b` is gcd of original `a` and `b`)
 
 - Example 1
-
   - gcd(105, 252)
   - gcd(252, 105)
   - gcd(105, 42)
@@ -3223,7 +3211,6 @@ where:
 4. `(a / b) % mod == ((a % mod) * (b^(-1) % mod)) % mod`
 
 - Note that `Math.max(sum1 % mod, sum2 % mod) % mod;` is **NOT** the same as `Math.max(sum1, sum2) % mod;`
-
   - Correct version is `return (int) Math.max(sum1, sum2) % mod;`
   - Make sure `sum1` and `sum2` are declared as `long` in Java or `long long` in C++ first
   - Example
@@ -3450,12 +3437,10 @@ Formula
   - Finally, if we start with the fourth element, we can form a single subarray `[4]`
   - So, the total number of subarrays that can be formed from an array of length N is the sum of the number of subarrays that start at each element of the array
 - If we start with the first element, we can form N subarrays (since we can keep adding one element at a time until we reach the end)
-
   - If we start with the second element, we can form N-1 subarrays (since we can add elements until the end of the array)
   - Similarly, if we start with the third element, we can form N-2 subarrays, and so on
 
 - Therefore, the total number of subarrays is: `N + (N-1) + (N-2) + ... + 1`
-
   - This is an arithmetic sequence with N terms and a common difference of -1
   - Or an arithmetic sequence with N terms and a common difference of 1 (if you reverse it)
   - We can use the formula for the sum of an arithmetic sequence to simplify this expression:
@@ -3967,7 +3952,6 @@ See: 3388.count-beautiful-splits-in-an-array
   - `treeMap.ceilingEntry(key)`
   - `treeMap.floorEntry(key)`
 - `>` and `<`
-
   - `treeMap.higherEntry(key)`
   - `treeMap.lowerEntry(key)`
 

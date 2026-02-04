@@ -342,9 +342,21 @@ cd "D:\Chrome Download"
 
 ### Firefox
 
+https://gist.github.com/RubenKelevra/fd66c2f856d703260ecdf0379c4f59db
+
+https://gist.github.com/dinh/8656a7783307ed7ee1ba
+
+https://old.reddit.com/r/firefox/comments/1pw17so/cant_find_the_post_about_turning_off_certain_ai/
+
+https://old.reddit.com/r/firefox/comments/1q9odtb/how_to_disable_ai_functionality_what_do_i_do_with/
+
+https://old.reddit.com/r/firefox/comments/1fa5c9n/psa_you_can_access_aboutconfig_in_androids_stable/
+
 Change Zoom Levels
 
-- `URL Bar > about:config > zoom > toolkit.zoomManager.zoomValues > .25,.33,.5,.67,0.75,.8,.9,1,1.1,1.25,1.33,1.5,1.75,2,2.25,2.5,2.75,3,3.25,3.5,3.75,4,5`
+- `URL Bar > about:config > zoom > toolkit.zoomManager.zoomValues > 0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.10,0.11,0.12,0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.20,0.25,0.33,0.50,0.67,0.75,0.80,0.90,0.95,1.00,1.10,1.25,1.33,1.50,1.75,2.00,2.25,2.50,2.75,3.00,3.25,3.50,3.75,4.00,4.25,4.50,4.75,5.00,5.25,5.50,5.75,6.00,6.25,6.50,6.75,7.00,7.25,7.50,7.75,8.00,8.25,8.50,8.75,9.00,9.25,9.50,9.75,10.00`
+- `URL Bar > about:config > zoom > zoom.maxPercent > 1000`
+- `URL Bar > about:config > zoom > zoom.minPercent > 1`
 
 Disable Hover Preview
 
@@ -371,6 +383,96 @@ https://www.google.com/search?q=%s&tbs=li%3A1
 https://www.google.com/search?q=%s&udm=14
 https://www.google.com/search?q=%s&udm=14&tbs=li:1
 https://www.google.com/search?q=%s&udm=14&tbs=li%3A1
+```
+
+Settings > Search: `Allow AI to read the beginning of the page and generate key points` > Turn OFF
+Settings > Search: `Use AI to suggest tabs and a name for tab groups` > Turn OFF
+Settings > Search: `Tell websites not to sell or share my data` > Turn OFF
+
+```js
+// Help > More Troubleshooting Information > Application Basics > Profile Folder > Open Folder
+// Save the contents below as a file named 'user.js' and copy paste into folder
+
+// Ai features
+user_pref('browser.ml.chat.enabled', false); // AI Chatbot (https://docs.openwebui.com/tutorials/integrations/firefox-sidebar/#additional-about-settings)
+user_pref('browser.ml.chat.menu', false); // Remove "Ask a chatbot" from tab context menu
+user_pref('browser.ml.chat.page.footerBadge', false);
+user_pref('browser.ml.chat.page.menuBadge', false);
+user_pref('browser.ml.chat.page', false); // Remove option from page context menu
+user_pref('browser.ml.chat.shortcuts.custom', false);
+user_pref('browser.ml.chat.shortcuts', false);
+user_pref('browser.ml.chat.sidebar', false);
+user_pref('browser.ml.checkForMemory', false);
+user_pref('browser.ml.enable', false); // General switch for machine learning features in Firefox (https://www.reddit.com/r/firefox/comments/1obbrvz/how_to_completely_get_rid_of_the_ai_stuff/nki10g9/), though it might not completely disable all features (https://bugzilla.mozilla.org/show_bug.cgi?id=1971973#c11)
+user_pref('browser.ml.linkPreview.enabled', false);
+user_pref('browser.ml.linkPreview.shift', false);
+user_pref('browser.ml.modelHubRootUrl', '');
+user_pref('browser.ml.pageAssist.enabled', false);
+user_pref('browser.ml.smartAssist.enabled', false);
+user_pref('browser.tabs.groups.smart.enabled', false); // "Use AI to suggest tabs and a name for tab groups" in settings
+user_pref('browser.tabs.groups.smart.userEnable', false);
+user_pref('browser.tabs.groups.smart.userEnabled', false);
+user_pref('extensions.ml.enabled', false); // Might only be relevant for app developers
+user_pref('pdfjs.enableAltTextModelDownload', false); // This prevents downloading the AI model unless the user opts in (by enabling the toggle to "Create alt text automatically" from "Image alt text settings" when viewing a PDF)
+user_pref('pdfjs.enableGuessAltText', false); // (disabling this might be redundant when AltTextModelDownload is disabled)
+
+// Non-Ai features
+user_pref('accessibility.force_disabled', 1);
+user_pref('browser.aboutConfig.showWarning', false);
+user_pref('browser.dataFeatureRecommendations.enabled', false);
+user_pref('browser.discovery.enabled', false);
+user_pref('browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons', false); // "Recommend extensions as you browse"
+user_pref('browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features', false); // "Recommend features as you browse"
+user_pref('browser.search.visualSearch.featureGate', false);
+user_pref('browser.sessionhistory.max_entries', 0); // How many pages are saved in sessionstore
+user_pref('browser.sessionhistory.max_total_viewers', 0); // Pages loaded are stored in memory for back button usage, set to 0 to use only 32mb.
+user_pref('browser.sessionstore.interval', 1800000); // Session restore save interval if browser crashes in milliseconds
+user_pref('browser.tabs.groups.hoverPreview.enabled', false);
+user_pref('browser.tabs.hoverPreview.enabled', false);
+user_pref('browser.tabs.hoverPreview.showThumbnails', false);
+user_pref('browser.tabs.notes.enabled', false); // Adding notes to tabs
+user_pref('browser.tabs.splitView.enabled', false); // Split tab option
+user_pref('browser.urlbar.shortcuts.bookmarks', false);
+user_pref('browser.urlbar.shortcuts.history', false);
+user_pref('browser.urlbar.shortcuts.tabs', false);
+user_pref('browser.urlbar.showSearchSuggestionsFirst', false);
+user_pref('browser.urlbar.suggest.engines', false);
+user_pref('browser.urlbar.suggest.history', false);
+user_pref('browser.urlbar.suggest.openpage', false);
+user_pref('browser.urlbar.suggest.recentsearches', false);
+user_pref('browser.urlbar.suggest.topsites', false);
+user_pref('browser.urlbar.suggest.trending', false);
+user_pref('browser.warnOnQuitShortcut', false);
+user_pref('datareporting.healthreport.uploadEnabled', false);
+user_pref('datareporting.usage.uploadEnabled', false);
+user_pref('extensions.getAddons.discovery.api_url', '');
+user_pref('extensions.getAddons.showPane', false);
+user_pref('extensions.htmlaboutaddons.discover.enabled', false);
+user_pref('extensions.htmlaboutaddons.recommendations.enabled', false);
+user_pref('extensions.pocket.enabled', false);
+user_pref('extensions.screenshots.disabled', true);
+user_pref('extensions.screenshots.upload-disabled', true);
+user_pref('extensions.webcompat-reporter.enabled', false); // Disable Web Compatibility Reporter which adds a "Report Site Issue" button to send data to Mozilla
+user_pref('extensions.webservice.discoverURL', '');
+user_pref('general.autoScroll', false);
+user_pref('media.videocontrols.picture-in-picture.enabled', false);
+user_pref('media.videocontrols.picture-in-picture.video-toggle.enabled', false);
+user_pref('network.prefetch-next', false); // Disable prefetch to stop browser making automatic connections for all links.
+user_pref('pdfjs.enableAltText', false); // Alt-text in pdf
+user_pref('pdfjs.enableAltTextForEnglish', false); // Alt-text in pdf
+user_pref('pfs.datasource.url', ''); // Remove plugin finder service
+user_pref('screenshots.browser.component.enabled', false);
+user_pref('sidebar.revamp', false); // New sidebar
+user_pref('sidebar.visibility', 'hide-sidebar');
+user_pref(
+  'toolkit.zoomManager.zoomValues',
+  '0.01,0.02,0.03,0.04,0.05,0.06,0.07,0.08,0.09,0.10,0.11,0.12,0.13,0.14,0.15,0.16,0.17,0.18,0.19,0.20,0.25,0.33,0.50,0.67,0.75,0.80,0.90,0.95,1.00,1.10,1.25,1.33,1.50,1.75,2.00,2.25,2.50,2.75,3.00,3.25,3.50,3.75,4.00,4.25,4.50,4.75,5.00,5.25,5.50,5.75,6.00,6.25,6.50,6.75,7.00,7.25,7.50,7.75,8.00,8.25,8.50,8.75,9.00,9.25,9.50,9.75,10.00',
+);
+user_pref('zoom.maxPercent', 1000);
+user_pref('zoom.minPercent', 1);
+
+// user_pref('browser.cache.memory.capacity', 512000); // A large memory cache isn't needed so 512mb is more than plenty for general browsing.
+// user_pref('browser.cache.disk.enable', false); // Disable disk cache to save read/write to drive which can slow things down.
 ```
 
 ### MSI Afterburner

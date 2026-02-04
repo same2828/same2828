@@ -68,6 +68,7 @@
 [pull]
   # https://git-scm.com/docs/git-config#Documentation/git-config.txt-pullrebase
   rebase = true
+  twohead = ort
 [push]
   # https://git-scm.com/docs/git-push#_configuration
   autoSetupRemote = true

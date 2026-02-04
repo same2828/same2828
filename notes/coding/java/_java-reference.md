@@ -769,7 +769,7 @@ public enum Direction {
     return values()[(ordinal() + 1) % 4];
   }
 
-  public static Direction fromDegrees(int degrees) {
+  public static Direction fromValue(int degrees) {
     // Normalize degrees to 0-359
     int normalizedDegrees = ((degrees % 360) + 360) % 360;
     for (Direction dir : values()) {

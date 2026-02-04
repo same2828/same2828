@@ -589,9 +589,9 @@ alias mvn-tree-includes="mvn-dependency-tree-filter"
 
 # Python
 #-------
-# export PATH="/opt/homebrew/opt/python@3.13/libexec/bin:$PATH"
-alias python="python3"
-alias py="python3"
+export PATH="/opt/homebrew/opt/python@3.13/libexec/bin:$PATH"
+alias python="python3.13"
+alias py="python3.13"
 
 # Custom Functions
 # ----------------

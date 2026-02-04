@@ -13,15 +13,19 @@
   - [`git commit`](#git-commit)
     - [Fixing Commits using `git commit --fixup <commitHash>` + `git rebase -i --autosquash`](#fixing-commits-using-git-commit---fixup-commithash--git-rebase--i---autosquash)
   - [`git merge`](#git-merge)
-    - [Merge Commit (`git merge --no-ff`)](#merge-commit-git-merge---no-ff)
+    - [Fast Forward Merge (Rebase and Merge) (`git rebase -i origin/master && git merge --ff-only`)](#fast-forward-merge-rebase-and-merge-git-rebase--i-originmaster--git-merge---ff-only)
+    - [No Fast-Forward Explicit Merge with Merge Commit (`git merge --no-ff`)](#no-fast-forward-explicit-merge-with-merge-commit-git-merge---no-ff)
     - [Squash and Merge (`git merge --squash`)](#squash-and-merge-git-merge---squash)
-    - [Rebase and Merge (`git rebase -i origin/master && git merge --ff-only`)](#rebase-and-merge-git-rebase--i-originmaster--git-merge---ff-only)
+    - [Merge Strategies](#merge-strategies)
+      - [Git Merge `ort` Strategy Options](#git-merge-ort-strategy-options)
+      - [Git Merge `ours` Strategy](#git-merge-ours-strategy)
   - [`git rebase`](#git-rebase)
     - [Rebasing `feature` branch on `master`](#rebasing-feature-branch-on-master)
     - [Deleting Commits](#deleting-commits)
     - [Editing Commits](#editing-commits)
     - [Splitting Commits](#splitting-commits)
     - [Squashing Commits](#squashing-commits)
+    - [`git rebase -X` options](#git-rebase--x-options)
   - [`git remote`](#git-remote)
   - [`git reset`](#git-reset)
   - [`git rm`](#git-rm)
@@ -42,6 +46,7 @@
 - [Miscellaneous](#miscellaneous)
   - [Force Git to Pickup Change in Case](#force-git-to-pickup-change-in-case)
   - [Fix `git fetch` would Clobber Existing Tags](#fix-git-fetch-would-clobber-existing-tags)
+  - [Migration of Repositories between Servers](#migration-of-repositories-between-servers)
 - [OhMyZsh Git Shortcuts](#ohmyzsh-git-shortcuts)
 
 # Update My Repositories
@@ -232,80 +237,116 @@ git log --oneline
 
 > 3 methods of merging
 >
-> Merge Commit: All commits from source branch will be added to target branch AND a merge commit
+> Fast Forward Merge: All commits from source branch will be rebased and added to target branch (NO merge commit)
+>
+> Explicit Merge with Merge Commit: All commits from source branch will be added to target branch AND a merge commit
 >
 > Squash and Merge: All commits from source branch will be added to the base branch as a SINGLE commit
->
-> Rebase and Merge: All commits from source branch will be rebased and added to target branch (NO merge commit)
 
-- Read More
-  - https://stackoverflow.com/questions/2427238/what-is-the-difference-between-merge-squash-and-rebase
+Read More
 
-### Merge Commit (`git merge --no-ff`)
+- https://stackoverflow.com/questions/2427238/what-is-the-difference-between-merge-squash-and-rebase
 
-- Explanation: This is the standard merge method
-- It takes all commits from your feature branch and adds them to the master branch AND it also creates a new "merge commit" on the master branch
-- This merge commit ties the histories of the two branches together and clearly indicates when the feature was merged
-- It preserves the exact history of your feature branch, showing all its individual commits alongside the merge itself
+| Operation  | CLI Command               | `Current` Change                 | `Incoming` Change          |
+| ---------- | ------------------------- | -------------------------------- | -------------------------- |
+| Git Merge  | `git merge source-branch` | The current branch               | The branch being merged in |
+| Git Rebase | `git rebase base-branch`  | The base branch being rebased on | The current branch         |
+
+### Fast Forward Merge (Rebase and Merge) (`git rebase -i origin/master && git merge --ff-only`)
+
+This occurs when there is a direct linear path from the source branch to the target branch.
+Git simply moves the pointer of the current branch forward to match the merged branch.
+No new commit is created.
+
+```sh
+# Switch to the target branch
+git checkout master && git pull origin master
+# Merge the feature branch
+git merge --ff-only feature-branch
+# Push the updated master branch (which now includes the commits from feature-branch)
+git push origin master
+```
+
+```sh
+# Fetch the latest changes from the target branch (master)
+git fetch origin master
+# Switch to the feature branch
+git checkout feature && git pull origin feature && git checkout -b feature-rebased
+# Rebase your feature branch commits onto the latest master
+git rebase -i origin/master
+# Resolve any conflicts that arise during the rebase
+# Force push the rebased feature branch
+git push origin feature-rebased --force-with-lease
+# Switch to the target branch (master)
+git checkout master && git pull origin master
+# Merge the now-rebased feature branch. This will be a "fast-forward" merge
+git merge feature --ff-only
+# Push the updated master branch (which now includes the rebased commits)
+git push origin master
+```
+
+### No Fast-Forward Explicit Merge with Merge Commit (`git merge --no-ff`)
+
+This forces Git to create a new merge commit even if a fast-forward merge is possible.
+This is useful for preserving the history of a feature branch as a distinct group of commits.
 
 ```sh
 # Switch to the target branch (master)
 git checkout master && git pull origin master
-
 # Merge the feature branch, explicitly creating a merge commit (--no-ff) even if it could be fast-forwarded
 git merge --no-ff feature
-
 # Push the updated master branch (with the merge commit)
 git push origin master
 ```
 
 ### Squash and Merge (`git merge --squash`)
 
-- Explanation: This method takes all the changes made across all commits in your feature branch, combines ("squashes") them into ONE SINGLE new commit, and then adds that single commit to the master branch
-- The individual commit history of the feature branch is discarded in the master branch's history, resulting in a cleaner, more linear history on master
-- Each merged pull request appears as one commit
+This takes all the changes from the feature branch and squashes them into a single commit on the target branch
+The actual commit history of the feature branch is not preserved in the graph, leaving a cleaner but less detailed history
 
 ```sh
 # Switch to the target branch (master)
 git checkout master && git pull origin master
-
 # Bring in changes from the feature branch and stage them, but DON'T commit yet
 git merge --squash feature
-
 # Manually create a single commit for all the squashed changes (typically the commit message summarises the entire feature)
-git commit -m "feature: Add the complete feature from PR #<your_pr_number> (squashed)"
-
+git commit -m "Merged 'feature' into 'dest': Add the complete feature from PR #<your_pr_number> (squashed)"
 # Push the updated master branch (with the single squashed commit)
 git push origin master
 ```
 
-### Rebase and Merge (`git rebase -i origin/master && git merge --ff-only`)
+### Merge Strategies
 
-Explanation: This method takes all the commits from your feature branch and re-applies them, one by one, on top of the latest commit in the master branch
-It rewrites the feature branch's history so that it appears as if the commits were made directly on master after the point where the feature branch originally diverged
-This results in a perfectly linear history on the master branch, without any merge commits
+- recursive: deprecated in favour of `ort`
+- ort: default
+- ours: Resulting tree is always that of the current branch. Discards/ignores all changes from other branches
+- subtree: Used when to merge another repository into a subdirectory of current repository
+
+#### Git Merge `ort` Strategy Options
 
 ```sh
-# Fetch the latest changes from the target branch (master)
-git fetch origin master
+# Implicit (no need to write `-s ort` since `ort` is already default merge strategy)
+git merge -s ort -X ours feature-branch
+git merge -s ort -X theirs feature-branch
+```
 
-# Switch to the feature branch
-git checkout feature && git pull origin feature && git checkout -b feature-rebased
+```sh
+# If a conflict arises, auto-resolve by choosing the current branch's version
+git merge -X ours feature-branch
+# If a conflict arises, auto-resolve by choosing the incoming branch's version
+git merge -X theirs feature-branch
+```
 
-# Rebase your feature branch commits onto the latest master
-git rebase -i origin/master
-# Resolve any conflicts that arise during the rebase
-# Force push the rebased feature branch
-git push origin feature-rebased --force-with-lease
+#### Git Merge `ours` Strategy
 
-# Switch to the target branch (master)
-git checkout master && git pull origin master
+This merge strategy does NOT even look at what the other tree contains at all
+It discards everything the other tree did, declaring **our** history contains all that happened in it
+It is meant to be used to supercede old development history of side branches
+Do NOT use (recommend to use `-X ours` or `-X theirs` instead)
 
-# Merge the now-rebased feature branch. This will be a "fast-forward" merge
-git merge feature --ff-only
-
-# Push the updated master branch (which now includes the rebased commits)
-git push origin master
+```sh
+git checkout main
+git merge -s ours obsolete-branch
 ```
 
 ## `git rebase`
@@ -332,6 +373,11 @@ k8m6n4p 12/07/24 12/07/24 10:00am s3same Create database schema for users and po
 0f9h1j2 12/07/24 12/07/24 08:30am s3same Implement user authentication
 b3a5d79 12/07/24 12/07/24 07:00am s3same Initialize project structure
 ```
+
+| Operation  | CLI Command               | `Current` Change                   | `Incoming` Change          |
+| ---------- | ------------------------- | ---------------------------------- | -------------------------- |
+| Git Merge  | `git merge source-branch` | The current working branch         | The branch to merge in     |
+| Git Rebase | `git rebase base-branch`  | The upstream branch to rebase onto | The current working branch |
 
 ### Rebasing `feature` branch on `master`
 
@@ -588,6 +634,17 @@ added tests and improved syntax
 # modified:   .gitignore
 #
 ```
+
+### `git rebase -X` options
+
+Note: `ours` and `theirs` are reversed/swapped compared to `merge`
+
+> `ours` is the branch you are rebasing onto
+> `theirs` is current branch
+
+Note that a rebase merge works by replaying each commit from the working branch on top of the `<upstream>` branch.
+Because of this, when a merge conflict happens, the side reported as `ours` is the so-far rebased series, starting with `<upstream>`, and `theirs` is the working branch.
+In other words, the sides are swapped compared to `merge`
 
 ## `git remote`
 

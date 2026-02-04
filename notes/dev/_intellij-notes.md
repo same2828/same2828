@@ -30,9 +30,9 @@
 
 ## Editor
 
-`Editor > General.ON Save` > Turn OFF `Keep trailing spaces on caret line`
+`Editor > General.OnSave` > Turn OFF `Keep trailing spaces on caret line`
 
-`Editor > General.ON Save` > `Remove trailing spaces on: All lines`
+`Editor > General.OnSave` > `Remove trailing spaces on: All lines`
 
 `Editor > General > Appearance` > Turn ON `Show whitespaces`
 
@@ -51,6 +51,12 @@
 `Editor > General > Sticky Lines` > Turn ON only for `JSON`, `YAML`
 
 `Editor > General > Sticky Lines` > `Maximum number of lines: 10`
+
+`Editor > Font > JetBrains Mono`
+
+`Editor > Font > Size > 16`
+
+`Editor > Font > Line height > 1.2`
 
 `Editor > Color Scheme > General > Code > Line number` > #B3B3B3 (default: #A3A5BA)
 
@@ -98,13 +104,11 @@
 
 `Editor > Code Style > Java > Imports > Names count to use import with '*'`: 999
 
-`Editor > Code Style > Java > Code Generation > Comment Code`
-
-- Turn OFF `Line comment at first column`
-- Turn ON `Add a space at line comment start`
-- Turn ON `Enforce on reformat`
-- Turn OFF `Block comment at first column`
-- Turn ON `Add spaces around block comments`
+`Editor > Code Style > Java > Code Generation > Comment Code` > Turn OFF `Line comment at first column`
+`Editor > Code Style > Java > Code Generation > Comment Code` > Turn ON `Add a space at line comment start`
+`Editor > Code Style > Java > Code Generation > Comment Code` > Turn ON `Enforce on reformat`
+`Editor > Code Style > Java > Code Generation > Comment Code` > Turn OFF `Block comment at first column`
+`Editor > Code Style > Java > Code Generation > Comment Code` > Turn ON `Add spaces around block comments`
 
 - [Disable Italics](https://stackoverflow.com/a/76388214)
 - [Fix comment shortcut behaviour](https://stackoverflow.com/a/69490719)
@@ -116,14 +120,15 @@ Download `VSCode Keymap` plugin
 
 `Settings > Keymap > VSCode (macOS)`
 
-| Shortcut                                     | Keymap                 | Notes                                 |
-| -------------------------------------------- | ---------------------- | ------------------------------------- |
-| `Code.CodeFormattingActions.ReformatCode`    | `Option + Shift + F`   |                                       |
-| `Code.CodeFormattingActions.ReformatCode`    | `Option + S`           |                                       |
-| `Code.CodeFormattingActions.OptimizeImports` | `Option + Shift + O`   |                                       |
-| `Code.CodeFormattingActions.OptimizeImports` | `Control + Option + O` |                                       |
-| `Edit.FindUsages.FindUsages`                 | `Command + Shift + F`  |                                       |
-| `Edit.Find.FindInFiles`                      | `Option + Shift + F`   | Equivalent of `cmd+shift+f` in VSCode |
+| Shortcut                                     | Keymap                 | Notes                                               |
+| -------------------------------------------- | ---------------------- | --------------------------------------------------- |
+| `Code.CodeFormattingActions.ReformatCode`    | `Option + Shift + F`   |                                                     |
+| `Code.CodeFormattingActions.ReformatCode`    | `Option + S`           |                                                     |
+| `Code.CodeFormattingActions.OptimizeImports` | `Option + Shift + O`   |                                                     |
+| `Code.CodeFormattingActions.OptimizeImports` | `Control + Option + O` |                                                     |
+| `Edit.FindUsages.FindUsages`                 | `Command + Shift + F`  |                                                     |
+| `Edit.Find.FindInFiles`                      | `Option + Shift + F`   | Equivalent of `cmd+shift+f` in VSCode               |
+| `Edit.Redo`                                  | `Command + Y`          | `Command + Shift + Z`, `Option + Shift + Backspace` |
 
 ## Sidebars/Toolbars
 
@@ -141,7 +146,7 @@ Right sidebar = View > Tool Windows
 
 ## Advanced Settings
 
-`Advanced Settings > Editor` > Turn OFF `Move caret down after COmment with Line Comment action`
+`Advanced Settings > Editor` > Turn OFF `Move caret down after Comment with Line Comment action`
 
 `Advanced Settings > User Interface` > Turn OFF `Merge main menu with window title`
 

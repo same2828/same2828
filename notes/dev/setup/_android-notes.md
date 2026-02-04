@@ -96,6 +96,8 @@ Turn "Transparency" to High
 
 ## Firefox
 
+Access `about:config`: https://old.reddit.com/r/firefox/comments/1fa5c9n/psa_you_can_access_aboutconfig_in_androids_stable/
+
 ### Extensions
 
 - Dark Reader (Alexander Shutau)

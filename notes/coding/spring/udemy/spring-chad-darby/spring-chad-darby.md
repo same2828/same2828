@@ -105,11 +105,11 @@
     - [Jakarta Persistence API (JPA)](#jakarta-persistence-api-jpa)
     - [Benefits of JPA](#benefits-of-jpa)
   - [61 - Hibernate/JPA and JDBC](#61---hibernatejpa-and-jdbc)
-    - [JDBC vs Hibernate vs Spring-Data-JPA](#jdbc-vs-hibernate-vs-spring-data-jpa)
+    - [JDBC vs Hibernate vs `spring-data-jpa`](#jdbc-vs-hibernate-vs-spring-data-jpa)
       - [JDBC (Java Database Connectivity)](#jdbc-java-database-connectivity)
       - [Hibernate](#hibernate)
-      - [Spring Data JPA](#spring-data-jpa)
-    - [Hibernate vs Spring-Data-JPA](#hibernate-vs-spring-data-jpa)
+      - [`spring-data-jpa`](#spring-data-jpa)
+    - [Hibernate vs `spring-data-jpa`](#hibernate-vs-spring-data-jpa)
   - [65 - Setting Up Spring Boot Project](#65---setting-up-spring-boot-project)
   - [JPA Query Language (JPQL)](#jpa-query-language-jpql)
   - [68 - JPA Annotations](#68---jpa-annotations)
@@ -196,7 +196,7 @@
   - [145 - `spring-data-jpa`](#145---spring-data-jpa)
     - [The Problem with using JPA Api](#the-problem-with-using-jpa-api)
       - [Creating DAO](#creating-dao)
-    - [Solution - Spring Data JPA](#solution---spring-data-jpa)
+    - [Solution - `spring-data-jpa`](#solution---spring-data-jpa)
     - [`JpaRepository`](#jparepository-1)
     - [Step 1: Extend JpaRepository interface](#step-1-extend-jparepository-interface)
     - [Step 2 - Use Repository](#step-2---use-repository)
@@ -215,7 +215,11 @@
     - [Springdoc](#springdoc)
     - [Documenting REST APIs](#documenting-rest-apis)
     - [Development Process](#development-process-6)
-    - [Step 1: Add Maven dependency for Springdoc](#step-1-add-maven-dependency-for-springdoc)
+    - [Step 1 - Add Maven dependency for Springdoc](#step-1---add-maven-dependency-for-springdoc)
+    - [Step 2 - Access the Swagger UI](#step-2---access-the-swagger-ui)
+    - [Configure Custom Path for Swagger UI](#configure-custom-path-for-swagger-ui)
+    - [Step 3 - Retrieve API endpoints as JSON or YAML](#step-3---retrieve-api-endpoints-as-json-or-yaml)
+    - [Configure Custom Path for API docs](#configure-custom-path-for-api-docs)
 
 # Links
 
@@ -1835,7 +1839,7 @@ https://en.wikipedia.org/wiki/Jakarta_Persistence#Related_technologies
 
 ## 61 - Hibernate/JPA and JDBC
 
-### JDBC vs Hibernate vs Spring-Data-JPA
+### JDBC vs Hibernate vs `spring-data-jpa`
 
 #### JDBC (Java Database Connectivity)
 
@@ -1891,7 +1895,7 @@ class User {
 User user = entityManager.find(User.class, 1L);
 ```
 
-#### Spring Data JPA
+#### `spring-data-jpa`
 
 What it is
 
@@ -1911,9 +1915,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 }
 ```
 
-### Hibernate vs Spring-Data-JPA
+### Hibernate vs `spring-data-jpa`
 
-> Hibernate is the engine; Spring Data JPA is the convenience layer that drives it.
+> Hibernate is the engine; `spring-data-jpa` is the convenience layer that drives it
 
 Hibernate
 
@@ -1926,7 +1930,7 @@ Hibernate
   - Lazy loading, dirty checking, transactions
 - **Hibernate does the actual work of talking to the database**
 
-Spring Data JPA
+`spring-data-jpa`
 
 - Spring Data JPA is an abstraction layer on top of JPA
 - It is NOT an ORM (Object-Relational Mapping) framework
@@ -3768,7 +3772,7 @@ public Employee findById(int theId) {
 }
 ```
 
-### Solution - Spring Data JPA
+### Solution - `spring-data-jpa`
 
 https://spring.io/projects/spring-data-jpa
 
@@ -3785,13 +3789,23 @@ More than 70% reduction in code … depending on use case
 ### `JpaRepository`
 
 Spring Data JPA provides the interface: `JpaRepository`
-Exposes methods (some by inheritance from parents)
 
-```
-.findAll()
-.findById()
-.save()
-.deleteById()
+- [JpaRepository](https://docs.spring.io/spring-data/jpa/docs/current/api/org/springframework/data/jpa/repository/JpaRepository.html)
+- [CrudRepository](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html)
+- [ListPagingAndSortingRepository](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/ListPagingAndSortingRepository.html)
+- [PagingAndSortingRepository](https://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/PagingAndSortingRepository.html)
+
+- Exposes methods (some by inheritance from parents)
+  - `.count()`
+  - `.deleteAll()`
+  - `.deleteById()`
+  - `.existsById()`
+  - `.findAll()`
+  - `.findById()`
+  - `.save()`
+
+```java
+public interface JpaRepository<T,ID> extends ListCrudRepository<T,ID>, ListPagingAndSortingRepository<T,ID>, QueryByExampleExecutor<T>
 ```
 
 ### Step 1: Extend JpaRepository interface
@@ -3800,10 +3814,13 @@ Exposes methods (some by inheritance from parents)
 
 - **No need for implementation class**
 - Get the following methods automatically created by Spring
+  - `.count()`
+  - `.deleteAll()`
+  - `.deleteById()`
+  - `.existsById()`
   - `.findAll()`
   - `.findById()`
   - `.save()`
-  - `.deleteById()`
 
 ```java
 // public interface MyRepository extends JpaRepository<EntityType, PrimaryKey>
@@ -4104,4 +4121,49 @@ Powered by Springdoc-OpenAPI
 2. Access Swagger UI
 3. Retrieve API endpoints as JSON or YAML
 
-### Step 1: Add Maven dependency for Springdoc
+### Step 1 - Add Maven dependency for Springdoc
+
+```xml
+<dependency>
+  <groupId>org.springdoc</groupId>
+  <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+  <version>x.y.z</version>
+</dependency>
+```
+
+### Step 2 - Access the Swagger UI
+
+- By default, Swagger UI is available at: https://localhost:8080/swagger-ui/index.html
+
+### Configure Custom Path for Swagger UI
+
+Add following to `application.yml` or `application.properties`
+
+```conf
+# http://localhost:8080/my-custom.html
+springdoc.swagger-ui.path=/my-custom.html
+```
+
+### Step 3 - Retrieve API endpoints as JSON or YAML
+
+- Docs for API endpoints available as JSON or YAML
+- Useful for integration with other development tools
+- Client SDK generation, API mocking, contract testing, etc
+- JSON or YAML is language independent
+- Can be processed by Python, Javascript, Go, C# etc
+- By default, JSON docs available here: `http://localhost:8080/v3/api-docs`
+- YAML docs available here: `http://localhost:8080/v3/api-docs.yaml`
+
+### Configure Custom Path for API docs
+
+```conf
+# http://localhost:8080/my-custom-api-docs.html
+springdoc.api-docs.path=/my-custom-api-docs.html
+```
+
+Access API Docs at
+
+- Json
+  - http://localhost:8080/my-api-docs
+- YAML
+  - http://localhost:8080/my-api-docs.yaml

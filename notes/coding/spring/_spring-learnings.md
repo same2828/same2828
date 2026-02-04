@@ -1,11 +1,27 @@
 # Table of Contents
 
 - [Table of Contents](#table-of-contents)
+- [Spring Reactive](#spring-reactive)
 - [Random](#random)
 - [Jackson](#jackson)
 - [IntelliJ Idea Run Locally](#intellij-idea-run-locally)
 - [Lombok](#lombok)
 - [Fix Missing `jacoco.exec` When Generating Code Coverage Test Report](#fix-missing-jacocoexec-when-generating-code-coverage-test-report)
+
+# Spring Reactive
+
+Do not ever use `.block()`
+
+- This blocks the thread and causes it to wait
+- Analogy: Blocks the conveyor belt
+
+Keep adding to the `Mono` or `Flux`
+
+- Analogy: Keep adding to the conveyor belt
+
+At the very end use `.subscribe()`
+
+- This is very similar to `.block()` but it pulls all the `Mono`/`Flux` out of the conveyor belt
 
 # Random
 
