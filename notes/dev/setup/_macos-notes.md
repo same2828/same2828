@@ -414,6 +414,7 @@ keypad_enter -> return_or_enter
 [MacPorts Ports](https://ports.macports.org/)
 
 ```sh
+sudo port selfupdate && sudo port outdated
 sudo port selfupdate && sudo port upgrade outdated
 ```
 

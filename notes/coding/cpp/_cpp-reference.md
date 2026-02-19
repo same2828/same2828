@@ -339,6 +339,7 @@
     - [Split string and store into `std::vector<std::string>`](#split-string-and-store-into-stdvectorstdstring)
     - [String Manipulation (Non-RegEx)](#string-manipulation-non-regex)
     - [String Manipulation (RegEx)](#string-manipulation-regex)
+  - [Struct vs Class](#struct-vs-class)
   - [`this` keyword](#this-keyword)
   - [Truthy/Falsy Values](#truthyfalsy-values)
     - [Truthy Values](#truthy-values)
@@ -400,7 +401,6 @@ int main() {
   - The header `<algorithm>` defines a collection of functions especially designed to be used on ranges of elements
   - A range is any sequence of objects that can be accessed through iterators or pointers, such as an array or an instance of some of the STL containers. Notice though, that algorithms operate through iterators directly on the values, not affecting in any way the structure of any possible container (it never affects the size or storage allocation of the container)
 - [CPPReference](https://en.cppreference.com/w/cpp/algorithm)
-
   - The algorithms library defines functions for a variety of purposes (e.g. searching, sorting, counting, manipulating) that operate on ranges of elements
   - Note that a range is defined as `[first, last)` where `last` refers to the element **past** the last element to inspect or modify
 
@@ -585,7 +585,6 @@ InputIterator find(InputIterator first, InputIterator last, T const &value);
   - If no such element is found, it returns `last`
     - Note last is normally `std::end()`
 - [CPPReference](https://en.cppreference.com/w/cpp/algorithm/find)
-
   - Returns an iterator to the first element in the range `[first, last)` that satisfies specific criteria (or `last` if there is no such iterator)
 
 - `std::find()` only works on SEQUENTIAL containers
@@ -811,7 +810,6 @@ int main() {
 - `#include <iterator>`
 
 - [CPlusPlus](https://cplusplus.com/reference/iterator/)
-
   - An iterator is any object that, pointing to some element in a range of elements (such as an array or a [container](https://cplusplus.com/stl)), has the ability to iterate through the elements of that range using a set of operators (with at least the increment (`++`) and dereference (`*`) operators)
   - The most obvious form of iterator is a pointer: A pointer can point to elements in an array, and can iterate through them using the increment operator (++). But other kinds of iterators are possible. For example, each [container](https://cplusplus.com/stl) type (such as a [list](https://cplusplus.com/list)) has a specific iterator type designed to iterate through its elements
   - Notice that while a pointer is a form of iterator, not all iterators have the same functionality of pointers; Depending on the properties supported by iterators, they are classified into five different categories:
@@ -3643,7 +3641,6 @@ constexpr iterator erase(const_iterator first,const_iterator last ); // (since C
   - This effectively reduces the container size by the number of elements removed, which are destroyed
   - Because vectors use an array as their underlying storage, erasing elements in positions other than the vector end causes the container to relocate all the elements after the segment erased to their new positions. This is generally an inefficient operation compared to the one performed for the same operation by other kinds of sequence containers (such as list or forward_list)
 - [CPPReference](https://en.cppreference.com/w/cpp/container/list/erase)
-
   - Erases the specified elements from the container
   - (1) Removes the element at pos
   - (2) Removes the elements in the range `[first, last)`
@@ -3652,7 +3649,6 @@ constexpr iterator erase(const_iterator first,const_iterator last ); // (since C
   - The iterator first does not need to be dereferenceable if first == last: erasing an empty range is a no-op
 
 - `.erase()` Return Value
-
   - An iterator pointing to the new location of the element that followed the last element erased by the function call
   - This is the container `.end()` if the operation erased the last element in the sequence
 
@@ -3697,7 +3693,6 @@ constexpr void resize(size_type n, const value_type& value); // (since C++20)
   - If `n` is also `>` the current container capacity, an automatic reallocation of the allocated storage space takes place
   - Notice that this function changes the actual content of the container by inserting or erasing elements from it
 - [CPPReference](https://en.cppreference.com/w/cpp/container/vector/resize)
-
   - Resizes the container to contain `n` elements, does nothing if `n == vec.size()`
   - If the current size is `> n`, the container is reduced to its first `n` elements
   - If the current size is `< n`:
@@ -4881,7 +4876,6 @@ it->second; // == (*it).second  (the mapped value)
 ### Rules on Keys
 
 - **`std::unordered_map` requires its keys to be HASHABLE**
-
   - If running into issues can use `std::map` instead at the cost of runtime performance
 
 - `std::vector<T>` is NOT hashable by default hence CANNOT use `std::vector<T>` as KEY of `std::unordered_map` (unless we specifiy our own custom hash function)
@@ -5303,7 +5297,6 @@ int main() {
   - unordered_set containers are faster than set containers to access individual elements by their key, although they are generally less efficient for range iteration through a subset of their elements
   - Iterators in the container are at least forward iterators
 - [CPPReference](https://en.cppreference.com/w/cpp/container/unordered_set)
-
   - Unordered set is an associative container that contains a set of unique objects of type Key. Search, insertion, and removal have average constant-time complexity
   - Internally, the elements are not sorted in any particular order, but organized into buckets. Which bucket an element is placed into depends entirely on the hash of its value. This allows fast access to individual elements, since once a hash is computed, it refers to the exact bucket the element is placed into
   - Container elements may not be modified (even by non const iterators) since modification could change an element's hash and corrupt the container
@@ -6488,7 +6481,6 @@ Type obj{arg};  // Curly braces used with a single parameter
 - Stateless function objects, such as `std::hash` or `std::less`, are function objects that do NOT have any internal state or member variables
   - These function objects are typically used as generic function objects for algorithms or containers in the C++ Standard Library
 - Stateless function objects can be instantiated using both parentheses (`()`) and curly braces (`{}`), but there are some differences:
-
   - Parentheses (`()`) invoke the default constructor of the function object directly
     - If the function object does NOT have a default constructor, a compilation error will occur
     - For example, if `std::hash` had a deleted or private default constructor, both `std::hash<std::string> hashFunc1;` and `std::hash<std::string> hashFunc2();` would result in a compilation error
@@ -6915,7 +6907,6 @@ Usage of following containers normally starts off as **empty** (we insert elemen
 Usage of `std::vector` normally does **NOT** stat off as empty (we expect all values to be initialised to `0` or `-1`, and do not want to call `.push_back()` or `.emplace_back()`); therefore we **DO** need to initialise (in function body) after declaration
 
 - However the opposite is true (i.e. usage of `std::vector` as empty) when `std::vector` is used as an inner container for `std::unordered_map<int, std::vector<int>` or `std::pair<int, std::vector<int>`
-
   - In this opposite case, we do NOT need to initialise the `std::vector` as it will be automatically initialised to be empty and can straight away call `.push_back()` or `.emplace_back()` on it
 
 - `std::vector`
@@ -7956,17 +7947,14 @@ auto lambda2 = [](int a, int b) { a + b; };
 
 - Note: Lambda expression functions/inline functions are SLOWER than normal functions in Leetcode
 - Lambda Functions, or Lambda Expressions, are a feature of C++ introduced in C++11
-
   - They are essentially anonymous, inline functions that you can define on the spot where they're needed
   - A lambda function can be stored in a variable and passed around like any other object
 
 - A recursive lambda is a lambda function that calls itself
-
   - It is a little tricky to do in C++ because at the point of the lambda's definition, its name is not yet available for it to call itself by name, unlike normal named functions
   - The way around this is to capture the lambda itself by reference in the capture list, so that it can use itself inside its own body
 
 - However, in C++11, since the lambda has not been defined yet at the time of its capture, you can't directly capture it by reference
-
   - You need to use `std::function`, which can hold any callable target — function pointers, function objects, or lambdas
   - Here's an example of a recursive lambda in C++11 using `std::function`:
 
@@ -8413,7 +8401,6 @@ public:
 - The first version (Code 1) might be faster due to reduced memory overhead compared to the second version (Code 2)
   - The difference in speed is due to the use of class member variables in Code 2, which introduces additional memory overhead
 - Here are some specifics:
-
   1. Memory allocation and deallocation: In Code 2, `requiredQuantity` and `counts` are class member variables
      - They live as long as the object of the class `Solution` lives
      - This means that memory for these variables is allocated when the object is created and deallocated when the object is destroyed
@@ -8518,7 +8505,6 @@ public:
 - Can appear on the LHS of an assignment operator (`=`)
 - You can take the address of an lvalue using the address-of operator (`&`)
 - Examples
-
   - Variables (e.g. `int x = 42;`)
   - Array elements (e.g. `arr[0]`)
   - Dereferenced pointers (e.g. ` int* ptr`)
@@ -8535,7 +8521,6 @@ int* ptr = &x;  // Valid: taking the address of an lvalue
 - Typically refers to temporary results of expressions, literals, or unnamed temporaries
 - Can appear on the RHS of an assignment operator (`=`)
 - Examples:
-
   - Literals (e.g. `42`, `"hello"`)
   - Temporary values (e.g. the result of an expression like `2 + 3` or `x + y`)
   - Functions that return values (e.g. `getTempObject()`)
@@ -8703,7 +8688,6 @@ int* const a; // const pointer to int
   - **`*`** = pointer
   - **`const`** = const
 - **`int const* a;`** declares a pointer variable `a` that can point to an integer, but the integer it points to is `const` and CANNOT be modified through `a`
-
   - I.e. `a` is a non-const pointer to a const integer
   - Example
 
@@ -8716,7 +8700,6 @@ int* const a; // const pointer to int
     ```
 
 - **`int* const a;`** declares a pointer variable `a` that is itself `const`, meaning it cannot be modified to point to a different address
-
   - However, the integer it points to is NOT const and can be modified through a
   - I.e. `a` is a const pointer to a non-const integer
   - Example
@@ -9431,6 +9414,63 @@ int main() {
 }
 ```
 
+## Struct vs Class
+
+Default Visibility: In a struct, members are public by default. In a class, members are private by default.
+Default Inheritance: When inheriting, a struct defaults to public inheritance, while a class defaults to private inheritance.
+
+Why ListNode is a struct on LeetCode? It is purely for convenience and brevity.
+
+Direct Access:
+
+- LeetCode problems require you to constantly access `val` and `next`.
+- Using a struct makes these members public immediately without needing to write a public: access specifier or create "getter" and "setter" methods (e.g., node->getVal() vs node->val).
+
+Simplicity:
+
+- Data structures like linked list nodes or tree nodes are often treated as "Plain Old Data" (POD) structures where encapsulation adds boilerplate code without adding value to the algorithmic logic.
+
+```cpp
+// Definition for singly-linked list
+struct ListNode {
+  int val;
+  ListNode *next;
+
+  ListNode()
+  : val(0)
+  , next(nullptr) {}
+
+  ListNode(int x)
+  : val(x)
+  , next(nullptr) {}
+
+  ListNode(int x, ListNode *next)
+  : val(x)
+  , next(next) {}
+};
+```
+
+```cpp
+// Definition for singly-linked list
+class ListNode {
+public:
+  int val;
+  ListNode *next;
+
+  ListNode()
+  : val(0)
+  , next(nullptr) {}
+
+  ListNode(int x)
+  : val(x)
+  , next(nullptr) {}
+
+  ListNode(int x, ListNode *next)
+  : val(x)
+  , next(next) {}
+};
+```
+
 ## `this` keyword
 
 ```cpp
@@ -9453,7 +9493,6 @@ public:
 ### Truthy Values
 
 - The following values are considered truthy, meaning they evaluate to `true` in a boolean context:
-
   - Non-Zero integers (integers > 0)
   - Non-Null pointers
   - Non-Empty C-style strings (arrays of characters)
@@ -9547,7 +9586,6 @@ int main() {
 - Unsigned Integer = Positive + 0
 
 - **Signed Integers**:
-
   - Signed integers represent both positive and negative values, including zero
   - They use the most significant bit (MSB) (the bit furthest to the left) to represent the sign, where 0 indicates a positive value and 1 indicates a negative value
   - The remaining bits are used to represent the magnitude of the value
@@ -9556,7 +9594,6 @@ int main() {
     - Similarly, the binary representation of 127 is 0111 1111, where the MSB is 0 indicating a positive value, and the magnitude is represented by the remaining 7 bits
 
 - **Unsigned Integer**:
-
   - Unsigned integers represent only non-negative values, including zero
   - They do NOT use any bit to represent the sign, and all bits are used to represent the magnitude of the value
   - As a result, unsigned integers can represent a larger range of positive values compared to signed integers of the same size

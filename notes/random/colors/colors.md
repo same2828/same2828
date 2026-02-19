@@ -52,6 +52,7 @@
 - #0c58d1
 - #3E638C
 - #016add (Alfred)
+- #004daa
 
 ## VSCode Dark+
 

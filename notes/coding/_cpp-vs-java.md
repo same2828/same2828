@@ -65,11 +65,11 @@
     - `bool trieSearch(string key, bool checkPrefixOnly = false) {}`
 - Collections Containers are **UNORDERED by default**
   - For need to use `TreeMap`, `TreeSet` to get ORDERED version of container
-- Inner/Nested containers are **UNINITIALISED** by default
+- Inner/Nested containers are **UNINITIALISED** and `null` by default
   - Need to MANUALLY initialise inner containers of collections
 - Java arguments (args) are **passed by value**
   - Non-Primitives (objects/strings) are accessed by "object references" which are "values" that represent "the object's location in memory" (so essentially Java non-primitive arguments (args) are **"passed by reference"**)
-- `boolean` values `true` and `false` are NOT mapped to integers
+- `boolean` values `true` and `false` are NOT mapped to integers `0` and `1`
 
 **CPP/C++**
 
@@ -95,12 +95,11 @@
   - `bool trieSearch(string key, bool checkPrefixOnly = false) {}`
 - STL Containers are **ORDERED by default**
   - For need to use `std::unordered_map`, `std::unordered_set` to get UNORDERED version of container
-- Inner/Nested containers are **INITIALISED** initialised and empty by default
+- Inner/Nested containers are **INITIALISED** initialised and EMPTY by default
 - CPP arguments (args) are **passed by value** (copy constructed) by default
   - CPP arguments (args) can be "passed by reference" if `&` is prepended to arguments (args)
 - `memset(memo, INT_MIN, sizeof(memo));` does NOT work since `memset()` fills memory byte by byte with a value between 0-255 (can only use `memset` for -1)
 - `bool` values `true` and `false` are mapped to `int` values `1` and `0` respectively
-
   - `true == 1`
   - `false == 0`
   - Note this means that ternary boolean checks such as `if (5 % 2)` implicitly mean `if (5 % 2 == 1)` or `if (5 % 2 > 0)`
@@ -616,7 +615,6 @@ int dp(int currNode, std::vector<std::pair<int, int>> (&graph)[]) {
 - Get Value:
   - `map[key]`
 - Assign Value:
-
   - `map[key] = value`
   - `std::map<int, std::vector<int>>`: `map[key].emplace_back(value)`
 
@@ -716,7 +714,6 @@ vec3.emplace_back(std::vector<int>{});
 
 - `List<List<Map<Integer, Integer>>>`
 - `Map<Integer, Integer>[][]`
-
   - Note: You CANNOT chain `.computeIfAbsent().put(key, value)` for `Map<Integer, Integer>[][]` data structure
   - Solution/Fix:
 
@@ -1123,7 +1120,6 @@ import java.util.*;
 **CPP/C++**
 
 - For the following containers, their usage normally starts off as empty (we insert elements into them); therefore we do **NOT** need to initialise (in function body) after declaring it at the top of a class for the following containers
-
   - `std::list`/`std::forward_list`
   - `std::deque`
   - `std::map`/`std::unordered_map`
@@ -1144,7 +1140,6 @@ import java.util.*;
     ```
 
 - For `std::vector`, their usage normally does **NOT** stat off as empty (we expect the values to be initialised to `0` or `-1`, and do not want to call `.push_back()` or `.emplace_back()`); therefore we **DO** need to initialise (in function body) after declaration
-
   - `std::vector`
 
     ```cpp

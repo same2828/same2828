@@ -1019,7 +1019,6 @@ public enum Planet {
 - CANNOT index into a string `s[i]`, you MUST use `s.charAt(i)`
 - Compare strings with **`.equals()`** and NOT `==`
 - A `String` object is **IMMUTABLE**
-
   - Its contents cannot be changed (i.e. cannot change character at specified index)
   - However we can reassign `String` variables
   - Note that `+=` is overloaded to concatenate two strings together, creating a new `String` object which is then reassigned back to original `String ` variable
@@ -1716,7 +1715,6 @@ int[][] list2 = new int[][] { {1, 2}, {3, 4}, {5, 6} };
   ```
 
 - The new operator is not used in the array-initialiser syntax
-
   - Using an array initialiser, you have to declare, create, and initialise the array all in one statement
   - Splitting it would cause a syntax error
 
@@ -2336,6 +2334,7 @@ Deque<Integer> stack = new ArrayDeque<>();
 
 ```java
 import java.util.*;
+
 class Solution {
   public int myFunction() {
     // MIN Heap
@@ -2346,7 +2345,7 @@ class Solution {
     PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> Integer.compare(b, a));
     PriorityQueue<Integer> pq = new PriorityQueue<>((a, b) -> b - a);
     PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
-    PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder());
+    PriorityQueue<Integer> maxHeap = new PriorityQueue<>(Collections.reverseOrder()); // Legacy
   }
 }
 ```
@@ -4380,7 +4379,6 @@ public void whenConvertCollectionToStringMultipleSeparators_thenConverted() {
 # Truthy/Falsy Values
 
 - The following values are considered "truthy", meaning they evaluate to `true` in a `boolean` context:
-
   - Non-Zero integers (int, long, double, float, etc.)
   - Non-Null object references
   - Non-Empty arrays
@@ -4856,7 +4854,6 @@ public class BankDemo {
 
 - `Map<String, List> map = new HashMap<>();`
 - Note how
-
   - `List<List<String>> result = new ArrayList(map.values());` works
   - `List<List<String>> result = new ArrayList<>(map.values());` does NOT work
 
@@ -4885,7 +4882,6 @@ public class BankDemo {
 - Solution 2
   - Declare `map` as `Map<String, List<String>> map = new HashMap<>();` instead of `Map<String, List> map = new HashMap<>();`
 - Solution 3
-
   - `List<List<String>> result = new ArrayList<List<String>>(map.values());`
 
 - Explanation
@@ -5424,14 +5420,12 @@ private int recurse(int i, int j) {
 ### Workaround 5
 
 - Can use the Java 14 `record` class which automatically generates
-
   - Private fields
   - Getter and Setter Methods
   - Constructors
   - `.hashCode()`, `.equals()`, and `.toString()` methods
 
 - Notes
-
   - A `Record` class is `final`, so we CANNOT extend it
   - The `Record` classes implicitly extend `java.lang.Record` class
   - All the fields specified in the record declaration are `final` (hence **immutable**)
@@ -5804,7 +5798,6 @@ class Solution {
 ```
 
 - **Note when using a PriorityQueue, it is preferred to keep ALL variables local**
-
   - I.e. Do **NOT** use a `PriorityQueue<Integer>` to hold indexes to another data structure and use those indexes for comparison
 
   ```java

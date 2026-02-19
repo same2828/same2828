@@ -100,7 +100,7 @@ git_main_branch() {
 bindkey '^j' autosuggest-toggle
 bindkey '^k' toggle-fzf-tab
 # Enforce < 81 character limit
-ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*gcmsg '*|*gcmsg \"*|*gc!*|*gcmsg!*|(brew (install|uninstall|info|tap)|cat|cd|codium|cude|curl|echo|fetch|git (add|branch|checkout|clone|merge|rebase|remote)|ga|gc|gca|gcam|gcas|gcasm|gcb|gcl|gcmsg|gco|gcs|gcsm|git commit -(am|m)|mkdir|mv|npm (install|uninstall|link|unlink)|npx|pnpm (add|remove|install|uninstall|link|unlink|up|update|upgrade)|sh|wget|yarn (add|remove|link|unlink|up)|youtube-dl) *)"
+ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*\|*|*gcmsg '*|*gcmsg \"*|*gc!*|*gcmsg!*|(brew (info|install|uninstall|upgrade|tap)|awk|cat|cd|codium|cude|curl|cut|echo|fetch|find*|fpid|fport|freep*|git (add|branch|checkout|clone|merge|rebase|remote)|ga|gbd*|gc|gca|gcam|gcas|gcasm|gcb|gcl|gcmsg|gco|gcs|gcsm|git commit -(am|m)|mkdir|grep|head|join|jq|kdo|kill*|klo|kport|less|mkcd|more|mv|mvv|npm (install|uninstall|link|unlink)|npx|pnpm (add|remove|install|uninstall|link|unlink|up|update|upgrade)|paste|prep|ps*|sed|sort|sh|tail|tee|tr|uniq|wc|wget|xargs|yarn (add|remove|link|unlink|up)|youtube-dl) *)"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -813,15 +813,15 @@ alias prep="perl-grep"
 # }
 # alias prep2="perl-grep-only-matching"
 mvv() {
-    # Execute mv -v passing all arguments ("$@")
-    # Pipe output to sed to perform regex replacement for coloring
-    local RED=$'\033[1;31m'
-    local GREEN=$'\033[1;32m'
-    local RESET=$'\033[0m'
-    local MAGENTA=$'\033[1;35m'
-    # command mv -v "$@" | sed "s/'\([^']*\)'/'"${MAGENTA}"\1"${RESET}"'/g"
-    mv -v "$@" | sed -E "s/'([^']*)'(.*)'([^']*)'/${RED}'\1'${RESET}\2${GREEN}'\3'${RESET}/"
-    # mv -v "$@" | perl -pe "s/'([^']*)'(.*)'([^']*)'/${RED}'\1'${RESET}\2${GREEN}'\3'${RESET}/"
+  # Execute mv -v passing all arguments ("$@")
+  # Pipe output to sed to perform regex replacement for coloring
+  local RED=$'\033[1;31m'
+  local GREEN=$'\033[1;32m'
+  local RESET=$'\033[0m'
+  local MAGENTA=$'\033[1;35m'
+  # command mv -v "$@" | sed "s/'\([^']*\)'/'"${MAGENTA}"\1"${RESET}"'/g"
+  mv -v "$@" | sed -E "s/'([^']*)'(.*)'([^']*)'/${RED}'\1'${RESET}\2${GREEN}'\3'${RESET}/"
+  # mv -v "$@" | perl -pe "s/'([^']*)'(.*)'([^']*)'/${RED}'\1'${RESET}\2${GREEN}'\3'${RESET}/"
 }
 
 # macOS Applications
@@ -929,12 +929,9 @@ delete-local-and-remote-branch() {
   git fetch --all --prune --tags --force > /dev/null 2>&1
   echo -en "Confirm DELETION of branch \033[1;31m$branchToDelete\033[0m in both \033[1;35mLOCAL\033[0m and \033[1;35mREMOTE\033[0m? [yes/N]: "
   read -r response
-  # if [[ ! "$response" =~ ^[yY]$ ]] && [[ ! "$response" =~ ^$ ]]; then
-  # if [[ ! "$response" =~ ^[yY]$ ]] && [[ -n "$response" ]]; then
-  # if [[ ! "$response" =~ ^[yY]$ ]]; then
-  # if [[ ! "$response" =~ ^[yY]([eE][sS])?$ ]]; then
-  # if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
   # if [[ ! "$response" =~ ^[yY][eE][sS]$ ]] && [[ ! "$response" =~ ^[yY]$ ]]; then
+  # if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+  # if [[ ! "$response" =~ ^[Yy]([Ee][Ss])?$ ]]; then
   if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
     echo -e "Branch deletion CANCELLED"
     return 1
@@ -947,8 +944,6 @@ delete-local-and-remote-branch() {
   fi
 }
 alias gbdd="delete-local-and-remote-branch"
-alias gbDd="delete-local-and-remote-branch"
-alias gbDD="delete-local-and-remote-branch"
 # Delete local branch only (usage: gbd localBranchNameToDelete)
 delete-local-branch() {
   if [ $# -ne 1 ]; then
@@ -971,7 +966,9 @@ delete-local-branch() {
   fi
   echo -en "Confirm DELETION of branch \033[1;31m$branchToDelete\033[0m in \033[1;35mLOCAL\033[0m? [yes/N]: "
   read -r response
-  if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+  # if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
+  # if [[ ! "$response" =~ ^[Yy]([Ee][Ss])?$ ]]; then
+  if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
     echo -e "Branch deletion CANCELLED"
     return 1
   fi
@@ -983,7 +980,7 @@ delete-local-branch() {
   fi
 }
 alias gbd="delete-local-branch"
-alias gbD="delete-local-branch"
+alias gbdl="delete-local-branch"
 # Delete remote branch only (usage: gbdr remoteBranchNameToDelete)
 delete-remote-branch() {
   if [ $# -ne 1 ]; then
@@ -1010,7 +1007,6 @@ delete-remote-branch() {
   git push origin :"$branchToDelete"
 }
 alias gbdr="delete-remote-branch"
-alias gbDr="delete-remote-branch"
 # gcb newBranch && gco currBranch (used for git worktree workflow) [usage: gcbb newBranch]
 gcbb() {
   if [ $# -ne 1 ]; then
@@ -1047,6 +1043,7 @@ gundo() {
   #   echo -e "ERROR: Cannot undo \033[1;31m$1\033[0m commits (only \033[1;32m$totalNumCommits\033[0m commits exist)"
   #   return 1
   # fi
+  echo -e "Running: \033[1;35mgit reset --mixed HEAD~$1$\033[0m"
   git reset --mixed HEAD~$1
 }
 git-reset-hard() {
@@ -1059,7 +1056,7 @@ git-reset-hard() {
   read -r response
   # if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
   # if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-  if [[ ! "$response" =~ ^[yY][eE][sS]$ ]] && [[ ! "$response" =~ ^[yY]$ ]]; then
+  if [[ ! "$response" =~ ^[Yy]([Ee][Ss])?$ ]]; then
     echo -e "git reset --hard CANCELLED"
     return 1
   fi
@@ -1082,7 +1079,7 @@ git-reset-hard-and-git-clean() {
   read -r response
   # if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
   # if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-  if [[ ! "$response" =~ ^[yY][eE][sS]$ ]] && [[ ! "$response" =~ ^[yY]$ ]]; then
+  if [[ ! "$response" =~ ^[Yy]([Ee][Ss])?$ ]]; then
     echo -e "git reset --hard && git clean -fd CANCELLED"
     return 1
   fi
@@ -1101,7 +1098,7 @@ git-reset-hard-origin() {
   read -r response
   # if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
   # if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-  if [[ ! "$response" =~ ^[yY][eE][sS]$ ]] && [[ ! "$response" =~ ^[yY]$ ]]; then
+  if [[ ! "$response" =~ ^[Yy]([Ee][Ss])?$ ]]; then
     echo -e "git reset --hard origin/$currBranch CANCELLED"
     return 1
   fi
@@ -1116,7 +1113,7 @@ git-reset-hard-origin-and-git-clean() {
   read -r response
   # if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
   # if [[ ! "$response" =~ ^([yY][eE][sS]|[yY])$ ]]; then
-  if [[ ! "$response" =~ ^[yY][eE][sS]$ ]] && [[ ! "$response" =~ ^[yY]$ ]]; then
+  if [[ ! "$response" =~ ^[Yy]([Ee][Ss])?$ ]]; then
     echo -e "git reset --hard origin/$currBranch && git clean -fd CANCELLED"
     return 1
   fi

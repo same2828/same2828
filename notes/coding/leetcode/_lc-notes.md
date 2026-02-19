@@ -1,7 +1,7 @@
 - [Table of Contents](#table-of-contents)
 - [Resources](#resources)
 - [Templates](#templates)
-- [Definitions](#definitions)
+- [Definitions/Terminology](#definitionsterminology)
 - [Edge Cases](#edge-cases)
   - [Array/List](#arraylist)
   - [Integers](#integers)
@@ -11,6 +11,7 @@
 - [Array](#array)
   - [Median](#median)
   - [Subsets](#subsets)
+- [Ascii](#ascii)
 - [Backtracking](#backtracking)
 - [Binary Representation](#binary-representation)
   - [Build Number from Binary Digits](#build-number-from-binary-digits)
@@ -180,17 +181,23 @@
 - [Ranges](#ranges)
   - [UpperBound - LowerBound (`[0:high] - [0:low]`) to get `[low:high]`](#upperbound---lowerbound-0high---0low-to-get-lowhigh)
 - [Sliding Window](#sliding-window)
+  - [Types of Sliding Window](#types-of-sliding-window)
+  - [1. Fixed Size Window](#1-fixed-size-window)
+    - [Example Problem: Maximum Sum Subarray of Size K](#example-problem-maximum-sum-subarray-of-size-k)
+  - [2. Variable Size Window](#2-variable-size-window)
+    - [Example Problem: Minimum Size Subarray Sum (LeetCode 209)](#example-problem-minimum-size-subarray-sum-leetcode-209)
+  - [3. Sliding Window with Auxiliary Structures (Hash Map/Set)](#3-sliding-window-with-auxiliary-structures-hash-mapset)
+    - [Example Problem: Longest Substring Without Repeating Characters (LeetCode 3)](#example-problem-longest-substring-without-repeating-characters-leetcode-3)
+  - [General Patterns \& Tips for Sliding Window in LeetCode](#general-patterns--tips-for-sliding-window-in-leetcode)
 - [String](#string-1)
   - [Characters](#characters)
   - [Java](#java)
   - [Substrings + Palindrome](#substrings--palindrome)
-- [Sliding Window](#sliding-window-1)
   - [Strings/Substrings](#stringssubstrings)
   - [Array Indexing for Single Pass Forwards + Backwards](#array-indexing-for-single-pass-forwards--backwards)
   - [Longest Palindromic Substring / Longest Common Subsequence](#longest-palindromic-substring--longest-common-subsequence)
 - [String Hashing](#string-hashing)
 - [Subsequence](#subsequence)
-- [Terminology](#terminology)
 - [Time Complexity](#time-complexity)
   - [Dynamic Programming Time Complexity](#dynamic-programming-time-complexity)
 - [TreeMap](#treemap)
@@ -209,6 +216,13 @@
 - [USACO](https://usaco.guide/dashboard)
 - [CP-Algorithms](https://cp-algorithms.com/)
 - [TopCoder](https://www.topcoder.com/thrive/)
+- [Leetcode Patterns](https://seanprashad.com/leetcode-patterns/)
+
+- [Google Sheets - Thita Patterns](https://docs.google.com/spreadsheets/d/1EEYzyD_483B-7CmWxsJB_zycdv4Y5dxnzcoEQtaIfuk/edit?gid=329533698#gid=329533698)
+
+https://www.enkr1.com/interview_preparation_materials/
+https://zerotomastery.io/cheatsheets/data-structures-and-algorithms-cheat-sheet/
+https://jwl-7.github.io/leetcode-cheatsheet/
 
 # Templates
 
@@ -270,20 +284,20 @@ int main() {
 }
 ```
 
-# Definitions
+# Definitions/Terminology
 
 - Palindromic = String/Integer that reads the same forward and backward
-- Subarray = A contiguous non-empty sequence of elements within an array
+- Subarray = A contiguous/continuous non-empty sequence of elements within an array
 - Subsequence = An array that can be derived from another array by deleting some or no elements WITHOUT changing the order of the remaining elements
 - Subset = A selection of elements (possibly none) of the array
-- Substring = A contiguous non-empty sequence of characters within a string
+- Substring = A contiguous/continuous non-empty sequence of characters within a string
 
-- **Subarray = A contiguous/continuous sequence of elements (part of an array) whose relative ordering IS kept (contiguous subsequence)**
+- **Subarray = A contiguous/CONTINUOUS sequence of elements (part of an array) whose relative ordering IS kept (contiguous subsequence)**
 - **Subsequence = A sequence of elements (part of an array) NOT necessarily contiguous/continuous but whose relative ordering IS kept**
 - **Subset = Any possible combination of elements (part of an array) NOT necessarily contiguous, whose relative ordering does NOT have to be kept and contains the empty set `{}`**
+- **Combination = A selection of some/all elements from an array (where the order of selection does NOT matter)**
 - **Lexicographically Smallest = A string `a` is lexicographically smaller than a string `b` IFF `a.length() == b.length()` AND in the first position where `a` and `b` differ, string `a` has a letter that appears earlier in the alphabet than the corresponding letter in string `b`. Otherwise the shorter string is the lexicographically smaller one (i.e. if the first `Math.min(a.length, b.length)` characters do NOT differ, then the shorter string is the lexicographically smaller one)**
 - **Permutation = A rearrangement of ALL the elements of an array (where order DOES matter)**
-- **Combination = A selection of some/all elements from an array (where the order of selection does NOT matter)**
 - **Subtree = In a rooted tree, the subtree of some node `v` is the set of all vertices whose their path to the root contains `v`**
 
 # Edge Cases
@@ -388,6 +402,49 @@ class Solution {
   }
 }
 ```
+
+# Ascii
+
+Direct ASCII Mapping:
+Standard ASCII values range from 0 to 127.
+This includes uppercase letters (`'A'` is 65), lowercase letters (`'a'` is 97), digits, and symbols.
+By defining `std::vector<int> map(128, 0)`, the code allocates a slot for every possible standard ASCII character.
+When you write `map[ch]`, the char `ch` is implicitly cast to its integer ASCII value, which serves directly as the index.
+
+| Dec | Char                          | Dec | Char    | Dec | Char | Dec | Char    |
+| --- | ----------------------------- | --- | ------- | --- | ---- | --- | ------- |
+| 0   | `NUL` (null)                  | 32  | `SPACE` | 64  | `@`  | 96  | `` ` `` |
+| 1   | `SOH` (start of heading)      | 33  | `!`     | 65  | `A`  | 97  | `a`     |
+| 2   | `STX` (start of text)         | 34  | `"`     | 66  | `B`  | 98  | `b`     |
+| 3   | `ETX` (end of text)           | 35  | `#`     | 67  | `C`  | 99  | `c`     |
+| 4   | `EOT` (end of transmission)   | 36  | `$`     | 68  | `D`  | 100 | `d`     |
+| 5   | `ENQ` (enquiry)               | 37  | `%`     | 69  | `E`  | 101 | `e`     |
+| 6   | `ACK` (acknowledge)           | 38  | `&`     | 70  | `F`  | 102 | `f`     |
+| 7   | `BEL` (bell)                  | 39  | `'`     | 71  | `G`  | 103 | `g`     |
+| 8   | `BS` (backspace)              | 40  | `(`     | 72  | `H`  | 104 | `h`     |
+| 9   | `TAB` (horizontal tab)        | 41  | `)`     | 73  | `I`  | 105 | `i`     |
+| 10  | `LF` (NL line feed, new line) | 42  | `*`     | 74  | `J`  | 106 | `j`     |
+| 11  | `VT` (vertical tab)           | 43  | `+`     | 75  | `K`  | 107 | `k`     |
+| 12  | `FF` (NP form feed, new page) | 44  | `,`     | 76  | `L`  | 108 | `l`     |
+| 13  | `CR` (carriage return)        | 45  | `-`     | 77  | `M`  | 109 | `m`     |
+| 14  | `SO` (shift out)              | 46  | `.`     | 78  | `N`  | 110 | `n`     |
+| 15  | `SI` (shift in)               | 47  | `/`     | 79  | `O`  | 111 | `o`     |
+| 16  | `DLE` (data link escape)      | 48  | `0`     | 80  | `P`  | 112 | `p`     |
+| 17  | `DC1` (device control 1)      | 49  | `1`     | 81  | `Q`  | 113 | `q`     |
+| 18  | `DC2` (device control 2)      | 50  | `2`     | 82  | `R`  | 114 | `r`     |
+| 19  | `DC3` (device control 3)      | 51  | `3`     | 83  | `S`  | 115 | `s`     |
+| 20  | `DC4` (device control 4)      | 52  | `4`     | 84  | `T`  | 116 | `t`     |
+| 21  | `NAK` (negative acknowledge)  | 53  | `5`     | 85  | `U`  | 117 | `u`     |
+| 22  | `SYN` (synchronous idle)      | 54  | `6`     | 86  | `V`  | 118 | `v`     |
+| 23  | `ETB` (end of trans. block)   | 55  | `7`     | 87  | `W`  | 119 | `w`     |
+| 24  | `CAN` (cancel)                | 56  | `8`     | 88  | `X`  | 120 | `x`     |
+| 25  | `EM` (end of medium)          | 57  | `9`     | 89  | `Y`  | 121 | `y`     |
+| 26  | `SUB` (substitute)            | 58  | `:`     | 90  | `Z`  | 122 | `z`     |
+| 27  | `ESC` (escape)                | 59  | `;`     | 91  | `[`  | 123 | `{ `    |
+| 28  | `FS` (file separator)         | 60  | `<`     | 92  | `\`  | 124 | `\|`    |
+| 29  | `GS` (group separator)        | 61  | `=`     | 93  | `]`  | 125 | `}`     |
+| 30  | `RS` (record separator)       | 62  | `>`     | 94  | `^`  | 126 | `~`     |
+| 31  | `US` (unit separator)         | 63  | `?`     | 95  | `_`  | 127 | `DEL`   |
 
 # Backtracking
 
@@ -2020,7 +2077,7 @@ int numNodesInConnectedGraph = edges.length + 1;
   - If there are **exactly two vertices of odd degree**, all Eulerian paths start at one of them and end at the other
 - A graph has an Eulerian Path if and only if:
   - We have `outDegree[i] == inDegree[i]` for each node i
-    - I.e. Cycle
+    - i.e. Cycle
   - We have `outDegree[i] == inDegree[i]` for all nodes i except exactly two nodes `x` and `y` that satisfy:
     - `outDegree[x] = inDegree[x] + 1` (x = start node)
     - `outDegree[y] = inDegree[y] - 1` (y = end node)
@@ -2465,7 +2522,7 @@ public:
 - Use **MIN** heap of size `k` so that k'th largest element will be at the top of the heap
   - Min heap order goes `[k'th, (k-1)'th, (k-2)th, ..., 2nd, 1st]` largest
   - Elements that come after will be LARGER, so `k-1`th largest element comes next
-    - I.e. if `k == 3`, then second largest element comes next, then largest element comes last
+    - i.e. if `k == 3`, then second largest element comes next, then largest element comes last
   - Largest element will be at bottom of the heap
 - Insert elements into pq and restrict `pq.size()` to k
 
@@ -2489,7 +2546,7 @@ class Solution {
 - Use **MAX** heap of size `k` so that k'th smallest element will be at the top of the heap
   - Max heap order goes `[k'th, (k-1)'th, (k-2)th, ..., 2nd, 1st]` smallest
   - Elements that come after will be SMALLER, so `k-1`th smallest element comes next
-    - I.e. if `k == 3`, then second smallest element comes next, then smallest element comes last
+    - i.e. if `k == 3`, then second smallest element comes next, then smallest element comes last
   - Smallest element will be at bottom of the heap
 - Insert elements into pq and restrict `pq.size()` to k
 
@@ -2559,7 +2616,7 @@ public:
 ## Closed Intervals
 
 - In a closed interval, BOTH the lower and upper bounds are INCLUDED in the range
-  - I.e. the interval is INCLUSIVE at both ends
+  - i.e. the interval is INCLUSIVE at both ends
 - A closed interval is denoted using square brackets `[]` for both the lower and upper bounds
 
 ```tex
@@ -2569,7 +2626,7 @@ public:
 ## Open Intervals
 
 - In an open interval, neither the lower nor the upper bound is included in the range
-  - I.e. the interval is EXCLUSIVE at both ends
+  - i.e. the interval is EXCLUSIVE at both ends
 - An open interval is denoted using parentheses `()` for both the lower and upper bounds
 
 ```tex
@@ -3207,7 +3264,7 @@ where:
 2. `(a * b) % mod == ((a % mod) * (b % mod)) % mod`
 3. `(a — b) % mod == ((a % mod) — (b % mod) + mod) % mod`
    - Note: We `+ mod` in case `(a - b)` || `((a % mod) — (b % mod))` is negative (since in some programming languages taking the modulus of a negative number `x` gives a DIFFERENT result to taking modulus of positive number `x`)
-     - I.e. In Java `(-10 % 3) == -1` BUT `(10 % 3) == 1`
+     - i.e. In Java `(-10 % 3) == -1` BUT `(10 % 3) == 1`
 4. `(a / b) % mod == ((a % mod) * (b^(-1) % mod)) % mod`
 
 - Note that `Math.max(sum1 % mod, sum2 % mod) % mod;` is **NOT** the same as `Math.max(sum1, sum2) % mod;`
@@ -3400,14 +3457,17 @@ Example: `1e9 + 7 == 1 * 10^9 + 7`
 
 Formula:
 
-- **`n/2 * (2a + (n-1)d)`**
-- **`n/2 * (a + l)`**
-  - `a` = First term in the sequence
-  - `n` = Number of elements
-  - `d` = Common difference between terms
-  - `l` = Last term of sequence
+**`n/2 * (2a + (n-1)d)`**
+**`n/2 * (a + l)`**
+
+- `a` = First term in the sequence
+- `n` = Number of elements
+- `d` = Common difference between terms
+- `l` = Last term of sequence
 
 Example:
+
+`n * (n+1) / 2` = Sum of AP of length n with difference of 1: `n, n-1, n-2, ... + 1`
 
 ```
 First Term = a = 1
@@ -3417,7 +3477,7 @@ Formula
 = n/2 * (2*1 + (n-1) * 1)
 = n/2 * (2 + n-1)
 = n/2 * (n + 1)
-= n * (n+1) / 2
+= [n * (n+1)] / 2
 ```
 
 ##### Number of Subarrays
@@ -3605,6 +3665,7 @@ Look at where you are doing repeated calculations (especially in recursive calls
 > Version 1
 
 ```java
+int n = nums.length;
 int[] prefixSum = new int[n + 1];
 for (int i = 0; i < n; i++) {
   prefixSum[i + 1] = prefixSum[i] + nums[i];
@@ -3614,6 +3675,7 @@ for (int i = 0; i < n; i++) {
 > Version 2
 
 ```java
+int n = nums.length;
 int[] prefixSum = new int[n + 1];
 for (int i = 1; i <= n; i++) {
   prefixSum[i] = prefixSum[i - 1] + nums[i - 1];
@@ -3650,7 +3712,8 @@ int dp() {
 ```cpp
 int n = nums.size()
 std::vector<int> prefixSum(n + 1, 0);
-std::partial_sum(std::begin(nums), std::end(nums), std::begin(prefixSum) + 1);
+// std::partial_sum(InputIt first, InputIt last, OutputIt d_first)
+std::partial_sum(std::begin(nums), std::end(nums), std::begin(prefixSum) + 1); // output iterator =  tells function where to start writing the results
 ```
 
 ## Left Prefix Sum + Right Prefix Sum + Bottom Up DP
@@ -3706,7 +3769,8 @@ std::partial_sum(std::begin(nums), std::end(nums), std::begin(prefixSum) + 1);
 
 ## Comparisons
 
-- If there are `n` comparisons, then there will be `n+1` elements involved (See: 978.longest-turbulent-subarray)
+- If there are `n` comparisons, then there will be `n+1` elements involved
+- See: 978.longest-turbulent-subarray
 
 # Ranges
 
@@ -3725,36 +3789,12 @@ std::partial_sum(std::begin(nums), std::end(nums), std::begin(prefixSum) + 1);
   - Two pointers (`left`, `right`)
   - `deque`
 
-# String
-
-## Characters
-
-- Convert characters to integer/int index with `int index = str.charAt(0) - 'a';`
-
-## Java
-
-- Compare strings with **`.equals()`** and NOT `==`
-- Convert `String` to `char[]` with `.toCharArray()`
-- Convert `String` to `String[]` with `.split()`
-
-## Substrings + Palindrome
-
-- To split a string into k substrings (sub_1, sub_2, ..., sub_k) that are palindromic the following formula is used
-  - `sub_i == sub_k - i + 1`
-    - Note: There are NO brackets here, it is `k - 1 + 1` as is
-    - Note: This is mainly just fancy notation and it was purposely decided that substrings should start at index 1
-- Read more:
-  - 1147.longest-chunked-palindrome-decomposition
-
-# Sliding Window
-
 ```java
 int left = 0;
+int result = 0;
 // Create state (int, map, set, etc)
-// ...
 for (int right = 0; right < n; right++) {
   // Add to state
-  // ...
   if (state is invalid) {
     continue;
   }
@@ -3772,10 +3812,8 @@ int left = 0;
 int right = 0;
 int result = 0;
 // Create state (int, map, set, etc)
-// ...
 while (right < n) {
   // Add to state
-  // ...
   if (state is invalid) {
     continue;
   }
@@ -3788,13 +3826,274 @@ while (right < n) {
 }
 ```
 
+The **Sliding Window** technique is a powerful algorithmic pattern used to solve problems involving arrays or strings. It converts a set of nested loops (typically $O(N^2)$ or $O(N^3)$) into a single loop ($O(N)$), significantly improving efficiency. It involves maintaining a subset of items (the "window") that slides over the data structure to calculate a result
+
+## Types of Sliding Window
+
+1.  **Fixed Size**: The window size remains constant throughout the traversal
+2.  **Variable Size**: The window grows or shrinks based on certain conditions (often involves "Two Pointers")
+
+## 1. Fixed Size Window
+
+**Use Case**: When you are asked to find something (sum, max, min, average) in a subarray or substring of a specific length `k`
+
+**Strategy**:
+
+1.  Initialize the window with the first `k` elements
+2.  Slide the window one step at a time:
+    - Add the new element coming into the window (right)
+    - Remove the element going out of the window (left)
+3.  Update the answer
+
+### Example Problem: Maximum Sum Subarray of Size K
+
+_Given an array of integers and a number `k`, find the maximum sum of a subarray of size `k`._
+
+```java
+public class Solution {
+  public int maxSubArraySum(int[] nums, int k) {
+    if (nums.length < k) {
+      return -1;
+    }
+    int maxSum = 0;
+    int currentSum = 0;
+    // 1. Initial window
+    for (int i = 0; i < k; i++) {
+      currentSum += nums[i];
+    }
+    maxSum = currentSum;
+    // 2. Slide the window
+    for (int i = k; i < nums.length; i++) {
+      currentSum += nums[i]; // Add element entering right
+      currentSum -= nums[i - k]; // Remove element leaving left
+      maxSum = Math.max(maxSum, currentSum);
+    }
+    return maxSum;
+  }
+}
+```
+
+```cpp
+#include <algorithm>
+#include <numeric>
+#include <vector>
+
+class Solution {
+public:
+  int maxSubArraySum(std::vector<int> &nums, int k) {
+    if (nums.size() < k) {
+      return -1;
+    }
+    long long currentSum = 0;
+    // 1. Initial window
+    for (int i = 0; i < k; i++) {
+      currentSum += nums[i];
+    }
+    long long maxSum = currentSum;
+    // 2. Slide
+    for (int i = k; i < nums.size(); i++) {
+      currentSum += nums[i];     // Add right
+      currentSum -= nums[i - k]; // Remove left
+      maxSum = std::max(maxSum, currentSum);
+    }
+    return (int) maxSum;
+  }
+};
+```
+
+## 2. Variable Size Window
+
+**Use Case**: Find the longest or shortest subarray/substring that satisfies a condition (e.g., sum >= target, distinct characters)
+
+**Strategy**:
+
+1.  Use two pointers: `left` (start of window) and `right` (end of window), both starting at 0
+2.  **Expand**: Move `right` to include elements until the condition is met or broken
+3.  **Shrink**: Once the condition needs adjustment (e.g., sum is too large, or we found a duplicate), increment `left` to shrink the window until the condition is valid again
+4.  Update the result at each valid state
+
+### Example Problem: Minimum Size Subarray Sum (LeetCode 209)
+
+_Find the minimal length of a contiguous subarray of which the sum is greater than or equal to `target`._
+
+```java
+public class Solution {
+  public int minSubArrayLen(int target, int[] nums) {
+    int left = 0;
+    int sum = 0;
+    int minLength = Integer.MAX_VALUE;
+    for (int right = 0; right < nums.length; right++) {
+      sum += nums[right]; // Expand window
+      // Shrink window while condition is met to find minimum length
+      while (sum >= target) {
+        minLength = Math.min(minLength, right - left + 1);
+        sum -= nums[left];
+        left++;
+      }
+    }
+    return minLength == Integer.MAX_VALUE ? 0 : minLength;
+  }
+}
+```
+
+```cpp
+#include <algorithm>
+#include <climits>
+#include <vector>
+
+class Solution {
+public:
+  int minSubArrayLen(int target, std::vector<int> &nums) {
+    int left = 0;
+    int sum = 0;
+    int minLength = INT_MAX;
+    for (int right = 0; right < nums.size(); right++) {
+      sum += nums[right]; // Expand
+      // Shrink
+      while (sum >= target) {
+        minLength = std::min(minLength, right - left + 1);
+        sum -= nums[left];
+        left++;
+      }
+    }
+    return minLength == INT_MAX ? 0 : minLength;
+  }
+};
+```
+
+## 3. Sliding Window with Auxiliary Structures (Hash Map/Set)
+
+**Use Case**: Problems involving frequency of characters, distinct elements, or anagrams
+
+**Strategy**: Use a HashMap, HashSet, or a simple Frequency Array (e.g., `int[26]` for lowercase letters) to track the contents of the current window efficiently
+
+### Example Problem: Longest Substring Without Repeating Characters (LeetCode 3)
+
+_Find the length of the longest substring without repeating characters._
+
+```java
+import java.util.HashSet;
+import java.util.Set;
+
+public class Solution {
+  public int lengthOfLongestSubstring(String s) {
+    int left = 0;
+    int maxLength = 0;
+    Set<Character> window = new HashSet<>();
+    for (int right = 0; right < s.length(); right++) {
+      char c = s.charAt(right);
+      // If duplicate found, shrink from left until the duplicate is removed
+      while (window.contains(c)) {
+        window.remove(s.charAt(left));
+        left++;
+      }
+      window.add(c);
+      maxLength = Math.max(maxLength, right - left + 1);
+    }
+    return maxLength;
+  }
+}
+```
+
+```cpp
+#include <algorithm>
+#include <string>
+#include <unordered_set>
+
+class Solution {
+public:
+  int lengthOfLongestSubstring(std::string s) {
+    int left = 0;
+    int maxLength = 0;
+    std::unordered_set<char> window;
+    for (int right = 0; right < s.length(); right++) {
+      // While duplicate exists in window, shrink
+      while (window.count(s[right])) {
+        window.erase(s[left]);
+        left++;
+      }
+      window.insert(s[right]);
+      maxLength = std::max(maxLength, right - left + 1);
+    }
+    return maxLength;
+  }
+};
+```
+
+## General Patterns & Tips for Sliding Window in LeetCode
+
+1. **Fixed Length Template**:
+   - Iterate `right` from `0` to `n-1`
+   - Add `nums[right]` to window state
+   - If `right >= k - 1`:
+     - We have a full window of size `k`
+     - Update result
+     - Remove `nums[right - k + 1]` from window state (prepare for next slide)
+
+2. **Shortest Valid Window (Min)**:
+   - Expand `right` to satisfy condition
+   - **While** condition is satisfied:
+     - Update result (min length)
+     - Shrink `left` to see if a smaller valid window exists
+
+3. **Longest Valid Window (Max)**:
+   - Expand `right`
+   - **While** condition is _violated_ (e.g. too many distinct chars):
+     - Shrink `left` until valid again
+   - Update result (max length) after ensuring validity
+
+4. **Optimization**:
+   - For character-based problems (like anagrams or permutations), prefer using `int[26]` (or `int[128]`) arrays instead of HashMaps for better performance and reduced overhead in both C++ and Java
+
+See
+
+239.sliding-window-maximum.java
+
+```java
+// First sliding window starts at index 0 and ends at index k - 1
+// Last sliding window starts at index (n - k) and ends at index n - 1 (the last element)
+// Hence there are (n - k) - 0 + 1 = n - k + 1 sliding windows in total.
+int[] result = new int[n - k + 1];
+```
+
+76.minimum-sliding-window
+
+# String
+
+## Characters
+
+- Convert characters to integer/int index with `int index = str.charAt(0) - 'a';`
+
+## Java
+
+- Compare strings with **`.equals()`** and NOT `==`
+- Convert `String` to `char[]` with `.toCharArray()`
+- Convert `String` to `String[]` with `.split()`
+- Compare character with `s.charAt(i) < s.charAt(j)`
+
+## Substrings + Palindrome
+
+- To split a string `s` into `k` substrings (sub_1, sub_2, ..., sub_k) that are palindromic the following formula is used
+  - `sub_i == sub_k - i + 1`
+    - Note: There are NO brackets here, it is `k - 1 + 1` as is
+    - Note: This is mainly just fancy notation and it was purposely decided that substrings should start at index 1
+- Read more:
+  - 1147.longest-chunked-palindrome-decomposition
+
 ## Strings/Substrings
 
-- If using a sliding window on a string of length `n` to find substrings of length `substrLength`
-  - I.e. Finding substrings of length 2 from string `|h|e|l|l|o|w|o|r|l|d||`
-- Formula for for loop:
+- If using a sliding window on a string `s` of length `n` to find substrings of length `substrLength`
+  - Example: Finding substrings of length 2 from string `|h|e|l|l|o|w|o|r|l|d|`
+- Formula using for loop:
   - `for (int i = 0; i <= n - substrLength)`
   - `for (int i = 0; i < n - substrLength + 1)`
+
+```java
+for (int i = 0; i <= n - substrLength; i++) { // (i+substrLength <= n) valid when using .substring(idxInclusive, idxExclusive)
+  String tmp = s.substring(i, i + substrLength);
+  //...
+}
+```
 
 ```java
 for (int i = 0; i < n - substrLength + 1; i++) {
@@ -3834,8 +4133,50 @@ for (int i = 1; i < n; i++) {
   - Method 2
     - Reverse string `s` and compare `s` with reversed string
 
+See
+
+- 5.longest-palindromic-substring.java
+- 516.longest-palindromic-subsequence.java
+
 ```java
-// Method 1
+// Top Down
+class Solution {
+  int[][] memo;
+  String s;
+
+  public int longestPalindromeSubseq(String s) {
+    this.s = s;
+    int n = s.length();
+    this.memo = new int[n + 1][n + 1];
+    for (int[] row : memo) {
+      Arrays.fill(row, -1);
+    }
+    return dp(0, s.length() - 1);
+  }
+
+  private int dp(int i, int j) {
+    if (memo[i][j] != -1) {
+      return memo[i][j];
+    }
+    if (i > j) {
+      return 0;
+    }
+    if (i == j) {
+      return 1;
+    }
+    int result = 0;
+    if (s.charAt(i) == s.charAt(j)) {
+      result = dp(i + 1, j - 1) + 2;
+    } else {
+      result = Math.max(dp(i + 1, j), dp(i, j - 1));
+    }
+    return memo[i][j] = result;
+  }
+}
+```
+
+```java
+// Bottom Up
 public int longestPalindromicSubseq(String s) {
   int n = s.length();
   int[][] dp = new int[n][n];
@@ -3858,7 +4199,7 @@ public int longestPalindromicSubseq(String s) {
 ```
 
 ```java
-// Method 2
+// StringBuilder
 public int longestPalindromicSubseq(String s) {
   String r = new StringBuilder(s).reverse().toString();
   int n = s.length();
@@ -3905,12 +4246,6 @@ See: 3388.count-beautiful-splits-in-an-array
 - Examples
   - 3082.find-the-sum-of-the-power-of-all-subsequences (interesting how we generate all subsequences and multiply by 2)
 
-# Terminology
-
-- Subarray = A contiguous/continuous sequence of elements (part of an array) whose relative ordering IS kept (contiguous subsequence)
-- Subsequence = A sequence of elements (part of an array) NOT necessarily contiguous/continous but whose relative ordering IS kept
-- Subset = Any possible combination of elements (part of an array) NOT necessarily contiguous, whose relative ordering does NOT have to be kept and contains the empty set `{}`
-
 # Time Complexity
 
 - Trick
@@ -3925,7 +4260,7 @@ See: 3388.count-beautiful-splits-in-an-array
   - Fill up `memo[N][N]`
   - Double `for()` loop
 - `O(2^N)`
-  - For each of the `N` elements in `nums[]` we have 2 choices (which is typically skip or include `nums[i]`)
+  - For each of the `N` elements in `nums[]` we have 2 choices (typically skip or include `nums[i]`)
 - String
   - In a given string `S` of length `N`, there are `N` possible substrings of length 1, `N-1` possible substrings of length 2, `N-2` possible substrings of length 3, and so on, down to 1 possible substring of length `N`
   - Therefore, the total number of possible substrings of a string `S` is: `N + (N-1) + (N-2) + ... + 1 = N * (N+1)/2 = O(N^2)`
@@ -3939,7 +4274,7 @@ See: 3388.count-beautiful-splits-in-an-array
       - N = nums.length
       - K = numPartitionsAllowed
     - In each recursive `dp(i, k)` call / each dp state, if we need to iterate over ALL of nums which costs `O(N)`
-      - `for(int j = i; j < nums.length; j++)`
+      - `for (int j = i; j < nums.length; j++)`
     - Then time complexity is actually `O(N * K * N)` = `O(N^2 * K)`
     - See: 1959.minimum-total-space-wasted-with-k-resizing-operations
 

@@ -7,10 +7,9 @@
 
 - [Ascii Table](https://www.cs.cmu.edu/~pattis/15-1XX/common/handouts/ascii.html)
 - Example
-
-  - Character '5' has the decimal/ascii value of 53
+  - Character `'5'` has the decimal/ascii value of 53
   - If we write `'5' - '0'` it evaluates to 53-48, or the int 5
-  - If we write `char c = 'B'+32;` then `c` stores `'b'`
+  - If we write `char ch = 'B' + 32;` then `ch` stores character `'b'`
 
 - Dec = Decimal Value
 - Char = Character

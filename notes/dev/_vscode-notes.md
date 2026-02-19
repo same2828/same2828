@@ -227,7 +227,7 @@ Extension List:
 - REST Client (Huachao Mao) (note: `ThunderClient` is now paywalled)
 - Rewrap (stkb)
 - Ruff (Astral Software)
-- **shell-format (foxundermoon)**
+- **shell-format-rev (lumirelle)**
 - **ShellCheck (Timon Wong)**
 - Simple React Snippets (Burke Holland) (DISABLED)
 - **Sort Everything (Benny Neugebauer)**
