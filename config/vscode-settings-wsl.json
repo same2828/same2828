@@ -35,11 +35,12 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.json-language-features"
+    // "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[jsonc]": {
-    // "editor.defaultFormatter": "vscode.json-language-features"
-    "editor.defaultFormatter": "esbenp.prettier-vscode"
+    "editor.defaultFormatter": "vscode.json-language-features"
+    // "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[markdown]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
@@ -1691,6 +1692,7 @@
     // "**/target*/**": true,
     "**/target/**/.*": true,
     "**/target/classes/**": true,
+    "**/target/dependency-maven-plugin-markers/**": true,
     "**/target/generated-sources/**/.*": true,
     "**/target/generated-test-sources/**": true,
     "**/target/karate*/**": true,

@@ -100,7 +100,7 @@ git_main_branch() {
 bindkey '^j' autosuggest-toggle
 bindkey '^k' toggle-fzf-tab
 # Enforce < 81 character limit
-ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*\|*|*gcmsg '*|*gcmsg \"*|*gc!*|*gcmsg!*|(brew (info|install|uninstall|upgrade|tap)|awk|cat|cd|codium|cude|curl|cut|echo|fetch|find*|fpid|fport|freep*|git (add|branch|checkout|clone|merge|rebase|remote)|ga|gbd*|gc|gca|gcam|gcas|gcasm|gcb|gcl|gcmsg|gco|gcs|gcsm|git commit -(am|m)|mkdir|grep|head|join|jq|kdo|kill*|klo|kport|less|mkcd|more|mv|mvv|npm (install|uninstall|link|unlink)|npx|pnpm (add|remove|install|uninstall|link|unlink|up|update|upgrade)|paste|prep|ps*|sed|sort|sh|tail|tee|tr|uniq|wc|wget|xargs|yarn (add|remove|link|unlink|up)|youtube-dl) *)"
+ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*\|*|*gcmsg '*|*gcmsg \"*|*gc!*|*gcmsg!*|(brew (info|install|uninstall|upgrade|tap)|awk|cat|cd|codium|code|cude|curl|cut|echo|fetch|find*|fpid|fport|freep*|git (add|branch|checkout|clone|merge|rebase|remote)|ga|gbd*|gc|gca|gcam|gcas|gcasm|gcb|gcl|gcmsg|gco|gcs|gcsm|git commit -(am|m)|mkdir|grep|head|idea|join|jq|kdo|kill*|klo|kport|less|mkcd|more|mv|mvv|npm (install|uninstall|link|unlink)|npx|pnpm (add|remove|install|uninstall|link|unlink|up|update|upgrade)|paste|prep|ps*|sed|sort|sh|tail|tee|tr|uniq|wc|wget|xargs|yarn (add|remove|link|unlink|up)|youtube-dl) *)"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -279,15 +279,14 @@ docker-stop-all() {
   docker ps -aq | xargs -r docker stop --signal=9 -t0
 }
 alias dstop-all="docker-stop-all"
-# Remove all stopped containers
 docker-rm-all() {
-  docker ps -aq -f | xargs -r docker rm -f
+  # docker rm -f $(docker ps -aq)
+  docker ps -aq | xargs -r docker rm -f
 }
 alias drm-all="docker-rm-all"
-# Remove all stopped containers
 docker-stop-rm-all() {
   docker ps -aq | xargs -r docker stop --signal=9 -t0
-  docker ps -aq -f | xargs -r docker rm -f
+  docker ps -aq | xargs -r docker rm -f
 }
 alias dstoprm-all="docker-stop-rm-all"
 # Remove all dangling (unused) images
@@ -823,6 +822,65 @@ mvv() {
   mv -v "$@" | sed -E "s/'([^']*)'(.*)'([^']*)'/${RED}'\1'${RESET}\2${GREEN}'\3'${RESET}/"
   # mv -v "$@" | perl -pe "s/'([^']*)'(.*)'([^']*)'/${RED}'\1'${RESET}\2${GREEN}'\3'${RESET}/"
 }
+no-sleep() {
+  local duration=$1
+  if [[ ! "$duration" =~ ^[0-9]+$ ]]; then
+    duration=3600
+  fi
+  caffeinate -u -t "$duration"
+}
+wipe() {
+  if [ $# -ne 1 ]; then
+    echo "Usage: wipe <file-to-wipe>"
+    return 1
+  fi
+  local fileToWipe=$1
+  if [ ! -f "$fileToWipe" ]; then
+    echo -e "ERROR: File \033[1;31m$fileToWipe\033[0m does not exist"
+    return 1
+  fi
+  echo -en "Confirm WIPING of file \033[1;31m$fileToWipe\033[0m? [yes/N]: "
+  read -r response
+  if [[ ! "$response" =~ ^[yY]([eE][sS])?$ ]]; then
+    echo -e "Wipe CANCELLED"
+    return 1
+  fi
+  # cat /dev/null > "$fileToWipe"
+  # : >| "$fileToWipe"
+  truncate -s 0 "$fileToWipe"
+  echo -e "Wiped file \033[1;31m$fileToWipe\033[0m"
+}
+jq-sort() {
+  if [[ $# -ne 1 ]]; then
+    echo "Usage: jq-sort <json-file-to-sort-alphabetically>"
+    return 1
+  fi
+  if [[ ! -f "$1" ]]; then
+    echo -e "ERROR: \033[1;31m$1\033[0m does NOT exist"
+    return 1
+  fi
+  local tempFile="tmp-$(date +%s).json"
+  jq -S '.' "$1" > "$tempFile" && command mv -v "$tempFile" "$1" || rm -f "$tempFile"
+}
+timeis() {
+  date +"%Y-%m-%d@%H:%M:%S"
+  date +"%Y-%m-%d-%H:%M:%S"
+  date +"%Y-%m-%d-%H-%M-%S"
+  date +"%d-%m-%Y@%H:%M:%S"
+  date +"%d-%m-%Y-%H:%M:%S"
+  date +"%d-%m-%Y-%H-%M-%S"
+  date +%s
+}
+timeis2() {
+  date +"%Y-%m-%d@%I:%M:%S%p"
+  date +"%Y-%m-%d-%I:%M:%S%p"
+  date +"%Y-%m-%d-%I-%M-%S%p"
+  date +"%d-%m-%Y@%I:%M:%S%p"
+  date +"%d-%m-%Y-%I:%M:%S%p"
+  date +"%d-%m-%Y-%I-%M-%S%p"
+  date +%s
+}
+wipe()
 
 # macOS Applications
 #-------------------
@@ -1362,24 +1420,6 @@ git-worktree-remove() {
 }
 alias gwtr='git-worktree-remove'
 alias gwtrm='git-worktree-remove'
-timeis() {
-  date +"%Y-%m-%d@%H:%M:%S"
-  date +"%Y-%m-%d-%H:%M:%S"
-  date +"%Y-%m-%d-%H-%M-%S"
-  date +"%d-%m-%Y@%H:%M:%S"
-  date +"%d-%m-%Y-%H:%M:%S"
-  date +"%d-%m-%Y-%H-%M-%S"
-  date +%s
-}
-timeis2() {
-  date +"%Y-%m-%d@%I:%M:%S%p"
-  date +"%Y-%m-%d-%I:%M:%S%p"
-  date +"%Y-%m-%d-%I-%M-%S%p"
-  date +"%d-%m-%Y@%I:%M:%S%p"
-  date +"%d-%m-%Y-%I:%M:%S%p"
-  date +"%d-%m-%Y-%I-%M-%S%p"
-  date +%s
-}
 
 # Git Aliases
 #------------
@@ -1465,6 +1505,7 @@ alias n='npm'
 alias n-update='npm outdated -g'
 alias p='pnpm'
 alias p-update='pnpm outdated'
+alias port-update='sudo port selfupdate && sudo port outdated'
 alias now='date +"%Y-%m-%d %H:%M:%S"'
 alias rezsh='source ~/.zshrc'
 # alias timeis='date +"%Y-%m-%d@%H:%M:%S"'
