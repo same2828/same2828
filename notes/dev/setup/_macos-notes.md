@@ -175,6 +175,13 @@ brew install --cask libreoffice-still
 - Drag and Drop Cell
   - Click on Cell > Shift + Click on Cell > Drag (using mouse, no shift)
 
+Preferences > LibreOffice > Appearance > LibreOffice Themes > Dark (untick all boxes underneath)
+Preferences > LibreOffice > Appearance > Customizations > Document Background > Should #1C1C1C by default
+Preferences > LibreOffice > Appearance > Customizations > Font Color > #FFFFFF
+
+Styles > Manage Styles > Right-click on Default > Edit Style... > Font > Family > Menlo
+Styles > Manage Styles > Right-click on Default > Edit Style... > Font > Size > 12
+
 ### Librewolf
 
 ```sh
@@ -244,22 +251,22 @@ brew install gromgit/fuse/ntfs-3g-mac
 
 ### Rectangle
 
-- Shortcuts
+Shortcuts
 
-  - DELETE Everything
-  - Left Half = `Control + Option + Left Arrow`
-  - Right Half = `Control + Option + Right Arrow`
-  - Top Left = `Control + Option + U`
-  - Top Right = `Control + Option + I`
-  - Bottom Left = `Control + Option + J`
-  - Bottom Right = `Control + Option + K`
-  - Maximise = `Control + Option + Up Arrow`
-  - Make Smaller = `Control + Option + -`
-  - Make Larger = `Control + Option + =`
-  - Center = `Control + Option + C`
-  - Restore = `Control + Option + Down Arrow`
-  - Next Display = `Control + Option + Command + Right Arrow`
-  - Previous Display = `Control + Option + Command + Left Arrow`
+- DELETE Everything
+- Left Half = `Control + Option + Left Arrow`
+- Right Half = `Control + Option + Right Arrow`
+- Top Left = `Control + Option + U`
+- Top Right = `Control + Option + I`
+- Bottom Left = `Control + Option + J`
+- Bottom Right = `Control + Option + K`
+- Maximise = `Control + Option + Up Arrow`
+- Make Smaller = `Control + Option + -`
+- Make Larger = `Control + Option + =`
+- Center = `Control + Option + C`
+- Restore = `Control + Option + Down Arrow`
+- Next Display = `Control + Option + Command + Right Arrow`
+- Previous Display = `Control + Option + Command + Left Arrow`
 
 - [Rectangle](https://rectangleapp.com/)
 
@@ -399,13 +406,60 @@ application -> right_command
 f4 -> illumination_down
 f5 -> illumination_up
 pause -> play_or_pause
-print_screen -> volume_decrement
-scroll_lock -> volume_increment
 
 # Settings > Simple Modifications > For Ducky Keyboard
 left_command -> left_control
 left_control -> left_command
+application -> right_control
+right_control -> right_command
 keypad_enter -> return_or_enter
+```
+
+```sh
+# Implicitly
+# ----------
+# left_control -> left_command
+# left_window -> left_control
+# left_alt -> left_option
+# right_alt -> right_option
+# right_menu -> right_control
+# right_control -> right_command
+```
+
+```json
+{
+  "description": "Change print_screen to cmd+shift+5",
+  "manipulators": [
+    {
+      "from": { "key_code": "print_screen" },
+      "to": [
+        {
+          "key_code": "5",
+          "modifiers": ["left_command", "left_shift"]
+        }
+      ],
+      "type": "basic"
+    }
+  ]
+}
+```
+
+```json
+{
+  "description": "Change scroll_lock to cmd+shift+7 (TextSniper)",
+  "manipulators": [
+    {
+      "from": { "key_code": "scroll_lock" },
+      "to": [
+        {
+          "key_code": "7",
+          "modifiers": ["left_command", "left_shift"]
+        }
+      ],
+      "type": "basic"
+    }
+  ]
+}
 ```
 
 ## MacPorts

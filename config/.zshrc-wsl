@@ -100,7 +100,7 @@ git_main_branch() {
 bindkey '^j' autosuggest-toggle
 bindkey '^k' toggle-fzf-tab
 # Enforce < 81 character limit
-ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*\|*|*gcmsg '*|*gcmsg \"*|*gc!*|*gcmsg!*|(brew (info|install|uninstall|upgrade|tap)|awk|cat|cd|codium|code|cude|curl|cut|echo|fetch|find*|fpid|fport|freep*|git (add|branch|checkout|clone|merge|rebase|remote)|ga|gbd*|gc|gca|gcam|gcas|gcasm|gcb|gcl|gcmsg|gco|gcs|gcsm|git commit -(am|m)|mkdir|grep|head|idea|join|jq|kdo|kill*|klo|kport|less|mkcd|more|mv|mvv|npm (install|uninstall|link|unlink)|npx|pnpm (add|remove|install|uninstall|link|unlink|up|update|upgrade)|paste|prep|ps*|sed|sort|sh|tail|tee|tr|uniq|wc|wget|xargs|yarn (add|remove|link|unlink|up)|youtube-dl) *)"
+ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*\|*|*gcmsg '*|*gcmsg \"*|*gc!*|*gcmsg!*|(brew (info|install|uninstall|upgrade|tap)|cd|git (add|branch|checkout|clone|merge|rebase|remote)|ga|gbd*|gc|gca|gcam|gcas|gcasm|gcb|gcl|gcmsg|gco|gcs|gcsm|git commit -(am|m)|mkdir|mkcd|npm (install|uninstall|link|unlink)|npx|pnpm (add|remove|install|uninstall|link|unlink|up|update|upgrade)|yarn (add|remove|link|unlink|up)|youtube-dl) *)"
 
 # export MANPATH="/usr/local/man:$MANPATH"
 
@@ -268,38 +268,34 @@ alias d="docker"
 alias dps="docker ps"
 alias dpsa="docker ps -a"
 # alias dstop="docker stop -t0"
-alias dstart="docker start"
-alias drestart="docker restart -t0"
+alias d-start="docker start"
+alias d-restart="docker restart -t0"
 # alias drm="docker rm -f"
-alias dexec="docker exec -it"
+alias d-exec="docker exec -it"
 # alias dlogs="docker logs -f"
-alias dinspect="docker inspect"
+alias d-inspect="docker inspect"
 # Stop all running containers
-docker-stop-all() {
+d-stop-all-ctnrs() {
   docker ps -aq | xargs -r docker stop --signal=9 -t0
 }
-alias dstop-all="docker-stop-all"
-docker-rm-all() {
+d-rm-all-ctnrs() {
   # docker rm -f $(docker ps -aq)
   docker ps -aq | xargs -r docker rm -f
 }
-alias drm-all="docker-rm-all"
-docker-stop-rm-all() {
+alias dclean="d-rm-all-ctnrs"
+d-stop-rm-all-ctnrs() {
   docker ps -aq | xargs -r docker stop --signal=9 -t0
   docker ps -aq | xargs -r docker rm -f
 }
-alias dstoprm-all="docker-stop-rm-all"
 # Remove all dangling (unused) images
-docker-rmi-dangling() {
+d-rmi-dangling() {
   docker images -qf dangling=true | xargs -r docker rmi -f
 }
-alias drmi-dangling="docker-rmi-dangling"
 # Remove all dangling (unused) volumes
-docker-rmv-dangling() {
+d-rmv-dangling() {
   docker volume ls -qf dangling=true | xargs -r docker volume rm -f
 }
-alias drmv-dangling="docker-rmv-dangling"
-docker-shell() {
+d-sh() {
   if [ $# -ne 1 ] || [ -z "$1" ]; then
     echo "Usage: dsh <container-name-or-id>"
     return 1
@@ -307,10 +303,8 @@ docker-shell() {
   # docker exec -it "$1" "/usr/bin/env bash"
   docker ps -a | grep -iP "$1" | head -n 1 | awk '{print $1}' | xargs docker exec -it "$1" "/usr/bin/env bash"
 }
-alias dsh="docker-shell"
-alias d-sh="docker-shell"
 # Follow logs of a container
-dlogs() {
+d-logs() {
   if [ $# -ne 1 ] || [ -z "$1" ]; then
     echo "Usage: dlogs <regex-pattern-of-cntr>"
     return 1
@@ -320,25 +314,25 @@ dlogs() {
 }
 alias dlo="dlogs"
 # Function to stop containers matching a name pattern
-docker-stop-grep() {
+d-stop-grep() {
   if [ $# -ne 1 ] || [ -z "$1" ]; then
     echo "Usage: docker-stop-grep <regex-pattern-of-cntr>"
     return 1
   fi
   docker ps -a | grep -iP "$1" | awk '{print $1}' | xargs -r docker stop --signal=9 -t0
 }
-alias dstop="docker-stop-grep"
+alias d-stop="d-stop-grep"
 # Function to remove containers matching a name pattern
-docker-rm-grep() {
+d-rm-grep() {
   if [ $# -ne 1 ] || [ -z "$1" ]; then
     echo "Usage: docker-rm-grep <regex-pattern-of-cntr>"
     return 1
   fi
   docker ps -a | grep -iP "$1" | awk '{print $1}' | xargs -r docker rm -f
 }
-alias drm="docker-rm-grep"
+alias d-rm="docker-rm-grep"
 # Get container IP address
-dip() {
+d-ip() {
   if [ $# -ne 1 ] || [ -z "$1" ]; then
     echo "Usage: dip <regex-pattern-of-cntr>"
     return 1
@@ -347,11 +341,11 @@ dip() {
   docker ps -a | grep -iP "$1" |  head -n 1 | awk '{print $1}' | xargs docker inspect --format '{{ .NetworkSettings.IPAddress }}'
 }
 # Docker Images
-# alias drmi="docker rmi -f"
-alias dimages="docker images"
-alias dpull="docker pull"
-alias dbuild="docker build"
-alias dtag="docker tag"
+# alias d-rmi="docker rmi -f"
+alias d-images="docker images"
+alias d-pull="docker pull"
+alias d-build="docker build"
+alias d-tag="docker tag"
 # Function to remove images matching a name pattern
 docker-rmi-grep() {
   if [ $# -ne 1 ] || [ -z "$1" ]; then
@@ -360,15 +354,15 @@ docker-rmi-grep() {
   fi
   docker images | grep -iP "$1" | awk '{print $1}' | xargs -r docker rmi -f
 }
-alias drmi="docker-rmi-grep"
+alias d-rmi="docker-rmi-grep"
 # Docker Volumes and Networks
-alias dvls="docker volume ls"
-alias dvrm="docker volume rm -f"
-alias dnls="docker network ls"
-alias dnrm="docker network rm -f"
+alias d-vls="docker volume ls"
+alias d-vrm="docker volume rm -f"
+alias d-nls="docker network ls"
+alias d-nrm="docker network rm -f"
 # Docker Ccleanup
-alias dprune="docker system prune -f"
-alias dprune!="docker system prune -af --volumes"
+alias d-prune="docker system prune -f"
+alias d-prune!="docker system prune -af --volumes"
 # Docker Compose
 alias dc="docker compose"
 alias dc-build="docker compose build"
@@ -389,7 +383,7 @@ docker-compose-logs-follow() {
     docker compose logs -f "$1"
   fi
 }
-alias dclogsf="docker-compose-logs-follow"
+alias dclo="docker-compose-logs-follow"
 
 # Kubernetes
 #-----------
@@ -397,24 +391,22 @@ alias k="kubectl"
 alias kcx="kubectx"
 alias kctx="kubectx"
 alias kns="kubens"
-kubectl-info() {
+k-info() {
   local context=$(kubectl config current-context)
   echo -e "Context: \033[1;35m$context\033[0m"
   local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
   echo -e "Namespace: \033[1;35m$namespace\033[0m"
 }
-alias k-info="kubectl-info"
-alias kinfo="kubectl-info"
-kubectl-get-pods() {
+alias kinfo="k-info"
+k-get-pods() {
   local context=$(kubectl config current-context)
   echo -e "Context: \033[1;35m$context\033[0m"
   local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
   echo -e "Namespace: \033[1;35m$namespace\033[0m"
   kubectl get pods -n $namespace
 }
-alias kgpo="kubectl-get-pods"
-alias kpo="kubectl-get-pods"
-kubectl-get-pods-grep() {
+alias kpo="k-get-pods"
+k-get-pods-grep() {
   if [ $# -ne 1 ]; then
     echo "Usage: kpog <pod-name-to-grep>"
     return 1
@@ -425,28 +417,25 @@ kubectl-get-pods-grep() {
   echo -e "Namespace: \033[1;35m$namespace\033[0m"
   kubectl get pods -n $namespace | grep --color=always -iP "$1"
 }
-alias kgpog="kubectl-get-pods-grep"
-alias kpog="kubectl-get-pods-grep"
-kubectl-get-pods-watch() {
+alias kpog="k-get-pods-grep"
+k-get-pods-watch() {
   local context=$(kubectl config current-context)
   echo -e "Context: \033[1;35m$context\033[0m"
   local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
   echo -e "Namespace: \033[1;35m$namespace\033[0m"
   kubectl get pods -n "$(kubectl config view --minify | grep namespace | cut -d" " -f6)" --watch
 }
-alias kpow="kubectl-get-pods-watch"
-alias kgpow="kubectl-get-pods-watch"
-kubectl-describe-pod() {
+alias kpow="k-get-pods-watch"
+k-describe-pod() {
   if [ $# -ne 1 ]; then
     echo "Usage: kdpo <pod-name-to-describe>"
     return 1
   fi
   kubectl describe pod "$1"
 }
-alias kd="kubectl-describe-pod"
-alias kdo="kubectl-describe-pod"
-alias kdp="kubectl-describe-pod"
-kubectl-follow-pod-logs() {
+alias kdo="k-describe-pod"
+alias kdp="k-describe-pod"
+k-follow-pod-logs() {
   if [ $# -ne 1 ]; then
     echo "Usage: klo <pod-name-to-view-logs>"
     return 1
@@ -454,13 +443,12 @@ kubectl-follow-pod-logs() {
   kubectl logs -f "$1"
 }
 alias klo="kubectl-follow-pod-logs"
-alias klog="kubectl-follow-pod-logs"
-kx() {
-  [ "$1" ] && kubectl config use-context "$1" || kubectl config current-context
-}
-kn() {
-  [ "$1" ] && kubectl config set-context --current --namespace "$1" || kubectl config view --minify | grep --color=always namespace | cut -d" " -f6
-}
+# kx() {
+#   [ "$1" ] && kubectl config use-context "$1" || kubectl config current-context
+# }
+# kn() {
+#   [ "$1" ] && kubectl config set-context --current --namespace "$1" || kubectl config view --minify | grep --color=always namespace | cut -d" " -f6
+# }
 # kx() {
 #   if [ -n "$1" ]; then
 #     kubectl config use-context "$1"
@@ -478,7 +466,7 @@ kn() {
 
 # C++
 #----
-g++_compile_and_run() {
+g++-compile-and-run() {
   if [ "$#" -eq 0 ]; then
     echo "Usage: g-- <source-file>"
     return 1
@@ -494,10 +482,10 @@ g++_compile_and_run() {
   echo -e "Running \033[1;32m./$outputFile\033[0m"
   ./"$outputFile"
 }
-alias c++="g++_compile_and_run"
-alias cpp="g++_compile_and_run"
-alias g--="g++_compile_and_run"
-alias gpp="g++_compile_and_run"
+alias c++="g++-compile-and-run"
+alias cpp="g++-compile-and-run"
+alias g--="g++-compile-and-run"
+alias gpp="g++-compile-and-run"
 
 # Java
 #-----
@@ -508,9 +496,8 @@ export JAVA_HOME=$(/usr/libexec/java_home -v 21)
 # export JAVA_HOME="/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home"
 alias j="java"
 alias jdk-list="/usr/libexec/java_home -V"
-alias jdk-ls="/usr/libexec/java_home -V"
 # Change Java JDK version (usage: jdk 17)
-change-jdk() {
+jdk-change() {
   # if [ $# -ne 1 ]; then
   #   echo "Usage: jdk <java-jdk-version-to-use>"
   #   return 1
@@ -532,8 +519,23 @@ change-jdk() {
   java -version
   echo "\$JAVA_HOME:" $JAVA_HOME
 }
-alias jdk="change-jdk"
-java_compile_and_run() {
+java-compile() {
+  if [ "$#" -eq 0 ]; then
+    echo "Usage: j++ <source-file>"
+    return 1
+  fi
+  local srcFile="$1"
+  # Append '.java' if not present
+  if [[ "$srcFile" != *.java ]]; then
+    srcFile="${srcFile}.java"
+  fi
+  local fileName="${srcFile%.*}"
+  local outputFile="$fileName.class"
+  javac "$srcFile"
+  echo -e "Compiled \033[1;32m$srcFile\033[0m to \033[1;32m$outputFile\033[0m"
+}
+alias j-compile="java-compile"
+java-compile-run() {
   if [ "$#" -eq 0 ]; then
     echo "Usage: j++ <source-file>"
     return 1
@@ -550,14 +552,13 @@ java_compile_and_run() {
   echo -e "Running \033[1;32mjava $fileName\033[0m"
   java "$fileName"
 }
+alias j-run="java-compile-run"
+alias j--="java-compile-run"
+alias j++="java-compile-run"
 java-info() {
   java -version
   echo "\$JAVA_HOME:" $JAVA_HOME
 }
-alias j--="java_compile_and_run"
-alias j++="java_compile_and_run"
-alias jc="java_compile_and_run"
-alias jcr="java_compile_and_run"
 alias which-java="java-info"
 
 # Maven
@@ -592,12 +593,9 @@ mvnn() {
   echo -e "${GREEN}Running: mvn ${mvn_args[*]}${RESET}"
   command mvn "${mvn_args[@]}"
 }
-alias mvn--="mvn clean install -U" # Compiles test classes but skips test execution
 alias mvn++="mvn clean install -U -DskipTests" # Compiles test classes but skips test execution
-alias mvnc="mvn clean install -U -DskipTests"
-alias mvn-comp="mvn clean install -U -DskipTests"
-alias mvn-inst="mvn clean install -U"
-alias mvni="mvn clean install -U"
+alias mvn-compile="mvn clean install -U -DskipTests"
+alias mvn-install="mvn clean install -U"
 alias mvn-run="mvn spring-boot:run -Dspring-boot.run.arguments=--debug -Dspring-boot.run.profiles=local"
 alias mvn-dependency-tree="mvn dependency:tree -Dverbose"
 alias mvn-tree="mvn dependency:tree -Dverbose"
@@ -610,11 +608,9 @@ mvn-dependency-tree-print-to-file() {
   mvn dependency:tree -Dverbose -DoutputFile=mvn-dependency-tree.txt
 }
 alias mvn-tree-cat="mvn-dependency-tree-print-to-file"
-alias mvn-tree-output="mvn-dependency-tree-print-to-file"
-alias mvn-tree-print="mvn-dependency-tree-print-to-file"
-mvn-dependency-tree-filter() {
+mvn-dependency-tree-filter-for-groupId-artifactId() {
   if [ $# -eq 0 ] || [ $# -gt 2 ]; then
-    echo "Usage: mvn-tree-includes <group-id> <artifact-id>"
+    echo "Usage: mvn-tree-filter <groupId> [artifactId] (if artifactId not provided, it will be assumed to be the same as groupId)"
     return 1
   fi
   local groupId="$1"
@@ -627,29 +623,26 @@ mvn-dependency-tree-filter() {
   fi
 }
 alias mvn-tree-filter="mvn-dependency-tree-filter"
-alias mvn-tree-find="mvn-dependency-tree-filter"
-alias mvn-tree-includes="mvn-dependency-tree-filter"
 
 # Python
 #-------
-# export PATH="/opt/homebrew/opt/python@3.13/libexec/bin:$PATH"
+export PATH="/opt/homebrew/opt/python@3.13/libexec/bin:$PATH"
 alias python="python3.13"
 alias py="python3.13"
 
 # Custom Functions
 # ----------------
 # Find process ID of process using given port (usage: find-process-id-on-port 3000)
-findport() {
+find-port() {
   if [ $# -ne 1 ]; then
     echo "Usage: fport <port-number-to-search>"
     return 1
   fi
   lsof -i :$1
 }
-alias find-port="findport"
-alias fport="findport"
+alias fport="find-port"
 # Kill process ID of process using given port (usage: kill-process-on-port 3000)
-killport() {
+kill-port() {
   if [ $# -ne 1 ]; then
     echo "Usage: kport <port-number-to-free>"
     return 1
@@ -661,24 +654,17 @@ killport() {
   kill -9 $(lsof -t -i:$1)
 }
 # alias kpo="kport" # Note: This CONFLICTS with kpo == k get po
-alias kill-port="killport"
-alias kport="killport"
-alias freep="killport"
-alias freepo="killport"
-alias freeport="killport"
+alias kport="kill-port"
+alias free-port="kill-port"
 # Kill given process id PID (usage: kp 1234)
-killpid() {
+kill-pid() {
   if [ $# -ne 1 ]; then
     echo "Usage: kpid <pid-to-kill>"
     return 1
   fi
   kill -9 $1
 }
-alias kill-pid="killpid"
-alias kpid="killpid"
-alias kill!="killpid"
-alias quit="killpid"
-alias quit!="killpid"
+alias kpid="kill-pid"
 # Show All Processes Owned By User (usage: mine)
 mine() {
   ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,command | sort -k 2 -r | awk '{ $5=substr($5,1,70); for(i=6;i<=NF;i++) $5=$5" "$i; $5=substr($5,1,70); NF=5; printf "%5s %4s %4s %7s %-70s\n", $1, $2, $3, $4, $5 }'
@@ -706,10 +692,7 @@ ps-aux-regex() {
 }
 alias psaux="ps-aux-regex"
 alias psx="ps-aux-regex"
-alias psxre="ps-aux-regex"
-alias psxreg="ps-aux-regex"
 alias find-pid="ps-aux-regex"
-alias findpid="ps-aux-regex"
 alias fpid="ps-aux-regex"
 ps-aux-ignore-case() {
   if [ $# -ne 1 ]; then
@@ -720,9 +703,7 @@ ps-aux-ignore-case() {
   ps ax -o user,pid,%cpu,%mem,start,command | sort -k 3 -r | grep --color=always -i "$1"
 }
 alias psauxi="ps-aux-ignore-case"
-alias psauxic="ps-aux-ignore-case"
 alias psxi="ps-aux-ignore-case"
-alias psxic="ps-aux-ignore-case"
 ppkill() {
   if [ $# -ne 1 ]; then
     echo "Usage: ppkill <process-name-to-kill>"
@@ -849,11 +830,33 @@ jq-sort() {
     return 1
   fi
   if [[ ! -f "$1" ]]; then
-    echo -e "ERROR: \033[1;31m$1\033[0m does NOT exist"
+    echo -e "ERROR: \033[1;31m$1\033[0m file not found"
     return 1
   fi
   local tempFile="tmp-$(date +%s).json"
   jq -S '.' "$1" > "$tempFile" && command mv -v "$tempFile" "$1" || rm -f "$tempFile"
+}
+jq-convert-stringifiedJson-to-json() {
+  local tempFile="tmp-$(date +%s).json"
+  if [ $# -eq 1 ]; then
+    # jq --arg key "$1" '.[$key] | fromjson' > "$tempFile"
+    jq ".$1 | fromjson" > "$tempFile"
+  else
+    jq '. | fromjson' > "$tempFile"
+  fi
+  echo "Saved to: $tempFile"
+}
+yq-sort() {
+  if [[ $# -ne 1 ]]; then
+    echo "Usage: jq-sort <yaml-file-to-sort-alphabetically>"
+    return 1
+  fi
+  if [[ ! -f "$1" ]]; then
+    echo -e "ERROR: \033[1;31m$1\033[0m file not found"
+    return 1
+  fi
+  local tempFile="tmp-$(date +%s).yaml"
+  yq 'sort_keys(..)' "$1" > "$tempFile" && command mv -v "$tempFile" "$1" || rm -f "$tempFile"
 }
 timeis() {
   date +"%Y-%m-%d@%H:%M:%S"
@@ -1397,12 +1400,14 @@ alias cd2="cd ~/dev/github28"
 alias brew-outdated-cask="brew update > /dev/null 2>&1 && brew cleanup > /dev/null 2>&1 && brew outdated --cask --greedy"
 alias brew-outdated="brew update > /dev/null 2>&1 && brew cleanup > /dev/null 2>&1 && brew outdated --greedy"
 alias brew-update="brew update > /dev/null 2>&1 && brew cleanup > /dev/null 2>&1 && brew outdated --greedy"
+# alias c="claude"
 alias cls="clear"
 alias cude="codium"
 alias egrep="egrep --color=always -i"
 alias finder="explorer.exe"
 alias open="explorer.exe"
 alias fgrep="fgrep --color=always -i"
+alias g="gemini"
 alias g++="g++-13"
 alias gcc="gcc-13"
 alias grep='grep --color=always -i'
