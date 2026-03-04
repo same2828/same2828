@@ -836,15 +836,25 @@ jq-sort() {
   local tempFile="tmp-$(date +%s).json"
   jq -S '.' "$1" > "$tempFile" && command mv -v "$tempFile" "$1" || rm -f "$tempFile"
 }
-jq-convert-stringifiedJson-to-json() {
+jq-convert-to-json() {
+  if [ $# -lt 1 ]; then
+    echo -e "Usage: \033[1;32mjq-convert-stringifiedJson-to-json <file> <key>\033[0m (omit <key> if the <file> contains only stringified JSON)"
+    echo -e "The <file> must contain only stringified JSON OR have the stringified json as the value of the key provided as \033[1;31m\$1\033[0m: \033[1;31m{ \"insert-key-here\": \"insert-stringified-json-here\" }\033[0m"
+    return 1
+  fi
+  if [[ ! -f "$1" ]]; then
+    echo -e "ERROR: \033[1;31m$1\033[0m file not found"
+    return 1
+  fi
   local tempFile="tmp-$(date +%s).json"
   if [ $# -eq 1 ]; then
-    # jq --arg key "$1" '.[$key] | fromjson' > "$tempFile"
-    jq ".$1 | fromjson" > "$tempFile"
+    # cat "$1" | jq '. | fromjson' >"$tempFile"
+    jq '. | fromjson' "$1" > "$tempFile" && command mv -v "$tempFile" "$1" || rm -f "$tempFile"
   else
-    jq '. | fromjson' > "$tempFile"
+    # cat "$1" | jq ".$2 | fromjson" >"$tempFile"
+    jq --arg key "$2" '.[$key] | fromjson' "$1" > "$tempFile" && command mv -v "$tempFile" "$1" || rm -f "$tempFile"
   fi
-  echo "Saved to: $tempFile"
+  # echo "Saved to: $tempFile"
 }
 yq-sort() {
   if [[ $# -ne 1 ]]; then
@@ -953,7 +963,7 @@ delete-local-branch() {
   fi
 }
 alias gbd="delete-local-branch"
-alias gbdl="delete-local-branch"
+alias gbD="delete-local-branch"
 # Delete remote branch only (usage: gbdr remoteBranchNameToDelete)
 delete-remote-branch() {
   if [ $# -ne 1 ]; then
@@ -1001,7 +1011,6 @@ gcbb() {
   echo -e "Switched back to branch: \033[1;35m$currBranch\033[0m"
   git checkout -b "$newBranch" && git checkout "$currBranch"
 }
-alias gcbo="gcbb"
 gundo() {
   if [ $# -ne 1 ]; then
     echo "Usage: gundo <number-of-commits-to-rewind>"
@@ -1040,8 +1049,6 @@ git-reset-hard() {
   git reset --hard "$@"
 }
 alias grh="git-reset-hard"
-alias greset="git-reset-hard"
-alias greseth="git-reset-hard"
 git-reset-hard-and-git-clean() {
   # if [ $# -gt 0 ]; then
   #   echo -en "Confirm \033[1;31mgit reset --hard $@ && git clean -fd\033[0m? [yes/N]: "
@@ -1063,8 +1070,6 @@ git-reset-hard-and-git-clean() {
   git reset --hard "$@" && git clean -fd
 }
 alias grh!="git-reset-hard-and-git-clean"
-alias greset!="git-reset-hard-and-git-clean"
-alias greseth!="git-reset-hard-and-git-clean"
 git-reset-hard-origin() {
   local currBranch=$(git_current_branch)
   echo -en "Confirm \033[1;31mgit reset --hard origin/$currBranch\033[0m? [yes/N]: "
@@ -1078,8 +1083,7 @@ git-reset-hard-origin() {
   git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch)
 }
 alias grho="git-reset-hard-origin"
-alias greseto="git-reset-hard-origin"
-alias gresetho="git-reset-hard-origin"
+alias greset="git-reset-hard-origin"
 git-reset-hard-origin-and-git-clean() {
   local currBranch=$(git_current_branch)
   echo -en "Confirm \033[1;31mgit reset --hard origin/$currBranch && git clean -fd\033[0m? [yes/N]: "
@@ -1093,8 +1097,7 @@ git-reset-hard-origin-and-git-clean() {
   git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -fd
 }
 alias grho!="git-reset-hard-origin-and-git-clean"
-alias greseto!="git-reset-hard-origin-and-git-clean"
-alias gresetho!="git-reset-hard-origin-and-git-clean"
+alias greset!="git-reset-hard-origin-and-git-clean"
 # Either a git repository (.git folder) or git worktree repository (.git file && .gitignore file) [usage: is-git-repo; echo $?]
 is-git-repo() {
   # V1
@@ -1198,9 +1201,8 @@ git-local-only-branches() {
   done
 }
 alias gbl="git-local-only-branches"
-alias gb-local="git-local-only-branches"
+alias gb-local-only="git-local-only-branches"
 alias gb-norem="git-local-only-branches"
-alias gb-noremote="git-local-only-branches"
 alias gb-no-remote="git-local-only-branches"
 git-delete-branches-with-no-upstream() {
   if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
@@ -1228,7 +1230,6 @@ git-delete-branches-with-no-upstream() {
   done
 }
 alias gbd-norem="git-delete-branches-with-no-upstream"
-alias gbd-noremote="git-delete-branches-with-no-upstream"
 alias gbd-no-remote="git-delete-branches-with-no-upstream"
 git-delete-branches--with-no-upstream-auto() {
   if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
@@ -1254,10 +1255,9 @@ git-worktree-add() {
     echo -e "ERROR: \033[1;31m$(basename $(pwd))\033[0m is NOT a git repository"
     return 1
   fi
-  if [ $# -ne 1 ] && [ $# -ne 2 ]; then
+  if [ $# -ne 2 ]; then
     echo "Usage:"
-    echo -e "\033[1;32mgwta <target-branch-directory> <target-branch>\033[0m (note: '../' is optional)"
-    echo -e "\033[1;32mgwta <target-branch>\033[0m (note: implicitly target-branch-directory = '../\${1//\//-}')"
+    echo -e "\033[1;32mgwta ../<target-branch-directory> <target-branch>\033[0m"
     return 1
   fi
   if ! [ -d ".git" ]; then
@@ -1265,46 +1265,21 @@ git-worktree-add() {
     return 1
   fi
   local repoName=$(basename $(pwd))
-  if [ $# -eq 1 ]; then
-    # Check if the given branch $1 exists
-    if ! git rev-parse --verify "$1" >/dev/null 2>&1; then
-      echo -e "ERROR: Branch \033[1;31m$1\033[0m does NOT exist"
-      return 1
-    fi
-    local dirname="${1#../}"                # First remove '../' prefix if it exists
-    dirname="${dirname#worktree-}"          # Then remove 'worktree-' prefix if it exists
-    dirname="${dirname#$repoName-}"         # Then remove '$repoName-' prefix if it exists
-    dirname="../$repoName-${dirname//\//-}" # Replace '/' with '-'local dirname="../${1//\//-}" # Replace '/' with '-'
-    if [ -d "$1" ]; then
-      echo -e "ERROR: Directory \033[1;31m$1\033[0m ALREADY exists"
-      return 1
-    fi
-    echo -e "\033[1;32mCreated\033[0m Git Worktree: \033[1;36m$dirname\033[0m on branch \033[1;35m$1\033[0m"
-    git worktree add "$dirname" "$1"
-  elif [ $# -eq 2 ]; then
-    # Check if the given branch $2 exists
-    if ! git rev-parse --verify "$2" >/dev/null 2>&1; then
-      echo -e "ERROR: Branch \033[1;31m$2\033[0m does NOT exist"
-      return 1
-    fi
-    # local dirname="$(echo "$1" | tr -d '/.')" # Remove all occurrences of '/' and '.' from string
-    local dirname="${1#../}"                # First remove '../' prefix if it exists
-    dirname="${dirname#worktree-}"          # Then remove 'worktree-' prefix if it exists
-    dirname="${dirname#$repoName-}"         # Then remove '$repoName-' prefix if it exists
-    dirname="../$repoName-${dirname//\//-}" # Replace '/' with '-'
-    if [ -d "$1" ]; then
-      echo -e "ERROR: Directory \033[1;31m$1\033[0m ALREADY exists"
-      return 1
-    fi
-    echo -e "Created Git Worktree: \033[1;36m$dirname\033[0m on branch \033[1;35m$2\033[0m"
-    git worktree add "$dirname" "$2"
+  if [ -d "$1" ]; then
+    echo -e "ERROR: Directory \033[1;31m$1\033[0m ALREADY exists"
+    return 1
   fi
+  if ! git rev-parse --verify "$2" >/dev/null 2>&1; then
+    echo -e "ERROR: Branch \033[1;31m$2\033[0m does NOT exist"
+    return 1
+  fi
+  echo -e "Created Git Worktree: \033[1;36m$1\033[0m on branch \033[1;35m$2\033[0m"
+  git worktree add "$1" "$2"
 }
 alias gwta='git-worktree-add'
-alias gwtadd='git-worktree-add'
 git-worktree-remove() {
   if [ $# -ne 1 ]; then
-    echo "Usage: \033[1;32mgwtr <target-branch-directory>\033[0m (note: '../' is optional)"
+    echo "Usage: \033[1;32mgwtr ../<target-branch-directory>\033[0m"
     return 1
   fi
   # Special case: if $1 is exactly ".", remove the current worktree directory
@@ -1317,29 +1292,15 @@ git-worktree-remove() {
     echo -e "ERROR: \033[1;31m$(basename $(pwd))\033[0m is NOT the ROOT git repository"
     return 1
   fi
-  local repoName=$(basename $(pwd))
-  # local temp="${1//\//}"         # First remove all '/' characters
-  # local dirname="../${temp//./}" # Then remove all '.' characters
-  # local dirname="../$(echo "$1" | tr -d '/.')"
-  # local dirname="../worktree-$(echo "$1" | tr -d '/.')"
-  local dirname="${1#../}"                # First remove '../' prefix if it exists
-  dirname="${dirname#worktree-}"          # Then remove 'worktree-' prefix if it exists
-  dirname="${dirname#$repoName-}"         # Then remove '$repoName-' prefix if it exists
-  dirname="../$repoName-${dirname//\//-}" # Replace '/' with '-'
-  if ! [ -d "$dirname" ]; then
-    echo -e "ERROR: Git Worktree Directory \033[1;31m$dirname\033[0m does NOT exist"
-    return 1
-  fi
-  echo -e "Removed Git Worktree: \033[1;31m$dirname\033[0m"
+  echo -e "\033[1;31mRemoved\033[0m Git Worktree: \033[1;31m$dirname\033[0m"
   git worktree remove -f "$dirname"
 }
 alias gwtr='git-worktree-remove'
-alias gwtrm='git-worktree-remove'
 
 # Git Aliases
 #------------
-alias gbd!='git branch -D'
-alias gbl='git blame -w' # OhMyZsh default alias (overridden by git-local-only-branches)
+# alias gbd!='git branch -D'
+# alias gbl='git blame -w' # OhMyZsh default alias (overridden by git-local-only-branches)
 alias gb-rem='git branch -r'
 alias gb-remote='git branch -r'
 alias gc!='git commit --verbose --amend' # git add <files> && gc!
@@ -1348,41 +1309,36 @@ alias gclean!='git reset --hard && git clean -fdx'
 alias gcleano='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -fd'
 alias gcleano!='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -fdx'
 alias gcmsg!='git commit --amend -m'
-alias gf='git fetch --all --prune'
+alias gf='git fetch --all --prune --tags --force'
 alias gf!='git fetch --all --prune --tags --force'
-alias gfa='git fetch --all --prune'
+alias gfa='git fetch --all --prune --tags --force'
 alias gfa!='git fetch --all --prune --tags --force'
 alias gl="git pull --rebase --autostash"
 alias gl!="git fetch --all --prune --tags --force && git pull --rebase --autostash"
 alias glo="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M%p'"
-alias glof="git log --pretty='%C(yellow)%H %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M%p'"
-alias glo-full="git log --pretty='%C(yellow)%H %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M%p'"
 alias glo2="git log --graph --oneline --decorate --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M%p'"
 alias glo3="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(magenta)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M:%S%p'"
 alias gpf="git push --force-with-lease --force-if-includes"
 alias gpf!="git push --force-with-lease --force-if-includes"
 alias gpF!="git push --force"
-alias gpf@="git push --force"
 alias gpff="git push --force"
 alias gmv='git mv'
 alias grename='git mv'
+alias grm='git remote -v'
+alias grem='git remote -v'
+alias grmf='git rm -f'
 # alias greset='git reset --hard && git clean -fd'
 # alias greseth='git reset --hard && git clean -fd'
 # alias greset!='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -fdx'
 # alias greseto!='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -fdx'
 # alias gresetho!='git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -fdx'
-alias gstash='git stash --include-untracked'
-alias gstashp='git stash pop'
 alias gsth='git stash --include-untracked'
 alias gstp='git stash pop'
-alias gstsh='git stash --include-untracked'
-alias gstshp='git stash pop'
 alias gundo1='git reset --mixed HEAD~1'
 alias gundo!='git reset --hard ORIG_HEAD' # Undo's the gundo (note: ORIG_HEAD is a reference that points to the previous state of HEAD before disruptive operations like git reset, git rebase, git merge)
 alias gwtl='git worktree list' # (cd my-repo || cd target-branch-dir) && gwtl
 # alias gwta='git worktree add' # cd my-repo && gwta ../target-branch-dir target-branch
 # alias gwtr='git worktree remove' # (cd my-repo && gwtr ../target-branch-dir) || (cd target-branch-dir && gwtr .)
-
 # cd Aliases
 #-----------
 alias b="cd .."
