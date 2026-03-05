@@ -28,6 +28,9 @@
 - [10. Virutal Threads \& Stack Memory](#10-virutal-threads--stack-memory)
   - [Stack Size](#stack-size)
 - [12-14. CPU Intensive Tasks](#12-14-cpu-intensive-tasks)
+- [15. Virtual Thread - Scheduler Config](#15-virtual-thread---scheduler-config)
+- [16. Preemptive vs Cooperative Scheduling Types](#16-preemptive-vs-cooperative-scheduling-types)
+  - [Preemptive - OS Scheduling Policy](#preemptive---os-scheduling-policy)
 
 https://macquarie.udemy.com/course/java-virtual-thread/
 
@@ -569,3 +572,40 @@ The difference between virtual threads and platform threads
 ![](images/virtual-thread9.jpg)
 ![](images/virtual-thread10.jpg)
 ![](images/virtual-thread11.jpg)
+
+# 15. Virtual Thread - Scheduler Config
+
+- Platform Threads are scheduled by the OS Scheduler
+- Virtual Threads are scheduled by JVM
+  - Dedicated `ForkJoinPool` to schedule Virtual Threads
+  - Core pool size = Number of available processors
+  - Carrier threads will NOT be blocked during I/O
+
+```
+jdk.virtualThreadsScheduler.parallelism=Runtime.getRuntime().availableProcessors();
+jdk.virtualThreadsScheduler.maxPoolSize=256;
+```
+
+# 16. Preemptive vs Cooperative Scheduling Types
+
+Scheduling Types
+
+- Preemptive
+  - This is what your OS scheduler does, and this is what normally you would see for platform threads as
+- Cooperative
+
+## Preemptive - OS Scheduling Policy
+
+- CPU is allocated for a limited time
+- OS can forcibly pause a running thread to give CPU to another thread.
+- Based on thread-priority, time-slice, availability of ready-to-run threads etc
+- Platform threads can have priorities `thread.setPriority(6)`
+  - 1 is lowest priority
+  - 10 is highest priority
+  - 5 is default
+- Note:
+  - Preemptive scheduling behavior is platform dependent.
+  - Virtual Threads have default priority. CANNOT be modified.
+
+![](images/preemptive-scheduling1.jpg)
+![](images/preemptive-scheduling2.jpg)
