@@ -621,7 +621,7 @@ Usage of following containers normally starts off as **empty** (we insert elemen
   }
   ```
 
-Usage of `std::vector` normally does **NOT** stat off as empty (we expect all values to be initialised to `0` or `-1`, and do not want to call `.push_back()` or `.emplace_back()`); therefore we **DO** need to initialise (in function body) after declaration
+Usage of `std::vector` normally does **NOT** start off as empty (we expect all values to be initialised to `0` or `-1`, and do not want to call `.push_back()` or `.emplace_back()`); therefore we **DO** need to initialise (in function body) after declaration
 
 - However the opposite is true (i.e. usage of `std::vector` as empty) when `std::vector` is used as an inner container for `std::unordered_map<int, std::vector<int>` or `std::pair<int, std::vector<int>`
 

@@ -578,8 +578,8 @@
     "key": "shift+cmd+i"
   },
   {
-    "command": "workbench.action.chat.openedit",
-    "key": "cmd+e",
+    "command": "workbench.action.chat.openagent",
+    "key": "alt+a",
     "when": "chatIsEnabled && inChat && chatLocation == 'panel'"
   },
   {

@@ -3532,9 +3532,13 @@ Formula:
 **Data Structures**
 
 - Sometimes it is faster to use ARRAYS-OF-data-structures instead of 2D arrays (to avoid memory limit exceeded and time limit exceeded errors)
-  - `Map<Integer, Integer>[] memo` >> `int[][] memo`
-  - `std::unordered_map<int, int> memo[26];` >> `std::vector<std::vector<int>> memo`
+  - `Map<Integer, Integer>[] memo` > `int[][] memo`
+  - `std::unordered_map<int, int> memo[26];` > `std::vector<std::vector<int>> memo`
   - See: 3389.minimum-operations-to-make-character-frequencies-equal
+- Consider using `string` as the key of `memo` instead of storing the raw data structure
+  - `Map<String, Integer>` > `Map<List<Integer>, Integer>`
+  - Use `.toString()`
+  - See 638.shopping-offers.java
 - Cache Locality: `memo[z][y][x]` where `z < y < x`
 
 **CPP/C++**
@@ -3545,7 +3549,7 @@ Formula:
 
 **Java**
 
-- For-each loops are slower than using traditional for loops `for (int[] row: memo) <<< for (int i = 0; i < n; i++)`
+- For-each loops are slower than using traditional for loops: `for (int i = 0; i < n; i++)` >> `for (int[] row: memo) `
 - `Integer[][] memo` can be faster than `int[][] memo` especially for 3D cases e.g. `Integer[][][] memo` vs `int[][][] memo`
   - It is faster to check for `!= null` instead of `!= -1` (since we have to initialise with `-1` beforehand)
 - Division is SLOWER than Multiplication
