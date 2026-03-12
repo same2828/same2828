@@ -31,12 +31,27 @@
 - [15. Virtual Thread - Scheduler Config](#15-virtual-thread---scheduler-config)
 - [16. Preemptive vs Cooperative Scheduling Types](#16-preemptive-vs-cooperative-scheduling-types)
   - [Preemptive - OS Scheduling Policy](#preemptive---os-scheduling-policy)
+  - [Cooperative](#cooperative)
+- [18. How can Virtual Threads help](#18-how-can-virtual-threads-help)
+  - [Synchronous Blocking Style Code](#synchronous-blocking-style-code)
+  - [Synchronous Non-Blocking Style Code](#synchronous-non-blocking-style-code)
+- [19. Concurrency - Synchronisation Basics](#19-concurrency---synchronisation-basics)
+  - [Synchronization](#synchronization)
+  - [Problem](#problem)
+    - [Fix/Solution](#fixsolution)
+- [21 Thread Pinning - Java 21 - 23](#21-thread-pinning---java-21---23)
+  - [Example](#example)
 
 https://macquarie.udemy.com/course/java-virtual-thread/
 
 https://github.com/vinsguru/java-virtual-thread-course
 
 # Intro
+
+A process is an independent, executing program with its own dedicated memory space and resources (inter-process communication is typically slow and restrictive)
+
+A thread is a lightweight sub-process, the smallest unit of execution within a process.
+Multiple threads within the same process share the same memory space and resources, making communication between them faster and easier, but requiring careful synchronization to avoid conflicts.
 
 ## Threads: The Backbone of Concurrency
 
@@ -591,8 +606,11 @@ jdk.virtualThreadsScheduler.maxPoolSize=256;
 Scheduling Types
 
 - Preemptive
-  - This is what your OS scheduler does, and this is what normally you would see for platform threads as
+  - This is what your OS scheduler does
+  - Used mainly for `platform threads`
 - Cooperative
+  - Used mainly for `virtual threads`
+- Use platform threads for a CPU intensive task instead of virtual threads, because virtual threads are good for IO and not for CPU intensive tasks
 
 ## Preemptive - OS Scheduling Policy
 
@@ -609,3 +627,204 @@ Scheduling Types
 
 ![](images/preemptive-scheduling1.jpg)
 ![](images/preemptive-scheduling2.jpg)
+
+## Cooperative
+
+- CPU is allocated till the execution is completed OR Thread should be willing to give CPU to another thread using `Thread.yield()`
+- Execution is NOT interrupted/forcibly paused.
+- If there is a long running thread/task, other threads might have to starve
+- Note: When you call `Thread.yield()` on a `Platform Thread`, it is only a hint to the OS scheduler to allow other threads to run.
+  - It does NOT guarantee that the current thread will be paused or that other threads will be scheduled immediately
+  - The behavior of `Thread.yield()` can vary depending on the operating system
+- However for `Virtual Threads` because the scheduler is the JVM and NOT the OS, the JVM will accept the `Thread.yield()`
+
+![](images/cooperative-scheduling1.jpg)
+![](images/cooperative-scheduling2.jpg)
+
+```java
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
+
+/*
+  A simple demo to understand cooperative scheduling
+  We will NOT have to use in an actual application
+ */
+
+public class CooperativeSchedulingDemo {
+
+  private static final Logger log = LoggerFactory.getLogger(CooperativeSchedulingDemo.class);
+
+  static {
+    System.setProperty("jdk.virtualThreadScheduler.parallelism", "1");
+    System.setProperty("jdk.virtualThreadScheduler.maxPoolSize", "1");
+  }
+
+  public static void main(String[] args) {
+    Builder.OfVirtual builder = Thread.ofVirtual();
+    Thread t1 = builder.unstarted(() -> demo(1));
+    Thread t2 = builder.unstarted(() -> demo(2));
+    Thread t3 = builder.unstarted(() -> demo(3));
+    t1.start();
+    t2.start();
+    t3.start();
+    mySleep(Duration.ofSeconds(2));
+
+  }
+
+  private static void demo(int threadNumber) {
+    log.info("thread-{} started", threadNumber);
+    for (int i = 0; i < 10; i++) {
+      log.info("thread-{} is printing {}. Thread: {}", threadNumber, i, Thread.currentThread());
+      Thread.yield(); // just for demo purposes
+    }
+    log.info("thread-{} ended", threadNumber);
+  }
+
+  public static void mySleep(Duration duration) {
+    try {
+      Thread.mySleep(duration);
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+}
+```
+
+# 18. How can Virtual Threads help
+
+### Synchronous Blocking Style Code
+
+```java
+Price price = productService.getPrice(productId); // I/0
+PaymentConfirmation payment = paymentService.deductPayment(userId, price); // I/0
+ShippingConfirmation shipping = shippingService.scheduleShipping(userId, productId, quantity); // I/0
+```
+
+### Synchronous Non-Blocking Style Code
+
+```java
+Runnable task = () -> {
+  Price price = productService.getPrice(productId);
+  PaymentConfirmation payment = paymentService.deductPayment(userId, price);
+  ShippingConfirmation shipping = shippingService.scheduleShipping(userId, productId, quantity);
+};
+// Let the virtual thread execute the task
+// During blocking I/0 call, it will be unmounted and next task will be executed
+Thread.ofVirtual().start(task);
+```
+
+![](images/non-blocking-free.jpg)
+
+# 19. Concurrency - Synchronisation Basics
+
+## Synchronization
+
+- Mechanism to provide controlled access to shared resources / critical section of code in a multi-threaded environment.
+- To prevent race conditions / data corruption
+- Note: All the multi-thread related challenges like race conditions, dead-locks etc are still applicable for Virtual Threads.
+
+## Problem
+
+```java
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
+// Virtual Threads are indented for I/O tasks. This is a simple demo to show that race conditions are still applicable.
+
+public class Lec01RaceCondition {
+
+  private static final Logger log = LoggerFactory.getLogger(Lec01RaceCondition.class);
+  private static final List<Integer> list = new ArrayList<>();
+
+  public static void main(String[] args) {
+    demo(Thread.ofVirtual());
+    CommonUtils.sleep(Duration.ofSeconds(2));
+    log.info("list size: {}", list.size());
+  }
+
+  private static void demo(Thread.Builder builder) {
+    for (int i = 0; i < 50; i++) {
+      builder.start(() -> {
+        log.info("Task started. {}", Thread.currentThread());
+        for (int j = 0; j < 200; j++) {
+          inMemoryTask();
+        }
+        log.info("Task ended. {}", Thread.currentThread());
+      });
+    }
+  }
+
+  private static void inMemoryTask() {
+    list.add(1);
+  }
+}
+```
+
+### Fix/Solution
+
+```java
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
+// Virtual Threads are indented for I/O tasks. This is a simple demo to show that race conditions are still applicable. How we normally fix it.
+public class Lec02Synchronization {
+
+  private static final Logger log = LoggerFactory.getLogger(Lec02Synchronization.class);
+  private static final List<Integer> list = new ArrayList<>();
+  // private static final List<Integer> list = Collections.synchronizedList(new ArrayList<>()); // <-- HERE
+
+  public static void main(String[] args) {
+    demo(Thread.ofVirtual());
+    CommonUtils.sleep(Duration.ofSeconds(2));
+    log.info("list size: {}", list.size());
+  }
+
+  private static void demo(Thread.Builder builder) {
+    for (int i = 0; i < 50; i++) {
+      builder.start(() -> {
+        log.info("Task started. {}", Thread.currentThread());
+        for (int j = 0; j < 200; j++) {
+          inMemoryTask();
+        }
+        log.info("Task ended. {}", Thread.currentThread());
+      });
+    }
+  }
+
+  private static synchronized void inMemoryTask() { // <-- HERE
+    list.add(1);
+  }
+
+}
+```
+
+# 21 Thread Pinning - Java 21 - 23
+
+A Thread Pinning: Java 21 - 23
+
+- A real performance problem existed in Java 21, 22, and 23.
+- It was later partially fixed in Java 24
+- Many developers did NOT notice it, but it affected scalability
+
+## Example
+
+Imagine you have
+
+```
+// 10 Task 1
+void updateSharedDocument(){}
+
+// IO Task 2
+void fetchUserProfile(){}
+```
