@@ -60,7 +60,7 @@ zstyle ':omz:update' mode auto      # update automatically without asking
 # "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
 # or set a custom format using the strftime function format specifications,
 # see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
+# HIST_STAMPS="%d/%m/%Y %T"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -85,11 +85,28 @@ plugins=(git ssh-agent fzf-tab zsh-autosuggestions fast-syntax-highlighting fzf)
 # fpath+=${ZSH_CUSTOM:-${ZSH:-~/.oh-my-zsh}/custom}/plugins/zsh-completions/src
 
 source $ZSH/oh-my-zsh.sh
-# source <(fzf --zsh)
+source <(fzf --zsh)
 
-#--------------------
+#-------------------------------------------------------------------------------
 # User configuration
-#--------------------
+#-------------------------------------------------------------------------------
+setopt HIST_EXPIRE_DUPS_FIRST  # When trimming history, remove duplicates before older unique entries
+setopt HIST_FIND_NO_DUPS       # Skip duplicate entries when searching history (prevents repeated results)
+setopt HIST_IGNORE_ALL_DUPS    # Keep only the most recent occurrence of a command in history
+setopt HIST_IGNORE_DUPS        # Ignore consecutive duplicate commands (e.g., "ls" followed by "ls")
+setopt HIST_IGNORE_SPACE       # Exclude commands prefixed with a space from history (useful for secrets)
+setopt HIST_SAVE_NO_DUPS       # Prevent duplicate entries from being written to the history file
+setopt SHARE_HISTORY           # Share history between sessions
+
+# export EDITOR="command codium --wait"
+export EDITOR="command code --wait"
+export VISUAL="$EDITOR"
+export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:di=1;36" # Prevent highlighting of directories (green background)
+export TZ="Australia/Sydney"
+export HISTFILE="$HOME/.zsh_history"  # Explicitly set history file location
+export HISTSIZE=1000                  # Maximum lines kept in memory (https://old.reddit.com/r/zsh/comments/x7uj9e/measuring_the_best_value_of_histsize)
+export SAVEHIST=1000                  # Maximum lines saved to $HISTFILE
+
 # OhMyZSH Override
 git_main_branch() {
   echo master
@@ -98,7 +115,7 @@ git_main_branch() {
 #--------------------
 # ctrl + j = toggle zsh-autosuggestions on/off
 bindkey '^j' autosuggest-toggle
-bindkey '^k' toggle-fzf-tab
+# bindkey '^k' toggle-fzf-tab
 # Enforce < 81 character limit
 ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*\|*|*gcmsg '*|*gcmsg \"*|*gc!*|*gcmsg!*|(brew (info|install|uninstall|upgrade|tap)|cd|git (add|branch|checkout|clone|merge|rebase|remote)|ga|gbd*|gc|gca|gcam|gcas|gcasm|gcb|gcl|gcmsg|gco|gcs|gcsm|git commit -(am|m)|mkdir|mkcd|npm (install|uninstall|link|unlink)|npx|pnpm (add|remove|install|uninstall|link|unlink|up|update|upgrade)|yarn (add|remove|link|unlink|up)|youtube-dl) *)"
 
@@ -123,8 +140,8 @@ ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*\|*|*gcmsg '*|*gcmsg \"*|*gc!*|*gcmsg
 # For a full list of active aliases, run `alias`.
 #
 # Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
+# alias zshconfig='mate ~/.zshrc'
+# alias ohmyzsh='mate ~/.oh-my-zsh'
 
 # Coreutils
 #----------
@@ -134,13 +151,6 @@ ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*\|*|*gcmsg '*|*gcmsg \"*|*gc!*|*gcmsg
 #--------
 # eval "$(ssh-agent -s)" &> /dev/null
 # ssh-add ~/.ssh/gitlab-cse &> /dev/null
-
-# Hadoop
-#-------
-# export HADOOP_HOME=/home/same/hadoop-3.3.2
-# export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
-# export PATH=$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$PATH
-# export JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 
 # Homebrew
 #---------
@@ -156,7 +166,7 @@ eval "$(starship init zsh)"
 
 # FZF
 #----
-# alias f="fzf"
+# alias f='fzf'
 # export FZF_BASE="/opt/homebrew/bin/fzf"
 # Non FD
 # export FZF_CTRL_T_OPTS="--walker-skip .git,node_modules,target"
@@ -189,17 +199,9 @@ export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/b
 
 # VSCodium > VSCode
 #------------------
-# alias code="codium"
-# alias vscode="code"
-# alias vcode="code"
-
-# Environment Variables ENV
-#--------------------------
-# export EDITOR="command codium --wait"
-export EDITOR="command code --wait"
-export VISUAL="$EDITOR"
-export LS_COLORS="$LS_COLORS:ow=1;34:tw=1;34:di=1;36" # Prevent highlighting of directories (green background)
-export TZ="Australia/Sydney"
+# alias code='codium'
+# alias vscode='code'
+# alias vcode='code'
 
 # FNM
 #----
@@ -208,10 +210,11 @@ eval "$(fnm env --use-on-cd --shell zsh)"
 function fnm() {
   # Extends fnm with the subcommand "upgrade"
   # https://github.com/Schniz/fnm/issues/781#issuecomment-2482846772
-  if [[ $1 == "upgrade" ]]; then
+  # if [[ "$1" =~ ^(upgrade|update)$ ]]; then
+  if [[ $1 == "upgrade" || $1 == "update" ]]; then
     # Validate that $2 exists and is a valid version number
     if [[ -z "$2" ]]; then
-      echo "Usage: fnm upgrade <node-version>"
+      echo "Usage: fnm update <node-version>"
       return 1
     elif ! [[ "$2" =~ ^[0-9]{2}$ ]]; then
       echo "Error: Invalid version number '$2'. Version number needs to be 2 digits"
@@ -265,16 +268,16 @@ function fnm() {
 # Docker
 #-------
 # Docker container management
-alias d="docker"
-alias dps="docker ps"
-alias dpsa="docker ps -a"
-# alias dstop="docker stop -t0"
-alias d-start="docker start"
-alias d-restart="docker restart -t0"
-# alias drm="docker rm -f"
-alias d-exec="docker exec -it"
-# alias dlogs="docker logs -f"
-alias d-inspect="docker inspect"
+alias d='docker'
+alias dps='docker ps'
+alias dpsa='docker ps -a'
+# alias dstop='docker stop -t0'
+alias d-start='docker start'
+alias d-restart='docker restart -t0'
+# alias drm='docker rm -f'
+alias d-exec='docker exec -it'
+# alias dlogs='docker logs -f'
+alias d-inspect='docker inspect'
 # Stop all running containers
 d-stop-all-ctnrs() {
   docker ps -aq | xargs -r docker stop --signal=9 -t0
@@ -283,7 +286,7 @@ d-rm-all-ctnrs() {
   # docker rm -f $(docker ps -aq)
   docker ps -aq | xargs -r docker rm -f
 }
-alias dclean="d-rm-all-ctnrs"
+alias dclean='d-rm-all-ctnrs'
 d-stop-rm-all-ctnrs() {
   docker ps -aq | xargs -r docker stop --signal=9 -t0
   docker ps -aq | xargs -r docker rm -f
@@ -313,7 +316,7 @@ d-logs() {
   # docker logs -f "$1"
   docker ps -a | grep -iP "$1" | head -n 1 | awk '{print $1}' | xargs docker logs -f
 }
-alias dlo="dlogs"
+alias dlo='dlogs'
 # Function to stop containers matching a name pattern
 d-stop-grep() {
   if [ $# -ne 1 ] || [ -z "$1" ]; then
@@ -322,7 +325,7 @@ d-stop-grep() {
   fi
   docker ps -a | grep -iP "$1" | awk '{print $1}' | xargs -r docker stop --signal=9 -t0
 }
-alias d-stop="d-stop-grep"
+alias d-stop='d-stop-grep'
 # Function to remove containers matching a name pattern
 d-rm-grep() {
   if [ $# -ne 1 ] || [ -z "$1" ]; then
@@ -331,7 +334,7 @@ d-rm-grep() {
   fi
   docker ps -a | grep -iP "$1" | awk '{print $1}' | xargs -r docker rm -f
 }
-alias d-rm="docker-rm-grep"
+alias d-rm='docker-rm-grep'
 # Get container IP address
 d-ip() {
   if [ $# -ne 1 ] || [ -z "$1" ]; then
@@ -342,11 +345,11 @@ d-ip() {
   docker ps -a | grep -iP "$1" |  head -n 1 | awk '{print $1}' | xargs docker inspect --format '{{ .NetworkSettings.IPAddress }}'
 }
 # Docker Images
-# alias d-rmi="docker rmi -f"
-alias d-images="docker images"
-alias d-pull="docker pull"
-alias d-build="docker build"
-alias d-tag="docker tag"
+# alias d-rmi='docker rmi -f'
+alias d-images='docker images'
+alias d-pull='docker pull'
+alias d-build='docker build'
+alias d-tag='docker tag'
 # Function to remove images matching a name pattern
 docker-rmi-grep() {
   if [ $# -ne 1 ] || [ -z "$1" ]; then
@@ -355,28 +358,28 @@ docker-rmi-grep() {
   fi
   docker images | grep -iP "$1" | awk '{print $1}' | xargs -r docker rmi -f
 }
-alias d-rmi="docker-rmi-grep"
+alias d-rmi='docker-rmi-grep'
 # Docker Volumes and Networks
-alias d-vls="docker volume ls"
-alias d-vrm="docker volume rm -f"
-alias d-nls="docker network ls"
-alias d-nrm="docker network rm -f"
+alias d-vls='docker volume ls'
+alias d-vrm='docker volume rm -f'
+alias d-nls='docker network ls'
+alias d-nrm='docker network rm -f'
 # Docker Ccleanup
-alias d-prune="docker system prune -f"
-alias d-prune!="docker system prune -af --volumes"
+alias d-prune='docker system prune -f'
+alias d-prune!='docker system prune -af --volumes'
 # Docker Compose
-alias dc="docker compose"
-alias dc-build="docker compose build"
-alias dc-down="docker compose down -t0"
-alias dc-exec="docker compose exec"
-alias dc-logs="docker compose logs"
-alias dc-ps="docker compose ps"
-alias dc-pull="docker compose pull"
-alias dc-restart="docker compose restart -t0"
-alias dc-start="docker compose start"
-alias dc-stop="docker compose stop -t0"
-alias dc-up="docker compose up"
-alias dc-upd="docker compose up -d"
+alias dc='docker compose'
+alias dc-build='docker compose build'
+alias dc-down='docker compose down -t0'
+alias dc-exec='docker compose exec'
+alias dc-logs='docker compose logs'
+alias dc-ps='docker compose ps'
+alias dc-pull='docker compose pull'
+alias dc-restart='docker compose restart -t0'
+alias dc-start='docker compose start'
+alias dc-stop='docker compose stop -t0'
+alias dc-up='docker compose up'
+alias dc-upd='docker compose up -d'
 docker-compose-logs-follow() {
   if [ -z "$1" ]; then
     docker compose logs -f
@@ -384,21 +387,21 @@ docker-compose-logs-follow() {
     docker compose logs -f "$1"
   fi
 }
-alias dclo="docker-compose-logs-follow"
+alias dclo='docker-compose-logs-follow'
 
 # Kubernetes
 #-----------
-alias k="kubectl"
-alias kcx="kubectx"
-alias kctx="kubectx"
-alias kns="kubens"
+alias k='kubectl'
+alias kcx='kubectx'
+alias kctx='kubectx'
+alias kns='kubens'
 k-info() {
   local context=$(kubectl config current-context)
   echo -e "Context: \033[1;35m$context\033[0m"
   local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
   echo -e "Namespace: \033[1;35m$namespace\033[0m"
 }
-alias kinfo="k-info"
+alias kinfo='k-info'
 k-get-pods() {
   local context=$(kubectl config current-context)
   echo -e "Context: \033[1;35m$context\033[0m"
@@ -406,7 +409,7 @@ k-get-pods() {
   echo -e "Namespace: \033[1;35m$namespace\033[0m"
   kubectl get pods -n $namespace
 }
-alias kpo="k-get-pods"
+alias kpo='k-get-pods'
 k-get-pods-grep() {
   if [ $# -ne 1 ]; then
     echo "Usage: kpog <pod-name-to-grep>"
@@ -418,7 +421,7 @@ k-get-pods-grep() {
   echo -e "Namespace: \033[1;35m$namespace\033[0m"
   kubectl get pods -n $namespace | grep --color=always -iP "$1"
 }
-alias kpog="k-get-pods-grep"
+alias kpog='k-get-pods-grep'
 k-get-pods-watch() {
   local context=$(kubectl config current-context)
   echo -e "Context: \033[1;35m$context\033[0m"
@@ -426,7 +429,7 @@ k-get-pods-watch() {
   echo -e "Namespace: \033[1;35m$namespace\033[0m"
   kubectl get pods -n "$(kubectl config view --minify | grep namespace | cut -d" " -f6)" --watch
 }
-alias kpow="k-get-pods-watch"
+alias kpow='k-get-pods-watch'
 k-describe-pod() {
   if [ $# -ne 1 ]; then
     echo "Usage: kdpo <pod-name-to-describe>"
@@ -434,8 +437,8 @@ k-describe-pod() {
   fi
   kubectl describe pod "$1"
 }
-alias kdo="k-describe-pod"
-alias kdp="k-describe-pod"
+alias kdo='k-describe-pod'
+alias kdp='k-describe-pod'
 k-follow-pod-logs() {
   if [ $# -ne 1 ]; then
     echo "Usage: klo <pod-name-to-view-logs>"
@@ -443,7 +446,7 @@ k-follow-pod-logs() {
   fi
   kubectl logs -f "$1"
 }
-alias klo="kubectl-follow-pod-logs"
+alias klo='k-follow-pod-logs'
 # kx() {
 #   [ "$1" ] && kubectl config use-context "$1" || kubectl config current-context
 # }
@@ -483,20 +486,20 @@ g++-compile-and-run() {
   echo -e "Running \033[1;32m./$outputFile\033[0m"
   ./"$outputFile"
 }
-alias c++="g++-compile-and-run"
-alias cpp="g++-compile-and-run"
-alias g--="g++-compile-and-run"
-alias gpp="g++-compile-and-run"
+alias c++='g++-compile-and-run'
+alias cpp='g++-compile-and-run'
+alias g--='g++-compile-and-run'
+alias gpp='g++-compile-and-run'
 
 # Java
 #-----
 # alias j='f(){ export JAVA_HOME=/usr/libexec/java_home -v $1 }; java -version'
-alias j17="export JAVA_HOME=`/usr/libexec/java_home -v 17`; java -version"
-alias j21="export JAVA_HOME=$(/usr/libexec/java_home -v 21); java -version"
+alias j17='export JAVA_HOME=`/usr/libexec/java_home -v 17`; java -version'
+alias j21='export JAVA_HOME=$(/usr/libexec/java_home -v 21); java -version'
 export JAVA_HOME=$(/usr/libexec/java_home -v 21)
 # export JAVA_HOME="/Library/Java/JavaVirtualMachines/temurin-21.jdk/Contents/Home"
-alias j="java"
-alias jdk-list="/usr/libexec/java_home -V"
+alias j='java'
+alias jdk-list='/usr/libexec/java_home -V'
 # Change Java JDK version (usage: jdk 17)
 jdk-change() {
   # if [ $# -ne 1 ]; then
@@ -535,7 +538,7 @@ java-compile() {
   javac "$srcFile"
   echo -e "Compiled \033[1;32m$srcFile\033[0m to \033[1;32m$outputFile\033[0m"
 }
-alias j-compile="java-compile"
+alias j-compile='java-compile'
 java-compile-run() {
   if [ "$#" -eq 0 ]; then
     echo "Usage: j++ <source-file>"
@@ -553,14 +556,14 @@ java-compile-run() {
   echo -e "Running \033[1;32mjava $fileName\033[0m"
   java "$fileName"
 }
-alias j-run="java-compile-run"
-alias j--="java-compile-run"
-alias j++="java-compile-run"
+alias j-run='java-compile-run'
+alias j--='java-compile-run'
+alias j++='java-compile-run'
 java-info() {
   java -version
   echo "\$JAVA_HOME:" $JAVA_HOME
 }
-alias which-java="java-info"
+alias which-java='java-info'
 
 # Maven
 #------
@@ -592,42 +595,48 @@ mvnn() {
   echo -e "${GREEN}Running: mvn ${mvn_args[*]}${RESET}"
   command mvn "${mvn_args[@]}"
 }
-alias mvn++="mvn clean install -U -DskipTests" # Compiles test classes but skips test execution
-alias mvn-compile="mvn clean install -U -DskipTests"
-alias mvn-install="mvn clean install -U"
-alias mvn-run="mvn spring-boot:run -Dspring-boot.run.arguments=--debug -Dspring-boot.run.profiles=local"
-alias mvn-dependency-tree="mvn dependency:tree -Dverbose"
-alias mvn-tree="mvn dependency:tree -Dverbose"
-mvn-dependency-tree-print-to-file() {
-  if [ $# -eq 1 ]; then
-    local outputFile="$1"
-    mvn dependency:tree -Dverbose -DoutputFile=$outputFile
-    return 0
-  fi
-  mvn dependency:tree -Dverbose -DoutputFile=mvn-dependency-tree.txt
+alias mvn++='mvn clean install -U -DskipTests' # Compiles test classes but skips test execution
+alias mvn-compile='mvn clean install -U -DskipTests'
+alias mvn-install='mvn clean install -U'
+alias mvn-dependency-tree='mvn dependency:tree -Dverbose'
+alias mvn-tree='mvn dependency:tree -Dverbose'
+alias mvn-pom='mvn help:effective-pom -Dverbose=true'
+alias mvn-effective-pom='mvn help:effective-pom -Dverbose=true'
+# alias mvn-run='mvn spring-boot:run -Dspring-boot.run.arguments=--debug -Dspring-boot.run.profiles=local'
+mvn-run() {
+  local profile="${1:-local}"
+  mvn spring-boot:run -Dspring-boot.run.arguments=--debug -Dspring-boot.run.profiles="$profile"
 }
-alias mvn-tree-cat="mvn-dependency-tree-print-to-file"
-mvn-dependency-tree-filter-for-groupId-artifactId() {
-  if [ $# -eq 0 ] || [ $# -gt 2 ]; then
-    echo "Usage: mvn-tree-filter <groupId> [artifactId] (if artifactId not provided, it will be assumed to be the same as groupId)"
-    return 1
-  fi
-  local groupId="$1"
-  local artifactId="$1"
-  if [ $# -eq 1 ]; then
-    mvn dependency:tree -Dverbose -Dincludes=$groupId:$artifactId
-  elif [ $# -eq 2 ]; then
-    artifactId="$2"
-    mvn dependency:tree -Dverbose -Dincludes=$groupId:$artifactId
-  fi
-}
-alias mvn-tree-filter="mvn-dependency-tree-filter"
+# mvn-dependency-tree-print-to-file() {
+#   if [ $# -eq 1 ]; then
+#     local outputFile="$1"
+#     mvn dependency:tree -Dverbose -DoutputFile=$outputFile
+#     return 0
+#   fi
+#   mvn dependency:tree -Dverbose -DoutputFile=mvn-dependency-tree.txt
+# }
+# alias mvn-tree-cat='mvn-dependency-tree-print-to-file'
+# mvn-dependency-tree-filter-for-groupId-artifactId() {
+#   if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+#     echo "Usage: mvn-tree-filter <groupId> [artifactId] (if artifactId not provided, it will be assumed to be the same as groupId)"
+#     return 1
+#   fi
+#   local groupId="$1"
+#   local artifactId="$1"
+#   if [ $# -eq 1 ]; then
+#     mvn dependency:tree -Dverbose -Dincludes=$groupId:$artifactId
+#   elif [ $# -eq 2 ]; then
+#     artifactId="$2"
+#     mvn dependency:tree -Dverbose -Dincludes=$groupId:$artifactId
+#   fi
+# }
+# alias mvn-tree-filter='mvn-dependency-tree-filter'
 
 # Python
 #-------
 export PATH="/opt/homebrew/opt/python@3.13/libexec/bin:$PATH"
-alias python="python3.13"
-alias py="python3.13"
+alias python='python3.13'
+alias py='python3.13'
 
 # Custom Functions
 # ----------------
@@ -639,7 +648,7 @@ find-port() {
   fi
   lsof -i :$1
 }
-alias fport="find-port"
+alias fport='find-port'
 # Kill process ID of process using given port (usage: kill-process-on-port 3000)
 kill-port() {
   if [ $# -ne 1 ]; then
@@ -652,9 +661,9 @@ kill-port() {
   fi
   kill -9 $(lsof -t -i:$1)
 }
-# alias kpo="kport" # Note: This CONFLICTS with kpo == k get po
-alias kport="kill-port"
-alias free-port="kill-port"
+# alias kpo='kport' # Note: This CONFLICTS with kpo == k get po
+alias kport='kill-port'
+alias free-port='kill-port'
 # Kill given process id PID (usage: kp 1234)
 kill-pid() {
   if [ $# -ne 1 ]; then
@@ -663,7 +672,7 @@ kill-pid() {
   fi
   kill -9 $1
 }
-alias kpid="kill-pid"
+alias kpid='kill-pid'
 # Show All Processes Owned By User (usage: mine)
 mine() {
   ps "$@" -u "${USER}" -o pid,%cpu,%mem,start,command | sort -k 2 -r | awk '{ $5=substr($5,1,70); for(i=6;i<=NF;i++) $5=$5" "$i; $5=substr($5,1,70); NF=5; printf "%5s %4s %4s %7s %-70s\n", $1, $2, $3, $4, $5 }'
@@ -689,10 +698,10 @@ ps-aux-regex() {
   # ps ax -o user,pid,%cpu,%mem,start,command | grep --color=always -iP "$1"
   ps ax -o user,pid,%cpu,%mem,start,command | sort -k 3 -r | grep --color=always -iP "$1"
 }
-alias psaux="ps-aux-regex"
-alias psx="ps-aux-regex"
-alias find-pid="ps-aux-regex"
-alias fpid="ps-aux-regex"
+alias psaux='ps-aux-regex'
+alias psx='ps-aux-regex'
+alias find-pid='ps-aux-regex'
+alias fpid='ps-aux-regex'
 ps-aux-ignore-case() {
   if [ $# -ne 1 ]; then
     echo "Usage: psxi <process-name-to-find-ignore-case>"
@@ -701,8 +710,8 @@ ps-aux-ignore-case() {
   # ps ax -o user,pid,%cpu,%mem,start,command | grep --color=always -i "$1"
   ps ax -o user,pid,%cpu,%mem,start,command | sort -k 3 -r | grep --color=always -i "$1"
 }
-alias psauxi="ps-aux-ignore-case"
-alias psxi="ps-aux-ignore-case"
+alias psauxi='ps-aux-ignore-case'
+alias psxi='ps-aux-ignore-case'
 ppkill() {
   if [ $# -ne 1 ]; then
     echo "Usage: ppkill <process-name-to-kill>"
@@ -760,10 +769,10 @@ zsh-upgrade-plugins() {
   done
   cd
 }
-alias omz-update="zsh-upgrade-plugins"
+alias omz-update='zsh-upgrade-plugins'
 perl-grep() {
   if [ $# -eq 0 ] || [ $# -gt 2 ]; then
-    echo "Usage: pgrep 'regex-pattern' <optional-file-name>"
+    echo "Usage: prep 'regex-pattern' [filename]"
     return 1
   fi
   local pattern="$1"
@@ -776,10 +785,10 @@ perl-grep() {
     perl -nle "if (/$pattern/gim) { s/($pattern)/\033[1;31m\$1\033[0m/gim; print }" $filename
   fi
 }
-alias prep="perl-grep"
+alias prep='perl-grep'
 # perl-grep-only-matching() {
 #   if [ $# -eq 0 ] || [ $# -gt 2 ]; then
-#     echo "Usage: pgrep2 'regex-pattern' <optional-file-name>"
+#     echo "Usage: pgrep2 'regex-pattern' [filename]"
 #     return 1
 #   fi
 #   local pattern="$1"
@@ -790,7 +799,7 @@ alias prep="perl-grep"
 #     perl -nle "print \"\033[1;31m\$&\033[0m\" while /$pattern/gim" $filename
 #   fi
 # }
-# alias prep2="perl-grep-only-matching"
+# alias prep2='perl-grep-only-matching'
 mvv() {
   # Execute mv -v passing all arguments ("$@")
   # Pipe output to sed to perform regex replacement for coloring
@@ -842,10 +851,11 @@ jq-sort() {
   local tempFile="tmp-$(date +%s).json"
   jq -S '.' "$1" > "$tempFile" && command mv -v "$tempFile" "$1" || rm -f "$tempFile"
 }
-jq-convert-to-json() {
+jq-convert-stringified-to-json() {
   if [ $# -lt 1 ]; then
-    echo -e "Usage: \033[1;32mjq-convert-stringifiedJson-to-json <file> <key>\033[0m (omit <key> if the <file> contains only stringified JSON)"
-    echo -e "The <file> must contain only stringified JSON OR have the stringified json as the value of the key provided as \033[1;31m\$1\033[0m: \033[1;31m{ \"insert-key-here\": \"insert-stringified-json-here\" }\033[0m"
+    echo -e "Usage: \033[1;32mjq-convert-stringified-to-json <file> [key]\033[0m"
+    echo -e "Omit \033[1;31m[key]\033[0m if \033[1;34m<file>\033[0m contains ONLY stringified JSON"
+    echo -e "Otherwise: \033[1;32mcat <file>\033[0m = \033[1;31m{ \"key-provided-as-\$1\": \"insert-stringified-json-here\" }\033[0m"
     return 1
   fi
   if [[ ! -f "$1" ]]; then
@@ -875,23 +885,55 @@ yq-sort() {
   yq 'sort_keys(..)' "$1" > "$tempFile" && command mv -v "$tempFile" "$1" || rm -f "$tempFile"
 }
 timeis() {
+  echo -e "----------"
+  echo -e "YYYY-MM-DD"
+  echo -e "----------"
   date +"%Y-%m-%d@%H:%M:%S"
   date +"%Y-%m-%d-%H:%M:%S"
   date +"%Y-%m-%d-%H-%M-%S"
+  echo -e "----------"
+  echo -e "DD-MM-YYYY"
+  echo -e "----------"
   date +"%d-%m-%Y@%H:%M:%S"
   date +"%d-%m-%Y-%H:%M:%S"
   date +"%d-%m-%Y-%H-%M-%S"
+  echo -e "--------------"
+  echo -e "Unix Timestamp"
+  echo -e "--------------"
   date +%s
 }
 timeis2() {
+  echo -e "----------"
+  echo -e "YYYY-MM-DD"
+  echo -e "----------"
   date +"%Y-%m-%d@%I:%M:%S%p"
   date +"%Y-%m-%d-%I:%M:%S%p"
   date +"%Y-%m-%d-%I-%M-%S%p"
+  echo -e "----------"
+  echo -e "DD-MM-YYYY"
+  echo -e "----------"
   date +"%d-%m-%Y@%I:%M:%S%p"
   date +"%d-%m-%Y-%I:%M:%S%p"
   date +"%d-%m-%Y-%I-%M-%S%p"
+  echo -e "--------------"
+  echo -e "Unix Timestamp"
+  echo -e "--------------"
   date +%s
 }
+brew-outdated() {
+  brew update > /dev/null 2>&1 
+  brew cleanup > /dev/null 2>&1
+  echo -e "\033[1;34m--------\033[0m"
+  echo -e "\033[1;34mFormulae\033[0m"
+  echo -e "\033[1;34m--------033[0m"
+  brew outdated --formula
+  echo -e "\033[1;34m-----033[0m"
+  echo -e "\033[1;34mCasks\033[0m"
+  echo -e "\033[1;34m-----033[0m"
+  # brew outdated --cask --greedy
+  brew outdated --cask --greedy-auto-updates
+}
+alias brew-update='brew-outdated'
 
 # macOS Applications
 #-------------------
@@ -899,7 +941,7 @@ force-quit-applications() {
   # Open "Force Quit Applications" window
   osascript -e 'tell application "System Events" to key code 53 using {command down, option down}'
 }
-alias fq="force-quit-applications"
+alias fq='force-quit-applications'
 chrome() {
   if osascript -e 'tell application "Google Chrome" to return (count of windows) > 0' 2>/dev/null | grep -q "true"; then
     # Chrome has windows open, just bring it to front
@@ -910,7 +952,7 @@ chrome() {
   fi
 }
 # Open a new instance of Chrome (even if one is already running)
-chromen() {
+chrome-new-instance() {
   open -n -a "Google Chrome" --args --incognito
 }
 edge() {
@@ -923,32 +965,32 @@ edge() {
   fi
 }
 # Open a new instance of Edge (even if one is already running)
-edgen() {
+edge-new-instance() {
   open -n -a "Microsoft Edge" --args --inprivate
 }
 # Open Firefox
-fox() {
+firefox() {
   open -a "Firefox"
 }
-alias ff="firefox"
+alias ff='firefox'
 # Open a new instance of Firefox (even if one is already running)
-foxn() {
+firefox-new-instance() {
   open -n -a "Firefox"
 }
-alias ffn="firefoxn"
+alias ffn='firefox-new-instance'
 # Open LibreWolf
-wolf() {
+librewolf() {
   open -a "LibreWolf"
 }
 # Open a new instance of LibreWolf (even if one is already running)
-wolfn() {
+librewolf-new-instance() {
   open -n -a "LibreWolf"
 }
 # Open LibreOffice
 libreoffice() {
   open -a "LibreOffice"
 }
-alias office="lo"
+alias office='libreoffice'
 # Open Bruno
 bruno() {
   open -a "Bruno"
@@ -972,7 +1014,7 @@ git-push-force-with-lease-with-confirmation() {
   fi
   local currBranch=$(git_current_branch)
   git fetch --all --prune --tags --force > /dev/null 2>&1
-  echo -en "Confirm \033[1;31mgit push --force-with-lease\033[0m on branch \033[1;35m$branchToDelete\033[0m [yes/N]: "
+  echo -en "Confirm \033[1;31mgit push --force-with-lease\033[0m on branch \033[1;35m$currBranch\033[0m [yes/N]: "
   read -r response
   if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
     echo -e "CANCELLED git push --force-with-lease --force-if-includes"
@@ -990,7 +1032,7 @@ git-push-force-with-confirmation() {
   fi
   local currBranch=$(git_current_branch)
   git fetch --all --prune --tags --force > /dev/null 2>&1
-  echo -en "Confirm \033[1;31mgit push --force-with-lease\033[0m on branch \033[1;35m$branchToDelete\033[0m [yes/N]: "
+  echo -en "Confirm \033[1;31mgit push --force-with-lease\033[0m on branch \033[1;35m$currBranch\033[0m [yes/N]: "
   read -r response
   if [[ ! "$response" =~ ^[yY][eE][sS]$ ]]; then
     echo -e "CANCELLED git push --force"
@@ -1034,8 +1076,8 @@ git-delete-local-branch() {
     git stash pop
   fi
 }
-alias gbd="git-delete-local-branch"
-alias gbD="git-delete-local-branch"
+alias gbd='git-delete-local-branch'
+alias gbD='git-delete-local-branch'
 # Delete remote branch only (usage: gbdr remoteBranchNameToDelete)
 git-delete-remote-branch() {
   if [ $# -ne 1 ]; then
@@ -1061,7 +1103,7 @@ git-delete-remote-branch() {
   # git push origin --delete "$branchToDelete"
   git push origin :"$branchToDelete"
 }
-alias gbdr="git-delete-remote-branch"
+alias gbdr='git-delete-remote-branch'
 # Delete both local and remote branch (usage: gbdd branchNameToDeleteInLocalAndRemote)
 git-delete-local-and-remote-branch() {
   if [ $# -ne 1 ]; then
@@ -1099,7 +1141,7 @@ git-delete-local-and-remote-branch() {
     git stash pop
   fi
 }
-alias gbdd="git-delete-local-and-remote-branch"
+alias gbdd='git-delete-local-and-remote-branch'
 # gcb newBranch && gco currBranch (used for git worktree workflow) [usage: gcbb newBranch]
 gcbb() {
   if [ $# -ne 1 ]; then
@@ -1158,7 +1200,7 @@ git-reset-hard() {
   fi
   git reset --hard "$@"
 }
-alias grh="git-reset-hard"
+alias grh='git-reset-hard'
 git-reset-hard-and-git-clean() {
   # if [ $# -gt 0 ]; then
   #   echo -en "Confirm \033[1;31mgit reset --hard $@ && git clean -fd\033[0m? [yes/N]: "
@@ -1179,7 +1221,7 @@ git-reset-hard-and-git-clean() {
   fi
   git reset --hard "$@" && git clean -fd
 }
-alias grh!="git-reset-hard-and-git-clean"
+alias grh!='git-reset-hard-and-git-clean'
 git-reset-hard-origin() {
   local currBranch=$(git_current_branch)
   echo -en "Confirm \033[1;31mgit reset --hard origin/$currBranch\033[0m? [yes/N]: "
@@ -1192,8 +1234,8 @@ git-reset-hard-origin() {
   fi
   git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch)
 }
-alias grho="git-reset-hard-origin"
-alias greset="git-reset-hard-origin"
+alias grho='git-reset-hard-origin'
+alias greset='git-reset-hard-origin'
 git-reset-hard-origin-and-git-clean() {
   local currBranch=$(git_current_branch)
   echo -en "Confirm \033[1;31mgit reset --hard origin/$currBranch && git clean -fd\033[0m? [yes/N]: "
@@ -1206,8 +1248,8 @@ git-reset-hard-origin-and-git-clean() {
   fi
   git fetch --all --prune --tags --force && git reset --hard origin/$(git_current_branch) && git clean -fd
 }
-alias grho!="git-reset-hard-origin-and-git-clean"
-alias greset!="git-reset-hard-origin-and-git-clean"
+alias grho!='git-reset-hard-origin-and-git-clean'
+alias greset!='git-reset-hard-origin-and-git-clean'
 safe-git-stash-pop() {
   if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     # echo -e "ERROR: \033[1;31m${PWD##*/}\033[0m is NOT a git repository, skipping"
@@ -1226,7 +1268,7 @@ safe-git-stash-pop() {
     echo -e "\033[1;33mWARNING: Stash conflicts detected in\033[0m \033[1;31m$dir\033[0m (use 'git stash show -p' to see changes && use 'git stash pop' when ready to merge)"
   fi
 }
-update-git-repos() {
+gl-repos() {
   for dir in */; do
     # [ -d "$dir" ] || continue
     if [ ! -d "$dir" ]; then
@@ -1275,10 +1317,10 @@ git-local-only-branches() {
     }
   }'
 }
-alias gbl="git-local-only-branches"
-alias gb-local-only="git-local-only-branches"
-alias gb-norem="git-local-only-branches"
-alias gb-no-remote="git-local-only-branches"
+alias gbl='git-local-only-branches'
+alias gb-local-only='git-local-only-branches'
+alias gb-norem='git-local-only-branches'
+alias gb-no-remote='git-local-only-branches'
 git-delete-branches-with-no-upstream() {
   if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     echo -e "ERROR: \033[1;31m$(basename $(pwd))\033[0m is NOT a git repository"
@@ -1302,8 +1344,8 @@ git-delete-branches-with-no-upstream() {
     fi
   done
 }
-alias gbd-norem="git-delete-branches-with-no-upstream"
-alias gbd-no-remote="git-delete-branches-with-no-upstream"
+alias gbd-norem='git-delete-branches-with-no-upstream'
+alias gbd-no-remote='git-delete-branches-with-no-upstream'
 git-delete-branches--with-no-upstream-auto() {
   if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
     echo -e "ERROR: \033[1;31m$(basename $(pwd))\033[0m is NOT a git repository"
@@ -1384,11 +1426,13 @@ alias gf='git fetch --all --prune --tags --force'
 alias gf!='git fetch --all --prune --tags --force'
 alias gfa='git fetch --all --prune --tags --force'
 alias gfa!='git fetch --all --prune --tags --force'
-alias gl="git pull --rebase --autostash"
-alias gl!="git fetch --all --prune --tags --force && git pull --rebase --autostash"
-alias glo="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M%p'"
-alias glo2="git log --graph --oneline --decorate --pretty='%C(yellow)%h %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M%p'"
-alias glo3="git log --pretty='%C(yellow)%h %C(cyan)%cd %C(magenta)%aN %Creset%s%C(green)%d' --date=format:'%d/%m/%y %I:%M:%S%p'"
+alias gl='git pull --rebase --autostash'
+alias gl!='git fetch --all --prune --tags --force && git pull --rebase --autostash'
+alias glo='git log --pretty="%C(yellow)%h %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d" --date=format:"%d/%m/%y %I:%M%p"'
+alias glo24='git log --pretty="%C(yellow)%h %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d" --date=format:"%d/%m/%y %H:%M"'
+alias glof='git log --pretty="%C(yellow)%H %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d" --date=format:"%d/%m/%y %H:%M"'
+# alias glo2='git log --graph --oneline --decorate --pretty="%C(yellow)%h %C(cyan)%cd %C(red)%aN %Creset%s%C(green)%d" --date=format:"%d/%m/%y %I:%M%p"'
+# alias glo3='git log --pretty="%C(yellow)%h %C(cyan)%cd %C(magenta)%aN %Creset%s%C(green)%d" --date=format:"%d/%m/%y %I:%M:%S%p"'
 alias gmv='git mv'
 alias grem='git remote -v'
 alias gremote='git remote -v'
@@ -1410,10 +1454,10 @@ alias gwtl='git worktree list' # (cd my-repo || cd target-branch-dir) && gwtl
 
 # cd Aliases
 #-----------
-alias b="cd .."
-alias cdd="cd ~/dev/github"
-alias cd1="cd ~/dev/github"
-alias cd2="cd ~/dev/github28"
+alias b='cd ..'
+alias cdd='cd ~/dev/github'
+alias cd1='cd ~/dev/github'
+alias cd2='cd ~/dev/github28'
 
 # Aliases
 #--------
@@ -1422,34 +1466,41 @@ alias cd2="cd ~/dev/github28"
 # alias kill='kill -9'
 # alias ll='ls -AlF --color=auto'
 # alias memhogs='ps wwaxm -o pid,stat,vsize,rss,time,command | head -10' # Show Top 10 Memory Hogs
-alias brew-outdated-cask="brew update > /dev/null 2>&1 && brew cleanup > /dev/null 2>&1 && brew outdated --cask --greedy"
-alias brew-outdated="brew update > /dev/null 2>&1 && brew cleanup > /dev/null 2>&1 && brew outdated --greedy"
-alias brew-update="brew update > /dev/null 2>&1 && brew cleanup > /dev/null 2>&1 && brew outdated --greedy"
-# alias c="claude"
-alias cls="clear"
-alias cude="codium"
-alias egrep="egrep --color=always -i"
-alias finder="open"
-alias fgrep="fgrep --color=always -i"
-alias g="gemini"
-alias g++="g++-13"
-alias gcc="gcc-13"
-alias grep='grep --color=always -i'
+# alias c='claude'
+alias br='brew'
+alias cls='clear'
+alias cude='codium'
+alias egrep='egrep --color=always -i'
+alias finder='open'
+alias fgrep='fgrep --color=always -i'
+alias g++='g++-13'
+alias gcc='gcc-13'
+alias grep='command grep --color=always -i'
 alias grepe='command grep --color=always -iP' # -iE (for FreeBSD/macOS) && -iP (for GNU/Linux) && 'command' to prevent alias expansion for grep alias above
 alias grepp='command grep --color=always -iP'
 alias grepr='command grep --color=always -iP'
 alias grepi='command grep --color=always -i'
+alias kc='kilo'
 alias ll='command ls -AoF --color=auto'
 alias ls='command ls --color=auto'
 alias lsd='command ls -Aod --color=auto */'
-alias mv="command mv -v"
+alias mv='command mv -v'
 alias n='npm'
-alias n-update='npm outdated -g'
+alias n-outdated='npm outdated'
+alias n-outdated-g='npm outdated -g'
+alias n-update='npm outdated'
+alias n-update-g='npm outdated -g'
+alias n-upgrade='npm update'
+alias n-upgrade-g='npm update -g'
 alias p='pnpm'
-alias p-update='pnpm outdated'
+alias p-outdated='pnpm outdated'
+alias p-outdated-g='pnpm outdated -g'
+alias p-upgrade='pnpm upgrade'
+alias p-upgrade-g='pnpm upgrade -g'
+alias port-outdated='sudo port selfupdate && sudo port outdated'
 alias port-update='sudo port selfupdate && sudo port outdated'
 alias now='date +"%Y-%m-%d %H:%M:%S"'
 alias rezsh='source ~/.zshrc'
 # alias timeis='date +"%Y-%m-%d@%H:%M:%S"'
-alias untar="tar -xvf"
-alias zshrc="codium ~/ && codium ~/.zshrc"
+alias untar='tar -xvf'
+alias zshrc='codium ~/ && codium ~/.zshrc'
