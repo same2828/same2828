@@ -854,7 +854,7 @@ jq-sort() {
 jq-convert-stringified-to-json() {
   if [ $# -lt 1 ]; then
     echo -e "Usage: \033[1;32mjq-convert-stringified-to-json <file> [key]\033[0m"
-    echo -e "Omit \033[1;31m[key]\033[0m if \033[1;34m<file>\033[0m contains ONLY stringified JSON"
+    echo -e "Omit \033[1;31m[key]\033[0m if \033[1;34m<file>\033[0m contains ONLY stringified JSON in quotes: \033[1;31m\"{\\\"key\\\": \\\"value\\\"}\"\033[0m"
     echo -e "Otherwise: \033[1;32mcat <file>\033[0m = \033[1;31m{ \"key-provided-as-\$1\": \"insert-stringified-json-here\" }\033[0m"
     return 1
   fi
@@ -923,13 +923,13 @@ timeis2() {
 brew-outdated() {
   brew update > /dev/null 2>&1 
   brew cleanup > /dev/null 2>&1
-  echo -e "\033[1;34m--------\033[0m"
-  echo -e "\033[1;34mFormulae\033[0m"
-  echo -e "\033[1;34m--------033[0m"
+  echo "--------------------------------------------------"
+  echo "Formulae"
+  echo "--------------------------------------------------"
   brew outdated --formula
-  echo -e "\033[1;34m-----033[0m"
-  echo -e "\033[1;34mCasks\033[0m"
-  echo -e "\033[1;34m-----033[0m"
+  echo "--------------------------------------------------"
+  echo "Casks"
+  echo "--------------------------------------------------"
   # brew outdated --cask --greedy
   brew outdated --cask --greedy-auto-updates
 }

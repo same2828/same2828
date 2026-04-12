@@ -1,0 +1,161 @@
+{
+  "$schema": "https://schema.linearmouse.app/0.10.4",
+  "schemes": [
+    {
+      "if": {
+        "device": {
+          "category": "mouse",
+          "productID": "0x6e",
+          "productName": "Razer DeathAdder Essential",
+          "vendorID": "0x1532"
+        }
+      },
+      "pointer": {
+        "acceleration": 1,
+        "disableAcceleration": true
+      },
+      "scrolling": {
+        "acceleration": {
+          "vertical": 1
+        },
+        "distance": {
+          "vertical": 3
+        },
+        "modifiers": {
+          "vertical": {
+            "command": {
+              "type": "zoom"
+            },
+            "control": {
+              "scale": 2.5,
+              "type": "changeSpeed"
+            },
+            "option": {
+              "scale": 2.5,
+              "type": "changeSpeed"
+            },
+            "shift": {
+              "type": "alterOrientation"
+            }
+          }
+        },
+        "reverse": {
+          "vertical": true
+        },
+        "speed": {
+          "vertical": 0
+        }
+      }
+    },
+    {
+      "if": {
+        "app": "com.microsoft.VSCode",
+        "device": {
+          "category": "mouse",
+          "productID": "0x6e",
+          "productName": "Razer DeathAdder Essential",
+          "vendorID": "0x1532"
+        }
+      },
+      "scrolling": {
+        "acceleration": {
+          "vertical": 1
+        },
+        "distance": {
+          "vertical": 2
+        },
+        "speed": {
+          "vertical": 0
+        }
+      }
+    },
+    {
+      "if": {
+        "app": "org.mozilla.firefox",
+        "device": {
+          "category": "mouse",
+          "productID": "0x6e",
+          "productName": "Razer DeathAdder Essential",
+          "vendorID": "0x1532"
+        }
+      },
+      "scrolling": {
+        "distance": {
+          "vertical": 6
+        }
+      }
+    },
+    {
+      "if": {
+        "app": "org.libreoffice.script",
+        "device": {
+          "category": "mouse",
+          "productID": "0x6e",
+          "productName": "Razer DeathAdder Essential",
+          "vendorID": "0x1532"
+        }
+      },
+      "scrolling": {
+        "distance": {
+          "vertical": 6
+        }
+      }
+    },
+    {
+      "if": {
+        "app": "org.mozilla.librewolf",
+        "device": {
+          "category": "mouse",
+          "productID": "0x6e",
+          "productName": "Razer DeathAdder Essential",
+          "vendorID": "0x1532"
+        }
+      },
+      "scrolling": {
+        "distance": {
+          "vertical": 6
+        }
+      }
+    },
+    {
+      "if": {
+        "device": {
+          "category": "trackpad",
+          "productID": "0x0",
+          "productName": "Apple Internal Keyboard / Trackpad",
+          "vendorID": "0x0"
+        }
+      },
+      "pointer": {
+        "acceleration": "unset",
+        "disableAcceleration": false,
+        "redirectsToScroll": false,
+        "speed": "unset"
+      },
+      "scrolling": {
+        "acceleration": {
+          "vertical": 1
+        },
+        "speed": {
+          "vertical": 0
+        }
+      }
+    },
+    {
+      "if": {
+        "app": "com.readdle.PDFExpert-Mac",
+        "device": {
+          "category": "trackpad",
+          "productID": "0x0",
+          "productName": "Apple Internal Keyboard / Trackpad",
+          "vendorID": "0x0"
+        }
+      },
+      "scrolling": {
+        "speed": {
+          "vertical": 4
+        }
+      }
+    }
+  ]
+}

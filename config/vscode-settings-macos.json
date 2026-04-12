@@ -2259,6 +2259,7 @@
   },
   "workbench.colorTheme": "Dracula",
   "workbench.editor.empty.hint": "hidden",
+  "workbench.editor.useModal": "off",
   "workbench.editorAssociations": {
     // "*.copilotmd": "vscode.markdown.preview.editor",
     "git-rebase-todo": "default",

@@ -313,6 +313,8 @@
     - [Move Semantics](#move-semantics)
     - [Passing new empty `std::vector` as parameter to function](#passing-new-empty-stdvector-as-parameter-to-function)
   - [Null Type](#null-type)
+  - [Optimisations/Optimizations](#optimisationsoptimizations)
+    - [String Concatenation](#string-concatenation)
   - [Placement of Identifiers/Operators](#placement-of-identifiersoperators)
     - [NO difference](#no-difference)
     - [Difference](#difference)
@@ -8657,6 +8659,24 @@ public:
 
 - In C++, there is **NO** "`null` type" and instead has a special value called **`nullptr`** that represents a null pointer
   - The `nullptr` keyword was introduced in C++11 to provide a better alternative to the C-style NULL macro, which is a preprocessor macro that evaluates to an integer zero
+
+## Optimisations/Optimizations
+
+### String Concatenation
+
+> Use `+= '-'` instead of `+= "-"`
+
+`'-'` (Character Literal)
+
+- This represents a single primitive char
+- When you use key += '-', C++ directly appends a single byte to the string's internal array
+- This is extremely fast and avoids type conversions
+
+`"-"` (String Literal)
+
+- This represents a null-terminated character array (const char[] containing '-' and '\0')
+- When you use key += "-", C++ has to treat it as an array, calculate its length, and loop through the characters to append them
+- It incurs slightly more overhead than appending a single primitive char
 
 ## Placement of Identifiers/Operators
 

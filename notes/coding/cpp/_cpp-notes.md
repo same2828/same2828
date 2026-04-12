@@ -89,6 +89,8 @@
   - [Pass by Reference `&`](#pass-by-reference-)
   - [TLE](#tle)
 - [Null Type](#null-type)
+- [Optimisations/Optimizations](#optimisationsoptimizations)
+  - [String Concatenation](#string-concatenation)
 - [Placement of Identifiers/Operators](#placement-of-identifiersoperators)
   - [NO difference](#no-difference)
   - [Difference](#difference)
@@ -453,7 +455,6 @@ Type obj{arg};  // Curly braces used with a single parameter
 - Stateless function objects, such as `std::hash` or `std::less`, are function objects that do NOT have any internal state or member variables
   - These function objects are typically used as generic function objects for algorithms or containers in the C++ Standard Library
 - Stateless function objects can be instantiated using both parentheses (`()`) and curly braces (`{}`), but there are some differences:
-
   - Parentheses (`()`) invoke the default constructor of the function object directly
     - If the function object does NOT have a default constructor, a compilation error will occur
     - For example, if `std::hash` had a deleted or private default constructor, both `std::hash<std::string> hashFunc1;` and `std::hash<std::string> hashFunc2();` would result in a compilation error
@@ -624,7 +625,6 @@ Usage of following containers normally starts off as **empty** (we insert elemen
 Usage of `std::vector` normally does **NOT** start off as empty (we expect all values to be initialised to `0` or `-1`, and do not want to call `.push_back()` or `.emplace_back()`); therefore we **DO** need to initialise (in function body) after declaration
 
 - However the opposite is true (i.e. usage of `std::vector` as empty) when `std::vector` is used as an inner container for `std::unordered_map<int, std::vector<int>` or `std::pair<int, std::vector<int>`
-
   - In this opposite case, we do NOT need to initialise the `std::vector` as it will be automatically initialised to be empty and can straight away call `.push_back()` or `.emplace_back()` on it
 
 - `std::vector`
@@ -1763,7 +1763,6 @@ public:
 - The first version (Code 1) might be faster due to reduced memory overhead compared to the second version (Code 2)
   - The difference in speed is due to the use of class member variables in Code 2, which introduces additional memory overhead
 - Here are some specifics:
-
   1. Memory allocation and deallocation: In Code 2, `requiredQuantity` and `counts` are class member variables
      - They live as long as the object of the class `Solution` lives
      - This means that memory for these variables is allocated when the object is created and deallocated when the object is destroyed
@@ -1862,6 +1861,24 @@ public:
 - In C++, there is **NO** "`null` type" and instead has a special value called **`nullptr`** that represents a null pointer
   - The `nullptr` keyword was introduced in C++11 to provide a better alternative to the C-style NULL macro, which is a preprocessor macro that evaluates to an integer zero
 
+# Optimisations/Optimizations
+
+## String Concatenation
+
+> Use `+= '-'` instead of `+= "-"`
+
+`'-'` (Character Literal)
+
+- This represents a single primitive char
+- When you use key += '-', C++ directly appends a single byte to the string's internal array
+- This is extremely fast and avoids type conversions
+
+`"-"` (String Literal)
+
+- This represents a null-terminated character array (const char[] containing '-' and '\0')
+- When you use key += "-", C++ has to treat it as an array, calculate its length, and loop through the characters to append them
+- It incurs slightly more overhead than appending a single primitive char
+
 # Placement of Identifiers/Operators
 
 ## NO difference
@@ -1892,7 +1909,6 @@ int* const a; // const pointer to int
   - **`*`** = pointer
   - **`const`** = const
 - **`int const* a;`** declares a pointer variable `a` that can point to an integer, but the integer it points to is `const` and CANNOT be modified through `a`
-
   - I.e. `a` is a non-const pointer to a const integer
   - Example
 
@@ -1905,7 +1921,6 @@ int* const a; // const pointer to int
     ```
 
 - **`int* const a;`** declares a pointer variable `a` that is itself `const`, meaning it cannot be modified to point to a different address
-
   - However, the integer it points to is NOT const and can be modified through a
   - I.e. `a` is a const pointer to a non-const integer
   - Example
@@ -2164,7 +2179,6 @@ public:
 ## Truthy Values
 
 - The following values are considered truthy, meaning they evaluate to `true` in a boolean context:
-
   - Non-Zero integers (integers > 0)
   - Non-Null pointers
   - Non-Empty C-style strings (arrays of characters)
@@ -2258,7 +2272,6 @@ int main() {
 - Unsigned Integer = Postive + 0
 
 - **Signed Integers**:
-
   - Signed integers represent both positive and negative values, including zero
   - They use the most significant bit (MSB) (the bit furthest to the left) to represent the sign, where 0 indicates a positive value and 1 indicates a negative value
   - The remaining bits are used to represent the magnitude of the value
@@ -2267,7 +2280,6 @@ int main() {
     - Similarly, the binary representation of 127 is 0111 1111, where the MSB is 0 indicating a positive value, and the magnitude is represented by the remaining 7 bits
 
 - **Unsigned Integer**:
-
   - Unsigned integers represent only non-negative values, including zero
   - They do NOT use any bit to represent the sign, and all bits are used to represent the magnitude of the value
   - As a result, unsigned integers can represent a larger range of positive values compared to signed integers of the same size

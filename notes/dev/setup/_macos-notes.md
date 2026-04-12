@@ -6,6 +6,8 @@
     - [iTerm2](#iterm2)
     - [Terminal](#terminal)
     - [Karabiner Elements](#karabiner-elements)
+      - [Simple Modifications](#simple-modifications)
+      - [Complex Modifications](#complex-modifications)
     - [LibreOffice](#libreoffice)
     - [Librewolf](#librewolf)
     - [Mounty](#mounty)
@@ -139,21 +141,58 @@ Settings > Profiles > MyProfile > Window Size > Column = 90 && Rows = 22
   - Uninstall using `Karabiner Elements > Settings > Uninstall` (do NOT use App Cleaner)
   - [Docs](https://karabiner-elements.pqrs.org/docs/help/troubleshooting/stopped-working-after-macos-update/)
 
+#### Simple Modifications
+
 ```sh
 # Settings > Simple Modifications > For all devices
-application -> right_command
 f4 -> illumination_down
 f5 -> illumination_up
 pause -> play_or_pause
-print_screen -> volume_decrement
-scroll_lock -> volume_increment
 
 # Settings > Simple Modifications > For Ducky Keyboard
+application -> right_control
+keypad_enter -> return_or_enter
 left_command -> left_control
 left_control -> left_command
-keypad_enter -> return_or_enter
-application -> right_control
 right_control -> right_command
+```
+
+#### Complex Modifications
+
+```json
+{
+  "description": "Change print_screen to cmd+shift+5",
+  "manipulators": [
+    {
+      "from": { "key_code": "print_screen" },
+      "to": [
+        {
+          "key_code": "5",
+          "modifiers": ["left_command", "left_shift"]
+        }
+      ],
+      "type": "basic"
+    }
+  ]
+}
+```
+
+```json
+{
+  "description": "Change scroll_lock to cmd+shift+7 (TextSniper)",
+  "manipulators": [
+    {
+      "from": { "key_code": "scroll_lock" },
+      "to": [
+        {
+          "key_code": "7",
+          "modifiers": ["left_command", "left_shift"]
+        }
+      ],
+      "type": "basic"
+    }
+  ]
+}
 ```
 
 ### LibreOffice
@@ -186,7 +225,10 @@ Styles > Manage Styles > Right-click on Default > Edit Style... > Font > Size > 
 
 ```sh
 brew install --cask librewolf --no-quarantine
-xattr -d com.apple.quarantine /Applications/LibreWolf.app
+xattr -cr /Applications/LibreWolf.app
+xattr -dr com.apple.quarantine /Applications/LibreWolf.app
+xattr -cr "/Applications/PDF Expert.app" & codesign -fs - "/Applications/PDF Expert.app"
+xattr -cr /Applications/PDF\ Expert.app & codesign -f -s - /Applications/PDF\ Expert.app
 # brew reinstall librewolf --no-quarantine
 ```
 
@@ -426,42 +468,6 @@ keypad_enter -> return_or_enter
 # right_control -> right_command
 ```
 
-```json
-{
-  "description": "Change print_screen to cmd+shift+5",
-  "manipulators": [
-    {
-      "from": { "key_code": "print_screen" },
-      "to": [
-        {
-          "key_code": "5",
-          "modifiers": ["left_command", "left_shift"]
-        }
-      ],
-      "type": "basic"
-    }
-  ]
-}
-```
-
-```json
-{
-  "description": "Change scroll_lock to cmd+shift+7 (TextSniper)",
-  "manipulators": [
-    {
-      "from": { "key_code": "scroll_lock" },
-      "to": [
-        {
-          "key_code": "7",
-          "modifiers": ["left_command", "left_shift"]
-        }
-      ],
-      "type": "basic"
-    }
-  ]
-}
-```
-
 ## MacPorts
 
 [MacPorts](https://www.macports.org/)
@@ -651,12 +657,17 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/too
 omz update
 
 # Add OhMyZsh Plugins
-git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions && git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting && git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting && git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
+git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions \
+&& git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting \
+&& git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting \
+&& git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab \
+&& git clone https://github.com/sukkaw/zsh-fnm ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-fnm
 # cd ~/.oh-my-zsh/custom/plugins
 # git pull
 # git clone https://github.com/zsh-users/zsh-autosuggestions ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions
 # git clone https://github.com/zsh-users/zsh-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-syntax-highlighting
 # git clone https://github.com/Aloxaf/fzf-tab ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fzf-tab
+# git clone https://github.com/sukkaw/zsh-fnm ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-fnm
 # git clone https://github.com/zdharma-continuum/fast-syntax-highlighting.git ${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/fast-syntax-highlighting
 # fast-theme -t <pathToCustomTheme>
 # cd
@@ -703,7 +714,8 @@ brew install --cask temurin@21
 
 # Brew Casks
 #-----------
-brew install --cask bruno libreoffice-still librewolf macfuse temurin@21 vscodium
+brew install --cask brave-browser firefox google-chrome microsoft-edge
+brew install --cask alfred appcleaner bruno flux-app ghostty iterm2 karabiner-elements keka libreoffice-still librewolf linearmouse lulu macfuse mounty rectangle stats sublime-text temurin@21 visual-studio-code vlc vscodium
 
 # Starship
 #---------

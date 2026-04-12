@@ -151,6 +151,8 @@
   - [Stream Package Classes](#stream-package-classes)
   - [`Collectors` Class](#collectors-class)
     - [Methods](#methods-29)
+  - [`.boxed()`](#boxed)
+    - [Common Use Cases](#common-use-cases)
   - [`IntStream` Interface](#intstream-interface)
     - [Methods](#methods-30)
     - [`OptionalInt` Class](#optionalint-class)
@@ -3799,6 +3801,55 @@ Map<Department, Integer> totalByDept = employees.stream()
 // Partition students into passing and failing
 Map<Boolean, List<Student>> passingFailing = students.stream()
   .collect(Collectors.partitioningBy(s -> s.getGrade() >= PASS_THRESHOLD));
+```
+
+## `.boxed()`
+
+> `.boxed()` serves as a bridge to convert between primitive streams and object/wrapper class streams
+
+Use it when you need to:
+
+- Collect primitive stream elements into collections
+- Pass primitive stream data to generic methods
+- Use operations that require objects (like custom comparators or grouping)
+- Work with APIs that expect S`tream<T>` rather than specialized primitive streams
+
+The `.boxed()` method in Java converts a primitive stream (`IntStream`, `LongStream`, `DoubleStream`) into a stream of their corresponding wrapper objects (`Stream<Integer>`, `Stream<Long>`, `Stream<Double>`)
+
+```java
+// Behind the scenes (simplified)
+IntStream intStream = Arrays.stream(new int[]{1, 2, 3});
+Stream<Integer> boxedStream = intStream.mapToObj(Integer::valueOf);
+// .boxed() is syntactic sugar for .mapToObj(Integer::valueOf)
+```
+
+```java
+int[] numbers = {1, 2, 3, 4, 5};
+// Returns IntStream, not Stream<Integer>
+IntStream intStream = Arrays.stream(numbers);
+// Converts IntStream to Stream<Integer>
+Stream<Integer> integerStream = Arrays.stream(numbers).boxed();
+```
+
+### Common Use Cases
+
+```java
+int[] nums = { 5, 2, 8, 1, 9 };
+
+int[] descendingNums = Arrays.stream(nums)
+    .boxed()  // Convert IntStream to Stream<Integer>
+    .sorted(Comparator.reverseOrder()) // Sorts in descending order using Comparator.reverseOrder() - functionally identical to Collections.reverseOrder()
+    // .sorted(Collections.reverseOrder()) // Sorts in descending order using Collections.reverseOrder() comparator
+    // .sorted((a, b) -> Integer.compare(b, a)) // Sorts in descending order by comparing b to a (reversed natural order)
+    // .sorted((a, b) -> b - a)  // Sorts in descending order using subtraction (b - a), but this can overflow for large integers
+    .mapToInt(Integer::intValue)  // Convert back to primitive
+    .toArray();
+
+
+List<Integer> descendingNumsList = Arrays.stream(nums)
+  .boxed() // Convert IntStream to Stream<Integer>
+  .sorted(Collections.reverseOrder()) // Use Comparator for objects
+  .collect(Collectors.toList());
 ```
 
 ## `IntStream` Interface

@@ -176,6 +176,8 @@
   - [Left Prefix Sum + Right Prefix Sum + Bottom Up DP](#left-prefix-sum--right-prefix-sum--bottom-up-dp)
     - [Version 1 - `dp[n+1]`](#version-1---dpn1)
     - [Version 2 - `dp[n+2]`](#version-2---dpn2)
+  - [Prefix Sum Average](#prefix-sum-average)
+  - [Suffix Sum](#suffix-sum)
 - [Random Trivial Knowledge](#random-trivial-knowledge)
   - [Comparisons](#comparisons)
 - [Ranges](#ranges)
@@ -1833,7 +1835,7 @@ class Solution {
 **Forgot to initialise `memo[][]` values to `-1` or `0`**
 
 - In Java, you NEED to use `for (int[] row : memo) { Arrays.fill(row, -1); }` or `Arrays.stream(dp).forEach(row -> Arrays.fill(row, -1));`
-- In C++, you are able to initialise in the declaration `std::vector<std::vector<int>> memo(m, std::vector<int>(n, -1))` or `this->memo.resize(m, std::vector<int>(n, -1))`
+- In C++, you are able to initialise in the declaration `std::vector<std::vector<int>> memo(m, std::vector<int>(n, -1))` or `this->memo.assign(m, std::vector<int>(n, -1))` or `this->memo.resize(m, std::vector<int>(n, -1))` 
 
 **Memoisation parameters are NOT sufficient/does NOT cover all possible cases (`memo[i][j]` TOO SIMPLISTIC )**
 
@@ -3768,6 +3770,14 @@ std::partial_sum(std::begin(nums), std::end(nums), std::begin(prefixSum) + 1); /
 
 - Examples
   - 2167.minimum-time-to-remove-all-cars-containing-illegal-goods
+
+## Prefix Sum Average
+
+See 2439.minimize-maximum-of-array.java
+
+## Suffix Sum
+
+See 2209.minimum-white-tiles-after-covering-with-carpets.java
 
 # Random Trivial Knowledge
 

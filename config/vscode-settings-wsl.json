@@ -1,5 +1,4 @@
 {
-  // "C_Cpp.intelliSenseCacheSize": 0,
   "[astro]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
@@ -273,6 +272,7 @@
     "**/x86/**": true,
     "**/xcuserdata/**": true
   },
+  // "C_Cpp.intelliSenseCacheSize": 0,
   "C_Cpp.intelliSenseEngine": "Tag Parser",
   "C_Cpp.workspaceParsingPriority": "low",
   "chat.commandCenter.enabled": false,
@@ -2257,6 +2257,7 @@
   },
   "workbench.colorTheme": "Dracula",
   "workbench.editor.empty.hint": "hidden",
+  "workbench.editor.useModal": "off",
   "workbench.editorAssociations": {
     // "*.copilotmd": "vscode.markdown.preview.editor",
     "git-rebase-todo": "default",
