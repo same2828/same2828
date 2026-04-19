@@ -812,11 +812,7 @@ mvv() {
   # mv -v "$@" | perl -pe "s/'([^']*)'(.*)'([^']*)'/${RED}'\1'${RESET}\2${GREEN}'\3'${RESET}/"
 }
 no-sleep() {
-  local duration=$1
-  if [[ ! "$duration" =~ ^[0-9]+$ ]]; then
-    duration=3600
-  fi
-  caffeinate -u -t "$duration"
+  caffeinate -disu
 }
 wipe() {
   if [ $# -ne 1 ]; then
@@ -851,6 +847,43 @@ jq-sort() {
   local tempFile="tmp-$(date +%s).json"
   jq -S '.' "$1" > "$tempFile" && command mv -v "$tempFile" "$1" || rm -f "$tempFile"
 }
+jq-array-sort() {
+  if [[ $# -lt 1 || $# -gt 2 ]]; then
+    echo "Usage: jq-array-sort [fields to 'sort_by' such as .foo or '.foo, .bar'] <json-array-file>"
+    return 1
+  fi
+  # Grab the last argument as the file
+  local file="${2:-$1}"
+  if [[ ! -f "$file" ]]; then
+    echo -e "ERROR: \033[1;31m$file\033[0m file not found"
+    return 1
+  fi
+  local tempFile="tmp-$(date +%s).json"
+  if [[ $# -eq 1 ]]; then
+    jq 'sort' "$file" > "$tempFile" && command mv -v "$tempFile" "$file" || rm -f "$tempFile"
+  else
+    jq 'sort_by('"$1"')' "$file" > "$tempFile" && command mv -v "$tempFile" "$file" || rm -f "$tempFile"
+  fi
+}
+jq-array-dedup() {
+  if [[ $# -lt 1 || $# -gt 2 ]]; then
+    echo "Usage: jq-array-dedup [field to 'unique_by' such as '.id' or 'length'] <json-array-file>"
+    return 1
+  fi
+
+  local file="${2:-$1}"
+  if [[ ! -f "$file" ]]; then
+    echo -e "ERROR: \033[1;31m$file\033[0m file not found"
+    return 1
+  fi
+
+  local tempFile="tmp-$(date +%s).json"
+  if [[ $# -eq 1 ]]; then
+    jq 'unique' "$file" > "$tempFile" && command mv -v "$tempFile" "$file" || rm -f "$tempFile"
+  else
+    jq 'unique_by('"$1"')' "$file" > "$tempFile" && command mv -v "$tempFile" "$file" || rm -f "$tempFile"
+  fi
+}
 jq-convert-stringified-to-json() {
   if [ $# -lt 1 ]; then
     echo -e "Usage: \033[1;32mjq-convert-stringified-to-json <file> [key]\033[0m"
@@ -870,7 +903,6 @@ jq-convert-stringified-to-json() {
     # cat "$1" | jq ".$2 | fromjson" >"$tempFile"
     jq --arg key "$2" '.[$key] | fromjson' "$1" > "$tempFile" && command mv -v "$tempFile" "$1" || rm -f "$tempFile"
   fi
-  # echo "Saved to: $tempFile"
 }
 yq-sort() {
   if [[ $# -ne 1 ]]; then

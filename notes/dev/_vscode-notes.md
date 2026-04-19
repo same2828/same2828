@@ -336,6 +336,8 @@ Extension List:
 
 # Keyboard Shortcuts
 
+`editor.action.revealDefinition` and `editor.action.goToDeclaration` have similar behaviours in java
+
 ## Command Palette
 
 - `Ctrl + Shift + P`

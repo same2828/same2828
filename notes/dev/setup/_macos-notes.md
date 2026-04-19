@@ -22,6 +22,7 @@
   - [Keyboard](#keyboard)
     - [Prevent Accented Characters + Remove Input Menu from Menu Bar](#prevent-accented-characters--remove-input-menu-from-menu-bar)
     - [Disable Mail App Shortcut](#disable-mail-app-shortcut)
+    - [Disable Option key shortcuts inserting special characters and diacritics](#disable-option-key-shortcuts-inserting-special-characters-and-diacritics)
     - [Keyboard Remap](#keyboard-remap)
   - [MacPorts](#macports)
   - [System Settings](#system-settings)
@@ -47,6 +48,7 @@
   - [Three Finger Window Drag](#three-finger-window-drag)
   - [Brightness](#brightness)
 - [Random](#random)
+  - [Automator AppleScript](#automator-applescript)
   - [Custom Icons (ICNS)](#custom-icons-icns)
   - [Apps to Check Out](#apps-to-check-out)
   - [Force Reload Chrome Tab](#force-reload-chrome-tab)
@@ -416,6 +418,19 @@ Keyboard Shortcut: fn + control + option + command + shift + f1
 https://apple.stackexchange.com/questions/439822/cant-disable-command-shift-i-to-open-mail
 https://jamierubin.net/2021/07/30/how-to-remap-cmd-i-to-avoid-opening-the-mail-app-on-a-mac/
 
+### Disable Option key shortcuts inserting special characters and diacritics
+
+https://gist.github.com/greneholt/e7d5373f96cc0f815717c7666790324d
+
+```
+mkdir -p ~/Library/Keyboard\ Layouts/
+cp ~/Downloads/QWERTY-no-option.keylayout ~/Library/Keyboard\ Layouts/
+# Keyboard > Text Input > Input Sources > Edit > Add > Others > Add "Qwerty no option"
+# Keyboard > Text Input > Input Sources > Edit > All Input Sources > Show Input menu in menu bar > Turn ON
+# Select Qwerty No Option in macOS Menu Bar
+# Keyboard > Text Input > Input Sources > Edit > All Input Sources > Show Input menu in menu bar > Turn OFF
+```
+
 ### Keyboard Remap
 
 Use `System Settings > Keyboard > Keyboard Shortcuts > Change Modifier Keys` or Karabiner-Elements App
@@ -716,6 +731,7 @@ brew install --cask temurin@21
 #-----------
 brew install --cask brave-browser firefox google-chrome microsoft-edge
 brew install --cask alfred appcleaner bruno flux-app ghostty iterm2 karabiner-elements keka libreoffice-still librewolf linearmouse lulu macfuse mounty rectangle stats sublime-text temurin@21 visual-studio-code vlc vscodium
+brew install --cask dbeaver-community intellij-idea
 
 # Starship
 #---------
@@ -938,6 +954,20 @@ Note: This does NOT work if you have MiddleClick enabled
 - 15'th level = 93.75%
 
 # Random
+
+## Automator AppleScript
+
+Automator > Application > Run AppleScript > Save as App
+
+There's no other way to get `Chrome Incognito.app` added to Privacy > Automation tab
+
+Do NOT change application icon until you do the following:
+
+- `sudo spctl --master-disable`
+- Launch application.app
+- Get `Allow App to control Automation prompt` to show up
+- Press allow
+- `sudo spctl --master-enable`
 
 ## Custom Icons (ICNS)
 

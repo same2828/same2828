@@ -276,6 +276,7 @@
   "C_Cpp.intelliSenseEngine": "Tag Parser",
   "C_Cpp.workspaceParsingPriority": "low",
   "chat.commandCenter.enabled": false,
+  "chat.tips.enabled": false,
   "chat.viewSessions.enabled": false,
   "chat.viewSessions.orientation": "stacked",
   "clangd.arguments": ["ColumnLimit: 120"],

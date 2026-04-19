@@ -120,15 +120,20 @@ Download `VSCode Keymap` plugin
 
 `Settings > Keymap > VSCode (macOS)`
 
-| Shortcut                                     | Keymap                 | Notes                                               |
-| -------------------------------------------- | ---------------------- | --------------------------------------------------- |
-| `Code.CodeFormattingActions.ReformatCode`    | `Option + Shift + F`   |                                                     |
-| `Code.CodeFormattingActions.ReformatCode`    | `Option + S`           |                                                     |
-| `Code.CodeFormattingActions.OptimizeImports` | `Option + Shift + O`   |                                                     |
-| `Code.CodeFormattingActions.OptimizeImports` | `Control + Option + O` |                                                     |
-| `Edit.FindUsages.FindUsages`                 | `Command + Shift + F`  |                                                     |
-| `Edit.Find.FindInFiles`                      | `Option + Shift + F`   | Equivalent of `cmd+shift+f` in VSCode               |
-| `Edit.Redo`                                  | `Command + Y`          | `Command + Shift + Z`, `Option + Shift + Backspace` |
+| Shortcut                                                  | Keymap                       | Default (IntelliJ) |
+| --------------------------------------------------------- | ---------------------------- | ------------------ |
+| `Code.CodeFormattingActions.OptimizeImports`              | `Option+O`, `Option+Shift+O` | `Ctrl+Option+O`    |
+| `Code.CodeFormattingActions.ReformatCode`                 | `Option+S`, `Option+Shift+F` | `Cmd+Option+L`     |
+| `Edit.Find.FindInFiles`                                   | `Option+Shift+F`             |                    |
+| `Edit.FindUsages.FindUsages`                              | `Cmd+Shift+F`                |                    |
+| `Edit.Redo`                                               | `Cmd+Y`                      |                    |
+| `Navigate.Back`                                           | `Ctrl+[`, `Ctrl+-`           |                    |
+| `Navigate.Forward`                                        | `Ctrl+`, `Ctrl+=`            |                    |
+| `Navigate.GotobyReferenceActions.GoToDeclarationOrUsages` | `Ctrl+B`,`Option+B`          | `Cmd+B`            |
+| `Navigate.GotobyReferenceActions.GoToImplementation`      | `Ctrl+I`,`Option+I`          | `Cmd+Option+B`     |
+| `Navigate.GotobyReferenceActions.GoToSuperMethod`         | `Ctrl+U`,`Option+U`          | `Cmd+U`            |
+| `Other.ShowContextActions`                                | `Option+Enter`               |                    |
+| `Other.ShowQuick-Fixes`                                   | `Option+Enter`               |                    |
 
 ## Sidebars/Toolbars
 
