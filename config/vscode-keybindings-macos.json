@@ -5,7 +5,7 @@
     "when": "editorHasDocumentFormattingProvider && editorTextFocus && !editorReadonly && !inCompositeEditor"
   },
   {
-    "command": "workbench.action.chat.openagent",
+    "command": "workbench.action.chat.openask",
     "key": "alt+a",
     "when": "chatIsEnabled && inChat && chatLocation == 'panel'"
   },
@@ -786,11 +786,7 @@
     "key": "shift+cmd+i"
   },
   {
-    "command": "-workbench.action.chat.openagent",
-    "key": "shift+cmd+i"
-  },
-  {
-    "command": "workbench.action.chat.openask",
+    "command": "workbench.action.chat.openagent",
     "key": "shift+cmd+i"
   },
   {

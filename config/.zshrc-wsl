@@ -143,6 +143,37 @@ ZSH_AUTOSUGGEST_HISTORY_IGNORE="(?(#c81,)|*\|*|*gcmsg '*|*gcmsg \"*|*gc!*|*gcmsg
 # alias zshconfig='mate ~/.zshrc'
 # alias ohmyzsh='mate ~/.oh-my-zsh'
 
+perl-grep() {
+  if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+    echo "Usage: prep 'regex-pattern' [filename]"
+    return 1
+  fi
+  local pattern="$1"
+  if [ $# -eq 1 ]; then
+    # perl -nle "print if /$pattern/gim"
+    perl -nle "if (/$pattern/gim) { s/($pattern)/\033[1;31m\$1\033[0m/gim; print }"
+  elif [ $# -eq 2 ]; then
+    local filename="$2"
+    # perl -nle "print if /$pattern/gim" $filename
+    perl -nle "if (/$pattern/gim) { s/($pattern)/\033[1;31m\$1\033[0m/gim; print }" $filename
+  fi
+}
+alias prep='perl-grep'
+# perl-grep-only-matching() {
+#   if [ $# -eq 0 ] || [ $# -gt 2 ]; then
+#     echo "Usage: pgrep2 'regex-pattern' [filename]"
+#     return 1
+#   fi
+#   local pattern="$1"
+#   if [ $# -eq 1 ]; then
+#     perl -nle "print \"\033[1;31m\$&\033[0m\" while /$pattern/gim"
+#   elif [ $# -eq 2 ]; then
+#     local filename="$2"
+#     perl -nle "print \"\033[1;31m\$&\033[0m\" while /$pattern/gim" $filename
+#   fi
+# }
+# alias prep2='perl-grep-only-matching'
+
 # Coreutils
 #----------
 # export PATH="/opt/homebrew/opt/coreutils/libexec/gnubin:$PATH"
@@ -178,18 +209,21 @@ FD_OPTIONS="--strip-cwd-prefix --follow --exclude={'**/.*OneDrive*','**/.android
 export FZF_DEFAULT_COMMAND="fd --type f --type l --hidden $FD_OPTIONS"
 export FZF_CTRL_T_COMMAND="fd --hidden $FD_OPTIONS"
 export FZF_ALT_C_COMMAND="fd --type d $FD_OPTIONS"
-# 141 = purple
-# 212 = pink
-# 215 = orange
+# 82 = green    #5FFF00, #00FF00
+# 141 = purple  #AF87FF
+# 212 = pink    #FF87D7, #FF00FF
+# 215 = orange  #FFAF5F, #FFAF00
 # 255 = gray
+# blue = #8BE9FD, #69DFFE, #46D4FE
+# red = #FF0000, #FF2B2B #FF5555
 # fg+, bg+, hl+ = selected item foreground, background, highlight color
 export FZF_DEFAULT_OPTS='
   --border
   --height=50%
   --layout=reverse
-  --color fg:15,bg:0,hl:215
-  --color fg+:15,bg+:0,hl+:82
-  --color info:141,prompt:82,spinner:212,pointer:212,marker:212
+  --color fg:#FFFFFF,bg:#000000,hl:#69DFFE
+  --color fg+:#FFFFFF,bg+:#000000,hl+:#FF2B2B
+  --color info:#AF87FF,prompt:#FF2B2B,spinner:#FF2B2B,pointer:#FF2B2B,marker:#FF2B2B
 '
 
 # VSCode
@@ -419,7 +453,7 @@ k-get-pods-grep() {
   echo -e "Context: \033[1;35m$context\033[0m"
   local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
   echo -e "Namespace: \033[1;35m$namespace\033[0m"
-  kubectl get pods -n $namespace | grep --color=always -iP "$1"
+  kubectl get pods -n $namespace | perl-grep "$1"
 }
 alias kpog='k-get-pods-grep'
 k-get-pods-watch() {
@@ -595,13 +629,17 @@ mvnn() {
   echo -e "${GREEN}Running: mvn ${mvn_args[*]}${RESET}"
   command mvn "${mvn_args[@]}"
 }
+alias mvn--='mvn clean install -DskipTests'
 alias mvn++='mvn clean install -U -DskipTests' # Compiles test classes but skips test execution
+alias mvn++!='mvn clean install -U -Dmaven.test.skip=true' # Skips test compilation and test execution
 alias mvn-compile='mvn clean install -U -DskipTests'
 alias mvn-install='mvn clean install -U'
 alias mvn-dependency-tree='mvn dependency:tree -Dverbose'
 alias mvn-tree='mvn dependency:tree -Dverbose'
 alias mvn-pom='mvn help:effective-pom -Dverbose=true'
 alias mvn-effective-pom='mvn help:effective-pom -Dverbose=true'
+alias mvn-display-dependency-updates='mvn versions:display-dependency-updates'
+alias mvn-display-property-updates='mvn versions:display-property-updates'
 # alias mvn-run='mvn spring-boot:run -Dspring-boot.run.arguments=--debug -Dspring-boot.run.profiles=local'
 mvn-run() {
   local profile="${1:-local}"
@@ -695,8 +733,8 @@ ps-aux-regex() {
     echo "Usage: psx <process-name-to-find-using-regex>"
     return 1
   fi
-  # ps ax -o user,pid,%cpu,%mem,start,command | grep --color=always -iP "$1"
-  ps ax -o user,pid,%cpu,%mem,start,command | sort -k 3 -r | grep --color=always -iP "$1"
+  # ps ax -o user,pid,%cpu,%mem,start,command | perl-grep "$1"
+  ps ax -o user,pid,%cpu,%mem,start,command | sort -k 3 -r | perl-grep "$1"
 }
 alias psaux='ps-aux-regex'
 alias psx='ps-aux-regex'
@@ -707,8 +745,8 @@ ps-aux-ignore-case() {
     echo "Usage: psxi <process-name-to-find-ignore-case>"
     return 1
   fi
-  # ps ax -o user,pid,%cpu,%mem,start,command | grep --color=always -i "$1"
-  ps ax -o user,pid,%cpu,%mem,start,command | sort -k 3 -r | grep --color=always -i "$1"
+  # ps ax -o user,pid,%cpu,%mem,start,command | perl-grep "$1"
+  ps ax -o user,pid,%cpu,%mem,start,command | sort -k 3 -r | perl-grep "$1"
 }
 alias psauxi='ps-aux-ignore-case'
 alias psxi='ps-aux-ignore-case'
@@ -770,36 +808,6 @@ zsh-upgrade-plugins() {
   cd
 }
 alias omz-update='zsh-upgrade-plugins'
-perl-grep() {
-  if [ $# -eq 0 ] || [ $# -gt 2 ]; then
-    echo "Usage: prep 'regex-pattern' [filename]"
-    return 1
-  fi
-  local pattern="$1"
-  if [ $# -eq 1 ]; then
-    # perl -nle "print if /$pattern/gim"
-    perl -nle "if (/$pattern/gim) { s/($pattern)/\033[1;31m\$1\033[0m/gim; print }"
-  elif [ $# -eq 2 ]; then
-    local filename="$2"
-    # perl -nle "print if /$pattern/gim" $filename
-    perl -nle "if (/$pattern/gim) { s/($pattern)/\033[1;31m\$1\033[0m/gim; print }" $filename
-  fi
-}
-alias prep='perl-grep'
-# perl-grep-only-matching() {
-#   if [ $# -eq 0 ] || [ $# -gt 2 ]; then
-#     echo "Usage: pgrep2 'regex-pattern' [filename]"
-#     return 1
-#   fi
-#   local pattern="$1"
-#   if [ $# -eq 1 ]; then
-#     perl -nle "print \"\033[1;31m\$&\033[0m\" while /$pattern/gim"
-#   elif [ $# -eq 2 ]; then
-#     local filename="$2"
-#     perl -nle "print \"\033[1;31m\$&\033[0m\" while /$pattern/gim" $filename
-#   fi
-# }
-# alias prep2='perl-grep-only-matching'
 mvv() {
   # Execute mv -v passing all arguments ("$@")
   # Pipe output to sed to perform regex replacement for coloring
@@ -844,6 +852,43 @@ jq-sort() {
   local tempFile="tmp-$(date +%s).json"
   jq -S '.' "$1" > "$tempFile" && command mv -v "$tempFile" "$1" || rm -f "$tempFile"
 }
+jq-array-sort() {
+  if [[ $# -lt 1 || $# -gt 2 ]]; then
+    echo "Usage: jq-array-sort [fields to 'sort_by' such as .foo or '.foo, .bar'] <json-array-file>"
+    return 1
+  fi
+  # Grab the last argument as the file
+  local file="${2:-$1}"
+  if [[ ! -f "$file" ]]; then
+    echo -e "ERROR: \033[1;31m$file\033[0m file not found"
+    return 1
+  fi
+  local tempFile="tmp-$(date +%s).json"
+  if [[ $# -eq 1 ]]; then
+    jq 'sort' "$file" > "$tempFile" && command mv -v "$tempFile" "$file" || rm -f "$tempFile"
+  else
+    jq 'sort_by('"$1"')' "$file" > "$tempFile" && command mv -v "$tempFile" "$file" || rm -f "$tempFile"
+  fi
+}
+jq-array-dedup() {
+  if [[ $# -lt 1 || $# -gt 2 ]]; then
+    echo "Usage: jq-array-dedup [field to 'unique_by' such as '.id' or 'length'] <json-array-file>"
+    return 1
+  fi
+
+  local file="${2:-$1}"
+  if [[ ! -f "$file" ]]; then
+    echo -e "ERROR: \033[1;31m$file\033[0m file not found"
+    return 1
+  fi
+
+  local tempFile="tmp-$(date +%s).json"
+  if [[ $# -eq 1 ]]; then
+    jq 'unique' "$file" > "$tempFile" && command mv -v "$tempFile" "$file" || rm -f "$tempFile"
+  else
+    jq 'unique_by('"$1"')' "$file" > "$tempFile" && command mv -v "$tempFile" "$file" || rm -f "$tempFile"
+  fi
+}
 jq-convert-stringified-to-json() {
   if [ $# -lt 1 ]; then
     echo -e "Usage: \033[1;32mjq-convert-stringified-to-json <file> [key]\033[0m"
@@ -863,7 +908,6 @@ jq-convert-stringified-to-json() {
     # cat "$1" | jq ".$2 | fromjson" >"$tempFile"
     jq --arg key "$2" '.[$key] | fromjson' "$1" > "$tempFile" && command mv -v "$tempFile" "$1" || rm -f "$tempFile"
   fi
-  # echo "Saved to: $tempFile"
 }
 yq-sort() {
   if [[ $# -ne 1 ]]; then

@@ -33,14 +33,28 @@
   - [Preemptive - OS Scheduling Policy](#preemptive---os-scheduling-policy)
   - [Cooperative](#cooperative)
 - [18. How can Virtual Threads help](#18-how-can-virtual-threads-help)
-  - [Synchronous Blocking Style Code](#synchronous-blocking-style-code)
-  - [Synchronous Non-Blocking Style Code](#synchronous-non-blocking-style-code)
+    - [Synchronous Blocking Style Code](#synchronous-blocking-style-code)
+    - [Synchronous Non-Blocking Style Code](#synchronous-non-blocking-style-code)
 - [19. Concurrency - Synchronisation Basics](#19-concurrency---synchronisation-basics)
   - [Synchronization](#synchronization)
   - [Problem](#problem)
     - [Fix/Solution](#fixsolution)
-- [21 Thread Pinning - Java 21 - 23](#21-thread-pinning---java-21---23)
+- [21. Thread Pinning - Java 21 - 23](#21-thread-pinning---java-21---23)
   - [Example](#example)
+- [22. Thread Pinning - When \& Why it Matters](#22-thread-pinning---when--why-it-matters)
+  - [`synchronized`](#synchronized)
+- [23. Diagnosing Pinning: How to Trace](#23-diagnosing-pinning-how-to-trace)
+- [24. Fixing Thread Pinning: `ReentrantLock` Solution](#24-fixing-thread-pinning-reentrantlock-solution)
+  - [ReentrantLock with No Fairness Policy](#reentrantlock-with-no-fairness-policy)
+  - [ReentrantLock with Fairness Policy](#reentrantlock-with-fairness-policy)
+- [25. Advanced Creation - Virutal Thread Factory](#25-advanced-creation---virutal-thread-factory)
+- [26. Key Thread Methods Review](#26-key-thread-methods-review)
+- [27. Virtual Thread Fundamentals Summary](#27-virtual-thread-fundamentals-summary)
+- [28. `ExecutorService`](#28-executorservice)
+  - [Tasks to SubTasks](#tasks-to-subtasks)
+  - [`ExecutorService`](#executorservice)
+  - [Virtual Threads](#virtual-threads)
+- [29. ExecutorService: The Different Types](#29-executorservice-the-different-types)
 
 https://macquarie.udemy.com/course/java-virtual-thread/
 
@@ -782,7 +796,7 @@ public class Lec02Synchronization {
 
   private static final Logger log = LoggerFactory.getLogger(Lec02Synchronization.class);
   private static final List<Integer> list = new ArrayList<>();
-  // private static final List<Integer> list = Collections.synchronizedList(new ArrayList<>()); // <-- HERE
+  // private static final List<Integer> list = Collections.synchronizedList(new ArrayList<>()); // <-- HERE (option 1)
 
   public static void main(String[] args) {
     demo(Thread.ofVirtual());
@@ -802,14 +816,14 @@ public class Lec02Synchronization {
     }
   }
 
-  private static synchronized void inMemoryTask() { // <-- HERE
+  private static synchronized void inMemoryTask() { // <-- HERE (option 2)
     list.add(1);
   }
 
 }
 ```
 
-# 21 Thread Pinning - Java 21 - 23
+# 21. Thread Pinning - Java 21 - 23
 
 A Thread Pinning: Java 21 - 23
 
@@ -819,12 +833,485 @@ A Thread Pinning: Java 21 - 23
 
 ## Example
 
-Imagine you have
+- The first task is something like updating a shared document.
+  - This task involves shared state, so it requires careful updates.
+  - So in a real application, this typically means some form of synchronization or locking to ensure correctness.
+- The second task is fetching user profile.
+  - This one is just a read operation.
+  - It does not modify anything so it does not need synchronization.
 
-```
+Now imagnie multiple threads are trying to execute these tasks
+
+```java
 // 10 Task 1
-void updateSharedDocument(){}
+synchronized void updateSharedDocument(){}
 
 // IO Task 2
 void fetchUserProfile(){}
 ```
+
+If a virtual thread enters a synchronized method, it cannot be unmounted (known issue in java 21-23)
+The JVM will keep that virtual thread mounted to its carrier carrier thread until the synchronized section finishes (this behavior is called pinning)
+
+- Virtual threads are like task
+- Say for example we have 10 CPUs -> 10 carrier threads.
+- When we launch 50 virtual threads to run `updateSharedDocument` and three virtual threads to run `fetchUserProfile`,
+- All 10 carrier threads pick up the `updateSharedDocument` task as soon as we see the `synchronized` keyword
+- All 10 carrier threads become blocked now and cannot be unmounted.
+- No carrier threads are available to pick up the `fetchUserProfile` task for execution
+
+# 22. Thread Pinning - When & Why it Matters
+
+Pinning is the situation where a virtual thread must stay on its carrier thread and CANNOT be unmounted while executing synchronized or native code.
+This prevents the JVM from switching to another virtual thread and reduces scalability
+Java24+ fixes thread pinning for `synchronized methods` and `synchronized blocks`
+The thread pinning issue is NOT fixed in `native methods` (fix is to continue using platform threads)
+
+```java
+// Synchronized Method
+public synchronized void ioTask() {
+  //...
+}
+
+// Synchronized Block
+public void ioTask() {
+  synchronized (this) {
+    //...
+  }
+}
+
+// JNI
+private native void someNativeMethod ();
+```
+
+## `synchronized`
+
+synchronized is NOT bad
+
+- `Collections.synchronizedList(new ArrayList<>());`
+
+synchronized + Virtual Thread -> Pinned
+
+- I/0 tasks executed by Virtual Thread causes Virtual Threads to be UNABLE TO BE UNMOUNTED -> affect scaling.
+
+# 23. Diagnosing Pinning: How to Trace
+
+Use: `-Djdk.tracePinnedThreads=full` or `-Djdk.tracePinnedThreads=short`
+
+```java
+System.setProperty("jdk.tracePinnedThreads", "short");
+```
+
+```java
+package com.vinsguru.sec05;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
+
+// Demo: Thread Pinning (relevant in Java 21–23)
+public class Lec03ThreadPinning {
+
+  private static final Logger log = LoggerFactory.getLogger(Lec03ThreadPinning.class);
+
+  /*
+    Use this to check if virtual threads are getting pinned in your application
+    -Djdk.tracePinnedThreads=full
+    -Djdk.tracePinnedThreads=short
+  */
+  static {
+    System.setProperty("jdk.tracePinnedThreads", "short");
+  }
+
+  static void main(String[] args) {
+    demo(Thread.ofVirtual());
+    try {
+      Thread.sleep(Duration.ofSeconds(15));
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+
+  }
+
+  private static void demo(Thread.Builder builder) {
+    // 50 threads attempting to update the shared document (synchronized, runs sequentially)
+    for (int i = 0; i < 50; i++) {
+      builder.start(() -> {
+        log.info("Update started. {}", Thread.currentThread());
+        updateSharedDocument();
+        log.info("Update ended. {}", Thread.currentThread());
+      });
+    }
+    // 3 threads fetching user profiles (runs concurrently)
+    for (int i = 0; i < 3; i++) {
+      builder.start(() -> {
+        log.info("Fetch started. {}", Thread.currentThread());
+        fetchUserProfile();
+        log.info("Fetch ended. {}", Thread.currentThread());
+      });
+    }
+
+  }
+
+  // IO Task 1 - requires synchronization
+  private static synchronized void updateSharedDocument() {
+    try {
+      Thread.sleep(Duration.ofSeconds(10));
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  // IO Task 2
+  private static void fetchUserProfile() {
+    try {
+      Thread.sleep(Duration.ofSeconds(1));
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+  }
+}
+```
+
+# 24. Fixing Thread Pinning: `ReentrantLock` Solution
+
+Works like `synchronized`, but provides more flexibility & control
+
+**fairness** policy: A thread which has been waiting longer will get the chance to acquire the lock
+
+**tryLock** with timeout: max time for a thread to wait to acquire the lock.
+
+```java
+// synchronized
+public void update() {
+  synchronized (this) {
+    // critical section
+  }
+}
+```
+
+## ReentrantLock with No Fairness Policy
+
+```java
+// ReentrantLock
+private Lock lock = new ReentrantLock(); // <-- NO-ARG means fairness policy DISABLED
+
+public void update() {
+  lock.lock();
+  try {
+    // critical section
+  } finally {
+    lock.unlock();
+  }
+}
+```
+
+## ReentrantLock with Fairness Policy
+
+```java
+// ReentrantLock
+
+private Lock lock = new ReentrantLock(true); // <-- TRUE means fairness policy ENABLED
+
+public void update() {
+  if (lock.tryLock(200, TimeUnit.MILLISECONDS)) {
+    try {
+      // critical section
+    } finally {
+      lock.unlock();
+    }
+  } else {
+    // do something else (skip the task)
+  }
+}
+```
+
+```java
+package com.vinsguru.sec05;
+
+import com.vinsguru.util.CommonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+/*
+    Virtual Threads are indented for I/O tasks.
+    This is a simple demo to show that race conditions are still applicable.
+    Fix using ReentrantLock.
+ */
+public class Lec04ReentrantLock {
+
+  private static final Logger log = LoggerFactory.getLogger(Lec04ReentrantLock.class);
+  private static final Lock lock = new ReentrantLock();
+  private static final List<Integer> list = new ArrayList<>();
+
+  static void main(String[] args) {
+    demo(Thread.ofVirtual());
+    try {
+      Thread.sleep(Duration.ofSeconds(2));
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+    log.info("list size: {}", list.size());
+  }
+
+  private static void demo(Thread.Builder builder) {
+    for (int i = 0; i < 50; i++) {
+      builder.start(() -> {
+        log.info("Task started. {}", Thread.currentThread());
+        for (int j = 0; j < 200; j++) {
+          inMemoryTask();
+        }
+        log.info("Task ended. {}", Thread.currentThread());
+      });
+    }
+  }
+
+  private static void inMemoryTask() {
+    try {
+      lock.lock();
+      list.add(1);
+    } finally {
+      lock.unlock();
+    }
+  }
+}
+```
+
+# 25. Advanced Creation - Virutal Thread Factory
+
+> `Thread.Builder` - It is NOT thread safe
+
+Ok Scenario
+
+- main thread/application uses `thread.builder` to create threads: t1, t2, t3
+
+Problem Scenario
+
+- Each thread t1, t2, t3 wants to use `thread.builder` to create their OWN CHILD threads: `t1.1, t1.2, t2.1, t2.2, t3.1, t3.2`
+
+**Solution: Use factory**
+
+```java
+package com.vinsguru.sec06;
+
+import com.vinsguru.util.CommonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
+import java.util.concurrent.ThreadFactory;
+
+public class Lec01ThreadFactory {
+
+  private static final Logger log = LoggerFactory.getLogger(Lec01ThreadFactory.class);
+
+  public static void main(String[] args) {
+    ThreadFactory theadFactory = Thread.ofVirtual().name("myThread", 1).factory();
+    demo(theadFactory);
+    try {
+      Thread.sleep(Duration.ofSeconds(3));
+    } catch (InterruptedException e) {
+      throw new RuntimeException(e);
+    }
+  }
+
+  /*
+    Create few threads
+    Each thread creates 1 child thread
+    It is a simple demo. In the real life, lets use ExecutorService etc
+    Virtual threads are cheap to create.
+   */
+
+  private static void demo(ThreadFactory factory) {
+    for (int i = 0; i < 30; i++) {
+      Thread thread = factory.newThread(() -> {
+        log.info("Task started. {}", Thread.currentThread());
+        Thread childThread = factory.newThread(() -> {
+          log.info("Child task started. {}", Thread.currentThread());
+          CommonUtils.sleep(Duration.ofSeconds(2));
+          log.info("Child task ended. {}", Thread.currentThread());
+        });
+        childThread.start();
+        log.info("Task ended. {}", Thread.currentThread());
+      });
+      thread.start();
+    }
+  }
+}
+```
+
+# 26. Key Thread Methods Review
+
+```java
+package com.vinsguru.sec06;
+
+import com.vinsguru.util.CommonUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.time.Duration;
+
+/*
+  Quick demo to show few useful thread methods
+*/
+public class Lec02ThreadMethodsDemo {
+
+  private static final Logger log = LoggerFactory.getLogger(Lec02ThreadMethodsDemo.class);
+
+  public static void main(String[] args) throws InterruptedException {
+    join();
+    CommonUtils.sleep(Duration.ofSeconds(1));
+  }
+
+  /*
+      To check if a thread is virtual
+   */
+  private static void isVirtual() {
+    Thread t1 = Thread.ofVirtual().start(() -> CommonUtils.sleep(Duration.ofSeconds(2)));
+    Thread t2 = Thread.ofPlatform().start(() -> CommonUtils.sleep(Duration.ofSeconds(2)));
+    log.info("Is t1 virtual: {}", t1.isVirtual());
+    log.info("Is t2 virtual: {}", t2.isVirtual());
+    log.info("Is current thread virtual: {}", Thread.currentThread().isVirtual());
+  }
+
+  /*
+    To offload multiple time-consuming I/O calls to Virtual threads and wait for them to complete
+    Note: We can do better in the actual application which we will develop later.
+    It is a simple thread.join() demo
+   */
+  private static void join() throws InterruptedException {
+    Thread t1 = Thread.ofVirtual().start(() -> {
+      CommonUtils.sleep(Duration.ofSeconds(2));
+      log.info("called product service");
+    });
+    Thread t2 = Thread.ofVirtual().start(() -> {
+      CommonUtils.sleep(Duration.ofSeconds(2));
+      log.info("called pricing service");
+    });
+    t1.join();
+    t2.join();
+  }
+
+  /*
+    To interrupt / stop the thread execution
+    in some cases, java will throw interrupted exception, IO exception, socket exception etc
+    We can also check if the current thread is interrupted
+    Thread.currentThread().isInterrupted() - returns a boolean
+    while(!Thread.currentThread().isInterrupted()) {
+      // ...
+    }
+   */
+  private static void interrupt() {
+    Thread t1 = Thread.ofVirtual().start(() -> {
+      CommonUtils.sleep(Duration.ofSeconds(2));
+      log.info("called product service");
+    });
+    log.info("is t1 interrupted: {}", t1.isInterrupted());
+    t1.interrupt();
+    log.info("is t1 interrupted: {}", t1.isInterrupted());
+  }
+
+}
+```
+
+# 27. Virtual Thread Fundamentals Summary
+
+Challenges with OS/Platform Threads
+
+- One Platform Thread = One OS Thread
+- Expensive to create
+- Limited number of platform threads
+- Platform threads often sit idle during 1/0 operations, resulting in underutilization
+
+Virtual Thread
+
+- It extends Thread class allowing us to use thread-related methods as usual
+- Lightweight and occupy minimal space in the heap. We can create millions of them
+- Very cheap to create
+- It does NOT replace platform threads
+- Ideal for IO Tasks. We get the "non blocking benefits behind the scenes"
+- There is NO advantage of virtual threads for compute only tasks
+
+Carrier Threads
+
+- A dedicated ForkJoinPool based on the available number of processors.
+- Carrier Thread = Platform Thread
+
+Virtual Thread
+
+- CANNOT be executed directly by OS Scheduler
+- They are mounted on Carrier Thread for the execution
+  - In-memory computation will keep running until it completes
+  - During any blocking IO calls, they will be unmounted from the Carrier Thread
+  - Virtual Thread execution context is part of Heap
+
+Virtual Thread
+
+- All the race conditions/dead locks etc are still applicable.
+- ThreadBuilder is NOT thread safe. Use ThreadFactory instead
+- `.join()`, `.interrupt()`, `.getState()` methods will work as usual
+
+Thread Pinning
+
+Pinning is the situation where a virtual thread must stay on its carrier thread and CANNOT be unmounted while executing synchronized or native code.
+This prevents the JVM from switching to another virtual thread and reduces scalability.
+
+# 28. `ExecutorService`
+
+High level concurrency framework
+
+- Thread Management
+- Tasks Handling
+
+## Tasks to SubTasks
+
+- Virtual Thread is Cheap
+- A task can be divided into multiple smaller subtasks
+
+```
+// execute these in parallel to improve the response time
+Thread.ofVirtual().start(() -> deltaAirline.getPrice())
+Thread.ofVirtual().start(() -> frontierAirline.getPrice())
+Thread.ofVirtual().start(() -> southwestAirline.getPrice())
+```
+
+## `ExecutorService`
+
+- `Executor` is a Functional Interface
+- `ExecutorService` is an interface which extends Executor
+- `Executors` - is an utility class with factory methods to create an instance of ExecutorService impl
+
+## Virtual Threads
+
+Virtual Threads are NOT supposed to be pooled!
+
+- Think of Virtual Threads as Tasks
+- Virtual Thread is intended to be created on demand and discard once the task is done.
+
+Q: Then what is the use of ExecutorService with Virtual Threads?
+A: Thread Per Task creation management!
+
+Do NOT pool Virtual Threads
+
+- A thread pool is a group of preconstructed platform threads that are reused when they become available
+  - Some thread pools have a fixed number of threads while others create new threads as needed
+- Do NOT pool virtual threads
+  - Create a new virtual thread for every application task
+  - Virtual threads are short-lived and have shallow call stacks
+  - They don't need the additional overhead or the functionality of thread pools
+
+# 29. ExecutorService: The Different Types
+
+| Type                   | Description                                                                                                                                             |
+| ---------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Fixed Thread Pool      | A thread pool with dedicated number of threads <br> Usage: A web application with 200 threads                                                           |
+| Single Thread Executor | Same as above. A thread pool with single worker thread. Not configurable <br> Usage: To execute tasks sequentially                                      |
+| Cached Thread Pool     | Elastic Thread Pool. Create new Thread on demand. Reuse existing thread if available. Idle thread life time is 1 min <br> Usage: Unpredictable workload |
+| Scheduled Thread Pool  | Thread pool which can be used to run tasks at regular interval <br> Usage: Call a remote service every minute                                           |

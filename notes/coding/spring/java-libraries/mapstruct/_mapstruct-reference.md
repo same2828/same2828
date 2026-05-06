@@ -20,6 +20,9 @@
     - [Custom Mapper Logic](#custom-mapper-logic)
     - [Mapper Interface](#mapper-interface-2)
     - [Generated Implementation](#generated-implementation-2)
+    - [Custom Logic with Multiple Source Parameters: `@QualifiedByName` vs `expression`](#custom-logic-with-multiple-source-parameters-qualifiedbyname-vs-expression)
+      - [Approach 1: Using `expression` (Direct but fragile)](#approach-1-using-expression-direct-but-fragile)
+      - [Approach 2: Using Custom Methods (`source = "."`)](#approach-2-using-custom-methods-source--)
   - [6. Advanced: Handling Collections](#6-advanced-handling-collections)
     - [Source and Target](#source-and-target-1)
     - [Mapper Interface](#mapper-interface-3)
@@ -96,6 +99,7 @@
     - [Target Class](#target-class-10)
     - [Mapper Interface](#mapper-interface-16)
     - [Generated Implementation](#generated-implementation-16)
+    - [Enums from Package Dependencies in Expressions](#enums-from-package-dependencies-in-expressions)
   - [11. Mapping Enums](#11-mapping-enums)
     - [Source Class](#source-class-9)
     - [Target Class](#target-class-11)
@@ -417,6 +421,59 @@ public class EmployeeMapperImpl implements EmployeeMapper {
     }
 }
 ```
+
+### Custom Logic with Multiple Source Parameters: `@QualifiedByName` vs `expression`
+
+When a target property depends on multiple source objects or fields, you need to use Java `expression`
+
+#### Approach 1: Using `expression` (Direct but fragile)
+
+You can directly pass multiple sources to a custom mapping method natively using an inline `expression`
+
+```java
+@Mapper
+public interface OrderMapper {
+  // Calling a custom method via expression
+  @Mapping(target = "description", expression = "java(mapDescription(customer.getName(), location.getAddress()))")
+  OrderDto toDto(Customer customer, Location location);
+
+  default String mapDescription(String name, String address) {
+    if (customer == null || address == null) {
+      return null;
+    }
+    return customer.getName() + " - " + address.getCity();
+  }
+}
+```
+
+**Pros:** Explicit control over which method is called and what variables are passed.
+**Cons:** String-based code (`"java(...)"`), meaning errors are not caught until compilation. It breaks IDE refactoring and auto-complete tools for those arguments.
+
+#### Approach 2: Using Custom Methods (`source = "."`)
+
+Because an `@Mapping(source = "...", qualifiedByName = "...")` expects a **single** source field, it cannot easily pass multiple distinct source objects to a qualifier method purely by name mapping without trickery.
+
+Instead, you can define a `default` method that takes the multiple source parameters and let MapStruct call it automatically. Or even explicitly pass `source = "."` to provide the current whole arguments to your custom logic (often used alongside `@QualifiedByName` if you have multiple matching methods).
+
+```java
+@Mapper
+public interface OrderMapper {
+    // Using source = "." passes the source context to a compatible custom method
+    @Mapping(target = "description", source = ".", qualifiedByName = "combineToDesc")
+    OrderDto toDto(Customer customer, Address address);
+
+    @Named("combineToDesc")
+    default String combineToDescription(Customer customer, Address address) {
+        if (customer == null || address == null) return null;
+        return customer.getName() + " - " + address.getCity();
+    }
+}
+```
+
+**Pros:** Type-safe, refactoring-friendly, clean interface. Standard MapStruct resolution capabilities.
+**Cons:** Requires passing the whole source (`source = "."`) to cleanly wire up custom logic with multiple distinct sources, which can feel a little non-intuitive compared to standard single-property mappings.
+
+**Summary:** Prefer custom methods with `source = "."` and `@QualifiedByName` for type safety and refactoring resilience. Use `expression` only when you need quick, uncomplicated concatenations or inline logic that does not warrant a separate method.
 
 ## 6. Advanced: Handling Collections
 
@@ -1631,6 +1688,28 @@ public class DocumentMapperImpl implements DocumentMapper {
 
         return targetDocument;
     }
+}
+```
+
+### Enums from Package Dependencies in Expressions
+
+When using Java `expression`s to assign Enum values that come from external package dependencies, you must use the **fully qualified class name** of the Enum. Because expressions are raw Java strings, MapStruct does not analyze them to automatically add standard imports for resolving those specific types.
+
+Alternatively, you can manually declare the Enum import using the `imports` attribute on the `@Mapper` annotation so that its standard name is available inside the `expression`.
+
+```java
+// Option 1: Using Fully Qualified Class Name in the expression
+@Mapper
+public interface DocumentMapper {
+    @Mapping(target = "status", expression = "java(com.external.dependency.DocumentStatus.ACTIVE)")
+    TargetDocument toTarget(Document document);
+}
+
+// Option 2: Using @Mapper(imports = ...)
+@Mapper(imports = { com.external.dependency.DocumentStatus.class })
+public interface DocumentMapperWithImport {
+    @Mapping(target = "status", expression = "java(DocumentStatus.ACTIVE)")
+    TargetDocument toTargetWithImport(Document document);
 }
 ```
 

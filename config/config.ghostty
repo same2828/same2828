@@ -32,15 +32,17 @@ palette = 0=#000000
 palette = 1=#FF0000
 palette = 10=#00F900
 palette = 11=#FFFB00
-palette = 12=#BD93F9
+# palette = 12=#17A9FD
+palette = 12=#8BE9FD
 palette = 13=#FF40FF
-palette = 14=#00FDFF
+palette = 14=#00FFFF
 palette = 15=#FFFFFF
 palette = 2=#00F900
 palette = 3=#FFFB00
-palette = 4=#BD93F9
+# palette = 4=#17A9FD
+palette = 4=#8BE9FD
 palette = 5=#FF40FF
-palette = 6=#00FDFF
+palette = 6=#00FFFF
 palette = 7=#FFFFFF
 palette = 8=#000000
 palette = 9=#FF0000

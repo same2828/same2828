@@ -18,6 +18,7 @@
   - [Orange](#orange)
   - [Random](#random)
   - [Yellow](#yellow)
+- [Ghostty](#ghostty)
 - [VSCode](#vscode)
 
 # Links
@@ -93,20 +94,20 @@
 
 - https://draculatheme.com/contribute
 
-| Color/Token | Hex     |
-| ----------- | ------- |
-| Background  | #282A36 |
-| Current Lne | #6272A4 |
-| Selection   | #44475A |
-| Foreground  | #F8F8F2 |
-| Comment     | #6272A4 |
-| Red         | #FF5555 |
-| Orange      | #FFB86C |
-| Yellow      | #F1FA8C |
-| Green       | #50FA7B |
-| Cyan        | #8BE9FD |
-| Purple      | #BD93F9 |
-| Pink        | #FF79C6 |
+| Color/Token  | Hex     | RGB           | HSL             | Usage                                 |
+| ------------ | ------- | ------------- | --------------- | ------------------------------------- |
+| Background   | #282A36 | 40, 42, 54    | 231°, 15%, 18%  | Main background                       |
+| Comment      | #6272A4 | 98, 114, 164  | 225°, 27%, 51%  | Comments, disabled code               |
+| Current Line | #6272A4 | 98, 114, 164  | 225°, 27%, 51%  | Semantic current line highlight token |
+| Cyan         | #8BE9FD | 139, 233, 253 | 191°, 97%, 77%  | Classes, types, support, regex        |
+| Foreground   | #F8F8F2 | 248, 248, 242 | 60°, 30%, 96%   | Default text                          |
+| Green        | #50FA7B | 80, 250, 123  | 135°, 94%, 65%  | Functions, methods, inherited classes |
+| Orange       | #FFB86C | 255, 184, 108 | 31°, 100%, 71%  | Numbers, constants, booleans          |
+| Pink         | #FF79C6 | 255, 121, 198 | 326°, 100%, 74% | Keywords, storage types               |
+| Purple       | #BD93F9 | 189, 147, 249 | 265°, 89%, 78%  | Instance reserved words, constants    |
+| Red          | #FF5555 | 255, 85, 85   | 0°, 100%, 67%   | Errors, warnings, deletion            |
+| Selection    | #44475A | 68, 71, 90    | 232°, 14%, 31%  | Text selection                        |
+| Yellow       | #F1FA8C | 241, 250, 140 | 65°, 92%, 76%   | Strings, text content                 |
 
 ## Ghostty Dracula
 
@@ -434,6 +435,37 @@ selection-foreground = #FFFFFF
 
 - Figma Gold: #EFBF04
 - Mikado Yellow: #FDBE0F
+
+# Ghostty
+
+```
+palette = 0=#000000
+palette = 1=#FF0000
+palette = 10=#00F900
+palette = 11=#FFFB00
+# palette = 12=#BD93F9
+# palette = 12=#00AFF0
+# palette = 12=#00CCFF
+# palette = 12=#00BFFF
+# palette = 12=#17A9FD
+palette = 12=#B3D7FF
+palette = 13=#FF40FF
+palette = 14=#00FFFF
+palette = 15=#FFFFFF
+palette = 2=#00F900
+palette = 3=#FFFB00
+# palette = 4=#BD93F9
+# palette = 4=#00AFF0
+# palette = 4=#00CCFF
+# palette = 4=#00BFFF
+# palette = 4=#17A9FD
+palette = 4=#B3D7FF
+palette = 5=#FF40FF
+palette = 6=#00FFFF
+palette = 7=#FFFFFF
+palette = 8=#000000
+palette = 9=#FF0000
+```
 
 # VSCode
 

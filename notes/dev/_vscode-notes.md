@@ -338,6 +338,22 @@ Extension List:
 
 `editor.action.revealDefinition` and `editor.action.goToDeclaration` have similar behaviours in java
 
+```json
+{
+  "command": "editor.action.goToDeclaration",
+  "key": "ctrl+b"
+},
+{
+  "command": "editor.action.goToImplementation",
+  "key": "ctrl+i",
+  "when": "editorHasImplementationProvider && editorTextFocus"
+},
+{
+  "command": "java.action.navigateToSuperImplementation",
+  "key": "ctrl+u"
+}
+```
+
 ## Command Palette
 
 - `Ctrl + Shift + P`

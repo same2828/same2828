@@ -50,6 +50,8 @@ mvn spring-boot:run -Dspring-boot.run.profiles=local
 mvn spring-boot:run -Dspring-boot.run.arguments=--debug -Dspring-boot.run.profiles=local
 mvn dependency:tree | grep pkgOfInterest
 mvn dependency:tree > maven-dependencies.txt
+mvn versions:display-dependency-updates
+mvn versions:display-property-updates
 ```
 
 | Command                                   | Description                                                                                      |
