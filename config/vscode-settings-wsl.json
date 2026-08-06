@@ -45,7 +45,10 @@
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnPaste": false,
     "editor.formatOnType": false,
-    "editor.wordWrap": "off"
+    "editor.wordWrap": "on"
+  },
+  "[plaintext]": {
+    "editor.wordWrap": "on"
   },
   "[python]": {
     "editor.codeActionsOnSave": {
@@ -277,6 +280,7 @@
   "C_Cpp.workspaceParsingPriority": "low",
   "chat.commandCenter.enabled": false,
   "chat.tips.enabled": false,
+  "chat.titleBar.openInAgentsWindow.enabled": false,
   "chat.viewSessions.enabled": false,
   "chat.viewSessions.orientation": "stacked",
   "clangd.arguments": ["ColumnLimit: 120"],
@@ -450,6 +454,10 @@
     "analysed",
     "analyses",
     "analysing",
+    "annualisation",
+    "annualise",
+    "annualised",
+    "annualising",
     "armour",
     "armoured",
     "authorisation",
@@ -813,6 +821,7 @@
   "errorLens.enabledDiagnosticLevels": ["error"],
   "explorer.compactFolders": false,
   "explorer.confirmDragAndDrop": false,
+  "explorer.confirmPasteNative": false,
   "extensions.ignoreRecommendations": true,
   "files.eol": "\n",
   "files.exclude": {
@@ -916,6 +925,7 @@
   "github.copilot.chat.newWorkspaceCreation.enabled": false,
   "github.copilot.chat.search.semanticTextResults": false,
   "github.copilot.nextEditSuggestions.enabled": false,
+  "github.copilot.nextEditSuggestions.fixes": false,
   "gitlens.ai.experimental.generateCommitMessage.enabled": false,
   "gitlens.codeLens.authors.enabled": false,
   "gitlens.codeLens.recentChange.enabled": false,
@@ -1482,7 +1492,7 @@
     "**/.brew/**": true,
     "**/.build/**": true,
     "**/.bundle/**": true,
-    "**/.cache*/**": true,
+    "**/.cache/**": true,
     "**/.cfg/**": true,
     "**/.CFUserTextEncoding*/**": true,
     "**/.classpath/**": true,
@@ -1594,10 +1604,10 @@
     "**/bin/**": true,
     "**/boot/**": true,
     "**/build.*/**": true,
-    "**/build*/**": true,
-    "**/Build*/**": true,
-    "**/cache*/**": true,
-    "**/Cache*/**": true,
+    "**/build/**": true,
+    "**/Build/**": true,
+    "**/cache/**": true,
+    "**/Cache/**": true,
     "**/certs/**": true,
     "**/Certs/**": true,
     "**/Chrome Download/**": true,
@@ -2101,6 +2111,7 @@
       "iconColour": "#FF8C00"
     }
   },
+  "todo-tree.ripgrep.ripgrep": "/home/linuxbrew/.linuxbrew/bin/rg",
   "turboConsoleLog.logMessagePrefix": "OUTPUT",
   "turboConsoleLog.quote": "'",
   "typescript.format.semicolons": "insert",
@@ -2112,6 +2123,7 @@
   "window.confirmSaveUntitledWorkspace": false,
   "window.zoomLevel": 1,
   "workbench.activityBar.location": "top",
+  "workbench.browser.showInTitleBar": false,
   "workbench.cloudChanges.continueOn": "off",
   "workbench.colorCustomizations": {
     "activityBar.activeBorder": "#3794FF",
@@ -2265,6 +2277,7 @@
     "*.svg": "default"
   },
   "workbench.enableExperiments": false,
+  "workbench.experimental.modernUI": false,
   "workbench.iconTheme": "material-icon-theme",
   "workbench.remoteIndicator.showExtensionRecommendations": false,
   "workbench.startupEditor": "newUntitledFile",

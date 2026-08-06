@@ -254,6 +254,7 @@ function fnm() {
       echo "Error: Invalid version number '$2'. Version number needs to be 2 digits"
       return 1
     fi
+    local major_node_version="$2"
     local latest_remote_node_version=$(command fnm ls-remote | grep "$major_node_version" | tail -n 1 | awk '{print $1}')
     local current_node_version=$(node -v)
     if [[ "$current_node_version" == "$latest_remote_node_version" ]]; then
@@ -278,6 +279,8 @@ function fnm() {
       command fnm uninstall $version
     done
     command fnm install "$2"
+    command fnm default "$2"
+    command fnm use "$2"
     if (( $is_system )); then
       echo "Re-alias system default version"
       command fnm alias system $2
@@ -430,16 +433,38 @@ alias kcx='kubectx'
 alias kctx='kubectx'
 alias kns='kubens'
 k-info() {
-  local context=$(kubectl config current-context)
+  local context=$(kubectl config current-context 2>/dev/null)
+  # context=${context:-no-context-set}
+  if [[ -z "$context" ]]; then
+    echo -e "\033[1;31m ERROR: No Kubernetes CONTEXT is set, set using kcx\033[0m"
+    return 1
+  fi
   echo -e "Context: \033[1;35m$context\033[0m"
-  local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
+  # local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
+  local namespace=$(kubectl config view --minify -o 'jsonpath={..namespace}' 2>/dev/null)
+  # namespace=${namespace:-no-namespace-set}
+  if [[ -z "$namespace" ]]; then
+    echo -e "\033[1;31m ERROR: No Kubernetes NAMESPACE is set, set using kns\033[0m"
+    return 1
+  fi
   echo -e "Namespace: \033[1;35m$namespace\033[0m"
 }
 alias kinfo='k-info'
 k-get-pods() {
-  local context=$(kubectl config current-context)
+  local context=$(kubectl config current-context 2>/dev/null)
+  # context=${context:-no-context-set}
+  if [[ -z "$context" ]]; then
+    echo -e "\033[1;31m ERROR: No Kubernetes CONTEXT is set, set using kcx\033[0m"
+    return 1
+  fi
   echo -e "Context: \033[1;35m$context\033[0m"
-  local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
+  # local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
+  local namespace=$(kubectl config view --minify -o 'jsonpath={..namespace}' 2>/dev/null)
+  # namespace=${namespace:-no-namespace-set}
+  if [[ -z "$namespace" ]]; then
+    echo -e "\033[1;31m ERROR: No Kubernetes NAMESPACE is set, set using kns\033[0m"
+    return 1
+  fi
   echo -e "Namespace: \033[1;35m$namespace\033[0m"
   kubectl get pods -n $namespace
 }
@@ -449,17 +474,39 @@ k-get-pods-grep() {
     echo "Usage: kpog <pod-name-to-grep>"
     return 1
   fi
-  local context=$(kubectl config current-context)
+  local context=$(kubectl config current-context 2>/dev/null)
+  # context=${context:-no-context-set}
+  if [[ -z "$context" ]]; then
+    echo -e "\033[1;31m ERROR: No Kubernetes CONTEXT is set, set using kcx\033[0m"
+    return 1
+  fi
   echo -e "Context: \033[1;35m$context\033[0m"
-  local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
+  # local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
+  local namespace=$(kubectl config view --minify -o 'jsonpath={..namespace}' 2>/dev/null)
+  # namespace=${namespace:-no-namespace-set}
+  if [[ -z "$namespace" ]]; then
+    echo -e "\033[1;31m ERROR: No Kubernetes NAMESPACE is set, set using kns\033[0m"
+    return 1
+  fi
   echo -e "Namespace: \033[1;35m$namespace\033[0m"
   kubectl get pods -n $namespace | perl-grep "$1"
 }
 alias kpog='k-get-pods-grep'
 k-get-pods-watch() {
-  local context=$(kubectl config current-context)
+  local context=$(kubectl config current-context 2>/dev/null)
+  # context=${context:-no-context-set}
+  if [[ -z "$context" ]]; then
+    echo -e "\033[1;31m ERROR: No Kubernetes CONTEXT is set, set using kcx\033[0m"
+    return 1
+  fi
   echo -e "Context: \033[1;35m$context\033[0m"
-  local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
+  # local namespace=$(kubectl config view --minify | grep namespace | cut -d" " -f6)
+  local namespace=$(kubectl config view --minify -o 'jsonpath={..namespace}' 2>/dev/null)
+  # namespace=${namespace:-no-namespace-set}
+  if [[ -z "$namespace" ]]; then
+    echo -e "\033[1;31m ERROR: No Kubernetes NAMESPACE is set, set using kns\033[0m"
+    return 1
+  fi
   echo -e "Namespace: \033[1;35m$namespace\033[0m"
   kubectl get pods -n "$(kubectl config view --minify | grep namespace | cut -d" " -f6)" --watch
 }
@@ -786,11 +833,6 @@ idea() {
   # open -a "IntelliJ IDEA CE" "$1"
   open -a "IntelliJ IDEA" "$1"
 }
-# Upgrade Brew Casks
-brew-upgrade-casks() {
-  brew upgrade --cask $(brew list --cask)
-  # brew upgrade --cask $(brew outdated --cask --greedy)
-}
 # Upgrade zsh plugins
 zsh-upgrade-plugins() {
   omz update
@@ -912,6 +954,77 @@ jq-convert-stringified-to-json() {
     jq --arg key "$2" '.[$key] | fromjson' "$1" > "$tempFile" && command mv -v "$tempFile" "$1" || rm -f "$tempFile"
   fi
 }
+yq-convert-json-to-yaml() {
+  if [[ $# -ne 1 ]]; then
+    echo "Usage: yq-convert-json-to-yaml <json-file-to-convert-to-yaml>"
+    return 1
+  fi
+  if [[ "$1" != *.json ]]; then
+    echo -e "ERROR: \033[1;31m$1\033[0m is not a .json file"
+    return 1
+  fi
+  if [[ ! -f "$1" ]]; then
+    echo -e "ERROR: \033[1;31m$1\033[0m file not found"
+    return 1
+  fi
+  local yamlFile="${1%.*}.yaml"
+  yq -p json -Poy "$1" > "$yamlFile"
+  echo -e "Converted $1 to \033[1;35m$yamlFile\033[0m"
+}
+yq-convert-xml-to-json() {
+  if [[ $# -ne 1 ]]; then
+    echo "Usage: jq-sort <json-file-to-sort-alphabetically>"
+    return 1
+  fi
+  if [[ "$1" != *.xml ]]; then
+    echo -e "ERROR: \033[1;31m$1\033[0m is not an .xml file"
+    return 1
+  fi
+  if [[ ! -f "$1" ]]; then
+    echo -e "ERROR: \033[1;31m$1\033[0m file not found"
+    return 1
+  fi
+  local tempYamlFile="tmp-$(date +%s).yaml"
+  local jsonFile="${1%.*}.json"
+  yq -Poy "$1" > "$tempYamlFile" && yq -oj -I2 "$tempYamlFile" > $jsonFile || { rm -f "$tempYamlFile"; return 1; }
+  echo -e "Converted $1 to \033[1;35m$jsonFile\033[0m"
+}
+yq-convert-xml-to-yaml() {
+  if [[ $# -ne 1 ]]; then
+    echo "Usage: yq-convert-xml-to-yaml <xml-file-to-convert-to-yaml>"
+    return 1
+  fi
+  if [[ "$1" != *.xml ]]; then
+    echo -e "ERROR: \033[1;31m$1\033[0m is not an .xml file"
+    return 1
+  fi
+  if [[ ! -f "$1" ]]; then
+    echo -e "ERROR: \033[1;31m$1\033[0m file not found"
+    return 1
+  fi
+  local yamlFile="${1%.*}.yaml"
+  yq -Poy "$1" > "$yamlFile"
+  echo -e "Converted $1 to \033[1;35m$yamlFile\033[0m"
+}
+yq-convert-yaml-to-json() {
+  if [[ $# -ne 1 ]]; then
+    echo "Usage: yq-convert-yaml-to-json <yaml-file-to-convert-to-json>"
+    return 1
+  fi
+  if [[ "$1" != *.yaml && "$1" != *.yml ]]; then
+    echo -e "ERROR: \033[1;31m$1\033[0m is not a .yaml or .yml file"
+    return 1
+  fi
+  if [[ ! -f "$1" ]]; then
+    echo -e "ERROR: \033[1;31m$1\033[0m file not found"
+    return 1
+  fi
+  local tempYamlFile="tmp-$(date +%s).yaml"
+  local jsonFile="${1%.*}.json"
+  yq -p yaml -Poy "$1" > "$tempYamlFile" && yq -oj -I2 "$tempYamlFile" > "$jsonFile" || { rm -f "$tempYamlFile"; return 1; }
+  rm -f "$tempYamlFile"
+  echo -e "Converted $1 to \033[1;35m$jsonFile\033[0m"
+}
 yq-sort() {
   if [[ $# -ne 1 ]]; then
     echo "Usage: jq-sort <yaml-file-to-sort-alphabetically>"
@@ -961,12 +1074,13 @@ timeis2() {
   date +%s
 }
 brew-outdated() {
-  brew update > /dev/null 2>&1
-  brew cleanup > /dev/null 2>&1
+  command brew update-reset > /dev/null 2>&1
+  command brew update > /dev/null 2>&1
+  command brew cleanup > /dev/null 2>&1
   echo "--------------------------------------------------"
   echo "Formulae"
   echo "--------------------------------------------------"
-  brew outdated --formula
+  command brew outdated --formula
   echo "--------------------------------------------------"
   echo "Casks"
   echo "--------------------------------------------------"
@@ -974,7 +1088,9 @@ brew-outdated() {
   brew outdated --cask --greedy-auto-updates
 }
 alias brew-update='brew-outdated'
-
+brew-reset() {
+  command brew update-reset
+}
 # macOS Applications
 #-------------------
 force-quit-applications() {
