@@ -822,6 +822,7 @@
   "explorer.compactFolders": false,
   "explorer.confirmDragAndDrop": false,
   "explorer.confirmPasteNative": false,
+  "extensions.experimental.issueQuickAccess": false,
   "extensions.ignoreRecommendations": true,
   "files.eol": "\n",
   "files.exclude": {
@@ -2280,8 +2281,10 @@
   "workbench.experimental.modernUI": false,
   "workbench.iconTheme": "material-icon-theme",
   "workbench.remoteIndicator.showExtensionRecommendations": false,
+  "workbench.settings.showAISearchToggle": false,
   "workbench.startupEditor": "newUntitledFile",
   "workbench.tree.stickyScrollMaxItemCount": 2,
+  "workbench.welcomePage.experimentalOnboarding": false,
   "workbench.welcomePage.walkthroughs.openOnInstall": false,
   "wrap-log-simple.useSemicolon": true,
   "wrap-log-simple.useSingleQuotes": true,

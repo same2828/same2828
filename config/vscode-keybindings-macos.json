@@ -786,7 +786,7 @@
     "key": "shift+cmd+i"
   },
   {
-    "command": "workbench.action.chat.openagent",
+    "command": "-workbench.action.chat.openagent",
     "key": "shift+cmd+i"
   },
   {

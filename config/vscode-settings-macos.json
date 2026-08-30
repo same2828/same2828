@@ -182,7 +182,7 @@
   "C_Cpp.codeAnalysis.clangTidy.checks.enabled": ["readability-braces-around-statements"],
   "C_Cpp.copilotHover": "disabled",
   // "C_Cpp.default.compilerPath": "/usr/local/bin/gcc-13", // macOS Intel
-  "C_Cpp.default.compilerPath": "/opt/homebrew/bin/gcc-13", // macOS m1
+  "C_Cpp.default.compilerPath": "/opt/homebrew/bin/gcc-16", // macOS m1
   "C_Cpp.default.cppStandard": "c++20",
   // "C_Cpp.default.intelliSenseMode": "macos-gcc-x64",
   "C_Cpp.default.intelliSenseMode": "macos-gcc-arm64",
@@ -825,6 +825,7 @@
   "explorer.compactFolders": false,
   "explorer.confirmDragAndDrop": false,
   "explorer.confirmPasteNative": false,
+  "extensions.experimental.issueQuickAccess": false,
   "extensions.ignoreRecommendations": true,
   "files.eol": "\n",
   "files.exclude": {
@@ -2282,8 +2283,10 @@
   "workbench.experimental.modernUI": false,
   "workbench.iconTheme": "material-icon-theme",
   "workbench.remoteIndicator.showExtensionRecommendations": false,
+  "workbench.settings.showAISearchToggle": false,
   "workbench.startupEditor": "newUntitledFile",
   "workbench.tree.stickyScrollMaxItemCount": 2,
+  "workbench.welcomePage.experimentalOnboarding": false,
   "workbench.welcomePage.walkthroughs.openOnInstall": false,
   "wrap-log-simple.useSemicolon": true,
   "wrap-log-simple.useSingleQuotes": true,

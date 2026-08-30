@@ -51,6 +51,7 @@
   - [Automator AppleScript](#automator-applescript)
   - [Custom Icons (ICNS)](#custom-icons-icns)
   - [Apps to Check Out](#apps-to-check-out)
+  - [Chrome Disable Ai](#chrome-disable-ai)
   - [Force Reload Chrome Tab](#force-reload-chrome-tab)
 - [Clean Install](#clean-install)
 - [Delete Apple Intelligence (Apple AI)](#delete-apple-intelligence-apple-ai)
@@ -979,6 +980,12 @@ Do NOT change application icon until you do the following:
 
 - [Menu Bar Tint](https://manytricks.com/menubartint/)
 - [TopNotch](https://topnotch.app/)
+
+## Chrome Disable Ai
+
+https://old.reddit.com/r/chrome/comments/1t536x6/psa_chrome_silently_downloaded_a_4gb_ai_model_on/
+
+https://old.reddit.com/r/chrome/comments/1q888nr/permanently_disable_chrome_search_bars_stupid_ai/
 
 ## Force Reload Chrome Tab
 

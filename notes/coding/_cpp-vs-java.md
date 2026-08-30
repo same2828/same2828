@@ -600,23 +600,31 @@ int dp(int currNode, std::vector<std::pair<int, int>> (&graph)[]) {
 
 **Java**
 
-- Get Value:
-  - `map.get(key)`
-    - `map.getOrDefault(key, defaultValue)`
-- Assign Value:
-  - `map.put(key, value)`
-  - `Map<Integer, List<Integer>>`: `map.get(key).add(value)`
+Get Value:
+
+- `map.get(key)`
+  - `map.getOrDefault(key, defaultValue)`
+
+Assign Value:
+
+- `map.put(key, value)`
+- `Map<Integer, List<Integer>>`: `map.get(key).add(value)`
 
 **CPP/C++**
 
-- `std::unordered_map` is FASTER than `std::map`
-  - `std::unordered_map` requires keys to be hashable (hence cannot use `std::vector`, `std::pair`, `std::tuple` as key without first defining custom hash function)
-  - `std::map` does NOT have this requirement
-- Get Value:
-  - `map[key]`
-- Assign Value:
-  - `map[key] = value`
-  - `std::map<int, std::vector<int>>`: `map[key].emplace_back(value)`
+`std::unordered_map` is FASTER than `std::map`
+
+- `std::unordered_map` requires keys to be hashable (hence cannot use `std::vector`, `std::pair`, `std::tuple` as key without first defining custom hash function)
+- `std::map` does NOT have this requirement
+
+Get Value:
+
+- `map[key]`
+
+Assign Value:
+
+- `map[key] = value`
+- `std::map<int, std::vector<int>>`: `map[key].emplace_back(value)`
 
 ### Iterating over Values
 
@@ -743,13 +751,17 @@ vec3.emplace_back(std::vector<int>{});
 
 **Java**
 
-- Checking the boolean result of `if(set.add())` does **NOT** work
-  - See 996.number-of-squareful-arrays
-- Use `if (!set.contains())` instead
+Checking the boolean result of `if(set.add())` does **NOT** work
+
+- See 996.number-of-squareful-arrays
+
+Use `if (!set.contains())` instead
 
 **CPP/C++**
 
-- Checking bool result of `if(s.insert().second)` DOES work
+Checking bool result of `if(s.insert().second)` DOES work
+
+- `std::unordered_set` requires keys to be hashable (hence cannot use `std::vector`, `std::pair`, `std::tuple` as key without first defining custom hash function)
 
 ## TreeMap
 

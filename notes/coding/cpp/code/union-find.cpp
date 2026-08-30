@@ -146,6 +146,14 @@ public:
     }
   }
 
+  // UnionFind(int size)
+  // : root(size)
+  // , rank(size, 1) {
+  //   for (int i = 0; i < size; ++i) {
+  //     root[i] = i;
+  //   }
+  // }
+
   int find(int x) {
     if (x == root[x]) {
       return x;

@@ -1384,7 +1384,7 @@ gl-repos() {
           safe-git-stash-pop "$dir"
         fi
       else
-        echo -e "\033[1;33m$dir\033[0m is NOT a git repository, skipping"
+        echo -e "\033[1;36m$dir\033[0m is NOT a git repository, skipping"
       fi
     )
     echo ""

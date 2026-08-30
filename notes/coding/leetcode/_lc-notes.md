@@ -1,3 +1,5 @@
+# Table of Contents
+
 - [Table of Contents](#table-of-contents)
 - [Resources](#resources)
 - [Templates](#templates)
@@ -6,7 +8,7 @@
   - [Array/List](#arraylist)
   - [Integers](#integers)
   - [Graph](#graph)
-  - [Heap Priority Queue](#heap-priority-queue)
+  - [Heap Priority Queue (HeapPQ)](#heap-priority-queue-heappq)
   - [String](#string)
 - [Array](#array)
   - [Median](#median)
@@ -29,7 +31,7 @@
   - [Bitmask](#bitmask)
     - [Bitmask With All N Bits Set To 1](#bitmask-with-all-n-bits-set-to-1)
     - [Check if the i'th bit is set (to 1) in the binary form of the given number](#check-if-the-ith-bit-is-set-to-1-in-the-binary-form-of-the-given-number)
-    - [Count the Number of Bits Set to 1](#count-the-number-of-bits-set-to-1)
+    - [Count the Number of Bits Set to 1 using Builtin Library](#count-the-number-of-bits-set-to-1-using-builtin-library)
     - [Set i'th bit](#set-ith-bit)
     - [Unset i'th bit](#unset-ith-bit)
     - [Flip i'th bit](#flip-ith-bit)
@@ -70,6 +72,8 @@
     - [Comparing with Initial Value to Skip](#comparing-with-initial-value-to-skip)
     - [Using a GLOBAL `static final` Sentinel Value for Base Case](#using-a-global-static-final-sentinel-value-for-base-case)
   - [Preventing Integer Overflow/Underflow](#preventing-integer-overflowunderflow)
+    - [Example 1](#example-1)
+    - [Example 2](#example-2)
   - [Common Causes of Errors](#common-causes-of-errors-1)
 - [DFS](#dfs)
   - [DFS Cycle Find](#dfs-cycle-find)
@@ -81,6 +85,7 @@
   - [Binary Search on 2D Matrix Using Single Index 'mid'](#binary-search-on-2d-matrix-using-single-index-mid)
   - [Filter out numbers that end with digit `k`](#filter-out-numbers-that-end-with-digit-k)
   - [Flatten 2D Grid to Single Array + Shifting](#flatten-2d-grid-to-single-array--shifting)
+  - [Middle Element to Avoid Integer Overflow](#middle-element-to-avoid-integer-overflow)
 - [Graph](#graph-1)
   - [Data Structure](#data-structure)
   - [Complete Graph](#complete-graph)
@@ -111,7 +116,7 @@
   - [K'th Largest \& K'th Smallest](#kth-largest--kth-smallest)
   - [Use 0 instead of -1 if TLE](#use-0-instead-of--1-if-tle)
   - [Uses of 3D array `int[][][]`](#uses-of-3d-array-int)
-- [Heap Priority Queue](#heap-priority-queue-1)
+- [Heap Priority Queue](#heap-priority-queue)
   - [K'th Largest](#kth-largest)
   - [K'th Smallest](#kth-smallest)
   - [Index Heap/Index Priority Queue](#index-heapindex-priority-queue)
@@ -127,12 +132,12 @@
   - [Brackets](#brackets)
   - [Combinatorics](#combinatorics)
     - [Permutation](#permutation)
-      - [With Repetition](#with-repetition)
-      - [Without Repetition](#without-repetition)
+      - [Permutation WITH Repetition](#permutation-with-repetition)
+      - [Permutation WITHOUT Repetition](#permutation-without-repetition)
       - [Distinct Permutation](#distinct-permutation)
     - [Combination](#combination)
-      - [Without Repetition](#without-repetition-1)
-      - [With Repetition](#with-repetition-1)
+      - [Combination WITHOUT Repetition](#combination-without-repetition)
+      - [Combination WITH Repetition](#combination-with-repetition)
       - [nCr == (n-1)C(r-1) + (n-1)Cr](#ncr--n-1cr-1--n-1cr)
       - [Finding Total Number of Combinations](#finding-total-number-of-combinations)
       - [Code](#code-1)
@@ -170,9 +175,15 @@
       - [Sum of GP (Geometric Progression)](#sum-of-gp-geometric-progression)
     - [Greatest Common Divisor (GCD)](#greatest-common-divisor-gcd)
 - [Optimisations/Optimizations](#optimisationsoptimizations)
+  - [Data Structures](#data-structures)
+  - [CPP/C+](#cppc)
+  - [Java](#java)
   - [Cache Locality for Dynamic Programming Memoisation](#cache-locality-for-dynamic-programming-memoisation)
   - [Caching](#caching)
 - [Prefix Sum](#prefix-sum)
+  - [Version 1](#version-1)
+  - [Version 2](#version-2)
+  - [Get Subarray Sum Between Indices i...j (inclusive) || Get Subarray Sum Between `nums[i] to nums[j]` INCLUSIVE](#get-subarray-sum-between-indices-ij-inclusive--get-subarray-sum-between-numsi-to-numsj-inclusive)
   - [Left Prefix Sum + Right Prefix Sum + Bottom Up DP](#left-prefix-sum--right-prefix-sum--bottom-up-dp)
     - [Version 1 - `dp[n+1]`](#version-1---dpn1)
     - [Version 2 - `dp[n+2]`](#version-2---dpn2)
@@ -182,22 +193,61 @@
   - [Comparisons](#comparisons)
 - [Ranges](#ranges)
   - [UpperBound - LowerBound (`[0:high] - [0:low]`) to get `[low:high]`](#upperbound---lowerbound-0high---0low-to-get-lowhigh)
+  - [Index](#index)
 - [Sliding Window](#sliding-window)
-  - [Types of Sliding Window](#types-of-sliding-window)
-  - [1. Fixed Size Window](#1-fixed-size-window)
-    - [Example Problem: Maximum Sum Subarray of Size K](#example-problem-maximum-sum-subarray-of-size-k)
-  - [2. Variable Size Window](#2-variable-size-window)
-    - [Example Problem: Minimum Size Subarray Sum (LeetCode 209)](#example-problem-minimum-size-subarray-sum-leetcode-209)
-  - [3. Sliding Window with Auxiliary Structures (Hash Map/Set)](#3-sliding-window-with-auxiliary-structures-hash-mapset)
-    - [Example Problem: Longest Substring Without Repeating Characters (LeetCode 3)](#example-problem-longest-substring-without-repeating-characters-leetcode-3)
-  - [General Patterns \& Tips for Sliding Window in LeetCode](#general-patterns--tips-for-sliding-window-in-leetcode)
+  - [The 4 Patterns to Memorize](#the-4-patterns-to-memorize)
+  - [1. Longest / Maximum Window](#1-longest--maximum-window)
+    - [Example - Longest Substring Without Repeating Characters](#example---longest-substring-without-repeating-characters)
+    - [Optimization: Store Last Seen Index](#optimization-store-last-seen-index)
+  - [2. Shortest / Minimum Window](#2-shortest--minimum-window)
+    - [Example - Minimum Size Subarray Sum](#example---minimum-size-subarray-sum)
+    - [Dealing/Handling with Negative Numbers](#dealinghandling-with-negative-numbers)
+  - [3. Fixed Window Size K](#3-fixed-window-size-k)
+    - [Example - Maximum Sum of Subarray of Size K](#example---maximum-sum-of-subarray-of-size-k)
+  - [4. At Most K](#4-at-most-k)
+    - [Example - Longest Substring with At Most K Distinct Characters](#example---longest-substring-with-at-most-k-distinct-characters)
+  - [5. Exactly K](#5-exactly-k)
+    - [At Most K vs Exactly K](#at-most-k-vs-exactly-k)
+    - [Example - Subarrays With K Different Integers](#example---subarrays-with-k-different-integers)
+  - [6. Monotonic Deque (Fixed-Size Sliding Window)](#6-monotonic-deque-fixed-size-sliding-window)
+    - [Why Remove Smaller Elements?](#why-remove-smaller-elements)
+    - [Monotonic Decreasing Deque for Maximum](#monotonic-decreasing-deque-for-maximum)
+    - [Monotonic Increasing Deque for Minimum](#monotonic-increasing-deque-for-minimum)
+    - [Summary](#summary)
+  - [Why `right - left + 1` Counts Subarrays](#why-right---left--1-counts-subarrays)
+  - [Minimum Window / Cover Problems](#minimum-window--cover-problems)
+    - [Example - Minimum Window Substring](#example---minimum-window-substring)
+  - [Longest Repeating Character Replacement](#longest-repeating-character-replacement)
+    - [Generalized](#generalized)
+  - [Count Frequencies in a Fixed Window](#count-frequencies-in-a-fixed-window)
+    - [Example Permutation in Strine](#example-permutation-in-strine)
+  - [Product / Sum Constraints](#product--sum-constraints)
+  - [Sliding Window Constraints/Limitations](#sliding-window-constraintslimitations)
+    - [Rule](#rule)
+  - [HashMap vs Array](#hashmap-vs-array)
+  - [Common Mistakes](#common-mistakes)
+    - [Forgetting `+1`](#forgetting-1)
+    - [Using `if` instead of `while`](#using-if-instead-of-while)
+    - [Updating at the wrong time](#updating-at-the-wrong-time)
+    - [Letting `left` move backwards](#letting-left-move-backwards)
+    - [Ignoring monotonicity](#ignoring-monotonicity)
+  - [Sliding Window Invariant](#sliding-window-invariant)
+    - [Longest](#longest)
+    - [Shortest](#shortest)
+  - [Decision Tree](#decision-tree)
+  - [Complexity](#complexity)
+  - [Space Complexity](#space-complexity)
+  - [Cheat Sheet](#cheat-sheet)
 - [String](#string-1)
   - [Characters](#characters)
-  - [Java](#java)
+  - [Java](#java-1)
   - [Substrings + Palindrome](#substrings--palindrome)
   - [Strings/Substrings](#stringssubstrings)
   - [Array Indexing for Single Pass Forwards + Backwards](#array-indexing-for-single-pass-forwards--backwards)
   - [Longest Palindromic Substring / Longest Common Subsequence](#longest-palindromic-substring--longest-common-subsequence)
+    - [Bottom Up DP](#bottom-up-dp)
+      - [Method 1](#method-1)
+      - [Method 2](#method-2)
 - [String Hashing](#string-hashing)
 - [Subsequence](#subsequence)
 - [Time Complexity](#time-complexity)
@@ -211,8 +261,6 @@
   - [Handling Strings](#handling-strings)
   - [Connected Components](#connected-components)
 
-# Table of Contents
-
 # Resources
 
 - [USACO](https://usaco.guide/dashboard)
@@ -222,9 +270,19 @@
 
 - [Google Sheets - Thita Patterns](https://docs.google.com/spreadsheets/d/1EEYzyD_483B-7CmWxsJB_zycdv4Y5dxnzcoEQtaIfuk/edit?gid=329533698#gid=329533698)
 
-https://www.enkr1.com/interview_preparation_materials/
-https://zerotomastery.io/cheatsheets/data-structures-and-algorithms-cheat-sheet/
+https://docs.google.com/spreadsheets/d/1EEYzyD_483B-7CmWxsJB_zycdv4Y5dxnzcoEQtaIfuk/edit?gid=329533698#gid=329533698
+
+https://rutvij26.github.io/leetcode-wiki/
+
+https://github.com/rgbedin/interview-prep/blob/main/algo-sheet.md
+
 https://jwl-7.github.io/leetcode-cheatsheet/
+
+https://leetcode-cheatsheet.vercel.app/
+
+https://www.enkr1.com/interview_preparation_materials/
+
+https://zerotomastery.io/cheatsheets/data-structures-and-algorithms-cheat-sheet/
 
 # Templates
 
@@ -332,7 +390,7 @@ int main() {
     }
     ```
 
-## Heap Priority Queue
+## Heap Priority Queue (HeapPQ)
 
 - If `vals[]` contains NEGATIVE values, and we are trying to find MAX sum, then check if `vals[i] > 0` before inserting into pq
   ```java
@@ -362,9 +420,9 @@ class Solution {
     int n = arr.length;
     // If the length is odd, return the middle element
     if (n % 2 == 1) {
-      return arr[n / 2];
+      return arr[n / 2]; // 0 indexing means can use Math.floor(n/2). e.g. [0, 1, 2, 3, 4]
     }
-    // If the length is even, return the average of the two middle elements
+    // If the length is even, return the average of the two middle elements. arr = [0, 1, 2, 3]
     return (double) (arr[(n / 2) - 1] + arr[n / 2]) / 2.0;
   }
 }
@@ -372,9 +430,9 @@ class Solution {
 
 ## Subsets
 
-- The number of unique subsets in an array == `2^N`
-  - We can include/exclude each number
-- Generating subsets
+The number of unique subsets in an array == `2^N` -> we can include/exclude each number
+
+Generating subsets
 
 ```java
 class Solution {
@@ -413,66 +471,71 @@ This includes uppercase letters (`'A'` is 65), lowercase letters (`'a'` is 97), 
 By defining `std::vector<int> map(128, 0)`, the code allocates a slot for every possible standard ASCII character.
 When you write `map[ch]`, the char `ch` is implicitly cast to its integer ASCII value, which serves directly as the index.
 
-| Dec | Char                          | Dec | Char    | Dec | Char | Dec | Char    |
-| --- | ----------------------------- | --- | ------- | --- | ---- | --- | ------- |
+| Dec | Char                          | Dec |  Char   | Dec | Char | Dec |  Char   |
+| --- | ----------------------------- | --- | :-----: | --- | :--: | --- | :-----: |
 | 0   | `NUL` (null)                  | 32  | `SPACE` | 64  | `@`  | 96  | `` ` `` |
-| 1   | `SOH` (start of heading)      | 33  | `!`     | 65  | `A`  | 97  | `a`     |
-| 2   | `STX` (start of text)         | 34  | `"`     | 66  | `B`  | 98  | `b`     |
-| 3   | `ETX` (end of text)           | 35  | `#`     | 67  | `C`  | 99  | `c`     |
-| 4   | `EOT` (end of transmission)   | 36  | `$`     | 68  | `D`  | 100 | `d`     |
-| 5   | `ENQ` (enquiry)               | 37  | `%`     | 69  | `E`  | 101 | `e`     |
-| 6   | `ACK` (acknowledge)           | 38  | `&`     | 70  | `F`  | 102 | `f`     |
-| 7   | `BEL` (bell)                  | 39  | `'`     | 71  | `G`  | 103 | `g`     |
-| 8   | `BS` (backspace)              | 40  | `(`     | 72  | `H`  | 104 | `h`     |
-| 9   | `TAB` (horizontal tab)        | 41  | `)`     | 73  | `I`  | 105 | `i`     |
-| 10  | `LF` (NL line feed, new line) | 42  | `*`     | 74  | `J`  | 106 | `j`     |
-| 11  | `VT` (vertical tab)           | 43  | `+`     | 75  | `K`  | 107 | `k`     |
-| 12  | `FF` (NP form feed, new page) | 44  | `,`     | 76  | `L`  | 108 | `l`     |
-| 13  | `CR` (carriage return)        | 45  | `-`     | 77  | `M`  | 109 | `m`     |
-| 14  | `SO` (shift out)              | 46  | `.`     | 78  | `N`  | 110 | `n`     |
-| 15  | `SI` (shift in)               | 47  | `/`     | 79  | `O`  | 111 | `o`     |
-| 16  | `DLE` (data link escape)      | 48  | `0`     | 80  | `P`  | 112 | `p`     |
-| 17  | `DC1` (device control 1)      | 49  | `1`     | 81  | `Q`  | 113 | `q`     |
-| 18  | `DC2` (device control 2)      | 50  | `2`     | 82  | `R`  | 114 | `r`     |
-| 19  | `DC3` (device control 3)      | 51  | `3`     | 83  | `S`  | 115 | `s`     |
-| 20  | `DC4` (device control 4)      | 52  | `4`     | 84  | `T`  | 116 | `t`     |
-| 21  | `NAK` (negative acknowledge)  | 53  | `5`     | 85  | `U`  | 117 | `u`     |
-| 22  | `SYN` (synchronous idle)      | 54  | `6`     | 86  | `V`  | 118 | `v`     |
-| 23  | `ETB` (end of trans. block)   | 55  | `7`     | 87  | `W`  | 119 | `w`     |
-| 24  | `CAN` (cancel)                | 56  | `8`     | 88  | `X`  | 120 | `x`     |
-| 25  | `EM` (end of medium)          | 57  | `9`     | 89  | `Y`  | 121 | `y`     |
-| 26  | `SUB` (substitute)            | 58  | `:`     | 90  | `Z`  | 122 | `z`     |
-| 27  | `ESC` (escape)                | 59  | `;`     | 91  | `[`  | 123 | `{ `    |
-| 28  | `FS` (file separator)         | 60  | `<`     | 92  | `\`  | 124 | `\|`    |
-| 29  | `GS` (group separator)        | 61  | `=`     | 93  | `]`  | 125 | `}`     |
-| 30  | `RS` (record separator)       | 62  | `>`     | 94  | `^`  | 126 | `~`     |
-| 31  | `US` (unit separator)         | 63  | `?`     | 95  | `_`  | 127 | `DEL`   |
+| 1   | `SOH` (start of heading)      | 33  |   `!`   | 65  | `A`  | 97  |   `a`   |
+| 2   | `STX` (start of text)         | 34  |   `"`   | 66  | `B`  | 98  |   `b`   |
+| 3   | `ETX` (end of text)           | 35  |   `#`   | 67  | `C`  | 99  |   `c`   |
+| 4   | `EOT` (end of transmission)   | 36  |   `$`   | 68  | `D`  | 100 |   `d`   |
+| 5   | `ENQ` (enquiry)               | 37  |   `%`   | 69  | `E`  | 101 |   `e`   |
+| 6   | `ACK` (acknowledge)           | 38  |   `&`   | 70  | `F`  | 102 |   `f`   |
+| 7   | `BEL` (bell)                  | 39  |   `'`   | 71  | `G`  | 103 |   `g`   |
+| 8   | `BS` (backspace)              | 40  |   `(`   | 72  | `H`  | 104 |   `h`   |
+| 9   | `TAB` (horizontal tab)        | 41  |   `)`   | 73  | `I`  | 105 |   `i`   |
+| 10  | `LF` (NL line feed, new line) | 42  |   `*`   | 74  | `J`  | 106 |   `j`   |
+| 11  | `VT` (vertical tab)           | 43  |   `+`   | 75  | `K`  | 107 |   `k`   |
+| 12  | `FF` (NP form feed, new page) | 44  |   `,`   | 76  | `L`  | 108 |   `l`   |
+| 13  | `CR` (carriage return)        | 45  |   `-`   | 77  | `M`  | 109 |   `m`   |
+| 14  | `SO` (shift out)              | 46  |   `.`   | 78  | `N`  | 110 |   `n`   |
+| 15  | `SI` (shift in)               | 47  |   `/`   | 79  | `O`  | 111 |   `o`   |
+| 16  | `DLE` (data link escape)      | 48  |   `0`   | 80  | `P`  | 112 |   `p`   |
+| 17  | `DC1` (device control 1)      | 49  |   `1`   | 81  | `Q`  | 113 |   `q`   |
+| 18  | `DC2` (device control 2)      | 50  |   `2`   | 82  | `R`  | 114 |   `r`   |
+| 19  | `DC3` (device control 3)      | 51  |   `3`   | 83  | `S`  | 115 |   `s`   |
+| 20  | `DC4` (device control 4)      | 52  |   `4`   | 84  | `T`  | 116 |   `t`   |
+| 21  | `NAK` (negative acknowledge)  | 53  |   `5`   | 85  | `U`  | 117 |   `u`   |
+| 22  | `SYN` (synchronous idle)      | 54  |   `6`   | 86  | `V`  | 118 |   `v`   |
+| 23  | `ETB` (end of trans. block)   | 55  |   `7`   | 87  | `W`  | 119 |   `w`   |
+| 24  | `CAN` (cancel)                | 56  |   `8`   | 88  | `X`  | 120 |   `x`   |
+| 25  | `EM` (end of medium)          | 57  |   `9`   | 89  | `Y`  | 121 |   `y`   |
+| 26  | `SUB` (substitute)            | 58  |   `:`   | 90  | `Z`  | 122 |   `z`   |
+| 27  | `ESC` (escape)                | 59  |   `;`   | 91  | `[`  | 123 |  `{ `   |
+| 28  | `FS` (file separator)         | 60  |   `<`   | 92  | `\`  | 124 |  `\|`   |
+| 29  | `GS` (group separator)        | 61  |   `=`   | 93  | `]`  | 125 |   `}`   |
+| 30  | `RS` (record separator)       | 62  |   `>`   | 94  | `^`  | 126 |   `~`   |
+| 31  | `US` (unit separator)         | 63  |   `?`   | 95  | `_`  | 127 |  `DEL`  |
 
 # Backtracking
 
-- In `dfs(i)` call
+In `dfs(i)` call
 
-  ```java
-  int dfs(i) {
-    for (int num : nums) {
-      memo[i] += nums[i];
-      dfs(i + 1);
-      memo[i] -= nums[i];
-    }
+```java
+int dfs(i) {
+  for (int num : nums) {
+    memo[i] += nums[i];
+    dfs(i + 1);
+    memo[i] -= nums[i];
   }
-  ```
+}
+```
 
-- Backtracking is a method to generate all permutations/combinations/subsets in `O(1)` time
-  - MODIFY state (i.e. swap elements) BEFORE the `dfs()` call in `O(1)` time and UN-MODIFY state (i.e. unswap elements) AFTER the `dfs()` call in `O(1)` time
-  - DFS + Backtracking
-- [Read more](https://dimosr.github.io/backtracking-vs-depth-first-search)
-- Examples
-  - 1947.maximum-compatibility-score-sum
+Backtracking is a method to generate all permutations/combinations/subsets in `O(1)` time
+
+- MODIFY state (i.e. swap elements) BEFORE the `dfs()` call in `O(1)` time and UN-MODIFY state (i.e. unswap elements) AFTER the `dfs()` call in `O(1)` time
+- DFS + Backtracking
+
+[Resource](https://dimosr.github.io/backtracking-vs-depth-first-search)
+
+Examples
+
+- 1947.maximum-compatibility-score-sum
 
 # Binary Representation
 
-- The base/radix is 2
-- Digits are 0 and 1
+The base/radix is 2
+
+Digits are 0 and 1
 
 | Bit Position |   3    |   2    |   1    |   0    |
 | :----------: | :----: | :----: | :----: | :----: |
@@ -492,30 +555,32 @@ When you write `map[ch]`, the char `ch` is implicitly cast to its integer ASCII 
 |    Value     |      `2048`      |      `1024`      |      `512`       |      `256`       |
 |    Binary    | `1000 0000 0000` | `0100 0000 0000` | `0010 0000 0000` | `0001 0000 0000` |
 
-- **`1 byte == 8 bits`**
-- **`char = 1 byte = 8 bits`**
-- **`int = 4 bytes = 32 bits`**
-- **`long long = 8 bytes = 64 bits`**
-- **`double = 8 bytes = 64 bits`**
+**`1 byte == 8 bits`**
+**`char = 1 byte = 8 bits`**
+**`int = 4 bytes = 32 bits`**
+**`long long = 8 bytes = 64 bits`**
+**`double = 8 bytes = 64 bits`**
 
-- The most significant bit (**MSB**) (the bit furthest to the LEFT) (also known as highest bit) is used to represent the sign of a number, where `0` indicates a POSITIVE (`+`) value and `1` indicates a NEGATIVE (`-`) value
-- The least significant bit (**LSB**) (the bit furthest to the RIGHT)
-- Binary representations can be BUILT on top of each other using either `+` or `|`
+The most significant bit (**MSB**) (the bit furthest to the LEFT) (also known as highest bit) is used to represent the sign of a number, where `0` indicates a POSITIVE (`+`) value and `1` indicates a NEGATIVE (`-`) value
 
-  ```
-  15 = 8 + 4 + 2 + 1
+The least significant bit (**LSB**) (the bit furthest to the RIGHT)
 
-  15 == 1111
+Binary representations can be BUILT on top of each other using either `+` or `|`
 
-  8  == 1000
-  4  == 0100
-  2  == 0010
-  1  == 0001
-  ```
+```
+15 = 8 + 4 + 2 + 1
+
+15 == 1111
+
+8  == 1000
+4  == 0100
+2  == 0010
+1  == 0001
+```
 
 ## Build Number from Binary Digits
 
-- Build from LEFT to RIGHT
+Build from LEFT to RIGHT
 
 ```java
 int[] binaryRep = new int[n];
@@ -531,23 +596,30 @@ for (int i = n - 1; i >= 0; i--) {
 
 ## Negative Numbers (Two's Complement)
 
-- To represent a negative number in binary, we utilise `"Two's Complement"`
-  - Negative numbers are represented by taking the binary representation of the positive counterpart and then inverting all the bits (changing `0s to 1s` and `1s to 0s`) AND adding `1` to the result
-  - Example for `-1`
-    - Step 1: Positive Counterpart = `1` = `0001`
-    - Step 2: Invert all bits = `1110`
-    - Step 3: Add 1 = `1111`
+To represent a negative number in binary, we utilise `"Two's Complement"`
 
-- For an `n-bit` binary number the presentation of `-x == 2^(n) - x`
-  - `int` = `32 bit` number
-    - **`-x == 2^(32) - x`**
+- Negative numbers are represented by taking the binary representation of the positive counterpart and then inverting all the bits (changing `0s to 1s` and `1s to 0s`) AND adding `1` to the result
+
+Example for `-1`:
+
+- Step 1. Positive Counterpart = `1` = `0001`
+- Step 2. Invert all bits = `1110`
+- Step 3. Add 1 = `1111`
+
+For an `n-bit` binary number the representation of `-x == 2^(n) - x`
+
+- `int` = `32 bit` number
+- `-x == 2^(32) - x`
 
 ## Converting Binary String to Integer
 
-- Read string **BACKWARDS/REVERSE (RIGHT TO LEFT)** to construct integer
-  - i.e. `String s = "1011"`, we need to read from index `s.length() - 1` to `0`
-- When converting a binary string (like `"1011"`) to an integer, you process the string from right to left (from the least significant bit to the most significant bit)
-- This is because the rightmost character represents the lowest bit (2^0), and each character to the left represents a higher power of `2`
+Read string **BACKWARDS/REVERSE (RIGHT TO LEFT)** to construct integer
+
+- i.e. `String s = "1011"`, we need to read from index `s.length() - 1` to `0`
+
+When converting a binary string (like `"1011"`) to an integer, you process the string from right to left (from the **least** significant bit to the **most** significant bit)
+
+This is because the rightmost character represents the lowest bit (2^0), and each character to the left represents a higher power of `2`
 
 For example, `"1011"`:
 
@@ -589,40 +661,51 @@ So, you sum: 8 + 0 + 2 + 1 = 11.
 | 0         | 0   | 1   |
 | 1         | 1   | 0   |
 
-- OR (`|`) == `+`
-- XOR (`^`) == `-`
+OR (`|`) == `+`
 
-- **`(x << n)`** MULTIPLES the number `x` by `2^n`
-- **`(x >> n)`** DIVIDES the number `x` by `2^n`
-- **`x | (1 << n)`** SETS the `n'th` bit of the number `x` to `1`
-- **`x & ~(1 << n)`** SETS the `n'th` bit of the number `x` to `0`
-- **`x ^ (1 << n)`** FLIPS the `n'th` bit of the number `x` to `0`
+XOR (`^`) == `-`
+
+**`(x << n)`** MULTIPLES the number `x` by `2^n`
+
+**`(x >> n)`** DIVIDES the number `x` by `2^n`
+
+**`x | (1 << n)`** SETS the `n'th` bit of the number `x` to `1`
+
+**`x & ~(1 << n)`** SETS the `n'th` bit of the number `x` to `0`
+
+**`x ^ (1 << n)`** FLIPS the `n'th` bit of the number `x` to `0`
 
 ## XOR
 
 ### XOR Properties
 
-- If `XOR(arr1+arr2) == 0` then `XOR(arr1) == XOR(arr2)`
-- If `a ^ b ^ c ^ d = 0` then
-  - `a = b ^ c ^ d`
-  - `a ^ b = c ^ d`
-  - `a ^ b ^ c = d`
-- `a ^ a = 0`
-  - Any number XOR-ed with itself results in zero `0`
-- `a ^ 0 = a`
-  - Any number XOR-ed with zero remains unchanged
-- `a ^ b = b ^ a`
-  - The order of the operands does not matter in XOR
-- `a ^ (b ^ c) = (a ^ b) ^ c`
-  - XOR operations can be grouped in any order
-- If `c = a ^ b`, then `a = b ^ c` and `b = a ^ c`
-  - This property is useful for finding missing elements
+If `XOR(arr1+arr2) == 0` then `XOR(arr1) == XOR(arr2)`
+
+If `a ^ b ^ c ^ d = 0` then:
+
+```
+a = b ^ c ^ d
+a ^ b = c ^ d
+a ^ b ^ c = d
+```
+
+`a ^ a = 0`: Any number XOR-ed with itself results in zero `0`
+
+`a ^ 0 = a`: Any number XOR-ed with zero remains unchanged
+
+`a ^ b = b ^ a`: The order of the operands does NOT matter in XOR operations
+
+`a ^ (b ^ c) = (a ^ b) ^ c`: XOR operations can be grouped in any order
+
+If `c = a ^ b`, then `a = b ^ c` and `b = a ^ c`: This property is useful for finding missing elements
 
 ## Bitmask/Bit Manipulation Tips/Tricks
 
-- The bitmask of `-1` a mask of all 1's (`0b11111111111111111111111111111111`)
-- If question asks for `&`, we can reset mask with `-1` or `((1 << n) - 1)` which is a bitmask of all 1's
-  - The reason is that in the next iteration when you `&` any number `x` with that bitmask, you get the same number `x` back
+The bitmask of `-1` is a mask of all 1's (`0b11111111111111111111111111111111`)
+
+If question asks for `&`, we can reset mask with `-1` or `((1 << n) - 1)` which is a bitmask of all 1's
+
+- The reason is that in the next iteration when you `&` any number `x` with that bitmask, you get the same number `x` back
 
 ## Common Causes of Errors/Mistakes/Pitfalls
 
@@ -689,25 +772,32 @@ int dp(int i, int charMask, boolean canChange) {
 
 ## Check if a Number is a Power of 2
 
-- `(x & (x -1)) == 0`
-- A power of two in binary form has only one '1' (MSB)
-- A number one less than a power of 2 has all bits except for MSB set to 1
-- Hence bitwise ANDing both should give zero (0)
+> `(x & (x - 1)) == 0`
+
+```
+1000 == 8
+0111 == 7
+---- &
+0000
+```
+
+A power of two in binary form has ONLY ONE MSB
+
+A number one less than a power of 2 has all bits except for the MSB set to 1
+
+Hence bitwise ANDing both should give zero (0)
 
 ```java
 if (num & (num - 1) == 0) {
   System.out.println(num + " is a power of 2")
 }
-// 1000 == 8
-// 0111 == 7
-// ---- &
-// 0000
 ```
 
 ## Bit Manipulation
 
-- Examples
-  - See: 3007.maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k
+Examples
+
+- 3007.maximum-number-that-sum-of-the-prices-is-less-than-or-equal-to-k
 
 ### Multiply by 2
 
@@ -729,19 +819,20 @@ int b = (a >> 1); // b = 5
 
 ## Bitmask
 
-- Note we can only use bitmask if there are `<= 32` or `<= 64` elements
-  - `int == 32 bit`
-  - `long == 64 bit`
+Note we can only use bitmask if there are `<= 32` or `<= 64` elements
+
+- `int == 32 bit`
+- `long == 64 bit`
 
 ### Bitmask With All N Bits Set To 1
 
-- To get a bitmask where all `n` bits are set to `1` use:
+To get a bitmask where all `n` bits are set to `1` use:
 
 ```java
 int finalBitmask = (1 << n) - 1;
 ```
 
-- Example
+Example
 
 ```java
 (1 << 5) = 32;
@@ -758,14 +849,28 @@ if (num & (1 << i)) {
 }
 ```
 
-**Note: CANNOT do `if ((num & (1 << i)) == 1)`, since the result of the `AND &` operation may NOT be 1** (common )
+```java
+if ((num & (1 << i)) != 0) {
+  // ...
+}
+```
+
+```java
+if ((num & (1 << i)) > 0) {
+  // ...
+}
+```
+
+**Note: CANNOT do `if ((num & (1 << i)) == 1)`, since the result of the `AND &` operation may NOT be `1`** (common cause of errors)
 
 Solution: Use `if ((num & (1 << i)) != 0)` or `if ((num & (1 << i)) > 0)` instead
 
 Explanation:
 
 - When you do `num & (1 << i)`, the result is either `0` (if the i'th bit is not set) or a power of two (e.g. `2^i`) if the i'th bit is set
-- Example: If `i = 3`, then `1 << 3 = 8`, and if the 3rd bit is set in `num` then `num & (1 << 3) = 8` and NOT `1`
+
+Example: If `i = 3`, then `(1 << 3) = 8`, and if the 3rd bit is set in `num` then `(num & (1 << 3)) = 8` and NOT `1`
+
 - Therefore, checking `(num & (1 << i)) == 1` only works if `i == 0` (common source of errors/bugs)
 - For other values of `i`, you should check `!= 0` or `> 0` instead
 
@@ -781,7 +886,7 @@ if ((num & (1 << i)) > 0) {
 }
 ```
 
-### Count the Number of Bits Set to 1
+### Count the Number of Bits Set to 1 using Builtin Library
 
 ```java
 int numBitsSet = Integer.bitCount(currMask);
@@ -802,7 +907,7 @@ while (currMask > 0) {
 
 ### Set i'th bit
 
-- Note `int y = x | (1 << n)` sets the `n'th` bit of the number `x` to `1`
+Note `int y = (x | (1 << n))` sets the `n'th` bit of the number `x` to `1`
 
 ```java
 // Modify "mask"
@@ -826,7 +931,7 @@ mask ^= (1 << i);
 
 ### XOR (`^`)
 
-- If the XOR operation returns a non-zero value, it means `nums[i]` and `nums[j]` are different values
+If the XOR operation returns a non-zero value, it means `nums[i]` and `nums[j]` are DIFFERENT values
 
 ```java
 // Below are EQUIVALENT
@@ -839,7 +944,7 @@ if (nums[i] != nums[j]) {
 }
 ```
 
-```java
+```cpp
 // Below are EQUIVALENT
 if (nums[i] ^ nums[j]) {
 
@@ -852,16 +957,23 @@ if (nums[i] != nums[j]) {
 
 #### Keeping track of Parity (Odd/Even)
 
-- 0 == "even" number of times a character has occurred
-- 1 == "odd" number of times a character has occurred
-- We switch between 0 and 1 with the XOR operation `((0 ^ 1) == 1 && (1 ^ 1) == 0)`
-- See: `2791.count-paths-that-can-form-a-palindrome-in-a-tree`
+`0 == even` number of times a character has occurred
+
+`1 == odd` number of times a character has occurred
+
+We switch between 0 and 1 with the XOR operation `((0 ^ 1) == 1 && (1 ^ 1) == 0)`
+
+See: `2791.count-paths-that-can-form-a-palindrome-in-a-tree`
 
 #### Unique Element Detection
 
-- Bitwise XOR is used to find the unique number in an array where all numbers except one are present twice
-- This is because the XOR of all elements gives us an odd occurring element. A property of XOR is that the XOR of a number with itself is 0, and the XOR of a number with 0 is the number itself
-- So, if we XOR all the elements, we'll end up with the element that appears an odd number of times
+Bitwise `XOR` is used to find the unique number in an array where all numbers except one are present twice
+
+This is because the XOR of all elements gives us an odd occurring element
+
+A property of XOR is that the XOR of a number with itself is 0, and the XOR of a number with 0 is the number itself
+
+So, if we XOR all the elements, we'll end up with the element that appears an odd number of times
 
 ```java
 class Solution {
@@ -888,36 +1000,43 @@ class Solution {
 
 #### Flipping Bits
 
-- XOR with 1 is often used to flip bits in a bitmask
-- This is because `(1 ^ 1) = 0` (flips 1 to 0) and `(0 ^ 1) = 1` (flips 0 to 1)
-- For example, if you want to flip the i'th bit in a number n, you can use the operation `n ^= (1 << i)`
+XOR with 1 is often used to flip bits in a bitmask
+
+This is because `(1 ^ 1) = 0` (flips 1 to 0) and `(0 ^ 1) = 1` (flips 0 to 1)
+
+For example, if you want to flip the i'th bit in a number `n`, you can use the operation `n ^= (1 << i)`
 
 #### Swapping Numbers
 
-- XOR can be used to swap two numbers without the need for a temporary variable
-- The sequence of operations is
-  ```java
-  x ^= y;
-  y ^= x;
-  x ^= y;
-  ```
-- After these operations, the original value of x is now in y and vice versa
+XOR can be used to swap two numbers without the need for a temporary variable
+
+The sequence of operations is
 
 ```java
-// mask = 10010, j = 1, prevMask = 10000
+x ^= y;
+y ^= x;
+x ^= y;
+```
+
+After these operations, the original value of x is now in y and vice versa
+
+```java
+// mask = 10010
+// j = 1
+// prevMask = 10000
 int prevMask = mask - (1 << j);
 int prevMask = mask ^ (1 << j);
 
 // 10010 mask
 // 00010 (1 << j)
-// ----- mask ^ (1 << j)
+// ----- ^
 // 10000 prevMask
 
 int mask -= (1 << j);
 int mask ^= (1 << j);
 ```
 
-- The following code are EQUIVALENT
+The following code are EQUIVALENT
 
 ```java
 int newMask = mask - (1 << i);
@@ -939,16 +1058,18 @@ reqForZeroOne ^= 1;
 
 # BFS
 
-- Use **`queue`**
-- 2 Methods
-  - Store numIterations in global variable
-  - Store numIterations inside queue element
+Use **`queue`**
+
+2 Methods
+
+1. Store numIterations in global variable
+2. Store numIterations inside queue element
 
 ```java
 // Set up "graph" + "visitedSet"
-Queue<int[]> q = new LinkedList<>();
+Queue<int[]> q = new ArrayDeque<>();
 // Offer initial state onto queue { x, y, cost, numSteps }
-q.offer(new int[0, 0, 0, 0]);
+q.offer(new int[] {0, 0, 0, 0});
 // BFS (expand all elements in queue)
 int numSteps = 0;
 while (!q.isEmpty()) {
@@ -968,9 +1089,9 @@ while (!q.isEmpty()) {
 
 ```java
 // Set up "graph" + "visitedSet"
-Queue<int[]> q = new LinkedList<>();
+Queue<int[]> q = new ArrayDeque<>();
 // Offer initial state onto queue { x, y, cost }
-q.offer(new int[0, 0, 0]);
+q.offer(new int[] {0, 0, 0});
 // BFS (expand all elements in queue)
 int numSteps = 0;
 while (!q.isEmpty()) {
@@ -990,12 +1111,15 @@ while (!q.isEmpty()) {
 
 ## Find Nodes in Cycle
 
-- Continuously trim leaf nodes(nodes with indegree == 1) until you can't
-  - Push leaf nodes (nodes with indegree == 1) onto queue
-  - Poll from queue and decrease indegree of neighbours and offer onto queue if neighbour indegree == 1
-  - Repeat above
-- Questions
-  - 2204
+Continuously trim leaf nodes(nodes with indegree == 1) until you can't
+
+- Push leaf nodes (nodes with indegree == 1) onto queue
+- Poll from queue and decrease indegree of neighbours and offer onto queue if neighbour indegree == 1
+- Repeat above
+
+Example Questions
+
+- 2204.distance-to-a-cycle-in-undirected-graph.java
 
 ## Giving Unique ID to Each Subtree (Finding Duplicate Subtrees)
 
@@ -1039,12 +1163,16 @@ class Solution {
 
 # Binary Search
 
-- See binary-search.java
-- Interesting application to find "exact" number
-  - `lnt-all/848.minimize-max-distance-to-gas-station`
-  - `lnt-all/617.maximum-average-subarray-ii`
+See binary-search.java
+
+Interesting application to find "exact" number
+
+- `lnt-all/848.minimize-max-distance-to-gas-station`
+- `lnt-all/617.maximum-average-subarray-ii`
 
 ## lee215's binary search template
+
+Note: Ensure `right` is 1 index AFTER maximum, e.g. `nums.length` and NOT `nums.length - 1`
 
 ```java
 int left = 0;
@@ -1125,6 +1253,8 @@ public TreeNode getPredecessor(TreeNode root) {
 
 - Return info containing `{ result_including_currNode, result_from_max_child_excluding_currNode }`
 
+See 3004.maximum-subtree-of-the-same-color
+
 ```java
 class Solution {
   // List<Integer>[] graph = new List[n];
@@ -1156,7 +1286,6 @@ class Solution {
         continue;
       }
       int[] tmp = dfs(nei, currNode);
-      result += dfs(nei, currNode);
       // Check nei and currNode have same color
       if (colors[nei] == colors[currNode] && countFromCurrNode != -1) {
         countFromCurrNode += tmp[0];
@@ -1173,7 +1302,7 @@ class Solution {
 
 ## Lowest Common Ancestor (LCA) - Binary Lifting/Binary Jumping
 
-Let `G` be a tree. For every query of the form `(u, v)` we want to find the lowest common ancestor of the nodes `u` and `v`, i.e. we want to find a node w that lies on the path from `u` to the root node, that lies on the path from `v` to the root node, and if there are multiple nodes we pick the one that is farthest away from the root node. In other words the desired node `w` is the lowest ancestor of `u` and `v` . In particular if `u` is an ancestor of `v`, then `u` is their lowest common ancestor.
+Let `G` be a tree. For every query of the form `(u, v)` we want to find the lowest common ancestor of the nodes `u` and `v`, i.e. we want to find a node `w` that lies on the path from `u` to the root node, that lies on the path from `v` to the root node, and if there are multiple nodes we pick the one that is farthest away from the root node. In other words the desired node `w` is the lowest ancestor of `u` and `v` . In particular if `u` is an ancestor of `v`, then `u` is their lowest common ancestor.
 
 The algorithm described in this article will need `O(Nlog_2(N))` for preprocessing the tree, and then `O(log_2(N))` for each LCA query.
 
@@ -1407,7 +1536,7 @@ public:
 
 Rerooting = At each `dfs(currNode, parentNode, parentDist)` call, we treat `currNode` as the `rootNode` and compare `Math.max(maxDistUpToCurrNode, maxDistFromCurrNodeOnwards)`
 
-The trick with rerooting is that at currNode, we have the max distance UP TO currNode (parentDist) which is comprised of = (furthest distance from parentNode to any other child EXCEPT currNode + dist from parentNode to currNode).
+The trick with rerooting is that at `currNode`, we have the max distance UP TO `currNode` (parentDist) which is comprised of = (furthest distance from `parentNode` to any other child EXCEPT `currNode + dist from parentNode to currNode`).
 
 Then we compare that with the max distance from currNode ONWARDS (i.e. max dist from currNode to any other child in its subtree) to find the maximum path distance FROM currNode.
 
@@ -1425,9 +1554,9 @@ Then we compare that with the max distance from currNode ONWARDS (i.e. max dist 
       ...        ...
 ```
 
-Note: The purpose of storing the 2nd maximum path distance from a node x is because
-when we dfs() to one of node x's children (say node z), if node z is part of the farthest path distance from node x,
-we need to use the 2nd maximum path distance of node y to compare with node x's parentDist to create parentDist for node z dfs() call.
+Note: The purpose of storing the 2nd maximum path distance from a node `x` is because when we `dfs()` to one of node x's children (say node `z`), if node `z` is part of the farthest path distance from node `x`, we need to use the 2nd maximum path distance of node `y` to compare with node x's `parentDist` to create `parentDist` for node `z` dfs() call.
+
+See 3241.time-taken-to-mark-all-nodes
 
 ```java
 dfsReRoot(currNode = x, parentNode = ..., maxDistUpToCurrNode = ...) {
@@ -1467,7 +1596,6 @@ so will always need to **wrap the bitwise/binary expression in NESTED brackets/p
 // INCORRECT/INVALID
 if (mask & (1 << i) != 0) { ... }
 if (mask & (1 << i) > 0) { ... }
-
 
 // Valid
 if ((mask & (1 << i)) != 0) { ... }
@@ -1578,10 +1706,13 @@ Why floating point numbers can support/represent larger ranges than `long`:
 
 ### Double Precision/Floating Point Precision Loss
 
-- Always be careful when performing operations using floating point types such as `double` due to rounding errors
-- If calling `Math.ceil()` on the result of floating point calculation, then we need to **subtract** an epsilon value **BEFORE** calling `Math.ceil()`
-  - This is because if `1/3 + 2/3 == 1.000000000001`, then `Math.ceil()` will give `2` instead of `1`
-- See: 1883.minimum-skips-to-arrive-at-meeting-on-time
+Always be careful when performing operations using floating point types such as `double` due to rounding errors
+
+If calling `Math.ceil()` on the result of floating point calculation, then we need to **subtract** an epsilon value **BEFORE** calling `Math.ceil()`
+
+- This is because if `1/3 + 2/3 == 1.000000000001`, then `Math.ceil()` will give `2` instead of `1`
+
+See: 1883.minimum-skips-to-arrive-at-meeting-on-time
 
 ```java
 double sum = 0.0;
@@ -1605,10 +1736,13 @@ while (lo + epsilon < hi) { // while (lo + 1e-6 < hi) {
 
 # Dynamic Programming
 
-- Easier to understand when looking at **Top Down** (DFS) version **FIRST** before looking at **Bottom Up** version
-- Top Down is essentially dfs with memoisation
-- The space complexity of a Bottom Up approach will typically be lower than a Top Down approach, since it does NOT need to store the full recursive call stack
-- The time complexities of BOTH Bottom Up and Top Down approaches will be similar
+Easier to understand when looking at **Top Down** (DFS) version **FIRST** before looking at **Bottom Up** version
+
+Top Down is essentially dfs with memoisation
+
+The space complexity of a Bottom Up approach will typically be lower than a Top Down approach, since it does NOT need to store the full recursive call stack
+
+The time complexities of BOTH Bottom Up and Top Down approaches will be similar
 
 ## Array Index Methods
 
@@ -1650,19 +1784,22 @@ for (int i = n - 2; i >= 0; i--) {
 
 ## 1-Indexed Array
 
-- 1-Indexed Array means that `index 0 == 1st element == (i is 1)` in terms of counting
-- Will need to use `i+1` when checking for boundaries instead of `i` because everything is shifted forward by 1
-- See: 2969.minimum-number-of-coins-for-fruits-ii
+1-Indexed Array means that `index 0 == 1st element == (i is 1)` in terms of counting
+
+Will need to use `i+1` when checking for boundaries instead of `i` because everything is shifted forward by 1
+
+See: 2969.minimum-number-of-coins-for-fruits-ii
 
 ## Boolean to Integer Hack
 
-- If we want to store a `boolean` value in `Integer[][][] dp` we can use `0` and `1` to represent `true` and `false`
-- Toggle value of `0` and `1` wtih
+If we want to store a `boolean` value in `Integer[][][] dp` we can use `0` and `1` to represent `true` and `false`
+
+Toggle value of `0` and `1` with:
 
 ```java
 dp(x, y, (canReduce + 1) % 2);
 
-dp(x, y, canReduce ^ 1); // 0 ^ 1 == 1 and 1 ^ 1 == 0
+dp(x, y, canReduce ^ 1); // 0 ^ 1 == 1 && 1 ^ 1 == 0
 ```
 
 ## Digit DP
@@ -1692,9 +1829,11 @@ int dp(int i, int isCurrDigitBound) {
 
 ### Comparing with Initial Value to Skip
 
-- Sometimes the initial value (e.g. `-1` CANNOT be used since when we want to store it in dp/memo, it gives an invalid array index)
-  - See: 3176.find-the-maximum-length-of-a-good-subsequence-i where we use `[prev+1]`
-- The fix is to add a check to the `if()` condition to SKIP the first/initial value given
+Sometimes the initial value (e.g. `-1` CANNOT be used since when we want to store it in dp/memo, it gives an invalid array index)
+
+- See: 3176.find-the-maximum-length-of-a-good-subsequence-i where we use `[prev+1]`
+
+The fix is to add a check to the `if()` condition to SKIP the first/initial value given
 
 ```java
 int dp(int currCol, int prevVal) {
@@ -1716,8 +1855,9 @@ int dp(int currCol, int prevVal) {
 }
 ```
 
-- Example
-  - 3122.minimum-number-of-operations-to-satisfy-conditions
+Example
+
+- 3122.minimum-number-of-operations-to-satisfy-conditions
 
 ### Using a GLOBAL `static final` Sentinel Value for Base Case
 
@@ -1787,10 +1927,15 @@ class Solution {
 
 ## Preventing Integer Overflow/Underflow
 
-- Top Down DP Recursion Base Case: `if (i == nums1.length || j == nums2.length) { return Integer.MIN_VALUE; }`
-- Problem: Integer overflow/underflow with `Integer.MIN_VALUE` we want use the returned value for addition/subtraction
-- Solution: Use `Math.max(dp(nextState), 0)`
-- See: 1458.max-dot-product-of-two-subsequences
+Top Down DP Recursion Base Case: `if (i == nums1.length || j == nums2.length) { return Integer.MIN_VALUE; }`
+
+### Example 1
+
+Problem: Integer overflow/underflow with `Integer.MIN_VALUE` we want use the returned value for addition/subtraction
+
+Solution: Use `Math.max(dp(nextState), 0)`
+
+See: 1458.max-dot-product-of-two-subsequences
 
 ```java
 class Solution {
@@ -1822,9 +1967,13 @@ class Solution {
 }
 ```
 
-- Problem: Integer overflow/underflow with `Integer.MIN_VALUE` and `Integer.MAX_VALUE`
-- Solution: Return sentinel value of `Integer.MIN_VALUE / 2` and `Integer.MAX_VALUE / 2`
-- See: 3473.sum-of-k-subarrays-with-length-at-least-m.java
+### Example 2
+
+Problem: Integer overflow/underflow with `Integer.MIN_VALUE` and `Integer.MAX_VALUE`
+
+Solution: Return sentinel value of `Integer.MIN_VALUE / 2` and `Integer.MAX_VALUE / 2`
+
+See: 3473.sum-of-k-subarrays-with-length-at-least-m.java
 
 ## Common Causes of Errors
 
@@ -1835,7 +1984,7 @@ class Solution {
 **Forgot to initialise `memo[][]` values to `-1` or `0`**
 
 - In Java, you NEED to use `for (int[] row : memo) { Arrays.fill(row, -1); }` or `Arrays.stream(dp).forEach(row -> Arrays.fill(row, -1));`
-- In C++, you are able to initialise in the declaration `std::vector<std::vector<int>> memo(m, std::vector<int>(n, -1))` or `this->memo.assign(m, std::vector<int>(n, -1))` or `this->memo.resize(m, std::vector<int>(n, -1))` 
+- In C++, you are able to initialise in the declaration `std::vector<std::vector<int>> memo(m, std::vector<int>(n, -1))` or `this->memo.assign(m, std::vector<int>(n, -1))` or `this->memo.resize(m, std::vector<int>(n, -1))`
 
 **Memoisation parameters are NOT sufficient/does NOT cover all possible cases (`memo[i][j]` TOO SIMPLISTIC )**
 
@@ -1845,16 +1994,17 @@ class Solution {
 
 # DFS
 
-- Use `recursion`
-  - Make sure base case/ending case is clearly defined
+Use `recursion`
+
+- Make sure base case/ending case is clearly defined
 
 ## DFS Cycle Find
 
-- Use WHITE (0), GREY (1), BLACK (2) coloring
+Use WHITE (0), GREY (1), BLACK (2) coloring
 
 ## DFS Cycle Removal
 
-- 1192 dfs() removes ALL edges that are in cycle
+- 1192.critical-connections-in-a-network dfs() removes ALL edges that are in cycle
 - 1579 dfs() removes SINGLE edge that causes cycle
 
 # Exponential
@@ -1953,9 +2103,11 @@ public class Solution {
 
 ## Flatten 2D Grid to Single Array + Shifting
 
-- The element at `grid[i][j]` is moved to `grid[i][j + 1]`
-- The element at `grid[i][n - 1]` moves to `grid[i + 1][0]`
-- The element at `grid[m - 1][n - 1]` is moved to `grid[0][0]`
+The element at `grid[i][j]` is moved to `grid[i][j + 1]`
+
+The element at `grid[i][n - 1]` moves to `grid[i + 1][0]`
+
+The element at `grid[m - 1][n - 1]` is moved to `grid[0][0]`
 
 ```java
 class Solution {
@@ -2006,13 +2158,35 @@ class Solution2 {
 }
 ```
 
+## Middle Element to Avoid Integer Overflow
+
+```java
+int mid = left + (right - left) / 2;
+```
+
 # Graph
 
 ## Data Structure
 
-- `List<List<Integer>>` or `List<List<int[]>>`
-- `Map<Integer, List<Integer>>` or `Map<Integer, List<int[]>>`
+> `List<Integer>[]` is preferred over `Map<Integer, List<Integer>>`
+
+Possible data structures:
+
 - `List<Integer>[]`
+- `Map<Integer, List<Integer>>` or `Map<Integer, List<int[]>>`
+- `List<List<Integer>>` or `List<List<int[]>>`
+
+```java
+// List<Integer>[] graph = new ArrayList[n];
+List<Integer>[] graph = new List[n];
+for (int i = 0; i < n; i++) {
+  graph[i] = new ArrayList<>();
+}
+for (int[] e : edges) {
+  graph[e[0]].add(e[1]);
+  graph[e[1]].add(e[0]);
+}
+```
 
 ```java
 List<List<Integer>> graph = new ArrayList<>();
@@ -2044,128 +2218,154 @@ for (int neiNode : graph.getOrDefault(currNode, new ArrayList<>())) {
 }
 ```
 
-```java
-List<Integer>[] graph = new List[n];
-for (int i = 0; i < n; i++) {
-  graph[i] = new ArrayList<>();
-}
-for (int[] e : edges) {
-  graph[e[0]].add(e[1]);
-  graph[e[1]].add(e[0]);
-}
-```
-
 ## Complete Graph
 
-- Complete graphs are graphs that have an edge between every single vertex in the graph
+Complete graphs are graphs that have an edge between every single vertex in the graph
 
 ## Connected Graph
 
-- A connected graph is a graph in which it's possible to get from every vertex in the graph to every other vertex through a series of edges, called a path
-- The minimum number of edges for undirected connected graph is `(n-1)` edges where `n` is the number of vertices
+A connected graph is a graph in which it's possible to get from every vertex in the graph to every other vertex through a series of edges, called a path
+
+The minimum number of edges for undirected connected graph is `(n-1)` edges where `n` is the number of vertices
 
 ```java
 // Assuming graph is a tree (i.e. has NO cycles)
-int numNodesInConnectedGraph = edges.size() + 1;
-int numNodesInConnectedGraph = edges.length + 1;
+int numNodesInConnectedGraph = edges.size() + 1; // List<List<Integer>> edges
+int numNodesInConnectedGraph = edges.length + 1; // int[][] edges
 ```
 
 ## Eulerian Path / Eulerian Circuit
 
-- An Eulerian Path is a path in a graph that **visits every edge exactly once** (allowing for revisiting vertices)
-- An Eulerian Circuit/Eulerian Cycle is an Eulerian path that **starts and ends at the same vertex** (cycle)
-- For the existence of Eulerian paths it is necessary that 0 or 2 vertices have an odd degree
-  - If there are **no vertices of odd degree**, all Eulerian paths are cycles
-  - If there are **exactly two vertices of odd degree**, all Eulerian paths start at one of them and end at the other
-- A graph has an Eulerian Path if and only if:
-  - We have `outDegree[i] == inDegree[i]` for each node i
-    - i.e. Cycle
-  - We have `outDegree[i] == inDegree[i]` for all nodes i except exactly two nodes `x` and `y` that satisfy:
-    - `outDegree[x] = inDegree[x] + 1` (x = start node)
-    - `outDegree[y] = inDegree[y] - 1` (y = end node)
-- Resources
-  - [cp-algorithms](https://cp-algorithms.com/graph/euler_path.html)
-- Questions
-  - 332.reconstruct-itinerary
-  - 2097.valid-arrangement-of-pairs
+An Eulerian Path is a path in a graph that **visits every EDGE exactly once** (allowing for revisiting vertices)
+
+An Eulerian Circuit/Eulerian Cycle is an Eulerian path that **starts and ends at the same VERTEX** (cycle)
+
+For the existence of Eulerian paths it is necessary that `0` or `2` vertices have an ODD degree
+
+- If there are **no vertices of odd degree**, all Eulerian paths are cycles
+- If there are **exactly two vertices of odd degree**, all Eulerian paths start at one of them and end at the other
+
+A graph has an Eulerian Path if and only if:
+
+- We have `outDegree[i] == inDegree[i]` for each node `i` i.e. Cycle
+- We have `outDegree[i] == inDegree[i]` for all nodes `i` except exactly two nodes `x` and `y` that satisfy:
+  - `outDegree[x] = inDegree[x] + 1` (x = start node)
+  - `outDegree[y] = inDegree[y] - 1` (y = end node)
+
+Resources
+
+- [Resource - cp-algorithms](https://cp-algorithms.com/graph/euler_path.html)
+
+Questions
+
+- 332.reconstruct-itinerary
+- 2097.valid-arrangement-of-pairs
 
 ## Hamiltonian Path
 
-- A Hamiltonian Path is a path in an undirected or directed graph that **visits each vertex exactly once**
-- A Hamiltonian Cycle is a Hamiltonian path **starts and ends at the same vertex** (cycle)
+A Hamiltonian Path is a path in an undirected or directed graph that **visits each VERTEX exactly once**
+
+A Hamiltonian Cycle is a Hamiltonian path **starts and ends at the same VERTEX** (cycle)
 
 ## Minimum Spanning Tree
 
-- A minimum spanning tree (MST) or minimum weight spanning tree is a subset of the edges of a connected, edge-weighted undirected graph that connects all the vertices together, without any cycles and with the minimum possible total edge weight
-- MST = A Spanning Tree whose sum of edge weights is as small as possible
-  - A Spanning Tree ST of an undirected graph G is a subgraph that is a tree which includes all of the vertices of G
-  - Note: A graph that is not connected will not contain a spanning tree
-- Both **Kruskal's Algorithm** and **Prim's Algorithm** are used to construct a "minimum spanning tree (MST)" of a "weighted undirected graph"
-- Note: A MST becomes complete as soon as it contains `(n-1)` edges because a tree with `n` nodes will always have `(n-1)` edges
-  - Or alternatively a MST becomes complete as soon as it contains `n` nodes
-- `while(!pq.isEmpty && edgesUsed < n - 1)`
-- `while(!pq.isEmpty && visitedNodes.size() < n)`
+A minimum spanning tree (MST) or minimum weight spanning tree is a subset of the edges of a connected, edge-weighted undirected graph that connects all the vertices together, without any cycles and with the minimum possible total edge weight
+
+MST = A Spanning Tree whose sum of edge weights is as small as possible
+
+- A Spanning Tree ST of an undirected graph G is a subgraph that is a tree which includes all of the vertices of G
+- Note: A graph that is NOT connected will NOT contain a spanning tree
+  Both **Kruskal's Algorithm** and **Prim's Algorithm** are used to construct a "minimum spanning tree (MST)" of a "weighted undirected graph"
+
+Note: A MST becomes complete as soon as it contains `(n-1)` edges because a tree with `n` nodes will always have `(n-1)` edges
+
+- Or alternatively a MST becomes complete as soon as it contains `n` nodes
+
+`while(!pq.isEmpty && edgesUsed < n - 1)`
+`while(!pq.isEmpty && visitedNodes.size() < n)`
 
 ### Kruskal's Algorithm
 
-- Kruskal's Algorithm starts from the LOWEST WEIGHTED EDGE and traverses edges based on lowest weight to create MST
-- Kruskal's Algorithm performs better in sparse graphs (graphs with lower number of edges)
-- Use **Heap Priority Queue** or **List** data structure to sort edges in ascending order of weights initially
-- Use **Union Find** or **Disjoint Set Union (DSU)** data structure to determine if vertices/nodes are connected already
-- `while(!pq.isEmpty && edgesUsed < n - 1)`
-- In Kruskal's Algorithm, you do not keep one connected component but a forest
-  - At each stage, you look at the globally smallest edge that does not create a cycle in the current forest
-  - Such an edge has to necessarily merge two trees in the current forest into one
-  - Since you start with N single-vertex trees, in N-1 steps, they would all have merged into one if the graph was connected
-- Complexity
-  - Time Complexity: `O(E * log(E))`
-    - Creating graph costs `O(E)`
-    - Costs `O(E * log(E))` to push all edges onto pq initially (or to sorting all edges)
-    - Iterate through all edges and perform union find
-      - If using BOTH path compression AND union by rank then each find() and union() operation costs `O(alpha(V))` which is amortised constant time `O(1)`
-      - If using only path compression OR union by rank then each find() and union() operation costs `O(log(V))` hence `O(E * log(V))`
-  - Space Complexity: `O(V + E)`
-    - Storing graph costs `O(V + E)`
-    - PQ costs `O(E)`
+Kruskal's Algorithm starts from the LOWEST WEIGHTED EDGE and traverses edges based on lowest weight to create MST
+
+Kruskal's Algorithm performs better in sparse graphs (graphs with lower number of edges)
+
+Use **Heap Priority Queue** or **List** data structure to sort edges in ascending order of weights initially
+
+Use **Union Find** or **Disjoint Set Union (DSU)** data structure to determine if vertices/nodes are connected already
+
+`while(!pq.isEmpty && edgesUsed < n - 1)`
+
+In Kruskal's Algorithm, you do not keep one connected component but a forest
+
+- At each stage, you look at the globally smallest edge that does not create a cycle in the current forest
+- Such an edge has to necessarily merge two trees in the current forest into one
+- Since you start with N single-vertex trees, in N-1 steps, they would all have merged into one if the graph was connected
+
+Complexity
+
+- Time Complexity: `O(E * log(E))`
+  - Creating graph costs `O(E)`
+  - Costs `O(E * log(E))` to push all edges onto pq initially (or to sorting all edges)
+  - Iterate through all edges and perform union find
+    - If using BOTH path compression AND union by rank then each find() and union() operation costs `O(alpha(V))` which is amortised constant time `O(1)`
+    - If using only path compression OR union by rank then each find() and union() operation costs `O(log(V))` hence `O(E * log(V))`
+- Space Complexity: `O(V + E)`
+  - Storing graph costs `O(V + E)`
+  - PQ costs `O(E)`
 
 ### Prim's Algorithm
 
-- Prim's Algorithm starts from the ROOT NODE/VERTEX and traverses from vertex to vertex adjacently to create MST
-- Prim's Algorithm is significantly faster in dense graphs (graphs with many more edges than vertices)
-- Use **Heap Priority Queue** data structure and push root node with weight of 0 onto pq initially
-  - Then visit adjacent nodes and for each adjacent node push (neiNode, neiWeight) onto pq
-- Use visited set and break when visited.size() == number of vertices/nodes
-  - Can also use visited array and numNodesVisited variable counter
-- `while(!pq.isEmpty && visitedNodes.size() < n)`
-- In Prim's Algorithm, you always keep a connected component, starting with a single vertex
-  - You look at all edges from the current component to other vertices and find the smallest among them
-  - You then add the neighbouring vertex to the component, increasing its size by 1
-  - In N-1 steps, every vertex would be merged to the current one if we have a connected graph
-- Complexity
-  - Time Complexity: `O(E * log(V))`
-    - Creating graph costs `O(E)`
-    - We visit all nodes in graph and push each node onto pq costing `O(log(V))`
-      - For each node visited, we examine all its edges to find adjacent nodes hence `O(E * log(V))`
-  - Space Complexity: `O(V + E)`
-    - Storing graph costs `O(V + E)`
-    - PQ costs `O(V)`
+Prim's Algorithm starts from the ROOT NODE/VERTEX and traverses from vertex to vertex adjacently to create MST
+
+Prim's Algorithm is significantly faster in dense graphs (graphs with many more edges than vertices)
+
+Use **Heap Priority Queue** data structure and push root node with weight of 0 onto pq initially
+
+- Then visit adjacent nodes and for each adjacent node push (neiNode, neiWeight) onto pq
+
+Use visited set and break when visited.size() == number of vertices/nodes
+
+- Can also use `visited` array and `numNodesVisited` variable counter
+
+`while(!pq.isEmpty && visitedNodes.size() < n)`
+
+In Prim's Algorithm, you always keep a connected component, starting with a single vertex
+
+- You look at all edges from the current component to other vertices and find the smallest among them
+- You then add the neighbouring vertex to the component, increasing its size by 1
+- In N-1 steps, every vertex would be merged to the current one if we have a connected graph
+
+Complexity
+
+- Time Complexity: `O(E * log(V))`
+  - Creating graph costs `O(E)`
+  - We visit all nodes in graph and push each node onto pq costing `O(log(V))`
+    - For each node visited, we examine all its edges to find adjacent nodes hence `O(E * log(V))`
+- Space Complexity: `O(V + E)`
+  - Storing graph costs `O(V + E)`
+  - PQ costs `O(V)`
 
 ## Single-Source Shortest Path
 
 ### Dijkstra's Algorithm
 
-- Dijkstra's Algorithm solves the "single-source shortest path" problem in a weighted directed graph with **non-negative** weight edges
-- Use **Heap Priority Queue** and push starting node onto pq initially
-  - Pop currNode from pq
-  - Visited adjacent neighbours and push (neiNode, neiWeight) onto pq
-  - Break if you pop endNode from pq
-- Complexity
-  - Time Complexity: `O(E + (V * log(V))`
-    - Creating graph costs `O(E)`
-    - We visit all nodes in graph and push each node onto pq costing `O(log(V))`, hence `O(V * log(V))`
-  - Space Complexity: `O(V + E)`
-    - Storing graph costs `O(V + E)`
-    - PQ costs `O(V)`
+Dijkstra's Algorithm solves the "single-source shortest path" problem in a weighted directed graph with **non-negative** weight edges
+
+Use **Heap Priority Queue** and push starting node onto `pq` initially
+
+- Pop currNode from `pq`
+- Visited adjacent neighbours and push (neiNode, neiWeight) onto pq
+- Break if you pop endNode from pq
+
+Complexity
+
+- Time Complexity: `O(E + (V * log(V))`
+  - Creating graph costs `O(E)`
+  - We visit all nodes in graph and push each node onto pq costing `O(log(V))`, hence `O(V * log(V))`
+- Space Complexity: `O(V + E)`
+  - Storing graph costs `O(V + E)`
+  - PQ costs `O(V)`
 
 ```java
 class Solution {
@@ -2209,10 +2409,59 @@ class Solution {
 }
 ```
 
+```java
+class Solution {
+  public int minCost(int source, int target, int[][] edges) {
+    int n = 0;
+    for (int[] e : edges) {
+      n = Math.max(n, Math.max(e[0], e[1]));
+    }
+    n++;
+    List<int[]>[] graph = new ArrayList[n];
+    for (int i = 0; i < n; i++) {
+      graph[i] = new ArrayList<>();
+    }
+    for (int[] e : edges) {
+      int u = e[0];
+      int v = e[1];
+      int w = e[2];
+      graph[u].add(new int[] { v, w });
+      graph[v].add(new int[] { u, w });
+    }
+    PriorityQueue<int[]> pq = new PriorityQueue<>((a, b) -> Integer.compare(a[1], b[1]));
+    int[] dist = new int[n];
+    Arrays.fill(dist, Integer.MAX_VALUE);
+    dist[source] = 0;
+    pq.offer(new int[] { source, 0 });
+    while (!pq.isEmpty()) {
+      int[] curr = pq.poll();
+      int currNode = curr[0];
+      int numSteps = curr[1];
+      if (currNode == target) {
+        return numSteps;
+      }
+      if (numSteps > dist[currNode]) {
+        continue;
+      }
+      for (int[] nei : graph[currNode]) {
+        int neiNode = nei[0];
+        int edgeWeight = nei[1];
+        if (numSteps + edgeWeight < dist[neiNode]) {
+          dist[neiNode] = numSteps + edgeWeight;
+          pq.offer(new int[] { neiNode, dist[neiNode] });
+        }
+      }
+    }
+    return -1;
+  }
+}
+```
+
 ### Bellman-Ford's Algorithm
 
-- Bellman-Ford's Algorithm solves the "single-source shortest path" problem in a weighted directed graph with **negative** weight edges
-- [Read more](https://cp-algorithms.com/graph/bellman_ford.html)
+Bellman-Ford's Algorithm solves the "single-source shortest path" problem in a weighted directed graph with **negative** weight edges
+
+[Resource - cp-algorithms](https://cp-algorithms.com/graph/bellman_ford.html)
 
 ## All-Pairs Shortest Path
 
@@ -2272,10 +2521,11 @@ class Solution {
 
 ## Topological Sort
 
-- Steps
-  - Create `graph` and record `indegrees`
-  - Push nodes with 0 indegree onto `queue`
-  - Trim leaf nodes one by one (by popping nodes off queue) and decreasing the indegree count of their neighbours by one
+Steps
+
+- Create `graph` and record `indegrees`
+- Push nodes with 0 indegree onto `queue`
+- Trim leaf nodes one by one (by popping nodes off queue) and decreasing the indegree count of their neighbours by one
 
 ```java
 class Solution {
@@ -2283,7 +2533,7 @@ class Solution {
     int n = edges.length;
     int[] inDegrees = new int[n];
     boolean[] visited = new boolean[n];
-    Queue<Integer> q = new LinkedList<>();
+    Queue<Integer> q = new ArrayDeque<>();
     Map<Integer, List<Integer>> graph = new HashMap<>();
     // Topological sort to find cycles in directed graph
     for (int[] edge : edges) {
@@ -2315,10 +2565,57 @@ class Solution {
 }
 ```
 
+```java
+class Solution {
+  int topologicalSort(int[][] edges, int n) {
+    int[] inDegrees = new int[n];
+    boolean[] visited = new boolean[n];
+    Queue<Integer> q = new ArrayDeque<>();
+    List<Integer>[] graph = new ArrayList[n];
+    for (int i = 0; i < n; i++) {
+      graph[i] = new ArrayList<>();
+    }
+    // Build graph
+    for (int[] edge : edges) {
+      graph[edge[0]].add(edge[1]);
+      inDegrees[edge[1]]++;
+    }
+    // Add all sources
+    for (int i = 0; i < n; i++) {
+      if (inDegrees[i] == 0) {
+        q.offer(i);
+      }
+    }
+    // Topological sort
+    while (!q.isEmpty()) {
+      int curr = q.poll();
+      visited[curr] = true;
+      for (int nei : graph[curr]) {
+        if (--inDegrees[nei] == 0) {
+          q.offer(nei);
+        }
+      }
+    }
+    // Nodes not visited are part of a cycle
+    for (int i = 0; i < n; i++) {
+      if (!visited[i]) {
+        // ...
+      }
+    }
+    return 0;
+  }
+}
+```
+
 ## Manhattan Distance
 
-- Trick to calculate Manhattan distance is to bfs from target cell to all other cells (since the eventual traversal/path to reach each cell will be the manhattan distance)
-  - See: 2812.find-the-safest-path-in-a-grid
+> Manhattan distance is the distance between two points in a grid when you can only move up, down, left, or right (no diagonal movement)
+> For two points: `Point A = (x1, y1)`, `Point B = (x2, y2)`
+> The Manhattan distance is: `|x1−x2|+|y1−y2|`
+
+Trick to calculate Manhattan distance is to BFS from target cell to all other cells (since the eventual traversal/path to reach each cell will be the manhattan distance)
+
+- See: 2812.find-the-safest-path-in-a-grid
 
 ```java
 int manhattanDistance = Math.abs(x1 - x2) + Math.abs(y1 - y2)
@@ -2328,7 +2625,7 @@ int manhattanDistance = Math.abs(x1 - x2) + Math.abs(y1 - y2)
 
 ## Array Wrap Around
 
-- Utilise modulus (`%`)
+Utilise modulus `%`
 
 ```java
 // 'i' == starting index
@@ -2341,11 +2638,11 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
-- See: 3542.non-negative-prefix-sum
+See: 3542.non-negative-prefix-sum
 
 ## Array Indexing `0` or `1` using `sign`
 
-The expression `arr[(sign + 1) / 2]` is used to convert the sign variable (which can be either `1` or `-1`) into a valid array index for the memoization table
+The expression `arr[(sign + 1) / 2]` is used to convert the `sign` variable (which can be either `1` or `-1`) into a valid array index for the memoization table
 
 Here's how it works:
 
@@ -2354,18 +2651,18 @@ When `sign = -1`: `(-1 + 1) / 2 = 0 / 2 = 0`
 
 So this expression maps:
 
-- sign = -1 -> index 0
-- sign = 1 -> index 1
+- `sign = -1` -> index `0`
+- `sign = 1` -> index `1`
 
-- See: 3544.subtree-inversion-sum.java
+See: 3544.subtree-inversion-sum.java
 
 ## Bitwise OR `|` for True/False
 
-- See: 3098.find-the-sum-of-subsequence-powers
+See: 3098.find-the-sum-of-subsequence-powers
 
 ## Constants
 
-- Random constants
+Random constants
 
 ```java
 // double epsilon = 1e-5;
@@ -2382,18 +2679,22 @@ long long result = -1e15;
 
 ### Ceil Division
 
-> Add (divisor-1) to dividend
+> Add `(divisor-1)` to `dividend`
 > `(a + (b-1)) / b`
 > a == Dividend
 > b == Divisor
 
 ## Flatten 2D Matrix into Stateful String and Check Neighbours of currCell
 
-- See: 1659.maximize-grid-happiness
-- `M = matrix.length`
-- `N = matrix[0].length`
-- TOP neighbour = `currIndex - N`
-- LEFT neighbour = `currIndex - 1`
+See: 1659.maximize-grid-happiness
+
+`M = matrix.length`
+
+`N = matrix[0].length`
+
+TOP neighbour = `currIndex - N`
+
+LEFT neighbour = `currIndex - 1`
 
 ```md
 C = currCell
@@ -2406,8 +2707,9 @@ L = LEFT neighbour
 
 ## Index Matching for Modulo Pair Groups
 
-- See: 2911.minimum-changes-to-make-k-semi-palindromes
-- `if (s.charAt(l + (i * factor) + j) != s.charAt(l + ((subLength - i - 1) * factor) + j)) {}`
+See: 2911.minimum-changes-to-make-k-semi-palindromes
+
+`if (s.charAt(l + (i * factor) + j) != s.charAt(l + ((subLength - i - 1) * factor) + j)) {}`
 
 ```java
 public int numChangesForSemiPalindrome(int l, int r) {
@@ -2434,24 +2736,30 @@ public int numChangesForSemiPalindrome(int l, int r) {
 
 ## Index Shifting When Deleting an Element
 
-- Store all the evenPrefixSum and oddPrefixSum (up to and including index i) for every index i of the array
-- When you remove currIndex, even/odd index sum on its LEFT SIDE remain UNCHANGED
-- But the indexes on its RIGHT side will get interchanged/swapped
-  - Odd indices become even indices and even indices will become odd indices
-  - Therefore, on its RIGHT side, the oddIndexSum becomes evenIndexSum and evenIndexSum becomes oddIndexSum
-- Therefore `if (evenIndexSum == oddIndexSum)` becomes `if (evenSumBefore + oddSumAfter == oddSumBefore + evenSumAfter)`
-- See: 1664.ways-to-make-a-fair-array
+Store all the evenPrefixSum and oddPrefixSum (up to and including index i) for every index i of the array
+
+When you remove currIndex, even/odd index sum on its LEFT SIDE remain UNCHANGED
+
+But the indexes on its RIGHT side will get interchanged/swapped
+
+- Odd indices become even indices and even indices will become odd indices
+- Therefore, on its RIGHT side, the oddIndexSum becomes evenIndexSum and evenIndexSum becomes oddIndexSum
+
+Therefore `if (evenIndexSum == oddIndexSum)` becomes `if (evenSumBefore + oddSumAfter == oddSumBefore + evenSumAfter)`
+
+See: 1664.ways-to-make-a-fair-array
 
 ## Index Ranges
 
 > The range `[i, j]` contains/consists of `i - j + 1` elements (has a length of `i - j + 1`)
 >
-> The range `(i, j]`/`[i, j)` contains/consists of `i - j` elements (has a length of `i - j`)
+> The range `(i, j]` or `[i, j)` contains/consists of `i - j` elements (has a length of `i - j`)
 
 ## K'th Largest & K'th Smallest
 
-- `k'th` largest = `(n - k)'th` smallest
-- `k'th` smallest = `(n - k)'th` largest
+`k'th` largest = `(n - k)'th` smallest
+
+`k'th` smallest = `(n - k)'th` largest
 
 ## Use 0 instead of -1 if TLE
 
@@ -2459,7 +2767,7 @@ public int numChangesForSemiPalindrome(int l, int r) {
 >
 > Also use `int[][][]` instead of `vector<vector<vector<int>>>`
 
-```java
+```cpp
 class Solution {
 public:
   int memo[1001][2001][4] = {};
@@ -2507,26 +2815,31 @@ public:
 
 ## Uses of 3D array `int[][][]`
 
-- If you want to have a `std::vector<std::vector<std::pair<int, int>>>` in Java, instead of using `List<List<Map.Entry<int, int>>>` you can instead of `int[][][]` with the size of the last array being `2`
-  - `int[][][] dp = new int[m][n][2];`
-  - `dp[i][j][0] = pair.first`
-  - `dp[i][j][1] = pair.second`
-  - `dp[i][j] = new int{ minNum, maxNum };`
+If you want to have a `std::vector<std::vector<std::pair<int, int>>>` in Java, instead of using `List<List<Map.Entry<int, int>>>` you can instead of `int[][][]` with the size of the last array being `2`
+
+- `int[][][] dp = new int[m][n][2];`
+- `dp[i][j][0] = pair.first`
+- `dp[i][j][1] = pair.second`
+- `dp[i][j] = new int{ minNum, maxNum };`
 
 # Heap Priority Queue
 
-- `k'th` largest = `(n - k)'th` smallest
-- `k'th` smallest = `(n - k)'th` largest
-- See interview-questions/2023/atlassian/q4.java
+`k'th` largest = `(n - k)'th` smallest
+
+`k'th` smallest = `(n - k)'th` largest
+
+See interview-questions/2023/atlassian/q4.java
 
 ## K'th Largest
 
-- Use **MIN** heap of size `k` so that k'th largest element will be at the top of the heap
-  - Min heap order goes `[k'th, (k-1)'th, (k-2)th, ..., 2nd, 1st]` largest
-  - Elements that come after will be LARGER, so `k-1`th largest element comes next
-    - i.e. if `k == 3`, then second largest element comes next, then largest element comes last
-  - Largest element will be at bottom of the heap
-- Insert elements into pq and restrict `pq.size()` to k
+Use **MIN** heap of size `k` so that K'th LARGEST element will be at the TOP of the heap
+
+- Min heap order goes `[k'th, (k-1)'th, (k-2)th, ..., 2nd, 1st]` largest
+- Elements that come after will be LARGER, so `k-1`th largest element comes next
+  - i.e. if `k == 3`, then second largest element comes next, then largest element comes last
+- Largest element will be at BOTTOM of the heap
+
+Insert elements into pq and restrict `pq.size()` to k
 
 ```java
 class Solution {
@@ -2545,12 +2858,14 @@ class Solution {
 
 ## K'th Smallest
 
-- Use **MAX** heap of size `k` so that k'th smallest element will be at the top of the heap
-  - Max heap order goes `[k'th, (k-1)'th, (k-2)th, ..., 2nd, 1st]` smallest
-  - Elements that come after will be SMALLER, so `k-1`th smallest element comes next
-    - i.e. if `k == 3`, then second smallest element comes next, then smallest element comes last
-  - Smallest element will be at bottom of the heap
-- Insert elements into pq and restrict `pq.size()` to k
+Use **MAX** heap of size `k` so that k'th smallest element will be at the top of the heap
+
+- Max heap order goes `[k'th, (k-1)'th, (k-2)th, ..., 2nd, 1st]` smallest
+- Elements that come after will be SMALLER, so `k-1`th smallest element comes next
+  - i.e. if `k == 3`, then second smallest element comes next, then smallest element comes last
+- Smallest element will be at bottom of the heap
+
+Insert elements into pq and restrict `pq.size()` to k
 
 ```java
 class Solution {
@@ -2602,24 +2917,63 @@ public:
 };
 ```
 
+```java
+class Solution {
+  public int nthSuperUglyNumber(int n, int[] primes) {
+    long[] uglyNums = new long[n];
+    // PriorityQueue stores {uglyNumsIndex, primesIndex}
+    PriorityQueue<int[]> pq = new PriorityQueue<>(
+      (a, b) -> Long.compare(
+        uglyNums[a[0]] * primes[a[1]],
+        uglyNums[b[0]] * primes[b[1]]));
+    for (int i = 0; i < primes.length; i++) {
+      pq.offer(new int[] { 0, i });
+    }
+    uglyNums[0] = 1;
+    int i = 1;
+    while (i < n) {
+      int[] top = pq.poll();
+      int primeIndex = top[1];
+      int uglyIndex = top[0];
+      long currNum = uglyNums[uglyIndex] * primes[primeIndex];
+      // Skip duplicates
+      if (currNum != uglyNums[i - 1]) {
+        uglyNums[i] = currNum;
+        i++;
+      }
+      pq.offer(new int[] { uglyIndex + 1, primeIndex });
+    }
+    return (int) uglyNums[n - 1];
+  }
+}
+```
+
 # Infinity
 
-- If only using for comparisons then `Integer.MAX_VALUE` is suitable
-- However if we are adding values returned by recursive calls, then `Integer.MAX_VALUE` is **NOT** suitable
-  - `Integer.MAX_VALUE` will overflow to `Integer.MIN_VALUE` if you add to it
-  - Set an appropriate limit such as a couple hundred million
-    - `int INF = 200 * (1e6)`
-- Reference
-  - `Integer.MAX_VALUE` = `2_147_483_647` == `2^(31) - 1`
-  - `Integer.MIN_VALUE` = `-2_147_483_648` == `-2^(31)`
+If only using for comparisons then `Integer.MAX_VALUE` is suitable
+
+However if we are adding values returned by recursive calls, then `Integer.MAX_VALUE` is **NOT** suitable
+
+- `Integer.MAX_VALUE` will overflow to `Integer.MIN_VALUE` if you add to it
+
+Set an appropriate limit such as a couple hundred million
+
+- `int INF = 200 * (1e6)`
+
+Reference
+
+- `Integer.MAX_VALUE` = `2_147_483_647` == `2^(31) - 1`
+- `Integer.MIN_VALUE` = `-2_147_483_648` == `-2^(31)`
 
 # Intervals
 
 ## Closed Intervals
 
-- In a closed interval, BOTH the lower and upper bounds are INCLUDED in the range
-  - i.e. the interval is INCLUSIVE at both ends
-- A closed interval is denoted using square brackets `[]` for both the lower and upper bounds
+In a closed interval, BOTH the lower and upper bounds are INCLUDED in the range
+
+- i.e. the interval is INCLUSIVE at both ends
+
+A closed interval is denoted using square brackets `[]` for both the lower and upper bounds
 
 ```tex
 [a, b] = {x | a <= x <= b}
@@ -2627,9 +2981,11 @@ public:
 
 ## Open Intervals
 
-- In an open interval, neither the lower nor the upper bound is included in the range
-  - i.e. the interval is EXCLUSIVE at both ends
-- An open interval is denoted using parentheses `()` for both the lower and upper bounds
+In an open interval, neither the lower nor the upper bound is included in the range
+
+- i.e. the interval is EXCLUSIVE at both ends
+
+An open interval is denoted using parentheses `()` for both the lower and upper bounds
 
 ```tex
 (a, b) = {x | a < x < b}
@@ -2644,94 +3000,112 @@ public:
 
 # LeetCode Patterns
 
-- If input array is sorted:
-  - Binary search
-  - Two pointers
+If input array is sorted:
 
-- If asked for all permutations/subsets:
-  - Backtracking
+- Binary search
+- Two pointers
 
-- If given a tree:
-  - DFS
-  - BFS
+If asked for all permutations/subsets:
 
-- If given a graph:
-  - DFS
-  - BFS
+- Backtracking (include/exclude)
 
-- If given a linked list:
-  - Two pointers
+If given a tree:
 
-- If recursion is banned:
-  - Stack
+- DFS
+- BFS
 
-- If must solve in-place:
-  - Swap corresponding values
-  - Store one or more different values in the same pointer
+If given a graph:
 
-- If asked for maximum/minimum subarray/subset/options:
-  - Dynamic programming
+- DFS
+- BFS
 
-- If asked for top/least K items:
-  - Heap Priority Queue
-  - QuickSelect
+If given a linked list:
 
-- If asked for common strings:
-  - Map
-  - Trie
+- Two pointers
 
-- Random
-  - Map/Set for O(1) time and O(n) space
-  - Sort input for O(Nlog(N)) time and O(1) space
+If recursion is banned:
+
+- Stack
+
+If must solve in-place:
+
+- Swap corresponding values
+- Store one or more different values in the same pointer
+
+If asked for maximum/minimum subarray/subset/options:
+
+- Dynamic programming
+
+If asked for top/least K items:
+
+- Heap Priority Queue
+- QuickSelect
+
+If asked for common strings:
+
+- Map
+- Trie
+
+Random
+
+- Map/Set for O(1) time and O(n) space
+- Sort input for O(Nlog(N)) time and O(1) space
 
 # `long` or `long long` Type
 
-- `long` type for Java
-  - Operations on `int` are NOT promoted to `long` even if target variable is of type `long`
-  - Need to add `1L` into operation
+`long` type for Java
 
-  ```cpp
+- Operations on `int` are NOT promoted to `long` even if target variable is of type `long`
+- Need to add `1L` into operation
+
+```java
+int a = 1000000;
+int b = 1000000;
+
+// long c = a * b; // INVALID
+long c = 1L * a * b;
+
+// long d = 1 << 40; // INVALID
+long d = 1L << 40;
+```
+
+`long long` type for C++
+
+- Operations on `int` are NOT promoted to `long long` even if target variable is of type `long long`
+- Need to add `1LL` into operation
+
+```cpp
+int main() {
   int a = 1000000;
   int b = 1000000;
 
-  // long c = a * b; // INVALID
-  long c = 1L * a * b;
+  // long long c = a * b; // INVALID
+  long long c = 1LL * a * b;
 
-  // long d = 1 << 40; // INVALID
-  long d = 1L << 40;
-  ```
-
-- `long long` type for C++
-  - Operations on `int` are NOT promoted to `long long` even if target variable is of type `long long`
-  - Need to add `1LL` into operation
-
-  ```cpp
-  int main() {
-    int a = 1000000;
-    int b = 1000000;
-
-    // long long c = a * b; // INVALID
-    long long c = 1LL * a * b;
-
-    // long long d = 1 << 40; // INVALID
-    long long d = 1LL << 40;
-  }
-  ```
+  // long long d = 1 << 40; // INVALID
+  long long d = 1LL << 40;
+}
+```
 
 # Math
 
 ## Branching
 
-- To find total number of combinations where sections are INDEPENDENT of each other then we just multiply the number of combinations for each section together
-  - Think of tree example, if a there are 3 leaves and each leaf branches off into 2 children, then total combinations is `3\*2`
-- No permutation/combination formula is needed
-- Examples
-  - `See: 2147.number-of-ways-to-divide-a-long-corridor`
+To find total number of combinations where sections are INDEPENDENT of each other then we just multiply the number of combinations for each section together
+
+- Think of tree example, if a there are 3 leaves and each leaf branches off into 2 children, then total combinations is `3*2`
+
+No permutation/combination formula is needed
+
+Examples
+
+- `See: 2147.number-of-ways-to-divide-a-long-corridor`
 
 ## Brackets
 
-- Sometimes there is shitty code written like `n - i - 1`
-- Conver it to `n - (i + 1)` for better readability
+Sometimes there is shitty code written like `n - i - 1`
+
+Convert it to `n - (i + 1)` for better readability
 
 ## Combinatorics
 
@@ -2752,14 +3126,14 @@ Properties:
 - **`nPn = n!`**
   - `nPn == n!/(n-n)! == n!/0! = n!/1 = n!`
 
-#### With Repetition
+#### Permutation WITH Repetition
 
 Formula: **`n^r`**
 
 - `n` = total number of objects in the set
 - `r` = number of objects chosen from the set
 
-#### Without Repetition
+#### Permutation WITHOUT Repetition
 
 Formula: **`nPr = n!/(n-r)!`**
 
@@ -2772,11 +3146,12 @@ Note: `nPr == nCr * rPr`
 
 Formula: **`n!/(r1! * r2! * ... rk!)`**
 
-- If there are any items repeated:
-  - One/first item is repeated `r1` times
-  - Another/second item is repeated `r2` times
-  - ...
-  - K'th item is repeated `rk` times
+If there are any items repeated:
+
+- One/first item is repeated `r1` times
+- Another/second item is repeated `r2` times
+- ...
+- K'th item is repeated `rk` times
 
 Example:
 
@@ -2808,7 +3183,7 @@ Example:
 - Choose 2 pairs from n objects
   - `nC2 == n!/(2! * (n-2)!) == (n * (n-1))/2 == n*(n-1)/2`
 
-#### Without Repetition
+#### Combination WITHOUT Repetition
 
 Formula: **`nCr = n!/((n-r)! * r!)`**
 
@@ -2817,7 +3192,7 @@ Formula: **`nCr = n!/((n-r)! * r!)`**
 
 Note: `nCr == nPr/r! == n!/((n-r)! * r!)`
 
-#### With Repetition
+#### Combination WITH Repetition
 
 Formula: **`(n+r-1)Cr = (n+r-1)!/(r! * (n-1)!)`**
 
@@ -2830,18 +3205,24 @@ Formula: **`(n+r-1)Cr = (n+r-1)!/(r! * (n-1)!)`**
 
 `nCk == (n-1)C(k-1) + (n-1)C(k)`
 
-- Suppose you want to select a group of `k` students out of `N` students, which can be done in `{N}C{k}` ways
-- Then for each student there are 2 possibilities:
-  1. Student is included/selected from group
-  2. Student is excluded/rejected from group
-- Let out of these `N` students there exists a student `X` which will either be included/excluded in the group of those `k` students
-- If you **include** student `X` in the group then you have total `N-1` students left and you have to select the remaining `k-1` students, which can be done in `{N-1}C{k-1}` ways
-- If you **exclude** student `X` then you have total `N-1` students left and you still have to select `k` students which can be done in `{N-1}C{k}` ways
-- So the total number of ways of selecting `k` students out of `N` students is equal to `{N-1}C{k} + {N-1}C{k-1}`
+Suppose you want to select a group of `k` students out of `N` students, which can be done in `{N}C{k}` ways
+
+Then for each student there are 2 possibilities:
+
+1. Student is included from group
+2. Student is excluded from group
+
+Let out of these `N` students there exists a student `X` which will either be included/excluded in the group of those `k` students
+
+If you **include** student `X` in the group then you have total `N-1` students left and you have to select the remaining `k-1` students, which can be done in `{N-1}C{k-1}` ways
+
+If you **exclude** student `X` then you have total `N-1` students left and you still have to select `k` students which can be done in `{N-1}C{k}` ways
+
+So the total number of ways of selecting `k` students out of `N` students is equal to `{N-1}C{k} + {N-1}C{k-1}`
 
 #### Finding Total Number of Combinations
 
-- Multiply (`*`) the number of combinations of each unique subset together to find result
+Multiply (`*`) the number of combinations of each unique subset together to find result
 
 #### Code
 
@@ -2952,7 +3333,7 @@ int nCr(int n, int k) {
 
 #### Number of Unique Combinations/Subsets Possible
 
-- To combine the number of unique combinations/subsets
+To combine the number of unique combinations/subsets
 
 ```cpp
 // n == number of elements in subset
@@ -2972,11 +3353,14 @@ long findNumCombinationsInSubset(int n) {
 
 ### Create Number Recursively
 
-- To build a number recursively (from right to left)
-  - Make sure to first convert `num` to a `String` first to be able to bind/bound digits
-- See
-  - 2801.count-stepping-numbers-in-range
-  - 2827.number-of-beautiful-integers-in-the-range
+To build a number recursively (from right to left)
+
+- Make sure to first convert `num` to a `String` first to be able to bind/bound digits
+
+See
+
+- 2801.count-stepping-numbers-in-range
+- 2827.number-of-beautiful-integers-in-the-range
 
 ```java
 for (int digit = 0; digit < 9; digit++) {
@@ -2984,11 +3368,15 @@ for (int digit = 0; digit < 9; digit++) {
 }
 ```
 
-- Start with `currSum = 0`
-- For each `dfs()` call:
-  - Multiply currSum by 10 and add currValue `currSum = (currSum * 10) + currVal`
-- Essentially we shift digits 1 place to the left and add next digit
-- Example: 129.sum-root-to-leaf-numbers
+Start with `currSum = 0`
+
+For each `dfs()` call:
+
+- Multiply currSum by 10 and add currValue `currSum = (currSum * 10) + currVal`
+
+Essentially we shift digits 1 place to the left and add next digit
+
+Example: 129.sum-root-to-leaf-numbers
 
 ```java
 class Solution {
@@ -3035,14 +3423,17 @@ private int countDigits(int num) {
 
 ## Division
 
-- When you divide by an amount you are finding per UNIT of the denominator (See: 857.minimum-cost-to-hire-k-workers)
-  ```java
-  // wage[i]/quality[i] = the EXPECTED PAYMENT PER UNIT QUALITY for each worker
-  double[] wageToQualityRatio;
-  for (int i = 0; i < quality.length; i++) {
-    wageToQualityRatio[i] = new double[] { (double) wage[i] / quality[i]};
-  }
-  ```
+When you divide by an amount you are finding per UNIT of the denominator
+
+See: 857.minimum-cost-to-hire-k-workers
+
+```java
+// wage[i]/quality[i] = the expected payment PER UNIT QUALITY for each worker
+double[] wageToQualityRatio;
+for (int i = 0; i < quality.length; i++) {
+  wageToQualityRatio[i] = new double[] { (double) wage[i] / quality[i]};
+}
+```
 
 ## Exponent
 
@@ -3056,29 +3447,34 @@ private int countDigits(int num) {
 
 ## Factor
 
-- Factors of a number divides the original number evenly
-- Example
-  - 5 is a factor of 15
-  - 8 is a factor of 64
+Factors of a number divides the original number evenly
+
+Examples:
+
+- 5 is a factor of 15
+- 8 is a factor of 64
 
 ### Euclidean Algorithm
 
-- Euclid's Division Lemma
-  - **`a = bq + r (where 0 <= r < b)`**
-  - Recursively apply lemma to `b` and `r` until `r = 0` (at which case `b` is gcd of original `a` and `b`)
+Euclid's Division Lemma:
 
-- Example 1
-  - gcd(105, 252)
-  - gcd(252, 105)
-  - gcd(105, 42)
-  - gcd(42, 21)
-  - gcd(21, 21)
-  - gcd(21, 0)
+- **`a = bq + r (where 0 <= r < b)`**
+- Recursively apply lemma to `b` and `r` until `r = 0` (at which case `b` is gcd of original `a` and `b`)
 
-- Example 2
-  - gcd(24, 16) = gcd(16, 24 % 16)
-  - gcd(16, 8) = gcd(8, 16 % 8)
-  - gcd(8, 0)
+Example 1
+
+- gcd(105, 252)
+- gcd(252, 105)
+- gcd(105, 42)
+- gcd(42, 21)
+- gcd(21, 21)
+- gcd(21, 0)
+
+Example 2
+
+- gcd(24, 16) = gcd(16, 24 % 16)
+- gcd(16, 8) = gcd(8, 16 % 8)
+- gcd(8, 0)
 
 Note: Can use `__gcd()` in CPP/C++
 
@@ -3115,7 +3511,7 @@ private int gcd(int dividend, int divisor) {
 
 ### Prime Factorisation Method
 
-- Every composite number (number with more than one factor) can be written as a product of prime numbers
+Every composite number (number with more than one factor) can be written as a product of prime numbers
 
 ```java
 class Solution {
@@ -3194,7 +3590,7 @@ a^(log_a(x)) = x
 ### Closest Power of 2
 
 ```java
-// log_2(x) == ln(x)/ln(2) == log_10(a)/log_10(2)
+// log_2(x) == ln(x)/ln(2) == log_10(x)/log_10(2)
 int n = 11;
 
 // Method 1
@@ -3209,14 +3605,19 @@ int nextPower = (int) Math.pow(2, x + 1);
 
 ## `Math.ceil(a/b)` / `std::ceil(a/b)`
 
-- Using `Math.ceil()` or `std::ceil()` on the result of a division does **NOT** work
-  - E.g. `(int) Math.ceil(2/3) == 0` due to division between 2 integers always being floored/rounded down
-- Solution/Fix:
-  - `int ceil = (a / b) + ((a % b == 0) ? 0 : 1);`
-  - `int ceil = (a + b - 1) / b;`
-  - `int ceil = (a - 1) / (b + 1);`
-- Resources
-  - [Read more](https://stackoverflow.com/questions/7139382/java-rounding-up-to-an-int-using-math-ceil)
+Using `Math.ceil()` or `std::ceil()` on the result of a division does **NOT** work
+
+- E.g. `(int) Math.ceil(2/3) == 0` due to division between 2 integers always being floored/rounded down
+
+Solution/Fix:
+
+- `int ceil = (a / b) + ((a % b == 0) ? 0 : 1);`
+- `int ceil = (a + b - 1) / b;`
+- `int ceil = (a - 1) / (b + 1);`
+
+Resources
+
+- [Resource](https://stackoverflow.com/questions/7139382/java-rounding-up-to-an-int-using-math-ceil)
 
 **Invalid/Incorrect**
 
@@ -3246,9 +3647,7 @@ int ceil = (a - 1) / (b + 1);
 
 ## Modulus (%)
 
-`a % k = b`
-
-This means that when a is divided by k, the remainder is b
+`a % k = b` means when `a` is divided by `k`, the remainder is `b`
 
 `a = qk + b`
 
@@ -3264,28 +3663,32 @@ where:
 1. `(a + b) % mod == ((a % mod) + (b % mod)) % mod == ((a % mod) + (b % mod) + mod) % mod`
    - Note: `(a + b) % mod != (a % mod + b % mod)`, we need to wrap RHS in `% mod` again in case the sum goes above `mod`
 2. `(a * b) % mod == ((a % mod) * (b % mod)) % mod`
-3. `(a — b) % mod == ((a % mod) — (b % mod) + mod) % mod`
-   - Note: We `+ mod` in case `(a - b)` || `((a % mod) — (b % mod))` is negative (since in some programming languages taking the modulus of a negative number `x` gives a DIFFERENT result to taking modulus of positive number `x`)
-     - i.e. In Java `(-10 % 3) == -1` BUT `(10 % 3) == 1`
+3. `(a - b) % mod == ((a % mod) - (b % mod) + mod) % mod`
+   - Note: We `+ mod` in case `(a - b)` || `((a % mod) - (b % mod))` is negative (since in some programming languages taking the modulus of a negative number `x` gives a DIFFERENT result to taking modulus of positive number `x`) i.e. in Java `(-10 % 3) == -1` BUT `(10 % 3) == 1`
 4. `(a / b) % mod == ((a % mod) * (b^(-1) % mod)) % mod`
 
-- Note that `Math.max(sum1 % mod, sum2 % mod) % mod;` is **NOT** the same as `Math.max(sum1, sum2) % mod;`
-  - Correct version is `return (int) Math.max(sum1, sum2) % mod;`
-  - Make sure `sum1` and `sum2` are declared as `long` in Java or `long long` in C++ first
-  - Example
-    - `Math.max(10 % 15, 20 % 15) % 15 == Math.max(10, 5) % 15 == 10 % 15 == 10`
-    - `Math.max(10, 20) % 15 == 20 % 15 == 5`
+Note that `Math.max(sum1 % mod, sum2 % mod) % mod;` is **NOT** the same as `Math.max(sum1, sum2) % mod;`
 
-- [Read more](https://www.hackerearth.com/practice/math/number-theory/basic-number-theory-1/tutorial/)
-- See
-  - 2327.number-of-people-aware-of-a-secret
-  - 2998.minimum-number-of-operations-to-make-x-and-y-equal
-- LeetCode modulus `10^9 + 7`
-  - `int mod = 1_000_000_007` (Java)
-  - `int mod = 1'000'000'007` (CPP/C++)
-  - `int mod = (int) 1e9 + 7`
-  - `int mod = (int) Math.pow(10, 9) + 7;` (Java)
-  - `int mod = 1000000007`
+- Correct version is `return (int) Math.max(sum1, sum2) % mod;`
+- Make sure `sum1` and `sum2` are declared as `long` in Java or `long long` in C++ first
+- Example
+  - `Math.max(10 % 15, 20 % 15) % 15 == Math.max(10, 5) % 15 == 10 % 15 == 10`
+  - `Math.max(10, 20) % 15 == 20 % 15 == 5`
+
+[Resource](https://www.hackerearth.com/practice/math/number-theory/basic-number-theory-1/tutorial/)
+
+See
+
+- 2327.number-of-people-aware-of-a-secret
+- 2998.minimum-number-of-operations-to-make-x-and-y-equal
+
+LeetCode modulus `10^9 + 7`
+
+- `int mod = 1_000_000_007` (Java)
+- `int mod = 1'000'000'007` (CPP/C++)
+- `int mod = (int) 1e9 + 7`
+- `int mod = (int) Math.pow(10, 9) + 7;` (Java)
+- `int mod = 1000000007`
 
 **Example Proof**
 
@@ -3484,31 +3887,37 @@ Formula
 
 ##### Number of Subarrays
 
-- The formula `N * (N+1) / 2` is used to calculate the number of subarrays that can be formed from an array of length N
+The formula `N * (N+1) / 2` is used to calculate the number of subarrays that can be formed from an array of length N
 
-- To understand how this formula works, let's first define what a subarray is
-  - A subarray is a contiguous sequence of elements from an array
-  - For example, if we have an array `[1, 2, 3, 4]`, some of its subarrays are `[1], [1, 2], [2, 3], [1, 2, 3, 4]`, etc
-- Now, to calculate the number of subarrays, we can start with a single element from the array and then keep adding one element at a time until we reach the end of the array
-  - For example, let's take an array `[1, 2, 3, 4]`
-  - If we start with the first element, we can form a subarray `[1]`
-    - Then we can add the next element to it and form another subarray `[1, 2]`
-    - We can keep adding elements this way and form subarrays `[1, 2, 3]`, `[1, 2, 3, 4]`
-  - Now, if we start with the second element, we can form subarrays `[2]`, `[2, 3]`, `[2, 3, 4]`
-  - Similarly, if we start with the third element, we can form subarrays `[3]`, `[3, 4]`
-  - Finally, if we start with the fourth element, we can form a single subarray `[4]`
-  - So, the total number of subarrays that can be formed from an array of length N is the sum of the number of subarrays that start at each element of the array
-- If we start with the first element, we can form N subarrays (since we can keep adding one element at a time until we reach the end)
-  - If we start with the second element, we can form N-1 subarrays (since we can add elements until the end of the array)
-  - Similarly, if we start with the third element, we can form N-2 subarrays, and so on
+To understand how this formula works, let's first define what a subarray is
 
-- Therefore, the total number of subarrays is: `N + (N-1) + (N-2) + ... + 1`
-  - This is an arithmetic sequence with N terms and a common difference of -1
-  - Or an arithmetic sequence with N terms and a common difference of 1 (if you reverse it)
-  - We can use the formula for the sum of an arithmetic sequence to simplify this expression:
-    - `sum = (N/2) * (2*N + (N-1)* -1)`
-    - `    = (N/2) * (2N - N + 1)`
-    - `    = (N/2) * (N+1)`
+- A subarray is a contiguous sequence of elements from an array
+- For example, if we have an array `[1, 2, 3, 4]`, some of its subarrays are `[1], [1, 2], [2, 3], [1, 2, 3, 4]`, etc
+
+Now, to calculate the number of subarrays, we can start with a single element from the array and then keep adding one element at a time until we reach the end of the array
+
+- For example, let's take an array `[1, 2, 3, 4]`
+- If we start with the first element, we can form a subarray `[1]`
+  - Then we can add the next element to it and form another subarray `[1, 2]`
+  - We can keep adding elements this way and form subarrays `[1, 2, 3]`, `[1, 2, 3, 4]`
+- Now, if we start with the second element, we can form subarrays `[2]`, `[2, 3]`, `[2, 3, 4]`
+- Similarly, if we start with the third element, we can form subarrays `[3]`, `[3, 4]`
+- Finally, if we start with the fourth element, we can form a single subarray `[4]`
+- So, the total number of subarrays that can be formed from an array of length N is the sum of the number of subarrays that start at each element of the array
+
+If we start with the first element, we can form N subarrays (since we can keep adding one element at a time until we reach the end)
+
+- If we start with the second element, we can form N-1 subarrays (since we can add elements until the end of the array)
+- Similarly, if we start with the third element, we can form N-2 subarrays, and so on
+
+Therefore, the total number of subarrays is: `N + (N-1) + (N-2) + ... + 1`
+
+- This is an arithmetic sequence with N terms and a common difference of -1
+- Or an arithmetic sequence with N terms and a common difference of 1 (if you reverse it)
+- We can use the formula for the sum of an arithmetic sequence to simplify this expression:
+  - `sum = (N/2) * (2*N + (N-1)* -1)`
+  - `    = (N/2) * (2N - N + 1)`
+  - `    = (N/2) * (N+1)`
 
 ### Geometric Sequence
 
@@ -3521,63 +3930,77 @@ Formula:
 
 ### Greatest Common Divisor (GCD)
 
-- The greatest common divisor (GCD) of two or more numbers is the greatest common factor number that divides them, exactly
-  - Also known as highest common factor (HCF)
-- Example
-  - gcd(10, 15) = 5
-  - gcd(4, 8, 16) = 4
-- Resources
-  - [Link 1](https://byjus.com/maths/greatest-common-divisor/)
+The greatest common divisor (GCD) [aka highest common factor (HCF)] of two or more numbers is the greatest common factor number that divides them, exactly
+
+Example
+
+- gcd(10, 15) = 5
+- gcd(4, 8, 16) = 4
+
+Resources
+
+- [Resource 1](https://byjus.com/maths/greatest-common-divisor/)
 
 # Optimisations/Optimizations
 
-**Data Structures**
+## Data Structures
 
-- Sometimes it is faster to use ARRAYS-OF-data-structures instead of 2D arrays (to avoid memory limit exceeded and time limit exceeded errors)
-  - `Map<Integer, Integer>[] memo` > `int[][] memo`
-  - `std::unordered_map<int, int> memo[26];` > `std::vector<std::vector<int>> memo`
-  - See: 3389.minimum-operations-to-make-character-frequencies-equal
-- Consider using `string` as the key of `memo` instead of storing the raw data structure
-  - `Map<String, Integer>` > `Map<List<Integer>, Integer>`
-  - Use `.toString()`
-  - See 638.shopping-offers.java
-- Cache Locality: `memo[z][y][x]` where `z < y < x`
+Sometimes it is faster to use ARRAYS-OF-data-structures instead of 2D arrays (to avoid memory limit exceeded and time limit exceeded errors)
 
-**CPP/C++**
+- `Map<Integer, Integer>[] memo` > `int[][] memo`
+- `std::unordered_map<int, int> memo[26];` > `std::vector<std::vector<int>> memo`
+- See: 3389.minimum-operations-to-make-character-frequencies-equal
 
-- ALWAYS use REFERENCES `&` in `for()` loops
-- Do NOT create initialiser lists
-  - E.g. Use `std::min(a, std::min(b, c))` instead of `std::min({ a, b, c})`
+Consider using `string` as the key of `memo` instead of storing the raw data structure
 
-**Java**
+- `Map<String, Integer>` > `Map<List<Integer>, Integer>`
+- Use `.toString()`
+- See 638.shopping-offers.java
 
-- For-each loops are slower than using traditional for loops: `for (int i = 0; i < n; i++)` >> `for (int[] row: memo) `
-- `Integer[][] memo` can be faster than `int[][] memo` especially for 3D cases e.g. `Integer[][][] memo` vs `int[][][] memo`
-  - It is faster to check for `!= null` instead of `!= -1` (since we have to initialise with `-1` beforehand)
-- Division is SLOWER than Multiplication
+Cache Locality: `memo[z][y][x]` where `z < y < x`
 
-  ```java
-  double mid = left / right;
+## CPP/C+
 
-  // while (j < n && (arr[i] / arr[j]) >= mid) {
-  //   // ...
-  // }
+ALWAYS use REFERENCES `&` in `for()` loops
 
-  while (j < n && arr[i] >= mid * arr[j]) {
-    //...
-  }
-  ```
+Do NOT create initialiser lists
+
+- E.g. Use `std::min(a, std::min(b, c))` instead of `std::min({ a, b, c})`
+
+## Java
+
+For-each loops are slower than using traditional for loops: `for (int i = 0; i < n; i++)` >> `for (int[] row: memo) `
+
+`Integer[][] memo` can be faster than `int[][] memo` especially for 3D cases e.g. `Integer[][][] memo` vs `int[][][] memo`
+
+- It is faster to check for `!= null` instead of `!= -1` (since we have to initialise with `-1` beforehand)
+
+Division is SLOWER than Multiplication
+
+```java
+double mid = left / right;
+
+// while (j < n && (arr[i] / arr[j]) >= mid) {
+//   // ...
+// }
+
+while (j < n && arr[i] >= mid * arr[j]) {
+  //...
+}
+```
 
 ## Cache Locality for Dynamic Programming Memoisation
 
 > Place frequently changing variables with a LARGER RANGE as the LAST DIMENSION in `memo[][]` (i.e. use `memo[2][m][n]` instead of `memo[m][n][2]`)
 > `memo[z][y][x]` where `z < y < x`
 
-- Cache Locality/Efficiency
-  - Modern CPUs are designed to take advantage of spatial locality by loading data into faster cache memory in blocks. When data that are located next to each other in memory are accessed sequentially, this can significantly speed up access times
-  - In `SolutionFast`, by placing the `prev` index (which changes more frequently in a typical dynamic programming recursion) as the last dimension, it potentially improves cache locality for scenarios where `k` changes less frequently than `prev`
-    - This is because adjacent/consecutive recursive calls are more likely to access adjacent memory locations, especially when `k` changes less frequently than `prev` in the recursion tree
-    - This is because adjacent memory locations (which are more likely to be in the same cache line) are accessed in successive recursive calls when `k` changes less frequently than `prev`
+Cache Locality/Efficiency
+
+- Modern CPUs are designed to take advantage of spatial locality by loading data into faster cache memory in blocks.
+  When data that are located next to each other in memory are accessed sequentially, this can significantly speed up access times
+- In `SolutionFast`, by placing the `prev` index (which changes more frequently in a typical dynamic programming recursion) as the last dimension, it potentially improves cache locality for scenarios where `k` changes less frequently than `prev`
+  - This is because adjacent/consecutive recursive calls are more likely to access adjacent memory locations, especially when `k` changes less frequently than `prev` in the recursion tree
+  - This is because adjacent memory locations (which are more likely to be in the same cache line) are accessed in successive recursive calls when `k` changes less frequently than `prev`
 
 ```java
 // FASTER
@@ -3661,14 +4084,14 @@ Look at where you are doing repeated calculations (especially in recursive calls
 
 # Prefix Sum
 
-- Note that `prefixSum[i]` == sum of indices BEFORE index i
+Note: `prefixSum[i]` == sum of indices BEFORE index i
 
 | index     | 0   | 1   | 2   | 3   | 4   | 5   |
 | --------- | --- | --- | --- | --- | --- | --- |
 | nums      | 1   | 2   | 3   | 4   | 5   |     |
 | prefixSum | 0   | 1   | 3   | 6   | 10  | 15  |
 
-> Version 1
+## Version 1
 
 ```java
 int n = nums.length;
@@ -3678,7 +4101,7 @@ for (int i = 0; i < n; i++) {
 }
 ```
 
-> Version 2
+## Version 2
 
 ```java
 int n = nums.length;
@@ -3688,7 +4111,7 @@ for (int i = 1; i <= n; i++) {
 }
 ```
 
-> Get Subarray Sum Between Indices i...j (inclusive) || Get Subarray Sum Between `nums[i] to nums[j]` INCLUSIVE
+## Get Subarray Sum Between Indices i...j (inclusive) || Get Subarray Sum Between `nums[i] to nums[j]` INCLUSIVE
 
 ```java
 int sum = prefixSum[j + 1] - prefixSum[i];
@@ -3724,52 +4147,60 @@ std::partial_sum(std::begin(nums), std::end(nums), std::begin(prefixSum) + 1); /
 
 ## Left Prefix Sum + Right Prefix Sum + Bottom Up DP
 
-- There are two main variations when comparing from **left** and **right**
+There are two main variations when comparing from **left** and **right**
 
 ### Version 1 - `dp[n+1]`
 
-- Store minimum cost to reach index `i` from **LEFT**
-  - From `[0 -> n-1]` inclusive
-- Store minimum cost to reach index `i` from **RIGHT**
-  - From `[n-1 -> 0]` inclusive
-- Examine minimum cost to reach index `i` from **BOTH** **LEFT** and **RIGHT**
-- In the `leftDP` and `rightDP` we should match the columns vertically
-  - Each `leftDP[i]` matches with `rightDP[i]`
+Store minimum cost to reach index `i` from **LEFT** i.e. from `[0 -> n-1]` inclusive
+
+Store minimum cost to reach index `i` from **RIGHT** i.e. from `[n-1 -> 0]` inclusive
+
+Examine minimum cost to reach index `i` from **BOTH** **LEFT** and **RIGHT**
+
+In the `leftDP` and `rightDP` we should match the columns vertically
+
+- Each `leftDP[i]` matches with `rightDP[i]`
   ```
   string  = "1101001"
   leftDP  = 0 1 2 2 4 4 4
   rightDP = 7 5 3 3 1 1 1
   ```
-- Finding final result
-  ```java
-  for (int i = 0; i < n; i++) {
-    result = Math.min(result, leftDP[i] + rightDP[i]);
-  }
-  ```
+
+Finding final result
+
+```java
+for (int i = 0; i < n; i++) {
+  result = Math.min(result, leftDP[i] + rightDP[i]);
+}
+```
 
 ### Version 2 - `dp[n+2]`
 
-- Store minimum cost to reach index `i` from LEFT
-  - From `[1 -> n]` inclusive
-- Store minimum cost to reach index `i` from RIGHT
-  - From `[n -> 1]` inclusive
-- In the `leftDP` and `rightDP` we should match the columns diagonally (like **`\`** and NOT `/`)
-  - Each `leftDP[i]` matches with `rightDP[i + 1]`
-  ```
-  string  = "1101001"
-  leftDP  = 0 1 2 2 4 4 4 6 0
-  rightDP = 0 7 5 3 3 1 1 1 0
-  ```
-- Finding final result
+Store minimum cost to reach index `i` from LEFT i.e. from `[1 -> n]` inclusive
 
-  ```java
-  for (int i = 1; i <= n; i++) {
-    result = Math.min(result, leftDP[i] + rightDP[i + 1]);
-  }
-  ```
+Store minimum cost to reach index `i` from RIGHT i.e. from `[n -> 1]` inclusive
 
-- Examples
-  - 2167.minimum-time-to-remove-all-cars-containing-illegal-goods
+In the `leftDP` and `rightDP` we should match the columns diagonally (like **`\`** and NOT `/`)
+
+- Each `leftDP[i]` matches with `rightDP[i + 1]`
+
+```
+string  = "1101001"
+leftDP  = 0 1 2 2 4 4 4 6 0
+rightDP = 0 7 5 3 3 1 1 1 0
+```
+
+Finding final result
+
+```java
+for (int i = 1; i <= n; i++) {
+  result = Math.min(result, leftDP[i] + rightDP[i + 1]);
+}
+```
+
+Examples
+
+- 2167.minimum-time-to-remove-all-cars-containing-illegal-goods
 
 ## Prefix Sum Average
 
@@ -3783,327 +4214,1826 @@ See 2209.minimum-white-tiles-after-covering-with-carpets.java
 
 ## Comparisons
 
-- If there are `n` comparisons, then there will be `n+1` elements involved
-- See: 978.longest-turbulent-subarray
+If there are `n` comparisons, then there will be `n+1` elements involved
+
+See: 978.longest-turbulent-subarray
 
 # Ranges
 
 ## UpperBound - LowerBound (`[0:high] - [0:low]`) to get `[low:high]`
 
-- If finding range of `low = [0:low]` and `high = [0:high]` and then doing `int result = high - low`
-  - There is edge case where `low` is valid and NOT counted in `[0:high] - [0:low]`
-  - To account for this we either need to redo calculation for `low` or make the `lowerBound = [0:low-1]`
-- See
-  - 2801.count-stepping-numbers-in-range
-  - 2827.number-of-beautiful-integers-in-the-range
+If finding range of `low = [0:low]` and `high = [0:high]` and then doing `int result = high - low`
+
+- There is edge case where `low` is valid and NOT counted in `[0:high] - [0:low]`
+- Solution/To account for this we either need to redo calculation for `low` or make the `lowerBound = [0:low-1]`
+
+See
+
+- 2801.count-stepping-numbers-in-range
+- 2827.number-of-beautiful-integers-in-the-range
+
+## Index
+
+The range `[i, j]` contains/consists of `i - j + 1` elements (has a length of `i - j + 1`)
+
+The range `(i, j]` or `[i, j)` contains/consists of `i - j` elements (has a length of `i - j`)
 
 # Sliding Window
 
-- Use
-  - Two pointers (`left`, `right`)
-  - `deque`
+Sliding Window = **two pointers maintaining a contiguous window `[left, right]`**.
+
+Core idea:
+
+```text
+EXPAND right
+↓
+Update window state
+↓
+Repair / shrink with left if needed
+↓
+Update answer
+```
+
+## The 4 Patterns to Memorize
+
+| Goal                          | Pattern                      |
+| ----------------------------- | ---------------------------- |
+| **Longest / Maximum length**  | Shrink while **INVALID**     |
+| **Shortest / Minimum length** | Shrink while **VALID**       |
+| **Exactly K**                 | `atMost(K) - atMost(K - 1)`  |
+| **Fixed window K**            | Keep window size exactly `K` |
+
+For max/min inside every fixed window: use a **monotonic deque**.
+
+## 1. Longest / Maximum Window
+
+Use for longest substring/subarray, maximum window length, or "at most K" problems.
 
 ```java
 int left = 0;
 int result = 0;
-// Create state (int, map, set, etc)
 for (int right = 0; right < n; right++) {
-  // Add to state
-  if (state is invalid) {
-    continue;
-  }
-  while (state is valid) {
-    // Shrink window
+  // add right
+  while (left > 0/* invalid */) {
+    // remove left
     left++;
   }
-  // Update result
   result = Math.max(result, right - left + 1);
 }
 ```
 
-```java
+```cpp
 int left = 0;
-int right = 0;
 int result = 0;
-// Create state (int, map, set, etc)
-while (right < n) {
-  // Add to state
-  if (state is invalid) {
-    continue;
-  }
-  while (state is valid) {
-    // Shrink window
+
+for (int right = 0; right < n; right++) {
+  // add right
+  while (/* invalid */) {
+    // remove left
     left++;
   }
-  // Update result
-  result = Math.max(result, right - left + 1);
+  result = std::max(result, right - left + 1);
 }
 ```
 
-The **Sliding Window** technique is a powerful algorithmic pattern used to solve problems involving arrays or strings. It converts a set of nested loops (typically $O(N^2)$ or $O(N^3)$) into a single loop ($O(N)$), significantly improving efficiency. It involves maintaining a subset of items (the "window") that slides over the data structure to calculate a result
+> **LONGEST -> shrink while INVALID**
 
-## Types of Sliding Window
+Common problems:
 
-1.  **Fixed Size**: The window size remains constant throughout the traversal
-2.  **Variable Size**: The window grows or shrinks based on certain conditions (often involves "Two Pointers")
+- LeetCode 3 - Longest Substring Without Repeating Characters
+- LeetCode 424 - Longest Repeating Character Replacement
+- LeetCode 1004 - Max Consecutive Ones III
+- LeetCode 340 - Longest Substring with At Most K Distinct Characters
 
-## 1. Fixed Size Window
+### Example - Longest Substring Without Repeating Characters
 
-**Use Case**: When you are asked to find something (sum, max, min, average) in a subarray or substring of a specific length `k`
+Invalid when:
 
-**Strategy**:
-
-1.  Initialize the window with the first `k` elements
-2.  Slide the window one step at a time:
-    - Add the new element coming into the window (right)
-    - Remove the element going out of the window (left)
-3.  Update the answer
-
-### Example Problem: Maximum Sum Subarray of Size K
-
-_Given an array of integers and a number `k`, find the maximum sum of a subarray of size `k`._
+```text
+count[s[right]] > 1
+```
 
 ```java
-public class Solution {
-  public int maxSubArraySum(int[] nums, int k) {
-    if (nums.length < k) {
-      return -1;
-    }
-    int maxSum = 0;
-    int currentSum = 0;
-    // 1. Initial window
-    for (int i = 0; i < k; i++) {
-      currentSum += nums[i];
-    }
-    maxSum = currentSum;
-    // 2. Slide the window
-    for (int i = k; i < nums.length; i++) {
-      currentSum += nums[i]; // Add element entering right
-      currentSum -= nums[i - k]; // Remove element leaving left
-      maxSum = Math.max(maxSum, currentSum);
-    }
-    return maxSum;
-  }
-}
-```
-
-```cpp
-#include <algorithm>
-#include <numeric>
-#include <vector>
-
 class Solution {
-public:
-  int maxSubArraySum(std::vector<int> &nums, int k) {
-    if (nums.size() < k) {
-      return -1;
-    }
-    long long currentSum = 0;
-    // 1. Initial window
-    for (int i = 0; i < k; i++) {
-      currentSum += nums[i];
-    }
-    long long maxSum = currentSum;
-    // 2. Slide
-    for (int i = k; i < nums.size(); i++) {
-      currentSum += nums[i];     // Add right
-      currentSum -= nums[i - k]; // Remove left
-      maxSum = std::max(maxSum, currentSum);
-    }
-    return (int) maxSum;
-  }
-};
-```
-
-## 2. Variable Size Window
-
-**Use Case**: Find the longest or shortest subarray/substring that satisfies a condition (e.g., sum >= target, distinct characters)
-
-**Strategy**:
-
-1.  Use two pointers: `left` (start of window) and `right` (end of window), both starting at 0
-2.  **Expand**: Move `right` to include elements until the condition is met or broken
-3.  **Shrink**: Once the condition needs adjustment (e.g., sum is too large, or we found a duplicate), increment `left` to shrink the window until the condition is valid again
-4.  Update the result at each valid state
-
-### Example Problem: Minimum Size Subarray Sum (LeetCode 209)
-
-_Find the minimal length of a contiguous subarray of which the sum is greater than or equal to `target`._
-
-```java
-public class Solution {
-  public int minSubArrayLen(int target, int[] nums) {
-    int left = 0;
-    int sum = 0;
-    int minLength = Integer.MAX_VALUE;
-    for (int right = 0; right < nums.length; right++) {
-      sum += nums[right]; // Expand window
-      // Shrink window while condition is met to find minimum length
-      while (sum >= target) {
-        minLength = Math.min(minLength, right - left + 1);
-        sum -= nums[left];
-        left++;
-      }
-    }
-    return minLength == Integer.MAX_VALUE ? 0 : minLength;
-  }
-}
-```
-
-```cpp
-#include <algorithm>
-#include <climits>
-#include <vector>
-
-class Solution {
-public:
-  int minSubArrayLen(int target, std::vector<int> &nums) {
-    int left = 0;
-    int sum = 0;
-    int minLength = INT_MAX;
-    for (int right = 0; right < nums.size(); right++) {
-      sum += nums[right]; // Expand
-      // Shrink
-      while (sum >= target) {
-        minLength = std::min(minLength, right - left + 1);
-        sum -= nums[left];
-        left++;
-      }
-    }
-    return minLength == INT_MAX ? 0 : minLength;
-  }
-};
-```
-
-## 3. Sliding Window with Auxiliary Structures (Hash Map/Set)
-
-**Use Case**: Problems involving frequency of characters, distinct elements, or anagrams
-
-**Strategy**: Use a HashMap, HashSet, or a simple Frequency Array (e.g., `int[26]` for lowercase letters) to track the contents of the current window efficiently
-
-### Example Problem: Longest Substring Without Repeating Characters (LeetCode 3)
-
-_Find the length of the longest substring without repeating characters._
-
-```java
-import java.util.HashSet;
-import java.util.Set;
-
-public class Solution {
   public int lengthOfLongestSubstring(String s) {
     int left = 0;
-    int maxLength = 0;
-    Set<Character> window = new HashSet<>();
+    int result = 0;
+    int[] count = new int[128];
     for (int right = 0; right < s.length(); right++) {
-      char c = s.charAt(right);
-      // If duplicate found, shrink from left until the duplicate is removed
-      while (window.contains(c)) {
-        window.remove(s.charAt(left));
+      count[s.charAt(right)]++;
+      while (count[s.charAt(right)] > 1) {
+        count[s.charAt(left)]--;
         left++;
       }
-      window.add(c);
-      maxLength = Math.max(maxLength, right - left + 1);
+      result = Math.max(result, right - left + 1);
     }
-    return maxLength;
+    return result;
   }
 }
 ```
 
 ```cpp
-#include <algorithm>
-#include <string>
-#include <unordered_set>
+class Solution {
+public:
+  int lengthOfLongestSubstring(std::string s) {
+    int left = 0;
+    int result = 0;
+    std::vector<int> count(128, 0);
+    for (int right = 0; right < s.size(); right++) {
+      count[s[right]]++;
+      while (count[s[right]] > 1) {
+        count[s[left]]--;
+        left++;
+      }
+      result = std::max(result, right - left + 1);
+    }
+    return result;
+  }
+};
+
+```
+
+### Optimization: Store Last Seen Index
+
+For "longest substring without repeating characters", we don't actually need to move `left` one character at a time.
+
+Instead, remember the most recent index of every character.
+
+For example:
+
+```text
+a b c a
+0 1 2 3
+```
+
+When we see `a` at index `3`, we know the previous `a` was at index `0`.
+
+Therefore:
+
+```text
+left = max(left, previous_a + 1)
+     = max(0, 0 + 1)
+```
+
+Instead of:
+
+```text
+left++
+left++
+left++
+```
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+  public int lengthOfLongestSubstring(String s) {
+    int left = 0;
+    int result = 0;
+    Map<Character, Integer> lastSeen = new HashMap<>();
+    for (int right = 0; right < s.length(); right++) {
+      char c = s.charAt(right);
+      if (lastSeen.containsKey(c)) {
+        left = Math.max(left, lastSeen.get(c) + 1);
+      }
+      lastSeen.put(c, right);
+      result = Math.max(result, right - left + 1);
+    }
+    return result;
+  }
+}
+```
+
+```cpp
+#include <bits/stdc++.h>
 
 class Solution {
 public:
   int lengthOfLongestSubstring(std::string s) {
     int left = 0;
-    int maxLength = 0;
-    std::unordered_set<char> window;
-    for (int right = 0; right < s.length(); right++) {
-      // While duplicate exists in window, shrink
-      while (window.count(s[right])) {
-        window.erase(s[left]);
-        left++;
-      }
-      window.insert(s[right]);
-      maxLength = std::max(maxLength, right - left + 1);
+    int result = 0;
+    std::vector<int> lastSeen(128, -1);
+    for (int right = 0; right < s.size(); right++) {
+      unsigned char c = s[right];
+      left = std::max(left, lastSeen[c] + 1);
+      lastSeen[c] = right;
+      result = std::max(result, right - left + 1);
     }
-    return maxLength;
+    return result;
   }
 };
 ```
 
-## General Patterns & Tips for Sliding Window in LeetCode
-
-1. **Fixed Length Template**:
-   - Iterate `right` from `0` to `n-1`
-   - Add `nums[right]` to window state
-   - If `right >= k - 1`:
-     - We have a full window of size `k`
-     - Update result
-     - Remove `nums[right - k + 1]` from window state (prepare for next slide)
-
-2. **Shortest Valid Window (Min)**:
-   - Expand `right` to satisfy condition
-   - **While** condition is satisfied:
-     - Update result (min length)
-     - Shrink `left` to see if a smaller valid window exists
-
-3. **Longest Valid Window (Max)**:
-   - Expand `right`
-   - **While** condition is _violated_ (e.g. too many distinct chars):
-     - Shrink `left` until valid again
-   - Update result (max length) after ensuring validity
-
-4. **Optimization**:
-   - For character-based problems (like anagrams or permutations), prefer using `int[26]` (or `int[128]`) arrays instead of HashMaps for better performance and reduced overhead in both C++ and Java
-
-See
-
-239.sliding-window-maximum.java
+Notice the:
 
 ```java
-// First sliding window starts at index 0 and ends at index k - 1
-// Last sliding window starts at index (n - k) and ends at index n - 1 (the last element)
-// Hence there are (n - k) - 0 + 1 = n - k + 1 sliding windows in total.
-int[] result = new int[n - k + 1];
+left = Math.max(left, lastSeen.get(c) + 1);
 ```
 
-76.minimum-sliding-window
+rather than:
+
+```java
+left = lastSeen.get(c) + 1;
+```
+
+Why?
+
+Because `left` should **never move backwards**.
+
+## 2. Shortest / Minimum Window
+
+Use for minimum length, shortest subarray, or minimum window.
+
+```java
+int left = 0;
+int result = Integer.MAX_VALUE;
+
+for (int right = 0; right < n; right++) {
+  // add right
+  while (/* valid */) {
+    result = Math.min(result, right - left + 1);
+    // remove left
+    left++;
+  }
+}
+```
+
+```cpp
+int left = 0;
+int result = INT_MAX;
+
+for (int right = 0; right < n; right++) {
+    // add right
+    while (/* valid */) {
+      result = std::min(result, right - left + 1);
+      // remove left
+      left++;
+    }
+}
+```
+
+> **SHORTEST -> shrink while VALID**
+
+### Example - Minimum Size Subarray Sum
+
+LeetCode 209.Minimum Size Subarray Sum
+
+Condition:
+
+```text
+sum >= target
+```
+
+This classic version works because **all numbers are positive**:
+
+```text
+move right -> sum increases
+move left  -> sum decreases
+```
+
+```java
+class Solution {
+  public int minSubArrayLen(int target, int[] nums) {
+    int left = 0;
+    int sum = 0;
+    int result = Integer.MAX_VALUE;
+
+    for (int right = 0; right < nums.length; right++) {
+      sum += nums[right];
+
+      while (sum >= target) {
+        result = Math.min(result, right - left + 1);
+        sum -= nums[left];
+        left++;
+      }
+    }
+
+    return result == Integer.MAX_VALUE ? 0 : result;
+  }
+}
+```
+
+```cpp
+class Solution {
+public:
+  int minSubArrayLen(int target, vector<int> &nums) {
+    int left = 0;
+    int sum = 0;
+    int result = INT_MAX;
+
+    for (int right = 0; right < nums.size(); right++) {
+      sum += nums[right];
+
+      while (sum >= target) {
+        result = min(result, right - left + 1);
+        sum -= nums[left];
+        left++;
+      }
+    }
+
+    return result == INT_MAX ? 0 : result;
+  }
+};
+```
+
+### Dealing/Handling with Negative Numbers
+
+What changes with negative numbers?
+
+The problem becomes:
+
+Find the shortest subarray whose sum is at least target.
+
+For arbitrary integers, the standard solution uses prefix sums + a monotonic deque.
+
+Let
+
+```
+prefix[i] = nums[0] + nums[1] + ... + nums[i-1]
+```
+
+equal the prefix sum UP TO but NOT including `nums[i]`
+
+Then the sum of subarray `[j, i-1]` is:
+
+```
+prefix[i] - prefix[j]
+```
+
+We want:
+
+```txt
+prefix[i] - prefix[j] >= target
+```
+
+or equivalently:
+
+```
+prefix[j] <= prefix[i] - target
+```
+
+We maintain candidate prefix indices in a deque.
+
+```java
+class Solution {
+  public int minSubArrayLen(int target, int[] nums) {
+    int n = nums.length;
+    long[] prefixSum = new long[n + 1];
+    for (int i = 0; i < n; i++) {
+      prefixSum[i + 1] = prefixSum[i] + nums[i];
+    }
+    Deque<Integer> dq = new ArrayDeque<>();
+    int result = n + 1;
+    for (int i = 0; i <= n; i++) {
+      // Found a valid subarray
+      while (!dq.isEmpty() && prefixSum[i] - prefixSum[dq.peekFirst()] >= target) {
+        result = Math.min(result, i - dq.pollFirst()); // no +1 because we are NOT including index i
+      }
+      // Remove earlier prefixSums that are worse: the currrent prefixSum is smaller (better for reaching target) and occurs later (gives a shorter subarray)
+      while (!dq.isEmpty() && prefixSum[i] <= prefixSum[dq.peekLast()]) {
+        dq.pollLast();
+      }
+      // offerLast because dq needs to maintain prefix indices in increasing order from front -> back.
+      dq.offerLast(i);
+    }
+    return result == n + 1 ? 0 : result;
+  }
+}
+```
+
+Summary
+
+```
+nums[i] >= 0
+    -> sliding window / two pointers
+    -> O(n)
+
+nums[i] can be negative
+    -> prefix sum + monotonic deque
+    -> O(n)
+```
+
+## 3. Fixed Window Size K
+
+Use when every window must have exactly `k` elements.
+
+Sometimes the window has exactly size `k`.
+
+There is no "invalid/valid" concept that determines the size.
+
+The window is always: `[right - k + 1, right]`
+
+```
+right - (right - k + 1) + 1
+= right - right + k - 1 + 1
+= k
+```
+
+Once the window exceeds size `k`, remove the leftmost element.
+
+Template:
+
+```java
+int left = 0;
+
+for (int right = 0; right < n; right++) {
+    // add right
+    if (right - left + 1 > k) {
+      // remove left
+      left++;
+    }
+    if (right - left + 1 == k) {
+      // process window
+    }
+}
+```
+
+Common problems:
+
+- LeetCode 567 - Permutation in String
+- LeetCode 438 - Find All Anagrams in a String
+- LeetCode 239 - Sliding Window Maximum
+
+### Example - Maximum Sum of Subarray of Size K
+
+Suppose:
+
+```text
+nums = [2,1,5,1,3,2]
+k = 3
+```
+
+Windows:
+
+```text
+[2,1,5] = 8
+[1,5,1] = 7
+[5,1,3] = 9
+[1,3,2] = 6
+```
+
+Answer: 9
+
+```java
+class Solution {
+  public int maxSumSubarrayOfSizeK(int[] nums, int k) {
+    int left = 0;
+    int sum = 0;
+    int result = Integer.MIN_VALUE;
+    for (int right = 0; right < nums.length; right++) {
+      sum += nums[right];
+      // Window is too large
+      if (right - left + 1 > k) {
+        sum -= nums[left];
+        left++;
+      }
+      // Window size is exactly k
+      if (right - left + 1 == k) {
+        result = Math.max(result, sum);
+      }
+    }
+    return result;
+  }
+}
+```
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+  int maxSumSubarrayOfSizeK(std::vector<int> &nums, int k) {
+    int left = 0;
+    int sum = 0;
+    int result = INT_MIN;
+    for (int right = 0; right < nums.size(); right++) {
+      sum += nums[right];
+      // Window is too large
+      if (right - left + 1 > k) {
+        sum -= nums[left];
+        left++;
+      }
+      // Window size is exactly k
+      if (right - left + 1 == k) {
+        result = max(result, sum);
+      }
+    }
+    return result;
+  }
+};
+```
+
+## 4. At Most K
+
+A huge pattern:
+
+```text
+maximize length
+subject to constraint <= K
+```
+
+Examples:
+
+- at most K zeros
+- at most K distinct characters
+- at most K replacements
+- at most K odd numbers
+
+Template:
+
+```java
+add(right);
+
+while (constraint > k) {
+  remove(left);
+  left++;
+}
+
+result = Math.max(result, right - left + 1);
+```
+
+> **AT MOST K -> longest valid window**
+
+### Example - Longest Substring with At Most K Distinct Characters
+
+```java
+import java.util.*;
+
+class Solution {
+  public int lengthOfLongestSubstringKDistinct(String s, int k) {
+    int left = 0;
+    int result = 0;
+    Map<Character, Integer> count = new HashMap<>();
+    for (int right = 0; right < s.length(); right++) {
+      char rightChar = s.charAt(right);
+      count.put(rightChar, count.getOrDefault(rightChar, 0) + 1);
+      // Invalid if more than k distinct characters
+      while (count.size() > k) {
+        char leftChar = s.charAt(left);
+        count.put(leftChar, count.get(leftChar) - 1);
+        if (count.get(leftChar) == 0) {
+          count.remove(leftChar);
+        }
+        left++;
+      }
+      result = Math.max(result, right - left + 1);
+    }
+    return result;
+  }
+}
+```
+
+```cpp
+#include <bits/stdc++.h>
+
+class Solution {
+public:
+  int lengthOfLongestSubstringKDistinct(std::string s, int k) {
+    int left = 0;
+    int result = 0;
+    std::unordered_map<char, int> count;
+    for (int right = 0; right < s.size(); right++) {
+      char rightChar = s[right];
+      count[rightChar]++;
+      // Invalid if distinct characters > k
+      while (count.size() > k) {
+        char leftChar = s[left];
+        count[leftChar]--;
+        if (count[leftChar] == 0) {
+          count.erase(leftChar);
+        }
+        left++;
+      }
+      result = max(result, right - left + 1);
+    }
+    return result;
+  }
+};
+```
+
+## 5. Exactly K
+
+### At Most K vs Exactly K
+
+This is another very important LeetCode trick.
+
+Sometimes a problem asks:
+
+> Number of subarrays with **exactly K** something
+
+Sliding Window naturally handles **at most K** much more easily
+
+Use:
+
+```text
+exactly(K) = atMost(K) - atMost(K - 1)
+```
+
+### Example - Subarrays With K Different Integers
+
+LeetCode 992.
+
+We want:
+
+```text
+exactly K distinct integers
+```
+
+Instead of directly counting exactly `K`, calculate:
+
+```text
+number of subarrays with at most K
+-
+number of subarrays with at most K - 1
+```
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+
+class Solution {
+  public int subarraysWithKDistinct(int[] nums, int k) {
+    return atMost(nums, k) - atMost(nums, k - 1);
+  }
+
+  private int atMost(int[] nums, int k) {
+    if (k == 0) {
+      return 0;
+    }
+    int left = 0;
+    int result = 0;
+    Map<Integer, Integer> count = new HashMap<>();
+    for (int right = 0; right < nums.length; right++) {
+      count.put(nums[right], count.getOrDefault(nums[right], 0) + 1);
+      while (count.size() > k) {
+        count.put(nums[left], count.get(nums[left]) - 1);
+        if (count.get(nums[left]) == 0) {
+          count.remove(nums[left]);
+        }
+        left++;
+      }
+      // Every subarray ending at right
+      // starting from left..right is valid.
+      //
+      // Number of valid subarrays:
+      // right - left + 1
+      result += right - left + 1;
+    }
+
+    return result;
+  }
+}
+```
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+  int subarraysWithKDistinct(std::vector<int> &nums, int k) {
+    return atMost(nums, k) - atMost(nums, k - 1);
+  }
+
+private:
+  int atMost(std::vector<int> &nums, int k) {
+    if (k == 0) {
+      return 0;
+    }
+    int left = 0;
+    int result = 0;
+    std::unordered_map<int, int> count;
+    for (int right = 0; right < nums.size(); right++) {
+      count[nums[right]]++;
+      while (count.size() > k) {
+        count[nums[left]]--;
+        if (count[nums[left]] == 0) {
+          count.erase(nums[left]);
+        }
+        left++;
+      }
+      // Number of valid subarrays ending at right
+      result += right - left + 1;
+    }
+    return result;
+  }
+};
+```
+
+## 6. Monotonic Deque (Fixed-Size Sliding Window)
+
+Use when you need the **maximum/minimum value in every fixed-size window of size `k`**.
+
+For maximum:
+
+> Keep deque values in **decreasing order**.
+
+The front is always the maximum.
+
+---
+
+A normal sliding window can efficiently track:
+
+- sum
+- frequency
+- number of distinct values
+- etc.
+
+But what if you need:
+
+> maximum value inside every window of size `k`
+
+Example:
+
+```text
+nums = [1,3,-1,-3,5,3,6,7]
+k = 3
+```
+
+Answer:
+
+```text
+[3,3,5,5,6,7]
+```
+
+A naive solution scans every window:
+
+```text
+[1,3,-1] -> max = 3
+[3,-1,-3] -> max = 3
+...
+```
+
+That is:
+
+```text
+O(nk)
+```
+
+We can do it in:
+
+```text
+O(n)
+```
+
+using a **monotonic decreasing deque**.
+
+Maintain indices in the deque such that:
+
+```text
+nums[dq[0]] >= nums[dq[1]] >= nums[dq[2]] ...
+```
+
+Therefore:
+
+```text
+dq.front()
+```
+
+always gives the maximum value.
+
+For example:
+
+```text
+nums = [1, 3, -1]
+```
+
+After processing:
+
+```text
+deque = [3, -1]
+          ↑
+        maximum
+```
+
+### Why Remove Smaller Elements?
+
+Suppose the deque contains:
+
+```text
+[5, 3, 2]
+```
+
+and the new number is:
+
+```text
+6
+```
+
+Then:
+
+```text
+[5, 3, 2]
+```
+
+are all useless.
+
+Why?
+
+Because `6`:
+
+- is larger than all of them
+- is newer, so it will remain in the window longer
+
+So we remove them:
+
+```text
+[6]
+```
+
+This is the key idea behind the monotonic deque.
+
+### Monotonic Decreasing Deque for Maximum
+
+```java
+class Solution {
+  public int[] maxSlidingWindow(int[] nums, int k) {
+    int n = nums.length;
+    int[] result = new int[n - k + 1];
+    Deque<Integer> dq = new ArrayDeque<>();
+    for (int right = 0; right < n; right++) {
+      // Remove indices outside the window
+      while (!dq.isEmpty() && dq.peekFirst() <= right - k) {
+        dq.pollFirst();
+      }
+      // Remove smaller values from the back
+      while (!dq.isEmpty() && nums[dq.peekLast()] <= nums[right]) {
+        dq.pollLast();
+      }
+      // Add current index
+      dq.offerLast(right);
+      // Window has size k
+      if (right >= k - 1) {
+        result[right - k + 1] = nums[dq.peekFirst()];
+      }
+    }
+
+    return result;
+  }
+}
+```
+
+```cpp
+#include <bits/stdc++.h>
+
+class Solution {
+public:
+  std::vector<int> maxSlidingWindow(std::vector<int> &nums, int k) {
+    int n = nums.size();
+    std::vector<int> result;
+    std::deque<int> dq;
+    for (int right = 0; right < n; right++) {
+      // Remove indices outside the window
+      while (!dq.empty() && dq.front() <= right - k) {
+        dq.pop_front();
+      }
+      // Remove smaller values
+      while (!dq.empty() && nums[dq.back()] <= nums[right]) {
+        dq.pop_back();
+      }
+      // Add current index
+      dq.push_back(right);
+      // Window size is k
+      if (right >= k - 1) {
+        result.push_back(nums[dq.front()]);
+      }
+    }
+    return result;
+  }
+};
+```
+
+Complexity:
+
+```text
+Time:  O(n)
+Space: O(k)
+```
+
+Each element enters and leaves the deque at most once.
+
+### Monotonic Increasing Deque for Minimum
+
+For minimum, reverse the comparison:
+
+```cpp
+while (!dq.empty() && nums[dq.back()] >= nums[right]) { // Minimum
+  dq.pop_back();
+}
+```
+
+instead of
+
+```cpp
+while (!dq.empty() && nums[dq.back()] <= nums[right]) { // Maximum
+  dq.pop_back();
+}
+```
+
+### Summary
+
+**Maximum**:
+
+```text
+decreasing deque
+```
+
+```text
+[large -> small]
+```
+
+**Minimum**:
+
+```text
+increasing deque
+```
+
+```text
+[small -> large]
+```
+
+## Why `right - left + 1` Counts Subarrays
+
+When `[left, right]` is valid, the number of valid subarrays **ending at `right`** is:
+
+```text
+right - left + 1
+```
+
+## Minimum Window / Cover Problems
+
+Some of the hardest sliding-window problems involve a window that must **contain enough of certain elements**.
+
+### Example - Minimum Window Substring
+
+LeetCode 76
+
+> Given two strings s and t of lengths m and n respectively, return the minimum window substring of s such that every character in t (including duplicates) is included in the window. If there is no such substring, return the empty string ""
+
+Given:
+
+```text
+s = "ADOBECODEBANC"
+t = "ABC"
+```
+
+Answer:
+
+```text
+min substring = "BANC"
+```
+
+The window is valid when it contains all characters required by `t`.
+
+This is still:
+
+```text
+expand right
+↓
+become valid
+↓
+shrink left while valid
+↓
+record smallest valid window
+```
+
+```text
+expand right
+↓
+window becomes VALID
+↓
+while VALID:
+  update minimum
+  remove left
+```
+
+Usually maintain:
+
+```text
+need[c]   = required frequency
+window[c] = current frequency
+```
+
+We also track: `formed` which tells us how many character requirements are currently satisfied.
+
+```java
+class Solution {
+  public String minWindow(String s, String t) {
+    if (t.length() > s.length()) {
+      return "";
+    }
+    Map<Character, Integer> need = new HashMap<>();
+    Map<Character, Integer> window = new HashMap<>();
+    // Build required character frequencies
+    for (char c : t.toCharArray()) {
+      need.put(c, need.getOrDefault(c, 0) + 1);
+    }
+    int left = 0;
+    // Number of character requirements currently satisfied
+    int formed = 0;
+    // Number of distinct character requirements
+    int required = need.size();
+    int bestLength = Integer.MAX_VALUE;
+    int bestLeft = 0;
+    for (int right = 0; right < s.length(); right++) {
+      char c = s.charAt(right);
+      // Add c to window
+      window.put(c, window.getOrDefault(c, 0) + 1);
+      // Requirement for c has just been satisfied
+      if (need.containsKey(c) && window.get(c).intValue() == need.get(c).intValue()) {
+        formed++;
+      }
+      // Window is valid
+      while (formed == required) {
+        // Update answer
+        if (right - left + 1 < bestLength) {
+          bestLength = right - left + 1;
+          bestLeft = left;
+        }
+        // Remove s[left]
+        char leftChar = s.charAt(left);
+        window.put(
+          leftChar,
+          window.get(leftChar) - 1);
+        // Removing this character broke a requirement
+        if (need.containsKey(leftChar)
+          && window.get(leftChar) < need.get(leftChar)) {
+          formed--;
+        }
+        left++;
+      }
+    }
+
+    return bestLength == Integer.MAX_VALUE
+      ? ""
+      : s.substring(bestLeft, bestLeft + bestLength);
+  }
+}
+```
+
+```cpp
+#include <bits/stdc++.h>
+
+class Solution {
+public:
+  std::string minWindow(std::string s, std::string t) {
+    if (t.size() > s.size()) {
+      return "";
+    }
+    std::unordered_map<char, int> need;
+    std::unordered_map<char, int> window;
+    // Required frequencies
+    for (char c : t) {
+      need[c]++;
+    }
+    int left = 0;
+    int formed = 0;
+    int required = need.size();
+    int bestLength = INT_MAX;
+    int bestLeft = 0;
+    for (int right = 0; right < s.size(); right++) {
+      char c = s[right];
+      // Add c
+      window[c]++;
+      // Requirement satisfied
+      if (need.count(c) && window[c] == need[c]) {
+        formed++;
+      }
+      // Window is valid
+      while (formed == required) {
+        // Update best answer
+        if (right - left + 1 < bestLength) {
+          bestLength = right - left + 1;
+          bestLeft = left;
+        }
+        // Remove left character
+        char leftChar = s[left];
+        window[leftChar]--;
+        // Requirement is no longer satisfied
+        if (need.count(leftChar) && window[leftChar] < need[leftChar]) {
+          formed--;
+        }
+        left++;
+      }
+    }
+    if (bestLength == INT_MAX) {
+      return "";
+    }
+    return s.substr(bestLeft, bestLength);
+  }
+};
+```
+
+## Longest Repeating Character Replacement
+
+LeetCode 424.
+
+Problem:
+
+> You can replace at most `k` characters. Find the longest substring that can become all the same character.
+
+Example:
+
+```text
+s = "AABABBA"
+k = 1
+```
+
+Answer:
+
+```text
+4
+```
+
+For a window to be valid:
+
+```text
+windowLength - maxFreqOfMostCommonChar <= k
+```
+
+because everything except the most frequent character must be replaced.
+
+Why?
+
+Suppose:
+
+```text
+window = "AABAB"
+```
+
+Length:
+
+```text
+5
+```
+
+Most frequent character:
+
+```text
+A -> 4
+```
+
+So we need:
+
+```text
+5 - 4 = 1
+```
+
+replacements.
+
+```java
+class Solution {
+  public int characterReplacement(String s, int k) {
+    int left = 0;
+    int result = 0;
+    int[] count = new int[26];
+    int maxFrequency = 0;
+    for (int right = 0; right < s.length(); right++) {
+      int index = s.charAt(right) - 'A';
+      count[index]++;
+      maxFrequency = Math.max(maxFrequency, count[index]);
+      // Characters that must be replaced
+      int numReplacements = (right - left + 1) - maxFrequency;
+      // Invalid
+      while (numReplacements > k) {
+        count[s.charAt(left) - 'A']--;
+        left++;
+        numReplacements = (right - left + 1) - maxFrequency;
+      }
+      result = Math.max(result, right - left + 1);
+    }
+    return result;
+  }
+}
+```
+
+```cpp
+#include <bits/stdc++.h>
+
+class Solution {
+public:
+  int characterReplacement(std::string s, int k) {
+    int left = 0;
+    int result = 0;
+    std::vector<int> count(26, 0);
+    int maxFrequency = 0;
+    for (int right = 0; right < s.size(); right++) {
+      int index = s[right] - 'A';
+      count[index]++;
+      maxFrequency = max(maxFrequency, count[index]);
+      int numReplacements = (right - left + 1) - maxFrequency;
+      while (numReplacements > k) {
+        count[s[left] - 'A']--;
+        left++;
+        numReplacements = (right - left + 1) - maxFrequency;
+      }
+      result = max(result, right - left + 1);
+    }
+
+    return result;
+  }
+};
+```
+
+### Generalized
+
+A very general way to recognize sliding window is:
+
+```text
+maximize length
+subject to cost <= k
+```
+
+Examples:
+
+```text
+# zeros <= k
+# distinct chars <= k
+# replacements <= k
+# odd numbers <= k
+# bad elements <= k
+```
+
+The code almost always becomes:
+
+```java
+add(right);
+
+while (cost > k) {
+  remove(left);
+  left++;
+}
+
+result = Math.max(result, right - left + 1);
+```
+
+## Count Frequencies in a Fixed Window
+
+A common string problem is:
+
+> Does some substring of length `k` contain the same character frequencies as target?
+
+This shows up in:
+
+- permutation in string
+- find all anagrams
+- frequency matching
+
+Examples:
+
+- LeetCode 567 - Permutation in String
+- LeetCode 438 - Find All Anagrams in a String
+
+The window size is fixed:
+
+```text
+window size = t.length()
+```
+
+and we maintain frequencies.
+
+### Example Permutation in Strine
+
+LeetCode 567. Permutation in String
+
+> Given two strings s1 and s2, return true if s2 contains a permutation of s1, or false otherwise. In other words, return true if one of s1's permutations is the substring of s2.
+
+```text
+s1 = "ab"
+s2 = "eidbaooo"
+```
+
+Return `true` because:
+
+```text
+"ba"
+```
+
+is a permutation of `"ab"`.
+
+```java
+class Solution {
+  public boolean checkInclusion(String s1, String s2) {
+    if (s1.length() > s2.length()) {
+      return false;
+    }
+    int[] need = new int[26];
+    int[] slidingWindow = new int[26];
+    for (char ch : s1.toCharArray()) {
+      need[ch - 'a']++;
+    }
+    int k = s1.length();
+    for (int right = 0; right < s2.length(); right++) {
+      // Add right
+      slidingWindow[s2.charAt(right) - 'a']++;
+      // Keep slidingWindow size <= k
+      if (right >= k) {
+        slidingWindow[s2.charAt(right - k) - 'a']--;
+      }
+      // Check fixed-size slidingWindow
+      if (right >= k - 1 && same(need, slidingWindow)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  private boolean same(int[] a, int[] b) {
+    for (int i = 0; i < 26; i++) {
+      if (a[i] != b[i]) {
+        return false;
+      }
+    }
+    return true;
+  }
+}
+```
+
+```cpp
+#include <bits/stdc++.h>
+
+class Solution {
+public:
+  bool checkInclusion(std::string s1, std::string s2) {
+    if (s1.size() > s2.size()) {
+      return false;
+    }
+    std::vector<int> need(26, 0);
+    std::vector<int> window(26, 0);
+    for (char &c : s1) {
+      need[c - 'a']++;
+    }
+    int k = s1.size();
+    for (int right = 0; right < s2.size(); right++) {
+      // Add right
+      window[s2[right] - 'a']++;
+      // Remove element outside fixed-size window
+      if (right >= k) {
+        window[s2[right - k] - 'a']--;
+      }
+      if (right >= k - 1 && need == window) {
+        return true;
+      }
+    }
+    return false;
+  }
+};
+```
+
+## Product / Sum Constraints
+
+Sliding window can also work for products when all values are positive.
+
+Example:
+
+> Number of subarrays with product less than `k`
+
+LeetCode 713.
+
+Because all numbers are positive:
+
+```text
+expand right -> product increases
+shrink left  -> product decreases
+```
+
+That gives us the required monotonic behavior.
+
+```java
+class Solution {
+  public int numSubarrayProductLessThanK(int[] nums, int k) {
+    if (k <= 1) {
+      return 0;
+    }
+    int left = 0;
+    int product = 1;
+    int result = 0;
+    for (int right = 0; right < nums.length; right++) {
+      product *= nums[right];
+      // Invalid
+      while (product >= k) {
+        product /= nums[left];
+        left++;
+      }
+      // Every subarray ending at right
+      // and starting between left..right is valid
+      result += right - left + 1;
+    }
+    return result;
+  }
+}
+```
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+  int numSubarrayProductLessThanK(vector<int> &nums, int k) {
+    if (k <= 1) {
+      return 0;
+    }
+    int left = 0;
+    long long product = 1;
+    int result = 0;
+    for (int right = 0; right < nums.size(); right++) {
+      product *= nums[right];
+      while (product >= k) {
+        product /= nums[left];
+        left++;
+      }
+      result += right - left + 1;
+    }
+    return result;
+  }
+};
+```
+
+## Sliding Window Constraints/Limitations
+
+Not every subarray problem can use Sliding Window.
+
+For example:
+
+```text
+nums = [2, -1, 2]
+```
+
+If the condition is based on the sum, adding an element does not necessarily increase the sum.
+
+For arbitrary integers:
+
+```text
+sum += nums[right]
+```
+
+does not guarantee monotonicity.
+
+Likewise, removing from the left does not necessarily behave predictably.
+
+So this:
+
+```java
+while (sum >= target) {
+  ...
+}
+```
+
+is not automatically valid for arbitrary positive/negative arrays.
+
+### Rule
+
+Classic sum-based sliding window generally requires a condition with useful monotonic behavior, such as:
+
+```text
+all numbers positive
+```
+
+When negative numbers are present, you may need:
+
+- prefix sums
+- prefix-sum + deque
+- binary search
+- hash maps
+- monotonic stack/deque
+- other techniques
+
+## HashMap vs Array
+
+Use an array when the values come from a small known domain.
+
+Examples:
+
+```text
+'a' - 'z'   -> int[26]
+'A' - 'Z'   -> int[26]
+ASCII       -> int[128]
+```
+
+Example:
+
+```java
+int[] count = new int[26];
+
+count[s.charAt(right) - 'a']++;
+```
+
+Use a `HashMap` when:
+
+- values are arbitrary integers
+- character set is unknown/large
+- you need dynamic keys
+
+```java
+Map<Integer, Integer> count = new HashMap<>();
+```
+
+If `map.size()` represents distinct elements, remove zero-count entries:
+
+```java
+if (count.get(x) == 0) {
+  count.remove(x);
+}
+```
+
+## Common Mistakes
+
+### Forgetting `+1`
+
+Correct:
+
+```java
+right - left + 1
+```
+
+### Using `if` instead of `while`
+
+Usually:
+
+```java
+while (invalid) {
+  remove(left);
+  left++;
+}
+```
+
+because `left` may need to move multiple times.
+
+### Updating at the wrong time
+
+Longest:
+
+```java
+while (invalid) {
+  remove(left);
+  left++;
+}
+updateMax();
+```
+
+Shortest:
+
+```java
+while (valid) {
+  updateMin();
+  remove(left);
+  left++;
+}
+```
+
+### Letting `left` move backwards
+
+With last-seen indices:
+
+```java
+left = Math.max(left, lastSeen[c] + 1);
+```
+
+### Ignoring monotonicity
+
+Classic sum-based sliding window generally needs something like **all numbers positive**.
+
+If negatives can appear, consider:
+
+- prefix sums
+- prefix sum + deque
+- HashMap
+- binary search
+- other techniques
+
+## Sliding Window Invariant
+
+An **invariant** is a property that remains true at a particular point in the algorithm.
+
+The key question is:
+
+> **What is guaranteed to be true after the `while` loop?**
+
+### Longest
+
+```java
+while (invalid) { ... }
+```
+
+After the loop:
+
+```text
+window is VALID
+```
+
+Then maximize.
+
+### Shortest
+
+```java
+while (valid) { ... }
+```
+
+During the loop:
+
+```text
+window is VALID
+```
+
+So measure first, then shrink.
+
+## Decision Tree
+
+```text
+Is it contiguous?
+|
++-- NO -> probably not sliding window
+|
++-- YES
+    |
+    v
+Is window size fixed?
+    |
+    +-- YES -> fixed-size window
+    |
+    +-- NO
+        |
+        v
+Longest / maximum length?
+        |
+        +-- YES -> shrink while INVALID
+        |
+        +-- NO
+            |
+            v
+Shortest / minimum length?
+            |
+            +-- YES -> shrink while VALID
+            |
+            +-- NO
+                |
+                v
+Counting subarrays?
+                |
+                +-- YES -> try "at most"
+                |          exactly K =
+                |          atMost(K) - atMost(K-1)
+                |
+                +-- NO
+                    |
+                    v
+Need max/min in every window?
+                    |
+                    +-- YES -> monotonic deque
+```
+
+## Complexity
+
+Typical sliding window:
+
+```text
+Time:  O(n)
+Space: O(1) / O(k)
+```
+
+Why O(n)? `right` moves at most `n` times and `left` also moves at most `n` times.
+
+Even with a nested `while`, total pointer movement is usually linear.
+
+---
+
+For a typical sliding window:
+
+```java
+for (right = 0; right < n; right++)
+```
+
+looks like `O(n)`.
+
+Then:
+
+```java
+while (...)
+```
+
+looks like another loop.
+
+But do **not** automatically conclude `O(n^2)`.
+
+`left` only moves forward.
+
+For example:
+
+```text
+right: 0 -> 1 -> 2 -> ... -> n-1
+left:  0 -> 1 -> 2 -> ... -> n-1
+```
+
+Each element is:
+
+- added once
+- removed once
+
+Therefore:
+
+```text
+Time = O(n)
+```
+
+for the normal case.
+
+## Space Complexity
+
+Depends on how much state the window stores.
+
+Array
+
+```text
+O(1)
+```
+
+HashMap
+
+```text
+O(k)
+```
+
+Deque
+
+```text
+O(k)
+```
+
+for a window of size `k`.
+
+or up to the number of distinct elements.
+
+## Cheat Sheet
+
+```text
+LONGEST       -> Shrink while INVALID
+SHORTEST      -> Shrink while VALID
+AT MOST K     -> Longest valid window
+EXACTLY K     -> atMost(K) - atMost(K-1)
+COUNT         -> Often += right - left + 1
+FIXED K       -> Remove when size > K
+MAX/MIN       -> Monotonic deque
+```
+
+And always ask:
+
+```text
+1. What is my window state?
+2. What makes the window invalid?
+3. When do I move left?
+4. When do I update the answer?
+```
+
+> The hardest part of Sliding Window is usually not the code. It is identifying the **correct window invariant**.
+
+Sliding Window technique works when the window's state can be maintained incrementally and moving `left`/`right` has the monotonic behavior needed to discard impossible candidates.
 
 # String
 
 ## Characters
 
-- Convert characters to integer/int index with `int index = str.charAt(0) - 'a';`
+Convert characters to integer/int index with `int index = str.charAt(0) - 'a';`
 
 ## Java
 
-- Compare strings with **`.equals()`** and NOT `==`
-- Convert `String` to `char[]` with `.toCharArray()`
-- Convert `String` to `String[]` with `.split()`
-- Compare character with `s.charAt(i) < s.charAt(j)`
+Compare strings with **`.equals()`** and NOT `==`
+
+Convert `String` to `char[]` with `.toCharArray()`
+
+Convert `String` to `String[]` with `.split()`
+
+Compare character with `s.charAt(i) < s.charAt(j)`
 
 ## Substrings + Palindrome
 
-- To split a string `s` into `k` substrings (sub_1, sub_2, ..., sub_k) that are palindromic the following formula is used
-  - `sub_i == sub_k - i + 1`
-    - Note: There are NO brackets here, it is `k - 1 + 1` as is
-    - Note: This is mainly just fancy notation and it was purposely decided that substrings should start at index 1
-- Read more:
-  - 1147.longest-chunked-palindrome-decomposition
+To split a string `s` into `k` substrings (sub_1, sub_2, ..., sub_k) that are palindromic the following formula is used
+
+- `sub_i == sub_k - i + 1`
+- Note: There are NO brackets here, it is `k - 1 + 1` as is
+- Note: This is mainly just fancy notation and it was purposely decided that substrings should start at index 1
+
+Read more:
+
+- 1147.longest-chunked-palindrome-decomposition
 
 ## Strings/Substrings
 
-- If using a sliding window on a string `s` of length `n` to find substrings of length `substrLength`
-  - Example: Finding substrings of length 2 from string `|h|e|l|l|o|w|o|r|l|d|`
-- Formula using for loop:
-  - `for (int i = 0; i <= n - substrLength)`
-  - `for (int i = 0; i < n - substrLength + 1)`
+If using a sliding window on a string `s` of length `n` to find substrings of length `substrLength`
+
+- Example: Finding substrings of length 2 from string `|h|e|l|l|o|w|o|r|l|d|`
+
+Formula using for loop:
+
+- `for (int i = 0; i <= n - substrLength)`
+- `for (int i = 0; i < n - substrLength + 1)`
+
+Note: Just flip it to be: `i + substrLength <= n` to be used for `s.substring(idxInclusive, idxExclusive)`
 
 ```java
-for (int i = 0; i <= n - substrLength; i++) { // (i+substrLength <= n) valid when using .substring(idxInclusive, idxExclusive)
+for (int i = 0; i <= n - substrLength; i++) { // (i+substrLength <= n) valid when using s.substring(idxInclusive, idxExclusive)
   String tmp = s.substring(i, i + substrLength);
   //...
 }
@@ -4118,13 +6048,13 @@ for (int i = 0; i < n - substrLength + 1; i++) {
 
 ## Array Indexing for Single Pass Forwards + Backwards
 
-- Use `n - i - 1` for right to left/backwards/reverse
+Use `n - i - 1` for right to left/backwards/reverse
 
 ```java
 for (int i = 1; i < n; i++) {
   // Prefix
   if (s[i] != s[i - 1]) {
-    prefix[i] = i + prefix[i - 1];
+    prefix[i] = i + prefix[i - 1]; // i + prefix[i - 1] is the number of elements processed
   } else {
     prefix[i] = prefix[i - 1];
   }
@@ -4139,13 +6069,38 @@ for (int i = 1; i < n; i++) {
 
 ## Longest Palindromic Substring / Longest Common Subsequence
 
-- Bottom Up DP
-  - Method 1
-    - Don't ask why formula is like this (switching `i` to start at 0 does NOT work)
-    - `for (int i = s.length() - 1; i >= 0; i--)`
-      - `for(int j = i; j < n; j++)`
-  - Method 2
-    - Reverse string `s` and compare `s` with reversed string
+### Bottom Up DP
+
+#### Method 1
+
+Note: Switching `i` to start at 0 does NOT work
+
+```
+for (int i = s.length() - 1; i >= 0; i--) {
+  for(int j = i; j < n; j++) {
+    //...
+  }
+}
+```
+
+This is because
+
+- `i` starts at the end and moves backward.
+- For each `i`, `j` starts at `i` and moves forward.
+
+So the states are processed roughly like:
+
+```
+i = n-1: (n-1,n-1)
+
+i = n-2: (n-2,n-2), (n-2,n-1)
+
+i = n-3: (n-3,n-3), (n-3,n-2), (n-3,n-1)
+```
+
+#### Method 2
+
+Reverse string `s` and compare `s` with reversed string
 
 See
 
@@ -4250,101 +6205,129 @@ public int[][] getLongestPalindromicSubseqDP(String s) {
 
 # String Hashing
 
-> https://cp-algorithms.com/string/string-hashing.html
+[Resource](https://cp-algorithms.com/string/string-hashing.html)
 
 See: 3388.count-beautiful-splits-in-an-array
 
 # Subsequence
 
-- **Subsequence = A sequence of elements (part of an array) NOT necessarily contiguous/continuous but whose relative ordering IS kept**
-- Examples
-  - 3082.find-the-sum-of-the-power-of-all-subsequences (interesting how we generate all subsequences and multiply by 2)
+**Subsequence = A sequence of elements (part of an array) NOT necessarily contiguous/continuous but whose relative ordering IS kept**
+
+Examples
+
+- 3082.find-the-sum-of-the-power-of-all-subsequences (interesting how we generate all subsequences and multiply by 2)
 
 # Time Complexity
 
-- Trick
-  - Look at the dimensions/size of `memo` and multiply them together (i.e. `int[][] memo = new int[m][n] == O(M * N)`)
-  - Have a look `for()` loops in each recursive `dp()` call/function
-- Memoisation
-  - Example
-    - `auto dp = [](int i, char left, char right) { ... }`
-    - If there are 2 choices at each index in a `dp()` call, time complexity would be `O(2^N)` WITHOUT memoisation
-    - WITH memoisation the time complexity is reduced to `O(N * 26 * 26);`
-- `O(N^2)`
-  - Fill up `memo[N][N]`
-  - Double `for()` loop
-- `O(2^N)`
-  - For each of the `N` elements in `nums[]` we have 2 choices (typically skip or include `nums[i]`)
-- String
-  - In a given string `S` of length `N`, there are `N` possible substrings of length 1, `N-1` possible substrings of length 2, `N-2` possible substrings of length 3, and so on, down to 1 possible substring of length `N`
-  - Therefore, the total number of possible substrings of a string `S` is: `N + (N-1) + (N-2) + ... + 1 = N * (N+1)/2 = O(N^2)`
+Trick
+
+- Look at the dimensions/size of `memo` and multiply them together (i.e. `int[][] memo = new int[m][n] == O(M * N)`)
+- Have a look `for()` loops in each recursive `dp()` call/function
+
+Memoisation
+
+- Example
+  - `auto dp = [](int i, char left, char right) { ... }`
+  - If there are 2 choices at each index in a `dp()` call, time complexity would be `O(2^N)` WITHOUT memoisation
+  - WITH memoisation the time complexity is reduced to `O(N * 26 * 26);`
+
+`O(N^2)`
+
+- Fill up `memo[N][N]`
+- Double `for()` loop
+
+`O(2^N)`
+
+- For each of the `N` elements in `nums[]` we have 2 choices (typically skip or include `nums[i]`)
+
+String
+
+- In a given string `S` of length `N`, there are `N` possible substrings of length 1, `N-1` possible substrings of length 2, `N-2` possible substrings of length 3, and so on, down to 1 possible substring of length `N`
+- Therefore, the total number of possible substrings of a string `S` is: `N + (N-1) + (N-2) + ... + 1 = N * (N+1)/2 = O(N^2)`
 
 ## Dynamic Programming Time Complexity
 
-- Can figure out time complexity by looking at size of `memo` (because we need to fill `memo` up)
-- **HOWEVER** need to analyse time complexity of **EACH** dp state/recursive `dp()` call
-  - **EDGE/EXCEPTION CASE**
-    - Say for example `memo[][]` is of size `N * K`
-      - N = nums.length
-      - K = numPartitionsAllowed
-    - In each recursive `dp(i, k)` call / each dp state, if we need to iterate over ALL of nums which costs `O(N)`
-      - `for (int j = i; j < nums.length; j++)`
-    - Then time complexity is actually `O(N * K * N)` = `O(N^2 * K)`
-    - See: 1959.minimum-total-space-wasted-with-k-resizing-operations
+Can figure out time complexity by looking at size of `memo` (because we need to fill `memo` up)
+
+**HOWEVER** need to analyse time complexity of **EACH** dp state/recursive `dp()` call
+
+**EDGE/EXCEPTION CASE**
+
+- Say for example `memo[][]` is of size `N * K`
+  - N = nums.length
+  - K = numPartitionsAllowed
+- In each recursive `dp(i, k)` call / each dp state, if we need to iterate over ALL of nums which costs `O(N)`
+  - `for (int j = i; j < nums.length; j++)`
+- Then time complexity is actually `O(N * K * N)` = `O(N^2 * K)`
+- See: 1959.minimum-total-space-wasted-with-k-resizing-operations
 
 # TreeMap
 
-- `treeMap.firstEntry()`
-- `treeMap.lastEntry()`
+`treeMap.firstEntry()`
 
-- `>=` and `<=`
-  - `treeMap.ceilingEntry(key)`
-  - `treeMap.floorEntry(key)`
-- `>` and `<`
-  - `treeMap.higherEntry(key)`
-  - `treeMap.lowerEntry(key)`
+`treeMap.lastEntry()`
+
+`>=` and `<=`
+
+- `treeMap.ceilingEntry(key)`
+- `treeMap.floorEntry(key)`
+
+`>` and `<`
+
+- `treeMap.higherEntry(key)`
+- `treeMap.lowerEntry(key)`
 
 - See: 2008.maximum-earnings-from-taxi
 
 # TreeSet
 
-- `import java.util.TreeSet;`
-- Use TreeSet to get an **ordered/sorted set** to iterate over
-  ```java
-  TreeSet<Integer> treeSet = new TreeSet<>((a, b) -> Integer.compare(a, b));
-  treeSet.add(5);
-  treeSet.add(10);
-  treeSet.add(4);
-  treeSet.add(2);
-  treeSet.add(6);
-  for (int num : treeSet) {
-    //...
-  }
-  ```
+`import java.util.TreeSet;`
+
+Use TreeSet to get an **ordered/sorted set** to iterate over
+
+```java
+TreeSet<Integer> treeSet = new TreeSet<>((a, b) -> Integer.compare(a, b));
+treeSet.add(5);
+treeSet.add(10);
+treeSet.add(4);
+treeSet.add(2);
+treeSet.add(6);
+for (int num : treeSet) {
+  //...
+}
+```
 
 # Union Find
 
 ## Path Compression
 
-- Flattens the structure of the nodes in the hierarchy and links each node directly to the final root
-- Only in the first run of find will you traverse the whole structure
-- The next time you'll get a direct hit since you set the node's parent to its ultimate root
-- Do NOT use Path Compression if you want to analyse the parent chain of each child to ensure that a certain condition is met
-  - See: 1724.checking-existence-of-edge-length-limited-paths-ii
+Flattens the structure of the nodes in the hierarchy and links each node directly to the final root
+
+Only in the first run of find will you traverse the whole structure
+
+The next time you'll get a direct hit since you set the node's parent to its ultimate root
+
+Do NOT use Path Compression if you want to analyse the parent chain of each child to ensure that a certain condition is met
+
+See: 1724.checking-existence-of-edge-length-limited-paths-ii
 
 ## Union by Rank
 
-- Makes sure that the node with more children becomes the root of the node with less children
-- Therefore, less nodes need to be reassigned a new parent, hence less work
+Makes sure that the node with more children becomes the root of the node with less children
+
+Therefore, less nodes need to be reassigned a new parent, hence less work
 
 ## Formula to convert matrix cell coordinate (i, j) to index number
 
-- This function converts a cell of a matrix/grid (of size `m * n`) to an index/number
-- Note the indices start from `0` and go to `(m * n) - 1` (left to right, top to bottom)
-- Note
-  - `m = grid.length`
-  - `n = grid[0].length`
-  - We need to use **`n`** (i.e. number of columns) to ensure formula works with non-square matrix/grids (where `grid.length != grid[0].length`)
+This function converts a cell of a matrix/grid (of size `m * n`) to an index/number
+
+Note the indices start from `0` and go to `(m * n) - 1` (left to right, top to bottom)
+
+Note
+
+- `m = grid.length`
+- `n = grid[0].length`
+- We need to use **`n`** (i.e. number of columns) to ensure formula works with non-square matrix/grids (where `grid.length != grid[0].length`)
 
 ```java
 int cellToIndex(int i, int j) {
@@ -4358,16 +6341,20 @@ int cellToIndex(int x, int y) {
 
 ## Handling Strings
 
-- Use a counter variable `index` and `HashMap` to associate each string (key) to an index (value)
-- Union the mapped indices of strings
-- Examples
-  - 721.accounts-merge
-  - 737.sentence-similarity
+Use a counter variable `index` and `HashMap` to associate each string (key) to an index (value)
+
+Union the mapped indices of strings
+
+Examples
+
+- 721.accounts-merge
+- 737.sentence-similarity
 
 ## Connected Components
 
-- Use `boolean union()` version and check boolean result of calling `uf.union(i, j)`
-- Example
-  - 947.most-stones-removed-with-same-row-or-column
-    - Interesting case of `return stones.length - numSeparateComponents`
-    - Note how we can remove all nodes of a connected component except for the LAST stone of each separate connected component (since it does not share any coordinates with other stones)
+Use `boolean union()` version and check boolean result of calling `uf.union(i, j)`
+
+Example: 947.most-stones-removed-with-same-row-or-column
+
+- Interesting case of `return stones.length - numSeparateComponents`
+- Note how we can remove all nodes of a connected component except for the LAST stone of each separate connected component (since it does not share any coordinates with other stones)

@@ -164,6 +164,7 @@
     - [Member Types](#member-types-13)
     - [Member Functions](#member-functions-15)
     - [Non-Member Functions](#non-member-functions-15)
+    - [Custom Hash Function](#custom-hash-function-1)
     - [Deduction Guide](#deduction-guide-10)
     - [Example](#example-14)
   - [`std::stack`](#stdstack)
@@ -205,6 +206,8 @@
       - [Configuration](#configuration)
       - [Building](#building)
       - [Running](#running)
+  - [Custom Hash Function](#custom-hash-function-2)
+    - [Semantics](#semantics)
   - [`.` dot operator vs `->` arrow operator](#-dot-operator-vs---arrow-operator)
     - [Dot (`.`) Operator](#dot--operator)
       - [Dot (`.`) Operator + Pointers](#dot--operator--pointers)
@@ -4886,6 +4889,12 @@ it->second; // == (*it).second  (the mapped value)
 
 ### Custom Hash Function
 
+The problem with plain XOR `h1 ^ h2`
+
+is that XOR operation (^) is symmetric: `h1 ^ h2` is exactly the same as `h2 ^ h1`
+
+That means the pairs (a, b) and (b, a) will produce identical hash values. If your unordered_set contains both (1, 2) and (2, 1), they will collide in the same bucket even though they are distinct elements.
+
 ```cpp
 #include <bits/stdc++.h>
 
@@ -4896,9 +4905,9 @@ struct PairHash {
     auto h2 = std::hash<T2>{}(p.second);
 
     // Can also multiply hashes together or (multiply each hash by large prime number and then add together)
-    return h1 ^ h2;
-    // return h1 ^ (h2 << 1);
+    return h1 ^ (h2 << 1);
     // return h1 + (h2 << 1);
+    // return h1 ^ h2 // Only use if order does NOT matter (t1, t2) == (t2, t1)
   }
 };
 
@@ -4910,9 +4919,9 @@ struct TupleHash {
     auto h3 = std::hash<T3>{}(std::get<2>(tup));
 
     // Can also multiply hashes together or (multiply each hash by large prime number and then add together)
-    return h1 ^ h2 ^ h3;
     // return h1 ^ (h2 << 1) ^ (h3 << 2);
     // return h1 + (h2 << 1) + (h3 << 2);
+    // return h1 ^ h2 ^ h3; // Only use if order does NOT matter (t1, t2, t3) == (t2, t1, t3) etc...
   }
 };
 
@@ -5414,6 +5423,62 @@ using unordered_set = std::unordered_set<Key, Hash, Pred, std::pmr::polymorphic_
 | `operator==` <br> `operator!=` (removed in C++20) | Compares the values in the unordered_set (function template)         |
 | `std::swap(std::unordered_set)`                   | Specializes the `std::swap` algorithm (function template)            |
 | `std::erase_if(std::unordered_set)` (C++20)       | Erases all elements satisfying specific criteria (function template) |
+
+### Custom Hash Function
+
+```cpp
+class Solution {
+public:
+  std::unordered_set<std::pair<int, int>, PairHash> removedEdges;
+
+  struct PairHash {
+    size_t operator()(std::pair<int, int> const &p) const {
+      // Combine the two hash values (example using XOR and shift)
+      return std::hash<int>{}(p.first) ^ (std::hash<int>{}(p.second) << 1);
+    }
+  };
+};
+```
+
+```cpp
+class Solution {
+public:
+  std::unordered_set<std::pair<int, int>, PairHash> removedEdges;
+
+  class PairHash {
+    public:
+    size_t operator()(std::pair<int, int> const &p) const {
+      size_t h1 = std::hash<int>{}(p.first);
+      size_t h2 = std::hash<int>{}(p.second);
+      return h1 ^ (h2 << 1);
+    }
+  };
+};
+```
+
+```cpp
+class Solution {
+public:
+
+  int myFunc() {
+    auto pairHash = [](const std::pair<int, int>& p) {
+      return std::hash<int>{}(p.first) ^ (std::hash<int>{}(p.second) << 1);
+    };
+    std::unordered_set<std::pair<int, int>, decltype(pairHash)> removedEdges(10, pairHash);
+  }
+};
+```
+
+```cpp
+// C++20 onwards only
+class Solution {
+public:
+
+  int myFunc() {
+    std::unordered_set<std::pair<int, int>, decltype([](auto const &p) { return std::hash<int>{}(p.first) ^ (std::hash<int>{}(p.second) << 1); })> removedEdges;
+  }
+};
+```
 
 ### Deduction Guide
 
@@ -6244,6 +6309,37 @@ g++ source.cpp -o test
 - `CMake: Set Debug Target`
   - Select file you want to build
 - `CMake: Run Without Debugging`
+
+## Custom Hash Function
+
+### Semantics
+
+`std::hash<int>{}(p.first)` means:
+
+1. Create a temporary `std::hash<int>` object.
+2. Invoke its call operator on `p.first`
+3. The temporary is destroyed at the end of the full expression.
+
+```cpp
+std::hash<int>{} // 1. create a temporary object
+                (p.first) // 2. call its operator() with `p.first`
+```
+
+Equivalent to
+
+```cpp
+std::hash<int> hasher;
+size_t h1 = hasher(p.first);
+size_t h2 = hasher(p.second);
+```
+
+Breakdown
+
+| Part               | Meaning                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------- |
+| `std::hash<int>`   | The standard hash function object type for `int`                                      |
+| `std::hash<int>{}` | Default-constructs a temporary instance of that type using brace/list initialization. |
+| `(p.first)`        | Calls the instance's `operator()(int)` to actually compute the hash.                  |
 
 ## `.` dot operator vs `->` arrow operator
 

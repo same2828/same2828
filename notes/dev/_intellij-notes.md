@@ -5,8 +5,9 @@
   - [Appearance \& Behaviour](#appearance--behaviour)
   - [Editor](#editor)
   - [Keymap](#keymap)
+    - [Remove](#remove)
   - [Sidebars/Toolbars](#sidebarstoolbars)
-  - [Plugins](#plugins)
+  - [Extensions/Plugins](#extensionsplugins)
   - [Advanced Settings](#advanced-settings)
 - [Shortcuts](#shortcuts)
 - [Troubleshooting](#troubleshooting)
@@ -14,7 +15,7 @@
 - [Maven](#maven)
 - [Application Configuration](#application-configuration)
 - [Debugging](#debugging)
-- [Plugins](#plugins-1)
+- [Extensions/Plugins](#extensionsplugins-1)
   - [Karate Test Automation](#karate-test-automation)
 - [Shortcuts](#shortcuts-1)
 
@@ -23,7 +24,6 @@
 ## Appearance & Behaviour
 
 `Appearance & Behaviour > Appearance > Accessibility` > Turn ON `Use contrast scrollbars`
-
 `Appearance & Behaviour > Appearance > UI Options` > Turn ON `Always show full path in window header`
 
 `Appearance & Behaviour > Menus and Toolbars > Main Toolbar > Left > Add... > Main Menu > Navigate` > Back && Forward
@@ -31,77 +31,63 @@
 ## Editor
 
 `Editor > General.OnSave` > Turn OFF `Keep trailing spaces on caret line`
-
-`Editor > General.OnSave` > `Remove trailing spaces on: All lines`
+`Editor > General.OnSave` > Turn ON `Remove trailing spaces on: All lines`
 
 `Editor > General > Appearance` > Turn ON `Show whitespaces`
-
 `Editor > General > Appearance` > Turn OFF `Show code lens on scrollbar hover`
 
 `Editor > General > Breadcrumbs ` > `Placement: Top` && Select ALL languages
 
 `Editor > General > Code Folding` > `Show code folding arrows: Always`
-
-`Editor > General > Code Folding` > Turn OFF everything
+`Editor > General > Code Folding` > Fold by Default > Turn OFF everything
 
 `Editor > General > Editor Tabs > Appearance` > Turn ON `Mark modified`
-
 `Editor > General > Editor Tabs > Tab Order` > Turn ON `Sort tabs alphabetically` and `Open new tabs at the end`
 
 `Editor > General > Sticky Lines` > Turn ON only for `JSON`, `YAML`
-
 `Editor > General > Sticky Lines` > `Maximum number of lines: 10`
 
 `Editor > Font > JetBrains Mono`
-
 `Editor > Font > Size > 16`
-
 `Editor > Font > Line height > 1.2`
 
+`Editor > Color Scheme > General > Code > Identifier under caret row (write)` > #573D62
 `Editor > Color Scheme > General > Code > Line number` > #B3B3B3 (default: #A3A5BA)
-
-`Editor > Color Scheme > General > Code > TODO defaults` > #FF8C00
+`Editor > Color Scheme > General > Code > Line number on caret row` > ##FF79C6
+`Editor > Color Scheme > General > Code > TODO defaults` > #FF8C00 (default: #E998FF)
 
 `Editor > Color Scheme > General > Editor > Breadcrumbs` > #FFFFFF
-
-`Editor > Color Scheme > General > Editor > Caret` > #EEEEEE
+`Editor > Color Scheme > General > Editor > Caret` > #EEEEEE (default: #CCCCCC)
 
 `Editor > Color Scheme > General > Editor > Guides > Hard wrap guide` > #5A5A5A (default: #A8B0E2)
-
 `Editor > Color Scheme > General > Editor > Guides > Indent guide` > #43434F (default: #3E404B)
-
 `Editor > Color Scheme > General > Editor > Guides > Indent guide selected` > #5A5A5A (default: #A8B0E2)
-
 `Editor > Color Scheme > General > Editor > Guides > Visual guides` > #5A5A5A (default: #6B7090)
 
 `Editor > Color Scheme > General > Editor > Vertical Scrollbar > Thumb` > #6B6B6B (default: #3A3D4C)
-
 `Editor > Color Scheme > General > Editor > Vertical Scrollbar > Thumb while scrolling` > #969696 (default: #3A3D4C)
 
 `Editor > Color Scheme > General > Errors and Warnings > Unused Code` > #BBBBBB (default: #72737A)
 
-`Editor > Color Scheme > General > Text > Folded Text` > #B7C4FF
+`Editor > Color Scheme > General > Text > Folded Text` > #B7C4FF (default: #787E9F)
 
 `Editor > Color Scheme > Language Defaults > Comments > Block Comment` > #B7C4FF
-
 `Editor > Color Scheme > Language Defaults > Comments > Doc Comment > Text` > #B7C4FF
-
 `Editor > Color Scheme > Language Defaults > Comments > Line Comment` > #B7C4FF
-
 `Editor > Color Scheme > Language Defaults > Identifiers > Label` > #B7C4FF
 
+`Editor > Code Style > General` > Ajit turned OFF `Enable EditorConfig support`
+
 `Editor > Code Style > Java > Tabs and Indents > Tab size`: 2
-
 `Editor > Code Style > Java > Tabs and Indents > Indent`: 2
-
 `Editor > Code Style > Java > Tabs and Indents > Continuation Indent`: 2
 
 `Editor > Code Style > Java > Wrapping and Braces > Keep when reformatting` > Turn OFF everything
 
 `Editor > Code Style > Java > Blank Lines > Keep maximum blank lines` > Change all to 1
 
+`Editor > Code Style > Java > Imports > Delete unused module imports`
 `Editor > Code Style > Java > Imports > Class count to use import with '*'`: 999
-
 `Editor > Code Style > Java > Imports > Names count to use import with '*'`: 999
 
 `Editor > Code Style > Java > Code Generation > Comment Code` > Turn OFF `Line comment at first column`
@@ -120,28 +106,33 @@ Download `VSCode Keymap` plugin
 
 `Settings > Keymap > VSCode (macOS)`
 
-| Shortcut                                                  | Keymap                       | Default (IntelliJ) |
-| --------------------------------------------------------- | ---------------------------- | ------------------ |
-| `Code.CodeFormattingActions.OptimizeImports`              | `Option+O`, `Option+Shift+O` | `Ctrl+Option+O`    |
-| `Code.CodeFormattingActions.ReformatCode`                 | `Option+S`, `Option+Shift+F` | `Cmd+Option+L`     |
-| `Edit.Find.FindInFiles`                                   | `Option+Shift+F`             |                    |
-| `Edit.FindUsages.FindUsages`                              | `Cmd+Shift+F`                |                    |
-| `Edit.Redo`                                               | `Cmd+Y`                      |                    |
-| `Navigate.Back`                                           | `Ctrl+[`, `Ctrl+-`           |                    |
-| `Navigate.Forward`                                        | `Ctrl+`, `Ctrl+=`            |                    |
-| `Navigate.GotobyReferenceActions.GoToDeclarationOrUsages` | `Ctrl+B`,`Option+B`          | `Cmd+B`            |
-| `Navigate.GotobyReferenceActions.GoToImplementation`      | `Ctrl+I`,`Option+I`          | `Cmd+Option+B`     |
-| `Navigate.GotobyReferenceActions.GoToSuperMethod`         | `Ctrl+U`,`Option+U`          | `Cmd+U`            |
-| `Other.ShowContextActions`                                | `Option+Enter`               |                    |
-| `Other.ShowQuick-Fixes`                                   | `Option+Enter`               |                    |
+| Shortcut                                                             | Keymap                       | Default (IntelliJ) |
+| -------------------------------------------------------------------- | ---------------------------- | ------------------ |
+| `Code > Code Formatting Actions > Optimize Imports`                  | `Option+O`, `Option+Shift+O` | `Ctrl+Option+O`    |
+| `Code > Code Formatting Actions > Reformat Code`                     | `Option+S`                   | `Cmd+Option+L`     |
+| `Edit > Find > Find in Files`                                        | `Option+Shift+F`             |                    |
+| `Edit > Find Usages > Find Usages`                                   | `Cmd+Shift+F`                |                    |
+| `Edit > Redo`                                                        | `Cmd+Y`                      |                    |
+| `Navigate > Back`                                                    | `Ctrl+[`, `Ctrl+-`           |                    |
+| `Navigate > Forward`                                                 | `Ctrl+`, `Ctrl+=`            |                    |
+| `Navigate > Goto by Reference Actions > Go To Declaration or Usages` | `Ctrl+B`,`Option+B`          | `Cmd+B`            |
+| `Navigate > Goto by Reference Actions > Go To Implementation`        | `Ctrl+I`,`Option+I`          | `Cmd+Option+B`     |
+| `Navigate > Goto by Reference Actions > Go To SuperMethod`           | `Ctrl+U`,`Option+U`          | `Cmd+U`            |
+| `Other > Show Context Actions`                                       | `Option+Enter`               |                    |
+| `Other > Show Quick-Fixes`                                           | `Option+Enter`               |                    |
+
+### Remove
+
+Window > Editor Tabs > Split with Chooser Navigation > Use Left Split or Switch Left inherited from Left > Remove `Ctrl + B`
 
 ## Sidebars/Toolbars
 
 Right sidebar = View > Tool Windows
 
-## Plugins
+## Extensions/Plugins
 
-- `VSCode Keymap`
+- `MavenHelper (Vojtech Krasa)`
+- `VSCode Keymap (JetBrains)`
 - Disable
   - `AI-Powered` >`MCP Server`
   - `IDE Localisation` > `All`
@@ -278,7 +269,7 @@ ENV1=VALUE1;ENV2=VALUE2;ENV3=VALUE3
 - "Step Over" is used more commonly then "Step Into"
   - Note: Variable values will sometimes only be shown once the line has passed, hence the reason we place multiple breakpoints on subsequent lines
 
-# Plugins
+# Extensions/Plugins
 
 ## Karate Test Automation
 
